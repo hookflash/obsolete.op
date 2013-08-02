@@ -35,6 +35,8 @@
 
 #include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
 
+#include <openpeer/stack/message/peer-finder/ChannelMapResult.h>
+
 #include <openpeer/stack/message/peer-finder/SessionCreateResult.h>
 #include <openpeer/stack/message/peer-finder/SessionDeleteResult.h>
 #include <openpeer/stack/message/peer-finder/SessionKeepAliveResult.h>
@@ -112,6 +114,8 @@ namespace openpeer
           {
             case Method_Invalid:                  return "";
 
+            case Method_ChannelMap:               return "channel-map";
+
             case Method_SessionKeepAlive:         return "session-keep-alive";
             case Method_SessionCreate:            return "session-create";
             case Method_SessionDelete:            return "session-delete";
@@ -140,6 +144,8 @@ namespace openpeer
               switch (msgMethod) {
                 case Method_Invalid:                          return MessagePtr();
 
+                case Method_ChannelMap:                       return MessagePtr();
+
                 case Method_SessionKeepAlive:                 return MessagePtr();
                 case Method_SessionCreate:                    return MessagePtr();
                 case Method_SessionDelete:                    return MessagePtr();
@@ -152,6 +158,8 @@ namespace openpeer
             {
               switch (msgMethod) {
                 case Method_Invalid:                          return MessagePtr();
+
+                case Method_ChannelMap:                       return ChannelMapResult::create(root, messageSource);
 
                 case Method_SessionKeepAlive:                 return SessionKeepAliveResult::create(root, messageSource);
                 case Method_SessionCreate:                    return SessionCreateResult::create(root, messageSource);
@@ -166,6 +174,8 @@ namespace openpeer
             {
               switch (msgMethod) {
                 case Method_Invalid:                          return MessagePtr();
+
+                case Method_ChannelMap:                       return MessagePtr();
 
                 case Method_SessionKeepAlive:                 return MessagePtr();
                 case Method_SessionCreate:                    return MessagePtr();

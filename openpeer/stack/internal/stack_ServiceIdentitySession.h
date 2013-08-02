@@ -36,6 +36,7 @@
 #include <openpeer/stack/IMessageMonitor.h>
 #include <openpeer/stack/IMessageSource.h>
 #include <openpeer/stack/IServiceIdentity.h>
+
 #include <openpeer/stack/message/identity/IdentityAccessLockboxUpdateResult.h>
 #include <openpeer/stack/message/identity/IdentityLookupUpdateResult.h>
 #include <openpeer/stack/message/identity/IdentityAccessRolodexCredentialsGetResult.h>
@@ -45,6 +46,8 @@
 #include <openpeer/stack/message/rolodex/RolodexContactsGetResult.h>
 
 #include <openpeer/stack/internal/stack_ServiceNamespaceGrantSession.h>
+
+#include <openpeer/services/IWakeDelegate.h>
 
 #include <zsLib/Timer.h>
 #include <zsLib/MessageQueueAssociator.h>
@@ -119,19 +122,6 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IServiceIdentitySessionAsyncDelegate
-      #pragma mark
-
-      interaction IServiceIdentitySessionAsyncDelegate
-      {
-        virtual void onStep() = 0;
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark ServiceIdentitySession
       #pragma mark
 
@@ -140,7 +130,7 @@ namespace openpeer
                                      public IServiceIdentitySession,
                                      public IMessageSource,
                                      public IServiceIdentitySessionForServiceLockbox,
-                                     public IServiceIdentitySessionAsyncDelegate,
+                                     public IWakeDelegate,
                                      public IBootstrappedNetworkDelegate,
                                      public zsLib::ITimerDelegate,
                                      public IServiceNamespaceGrantSessionForServicesWaitForWaitDelegate,
@@ -291,10 +281,10 @@ namespace openpeer
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServiceIdentitySession => IServiceIdentitySessionAsyncDelegate
+        #pragma mark ServiceIdentitySession => IWakeDelegate
         #pragma mark
 
-        virtual void onStep();
+        virtual void onWake();
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -590,7 +580,3 @@ namespace openpeer
     }
   }
 }
-
-ZS_DECLARE_PROXY_BEGIN(openpeer::stack::internal::IServiceIdentitySessionAsyncDelegate)
-ZS_DECLARE_PROXY_METHOD_0(onStep)
-ZS_DECLARE_PROXY_END()

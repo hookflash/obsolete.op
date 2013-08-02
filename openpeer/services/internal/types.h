@@ -47,6 +47,10 @@ namespace openpeer
   {
     namespace internal
     {
+      using zsLib::string;
+      using zsLib::AutoBool;
+      using zsLib::AutoPUID;
+      using zsLib::AutoWORD;
       using zsLib::Noop;
       using zsLib::AutoRecursiveLock;
       using zsLib::CSTR;
@@ -69,6 +73,10 @@ namespace openpeer
       using zsLib::Subsystem;
       using zsLib::LogPtr;
       using zsLib::ILogDelegate;
+      using zsLib::Timer;
+      using zsLib::TimerPtr;
+      using zsLib::ITimerDelegate;
+      using zsLib::ITimerDelegatePtr;
       using zsLib::MessageQueueThread;
       using zsLib::MessageQueueThreadPtr;
       using zsLib::XML::AttributePtr;
@@ -89,6 +97,9 @@ namespace openpeer
       using CryptoPP::ByteQueue;
       using CryptoPP::HexEncoder;
       using CryptoPP::HexDecoder;
+
+      typedef boost::shared_ptr<ByteQueue> ByteQueuePtr;
+      typedef boost::weak_ptr<ByteQueue> ByteQueueWeakPtr;
 
       interaction DNS;
       typedef boost::shared_ptr<DNS> DNSPtr;
@@ -119,14 +130,21 @@ namespace openpeer
       typedef boost::shared_ptr<ICESocketSession> ICESocketSessionPtr;
       typedef boost::weak_ptr<ICESocketSession> ICESocketSessionWeakPtr;
 
-      interaction IICESocketSessionAsyncDelegate;
-      typedef boost::shared_ptr<IICESocketSessionAsyncDelegate> IICESocketSessionAsyncDelegatePtr;
-      typedef boost::weak_ptr<IICESocketSessionAsyncDelegate> IICESocketSessionAsyncDelegateWeakPtr;
-      typedef zsLib::Proxy<IICESocketSessionAsyncDelegate> IICESocketSessionAsyncDelegateProxy;
-
       interaction HTTP;
       typedef boost::shared_ptr<HTTP> HTTPPtr;
       typedef boost::weak_ptr<HTTP> HTTPWeakPtr;
+
+      interaction MessageLayerSecurityChannel;
+      typedef boost::shared_ptr<MessageLayerSecurityChannel> MessageLayerSecurityChannelPtr;
+      typedef boost::weak_ptr<MessageLayerSecurityChannel> MessageLayerSecurityChannelWeakPtr;
+
+      class RSAPrivateKey;
+      typedef boost::shared_ptr<RSAPrivateKey> RSAPrivateKeyPtr;
+      typedef boost::weak_ptr<RSAPrivateKey> RSAPrivateKeyWeakPtr;
+
+      class RSAPublicKey;
+      typedef boost::shared_ptr<RSAPublicKey> RSAPublicKeyPtr;
+      typedef boost::weak_ptr<RSAPublicKey> RSAPublicKeyWeakPtr;
 
       class RUDPChannel;
       typedef boost::shared_ptr<RUDPChannel> RUDPChannelPtr;
@@ -136,11 +154,6 @@ namespace openpeer
       typedef boost::shared_ptr<IRUDPChannelDelegateForSessionAndListener> IRUDPChannelDelegateForSessionAndListenerPtr;
       typedef boost::weak_ptr<IRUDPChannelDelegateForSessionAndListener> IRUDPChannelDelegateForSessionAndListenerWeakPtr;
       typedef zsLib::Proxy<IRUDPChannelDelegateForSessionAndListener> IRUDPChannelDelegateForSessionAndListenerProxy;
-
-      interaction IRUDPChannelAsyncDelegate;
-      typedef boost::shared_ptr<IRUDPChannelAsyncDelegate> IRUDPChannelAsyncDelegatePtr;
-      typedef boost::weak_ptr<IRUDPChannelAsyncDelegate> IRUDPChannelAsyncDelegateWeakPtr;
-      typedef zsLib::Proxy<IRUDPChannelAsyncDelegate> IRUDPChannelAsyncDelegateProxy;
 
       interaction IRUDPChannelStream;
       typedef boost::shared_ptr<IRUDPChannelStream> IRUDPChannelStreamPtr;
@@ -193,10 +206,13 @@ namespace openpeer
       typedef boost::shared_ptr<STUNRequesterManager> STUNRequesterManagerPtr;
       typedef boost::weak_ptr<STUNRequesterManager> STUNRequesterManagerWeakPtr;
 
-      interaction ITURNSocketAsyncDelegate;
-      typedef boost::shared_ptr<ITURNSocketAsyncDelegate> ITURNSocketAsyncDelegatePtr;
-      typedef boost::weak_ptr<ITURNSocketAsyncDelegate> ITURNSocketAsyncDelegateWeakPtr;
-      typedef zsLib::Proxy<ITURNSocketAsyncDelegate> ITURNSocketAsyncDelegateProxy;
+      class TCPMessaging;
+      typedef boost::shared_ptr<TCPMessaging> TCPMessagingPtr;
+      typedef boost::weak_ptr<TCPMessaging> TCPMessagingWeakPtr;
+
+      class TransportStream;
+      typedef boost::shared_ptr<TransportStream> TransportStreamPtr;
+      typedef boost::weak_ptr<TransportStream> TransportStreamWeakPtr;
 
       class TURNSocket;
       typedef boost::shared_ptr<TURNSocket> TURNSocketPtr;

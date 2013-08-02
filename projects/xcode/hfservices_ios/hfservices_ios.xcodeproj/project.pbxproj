@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		000CBF8517A46DA50075E86C /* services_Logger.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000CBF8417A46DA50075E86C /* services_Logger.cpp */; };
+		000CC05C17A569AE0075E86C /* services_RSAPrivateKey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000CC05A17A569AE0075E86C /* services_RSAPrivateKey.cpp */; };
+		000CC05D17A569AE0075E86C /* services_RSAPublicKey.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000CC05B17A569AE0075E86C /* services_RSAPublicKey.cpp */; };
+		000CC06117A570640075E86C /* services_MessageLayerSecurityChannel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000CC06017A570640075E86C /* services_MessageLayerSecurityChannel.cpp */; };
+		003BEE0717A6F4F80002EB47 /* services_TransportStream.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 003BEE0517A6F4F80002EB47 /* services_TransportStream.cpp */; };
 		0095DE1716CA8A17005F53D3 /* services_CanonicalXML.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0095DC8B16CA8A16005F53D3 /* services_CanonicalXML.cpp */; };
 		0095DE1816CA8A17005F53D3 /* services_DNS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0095DC8C16CA8A16005F53D3 /* services_DNS.cpp */; };
 		0095DE1916CA8A17005F53D3 /* services_DNSMonitor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0095DC8D16CA8A16005F53D3 /* services_DNSMonitor.cpp */; };
@@ -28,6 +33,7 @@
 		0095DE2916CA8A17005F53D3 /* services_STUNRequester.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0095DC9D16CA8A16005F53D3 /* services_STUNRequester.cpp */; };
 		0095DE2A16CA8A17005F53D3 /* services_STUNRequesterManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0095DC9E16CA8A16005F53D3 /* services_STUNRequesterManager.cpp */; };
 		0095DE2B16CA8A17005F53D3 /* services_TURNSocket.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0095DC9F16CA8A16005F53D3 /* services_TURNSocket.cpp */; };
+		00ABD40B17A7FFE700178078 /* services_TCPMessaging.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ABD40917A7FFE700178078 /* services_TCPMessaging.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -43,17 +49,33 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		000CBF8217A46D4E0075E86C /* ILogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ILogger.h; sourceTree = "<group>"; };
+		000CBF8317A46D6E0075E86C /* services_Logger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = services_Logger.h; sourceTree = "<group>"; };
+		000CBF8417A46DA50075E86C /* services_Logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_Logger.cpp; sourceTree = "<group>"; };
+		000CC05617A569290075E86C /* IRSAPrivateKey.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRSAPrivateKey.h; sourceTree = "<group>"; };
+		000CC05717A569290075E86C /* IRSAPublicKey.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IRSAPublicKey.h; sourceTree = "<group>"; };
+		000CC05817A5695A0075E86C /* services_RSAPrivateKey.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = services_RSAPrivateKey.h; sourceTree = "<group>"; };
+		000CC05917A5695A0075E86C /* services_RSAPublicKey.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = services_RSAPublicKey.h; sourceTree = "<group>"; };
+		000CC05A17A569AE0075E86C /* services_RSAPrivateKey.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_RSAPrivateKey.cpp; sourceTree = "<group>"; };
+		000CC05B17A569AE0075E86C /* services_RSAPublicKey.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_RSAPublicKey.cpp; sourceTree = "<group>"; };
+		000CC05E17A570100075E86C /* IMessageLayerSecurityChannel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IMessageLayerSecurityChannel.h; sourceTree = "<group>"; };
+		000CC05F17A570510075E86C /* services_MessageLayerSecurityChannel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = services_MessageLayerSecurityChannel.h; sourceTree = "<group>"; };
+		000CC06017A570640075E86C /* services_MessageLayerSecurityChannel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_MessageLayerSecurityChannel.cpp; sourceTree = "<group>"; };
+		003BEE0317A6DE3F0002EB47 /* ITransportStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ITransportStream.h; sourceTree = "<group>"; };
+		003BEE0417A6F4CC0002EB47 /* services_TransportStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = services_TransportStream.h; sourceTree = "<group>"; };
+		003BEE0517A6F4F80002EB47 /* services_TransportStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = services_TransportStream.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		003BEEE417A7E87B0002EB47 /* ITCPMessaging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ITCPMessaging.h; sourceTree = "<group>"; };
 		0095DC1516CA8802005F53D3 /* libhfservices_ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libhfservices_ios.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		0095DC8B16CA8A16005F53D3 /* services_CanonicalXML.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_CanonicalXML.cpp; sourceTree = "<group>"; };
-		0095DC8C16CA8A16005F53D3 /* services_DNS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_DNS.cpp; sourceTree = "<group>"; };
+		0095DC8C16CA8A16005F53D3 /* services_DNS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = services_DNS.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		0095DC8D16CA8A16005F53D3 /* services_DNSMonitor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_DNSMonitor.cpp; sourceTree = "<group>"; };
 		0095DC8E16CA8A16005F53D3 /* services_Factory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_Factory.cpp; sourceTree = "<group>"; };
 		0095DC8F16CA8A16005F53D3 /* services_Helper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_Helper.cpp; sourceTree = "<group>"; };
 		0095DC9016CA8A16005F53D3 /* services_HTTP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_HTTP.cpp; sourceTree = "<group>"; };
 		0095DC9116CA8A16005F53D3 /* services_ICESocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_ICESocket.cpp; sourceTree = "<group>"; };
 		0095DC9216CA8A16005F53D3 /* services_ICESocketSession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_ICESocketSession.cpp; sourceTree = "<group>"; };
-		0095DC9316CA8A16005F53D3 /* services_RUDPChannel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_RUDPChannel.cpp; sourceTree = "<group>"; };
-		0095DC9416CA8A16005F53D3 /* services_RUDPChannelStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_RUDPChannelStream.cpp; sourceTree = "<group>"; };
+		0095DC9316CA8A16005F53D3 /* services_RUDPChannel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = services_RUDPChannel.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		0095DC9416CA8A16005F53D3 /* services_RUDPChannelStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = services_RUDPChannelStream.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		0095DC9516CA8A16005F53D3 /* services_RUDPICESocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_RUDPICESocket.cpp; sourceTree = "<group>"; };
 		0095DC9616CA8A16005F53D3 /* services_RUDPICESocketSession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_RUDPICESocketSession.cpp; sourceTree = "<group>"; };
 		0095DC9716CA8A16005F53D3 /* services_RUDPListener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_RUDPListener.cpp; sourceTree = "<group>"; };
@@ -64,7 +86,7 @@
 		0095DC9C16CA8A16005F53D3 /* services_STUNPacket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_STUNPacket.cpp; sourceTree = "<group>"; };
 		0095DC9D16CA8A16005F53D3 /* services_STUNRequester.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_STUNRequester.cpp; sourceTree = "<group>"; };
 		0095DC9E16CA8A16005F53D3 /* services_STUNRequesterManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_STUNRequesterManager.cpp; sourceTree = "<group>"; };
-		0095DC9F16CA8A16005F53D3 /* services_TURNSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_TURNSocket.cpp; sourceTree = "<group>"; };
+		0095DC9F16CA8A16005F53D3 /* services_TURNSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = services_TURNSocket.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		0095DCA016CA8A16005F53D3 /* ICanonicalXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICanonicalXML.h; sourceTree = "<group>"; };
 		0095DCA116CA8A16005F53D3 /* IDNS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDNS.h; sourceTree = "<group>"; };
 		0095DCA216CA8A16005F53D3 /* IHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IHelper.h; sourceTree = "<group>"; };
@@ -106,6 +128,9 @@
 		0095DCC716CA8A16005F53D3 /* services.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = services.h; sourceTree = "<group>"; };
 		0095DCC816CA8A16005F53D3 /* STUNPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STUNPacket.h; sourceTree = "<group>"; };
 		0095DCD616CA8A16005F53D3 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
+		00ABD40817A7FFA700178078 /* services_TCPMessaging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = services_TCPMessaging.h; sourceTree = "<group>"; };
+		00ABD40917A7FFE700178078 /* services_TCPMessaging.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = services_TCPMessaging.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		00FF147917AABDEC00F5DEB8 /* IWakeDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IWakeDelegate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -157,6 +182,10 @@
 				0095DCA316CA8A16005F53D3 /* IHTTP.h */,
 				0095DCA416CA8A16005F53D3 /* IICESocket.h */,
 				0095DCA516CA8A16005F53D3 /* IICESocketSession.h */,
+				000CBF8217A46D4E0075E86C /* ILogger.h */,
+				000CC05E17A570100075E86C /* IMessageLayerSecurityChannel.h */,
+				000CC05617A569290075E86C /* IRSAPrivateKey.h */,
+				000CC05717A569290075E86C /* IRSAPublicKey.h */,
 				0095DCBC16CA8A16005F53D3 /* IRUDPChannel.h */,
 				0095DCBD16CA8A16005F53D3 /* IRUDPICESocket.h */,
 				0095DCBE16CA8A16005F53D3 /* IRUDPICESocketSession.h */,
@@ -165,10 +194,13 @@
 				0095DCC116CA8A16005F53D3 /* ISTUNDiscovery.h */,
 				0095DCC216CA8A16005F53D3 /* ISTUNRequester.h */,
 				0095DCC316CA8A16005F53D3 /* ISTUNRequesterManager.h */,
+				003BEEE417A7E87B0002EB47 /* ITCPMessaging.h */,
+				003BEE0317A6DE3F0002EB47 /* ITransportStream.h */,
 				0095DCC416CA8A16005F53D3 /* ITURNSocket.h */,
 				0095DCC516CA8A16005F53D3 /* RUDPPacket.h */,
 				0095DCC616CA8A16005F53D3 /* RUDPProtocol.h */,
 				0095DCC816CA8A16005F53D3 /* STUNPacket.h */,
+				00FF147917AABDEC00F5DEB8 /* IWakeDelegate.h */,
 			);
 			path = services;
 			sourceTree = "<group>";
@@ -185,6 +217,10 @@
 				0095DC9016CA8A16005F53D3 /* services_HTTP.cpp */,
 				0095DC9116CA8A16005F53D3 /* services_ICESocket.cpp */,
 				0095DC9216CA8A16005F53D3 /* services_ICESocketSession.cpp */,
+				000CBF8417A46DA50075E86C /* services_Logger.cpp */,
+				000CC06017A570640075E86C /* services_MessageLayerSecurityChannel.cpp */,
+				000CC05A17A569AE0075E86C /* services_RSAPrivateKey.cpp */,
+				000CC05B17A569AE0075E86C /* services_RSAPublicKey.cpp */,
 				0095DC9316CA8A16005F53D3 /* services_RUDPChannel.cpp */,
 				0095DC9416CA8A16005F53D3 /* services_RUDPChannelStream.cpp */,
 				0095DC9516CA8A16005F53D3 /* services_RUDPICESocket.cpp */,
@@ -196,6 +232,8 @@
 				0095DC9C16CA8A16005F53D3 /* services_STUNPacket.cpp */,
 				0095DC9D16CA8A16005F53D3 /* services_STUNRequester.cpp */,
 				0095DC9E16CA8A16005F53D3 /* services_STUNRequesterManager.cpp */,
+				00ABD40917A7FFE700178078 /* services_TCPMessaging.cpp */,
+				003BEE0517A6F4F80002EB47 /* services_TransportStream.cpp */,
 				0095DC9F16CA8A16005F53D3 /* services_TURNSocket.cpp */,
 			);
 			path = cpp;
@@ -214,6 +252,10 @@
 				0095DCAD16CA8A16005F53D3 /* services_HTTP.h */,
 				0095DCAE16CA8A16005F53D3 /* services_ICESocket.h */,
 				0095DCAF16CA8A16005F53D3 /* services_ICESocketSession.h */,
+				000CBF8317A46D6E0075E86C /* services_Logger.h */,
+				000CC05F17A570510075E86C /* services_MessageLayerSecurityChannel.h */,
+				000CC05817A5695A0075E86C /* services_RSAPrivateKey.h */,
+				000CC05917A5695A0075E86C /* services_RSAPublicKey.h */,
 				0095DCB016CA8A16005F53D3 /* services_IRUDPChannelStream.h */,
 				0095DCB116CA8A16005F53D3 /* services_RUDPChannel.h */,
 				0095DCB216CA8A16005F53D3 /* services_RUDPChannelStream.h */,
@@ -224,6 +266,8 @@
 				0095DCB716CA8A16005F53D3 /* services_STUNDiscovery.h */,
 				0095DCB816CA8A16005F53D3 /* services_STUNRequester.h */,
 				0095DCB916CA8A16005F53D3 /* services_STUNRequesterManager.h */,
+				00ABD40817A7FFA700178078 /* services_TCPMessaging.h */,
+				003BEE0417A6F4CC0002EB47 /* services_TransportStream.h */,
 				0095DCBA16CA8A16005F53D3 /* services_TURNSocket.h */,
 			);
 			path = internal;
@@ -301,6 +345,12 @@
 				0095DE2916CA8A17005F53D3 /* services_STUNRequester.cpp in Sources */,
 				0095DE2A16CA8A17005F53D3 /* services_STUNRequesterManager.cpp in Sources */,
 				0095DE2B16CA8A17005F53D3 /* services_TURNSocket.cpp in Sources */,
+				000CBF8517A46DA50075E86C /* services_Logger.cpp in Sources */,
+				000CC05C17A569AE0075E86C /* services_RSAPrivateKey.cpp in Sources */,
+				000CC05D17A569AE0075E86C /* services_RSAPublicKey.cpp in Sources */,
+				000CC06117A570640075E86C /* services_MessageLayerSecurityChannel.cpp in Sources */,
+				003BEE0717A6F4F80002EB47 /* services_TransportStream.cpp in Sources */,
+				00ABD40B17A7FFE700178078 /* services_TCPMessaging.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -52,8 +52,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
-
       typedef IConversationThreadParser::ThreadContact ThreadContact;
       typedef IConversationThreadParser::ThreadContactPtr ThreadContactPtr;
       typedef IConversationThreadParser::DialogList DialogList;
@@ -116,7 +114,7 @@ namespace openpeer
         mID(zsLib::createPUID()),
         mBaseThread(baseThread),
         mAccount(account),
-        mThreadID(threadID ? String(threadID) : stack::IHelper::randomString(32)),
+        mThreadID(threadID ? String(threadID) : services::IHelper::randomString(32)),
         mPeerLocation(peerLocation),
         mCurrentState(ConversationThreadSlaveState_Pending),
         mConvertedToHostBecauseOriginalHostLikelyGoneForever(false)
@@ -252,7 +250,7 @@ namespace openpeer
 
         // kick the conversation thread step routine asynchronously to ensure
         // the thread has a subscription state to its peer
-        IConversationThreadSlaveAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
         return true;
       }
 
@@ -330,7 +328,7 @@ namespace openpeer
         mSlaveThread->setContactsToAdd(contactMap);
         publish(mSlaveThread->updateEnd(), false);
 
-        IConversationThreadSlaveAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -350,7 +348,7 @@ namespace openpeer
         mSlaveThread->setContactsToRemove(contactIDList);
         publish(mSlaveThread->updateEnd(), false);
 
-        IConversationThreadSlaveAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -412,7 +410,7 @@ namespace openpeer
         mSlaveThread->updateDialogs(additions);
         publish(mSlaveThread->updateEnd(), false);
 
-        IConversationThreadSlaveAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
         return true;
       }
 
@@ -443,7 +441,7 @@ namespace openpeer
         mSlaveThread->updateDialogs(updates);
         publish(mSlaveThread->updateEnd(), false);
 
-        IConversationThreadSlaveAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -476,7 +474,7 @@ namespace openpeer
         mSlaveThread->removeDialogs(removeCallIDs);
         publish(mSlaveThread->updateEnd(), false);
 
-        IConversationThreadSlaveAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -527,7 +525,7 @@ namespace openpeer
         AccountPtr account = baseThread->forHostOrSlave().getAccount();
         if (!account) return ConversationThreadSlavePtr();
 
-        String hostThreadID = stack::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_HOST_THREAD_ID_INDEX);
+        String hostThreadID = services::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_HOST_THREAD_ID_INDEX);
         ZS_THROW_INVALID_ARGUMENT_IF(hostThreadID.size() < 1)
 
         ConversationThreadSlavePtr pThis(new ConversationThreadSlave(IStackForInternal::queueCore(), account, peerLocation, baseThread, hostThreadID));
@@ -716,7 +714,7 @@ namespace openpeer
 
           mIncomingCallHandlers.erase(found);
 
-          ZS_LOG_DEBUG(log("removed incoming calll handler") + ", total handlers=" + Stringize<size_t>(mIncomingCallHandlers.size()).string())
+          ZS_LOG_DEBUG(log("removed incoming calll handler") + ", total handlers=" + string(mIncomingCallHandlers.size()))
         }
 
         //.......................................................................
@@ -1076,7 +1074,7 @@ namespace openpeer
 
         if (baseThread) baseThreadID = baseThread->forHostOrSlave().getThreadID();
 
-        return String("ConversationThreadSlave [") + Stringize<PUID>(mID).string() + "] " + message + ", base thread ID=" + baseThreadID + ", thread ID=" + mThreadID;
+        return String("ConversationThreadSlave [") + string(mID) + "] " + message + ", base thread ID=" + baseThreadID + ", thread ID=" + mThreadID;
       }
 
       //-----------------------------------------------------------------------
@@ -1085,7 +1083,7 @@ namespace openpeer
         AutoRecursiveLock lock(getLock());
         ConversationThreadPtr base = mBaseThread.lock();
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("slave thread id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("slave thread id", string(mID), firstTime) +
                Helper::getDebugValue("slave thread id (s)", mThreadID, firstTime) +
                Helper::getDebugValue("base thread id (s)", base ? base->forHostOrSlave().getThreadID() : String(), firstTime) +
                Helper::getDebugValue("state", toString(mCurrentState), firstTime) +
@@ -1095,8 +1093,8 @@ namespace openpeer
                Thread::toDebugString(mSlaveThread) +
                IPeerSubscription::toDebugString(mHostSubscription) +
                Helper::getDebugValue("convert to host", mConvertedToHostBecauseOriginalHostLikelyGoneForever ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("delivery states", mMessageDeliveryStates.size() > 0 ? Stringize<size_t>(mMessageDeliveryStates.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("incoming call handlers", mIncomingCallHandlers.size() > 0 ? Stringize<size_t>(mIncomingCallHandlers.size()).string() : String(), firstTime);
+               Helper::getDebugValue("delivery states", mMessageDeliveryStates.size() > 0 ? string(mMessageDeliveryStates.size()) : String(), firstTime) +
+               Helper::getDebugValue("incoming call handlers", mIncomingCallHandlers.size() > 0 ? string(mIncomingCallHandlers.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -1302,7 +1300,7 @@ namespace openpeer
             if (((IPeer::PeerFindState_Finding != state) &&
                  (peerLocations->size() < 1)) ||
                 (lastStateChangeTime + Seconds(OPENPEER_CONVERSATION_THREAD_MAX_WAIT_DELIVERY_TIME_BEFORE_PUSH_IN_SECONDS) < tick)) {
-              ZS_LOG_DEBUG(log("state must now be set to undeliverable") + message->getDebugValueString() + ", peer find state=" + IPeer::toString(state) + ", last state changed time=" + Stringize<Time>(lastStateChangeTime).string() + ", current time=" + Stringize<Time>(tick).string())
+              ZS_LOG_DEBUG(log("state must now be set to undeliverable") + message->getDebugValueString() + ", peer find state=" + IPeer::toString(state) + ", last state changed time=" + string(lastStateChangeTime) + ", current time=" + string(tick))
               mMessageDeliveryStates[message->messageID()] = DeliveryStatePair(zsLib::now(), IConversationThread::MessageDeliveryState_UserNotAvailable);
               baseThread->forHostOrSlave().notifyMessageDeliveryStateChanged(message->messageID(), IConversationThread::MessageDeliveryState_UserNotAvailable);
 

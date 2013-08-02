@@ -56,8 +56,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
-
       typedef IConversationThreadParser::ThreadContactMap ThreadContactMap;
       typedef IConversationThreadParser::ThreadContactPtr ThreadContactPtr;
       typedef IConversationThreadParser::ThreadContactsPtr ThreadContactsPtr;
@@ -163,7 +161,7 @@ namespace openpeer
         mID(zsLib::createPUID()),
         mAccount(account),
         mDelegate(account->forConversationThread().getConversationThreadDelegate()),
-        mThreadID(threadID ? String(threadID) : stack::IHelper::randomString(32)),
+        mThreadID(threadID ? String(threadID) : services::IHelper::randomString(32)),
         mCurrentState(ConversationThreadState_Pending),
         mMustNotifyAboutNewThread(false),
         mHandleContactsChangedCRC(0)
@@ -175,7 +173,7 @@ namespace openpeer
       void ConversationThread::init()
       {
         ZS_LOG_DEBUG(log("initialized"))
-        IConversationThreadAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -552,7 +550,7 @@ namespace openpeer
         outMessage = message->body();
         outTime = message->sent();
 
-        ZS_LOG_DEBUG(log("obtained message information") + ", message ID=" + messageID + ", peer URI=" + peerURI + IContact::toDebugString(contact) + ", type=" + outMessageType + ", message=" + outMessage + ", time=" + Stringize<Time>(outTime).string())
+        ZS_LOG_DEBUG(log("obtained message information") + ", message ID=" + messageID + ", peer URI=" + peerURI + IContact::toDebugString(contact) + ", type=" + outMessageType + ", message=" + outMessage + ", time=" + string(outTime))
         return true;
       }
 
@@ -589,7 +587,7 @@ namespace openpeer
                                                        const SplitMap &split
                                                        )
       {
-        ConversationThreadPtr pThis(new ConversationThread(IStackForInternal::queueCore(), account, stack::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_BASE_THREAD_ID_INDEX)));
+        ConversationThreadPtr pThis(new ConversationThread(IStackForInternal::queueCore(), account, services::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_BASE_THREAD_ID_INDEX)));
         pThis->mThisWeak = pThis;
         pThis->mMustNotifyAboutNewThread = true;
         pThis->init();
@@ -610,13 +608,13 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
 
-        String hostThreadID = stack::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_HOST_THREAD_ID_INDEX);
+        String hostThreadID = services::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_HOST_THREAD_ID_INDEX);
         ZS_THROW_INVALID_ARGUMENT_IF(hostThreadID.size() < 1)
 
         ThreadMap::iterator found = mThreads.find(hostThreadID);
         if (found == mThreads.end()) {
           // could not find the publication... must be a host document or something is wrong...
-          String type = stack::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_TYPE_INDEX);
+          String type = services::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_TYPE_INDEX);
           if (type != "host") {
             // whatever this is it cannot be understood...
             ZS_LOG_WARNING(Detail, log("expecting a host document type but received something else") + ", type=" + type + IPublicationMetaData::toDebugString(metaData))
@@ -647,7 +645,7 @@ namespace openpeer
                                                      )
       {
         AutoRecursiveLock lock(getLock());
-        String hostThreadID = stack::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_HOST_THREAD_ID_INDEX);
+        String hostThreadID = services::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_HOST_THREAD_ID_INDEX);
         ZS_THROW_INVALID_ARGUMENT_IF(hostThreadID.size() < 1)
 
         ThreadMap::iterator found = mThreads.find(hostThreadID);
@@ -1078,7 +1076,7 @@ namespace openpeer
 
         // force a step on the conversation thread to cleanup anything state wise...
         ZS_LOG_DEBUG(log("forcing step"))
-        IConversationThreadAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -1106,7 +1104,7 @@ namespace openpeer
         mPendingCalls[call->forConversationThread().getCallID()] = call;
 
         ZS_LOG_DEBUG(log("forcing step"))
-        IConversationThreadAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
         return true;
       }
 
@@ -1187,7 +1185,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String ConversationThread::log(const char *message) const
       {
-        return String("ConversationThread [") + Stringize<typeof(mID)>(mID).string() + "] " + message + ", thread ID=" + mThreadID;
+        return String("ConversationThread [") + string(mID) + "] " + message + ", thread ID=" + mThreadID;
       }
 
       //-----------------------------------------------------------------------
@@ -1195,21 +1193,21 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("thread id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("thread id", string(mID), firstTime) +
                Helper::getDebugValue("thread id (s)", mThreadID, firstTime) +
                Helper::getDebugValue("current state", toString(mCurrentState), firstTime) +
                Helper::getDebugValue("must notify", mMustNotifyAboutNewThread ? String("true") : String(), firstTime) +
                IConversationThreadHostSlaveBase::toDebugValueString(mOpenThread) +
                IConversationThreadHostSlaveBase::toDebugValueString(mLastOpenThread) +
                IConversationThreadHostSlaveBase::toDebugValueString(mHandleThreadChanged) +
-               Helper::getDebugValue("crc", 0 != mHandleContactsChangedCRC ? Stringize<typeof(mHandleContactsChangedCRC)>(mHandleContactsChangedCRC).string() : String(), firstTime) +
-               Helper::getDebugValue("threads", mThreads.size() > 0 ? Stringize<size_t>(mThreads.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("received or pushed", mReceivedOrPushedMessages.size() > 0 ? Stringize<size_t>(mReceivedOrPushedMessages.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("delivery states", mMessageDeliveryStates.size() > 0 ? Stringize<size_t>(mMessageDeliveryStates.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("pending delivery", mPendingDeliveryMessages.size() > 0 ? Stringize<size_t>(mPendingDeliveryMessages.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("pending calls", mPendingCalls.size() > 0 ? Stringize<size_t>(mPendingCalls.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("call handlers", mCallHandlers.size() > 0 ? Stringize<size_t>(mCallHandlers.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("last reported", mLastReportedContactStates.size() > 0 ? Stringize<size_t>(mLastReportedContactStates.size()).string() : String(), firstTime);
+               Helper::getDebugValue("crc", 0 != mHandleContactsChangedCRC ? string(mHandleContactsChangedCRC) : String(), firstTime) +
+               Helper::getDebugValue("threads", mThreads.size() > 0 ? string(mThreads.size()) : String(), firstTime) +
+               Helper::getDebugValue("received or pushed", mReceivedOrPushedMessages.size() > 0 ? string(mReceivedOrPushedMessages.size()) : String(), firstTime) +
+               Helper::getDebugValue("delivery states", mMessageDeliveryStates.size() > 0 ? string(mMessageDeliveryStates.size()) : String(), firstTime) +
+               Helper::getDebugValue("pending delivery", mPendingDeliveryMessages.size() > 0 ? string(mPendingDeliveryMessages.size()) : String(), firstTime) +
+               Helper::getDebugValue("pending calls", mPendingCalls.size() > 0 ? string(mPendingCalls.size()) : String(), firstTime) +
+               Helper::getDebugValue("call handlers", mCallHandlers.size() > 0 ? string(mCallHandlers.size()) : String(), firstTime) +
+               Helper::getDebugValue("last reported", mLastReportedContactStates.size() > 0 ? string(mLastReportedContactStates.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -1311,7 +1309,7 @@ namespace openpeer
           }
         }
 
-        ZS_LOG_DEBUG(log("finished counting open threads") + ", total open=" + Stringize<UINT>(totalOpen).string())
+        ZS_LOG_DEBUG(log("finished counting open threads") + ", total open=" + string(totalOpen))
 
         if (totalOpen > 1) {
           ZS_LOG_DEBUG(log("found more than one thread open (thus will close any hosts that are not the most recent)"))
@@ -1345,12 +1343,12 @@ namespace openpeer
         bool mustHaveOpenThread = false;
 
         if (mPendingDeliveryMessages.size() > 0) {
-          ZS_LOG_DEBUG(log("messages are pending delivery") + ", total pending=" + Stringize<size_t>(mPendingDeliveryMessages.size()).string())
+          ZS_LOG_DEBUG(log("messages are pending delivery") + ", total pending=" + string(mPendingDeliveryMessages.size()))
           mustHaveOpenThread = true;
         }
 
         if (mPendingCalls.size() > 0) {
-          ZS_LOG_DEBUG(log("calls are pending being placed") + ", total pending=" + Stringize<size_t>(mPendingCalls.size()).string())
+          ZS_LOG_DEBUG(log("calls are pending being placed") + ", total pending=" + string(mPendingCalls.size()))
           mustHaveOpenThread = true;
         }
 
@@ -1369,7 +1367,7 @@ namespace openpeer
               ThreadContactMap contacts;
               mLastOpenThread->getContacts(contacts);
 
-              ZS_LOG_DEBUG(log("contacts from last open thread are being brought into new thread") + ", total contacts=" + Stringize<size_t>(contacts.size()).string())
+              ZS_LOG_DEBUG(log("contacts from last open thread are being brought into new thread") + ", total contacts=" + string(contacts.size()))
 
               ContactProfileInfoList addContacts;
               internal::convert(contacts, addContacts);
@@ -1511,12 +1509,12 @@ namespace openpeer
         crc.Final((BYTE *)(&crcValue));
 
         if (mHandleContactsChangedCRC == crcValue) {
-          ZS_LOG_DEBUG(log("contact change not detected, CRC value=") + Stringize<DWORD>(crcValue).string())
+          ZS_LOG_DEBUG(log("contact change not detected, CRC value=") + string(crcValue))
           return;
         }
 
         mHandleContactsChangedCRC = crcValue;
-        ZS_LOG_DEBUG(log("contact change detected, CRC value=") + Stringize<DWORD>(crcValue).string())
+        ZS_LOG_DEBUG(log("contact change detected, CRC value=") + string(crcValue))
 
         try {
           mDelegate->onConversationThreadContactsChanged(mThisWeak.lock());

@@ -31,15 +31,18 @@
 
 #pragma once
 
-
 #include <openpeer/services/types.h>
 #include <openpeer/services/ICanonicalXML.h>
 #include <openpeer/services/IDNS.h>
 #include <openpeer/services/IHelper.h>
 #include <openpeer/services/IHTTP.h>
+#include <openpeer/services/ILogger.h>
 #include <openpeer/services/ISTUNDiscovery.h>
 #include <openpeer/services/IICESocket.h>
 #include <openpeer/services/IICESocketSession.h>
+#include <openpeer/services/IMessageLayerSecurityChannel.h>
+#include <openpeer/services/IRSAPrivateKey.h>
+#include <openpeer/services/IRSAPublicKey.h>
 #include <openpeer/services/RUDPProtocol.h>
 #include <openpeer/services/RUDPPacket.h>
 #include <openpeer/services/RUDPProtocol.h>
@@ -50,4 +53,7 @@
 #include <openpeer/services/IRUDPMessaging.h>
 #include <openpeer/services/ISTUNRequester.h>
 #include <openpeer/services/ISTUNRequesterManager.h>
+#include <openpeer/services/ITCPMessaging.h>
+#include <openpeer/services/ITransportStream.h>
 #include <openpeer/services/ITURNSocket.h>
+#include <openpeer/services/IWakeDelegate.h>

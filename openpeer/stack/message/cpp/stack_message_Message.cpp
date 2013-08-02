@@ -36,6 +36,8 @@
 #include <openpeer/stack/internal/stack_Helper.h>
 #include <openpeer/stack/internal/stack_Stack.h>
 
+#include <openpeer/services/IHelper.h>
+
 #include <zsLib/XML.h>
 #include <zsLib/Log.h>
 #include <zsLib/Stringize.h>
@@ -48,7 +50,7 @@ namespace openpeer
   {
     namespace message
     {
-      using zsLib::Stringize;
+      using services::IHelper;
 
       using stack::internal::IStackForInternal;
       using stack::internal::Helper;
@@ -117,7 +119,7 @@ namespace openpeer
 
         if (message->isResult()) {
           MessageResultPtr result = MessageResult::convert(message);
-          errorCode = 0 != result->errorCode() ? Stringize<WORD>(result->errorCode()).string() : String();
+          errorCode = 0 != result->errorCode() ? string(result->errorCode()) : String();
           errorReason = result->errorReason();
         }
 

@@ -34,15 +34,16 @@
 #include <openpeer/stack/internal/stack_Helper.h>
 #include <openpeer/stack/internal/stack_PeerFilePrivate.h>
 #include <openpeer/stack/internal/stack_Stack.h>
-#include <openpeer/stack/IHelper.h>
 #include <openpeer/stack/IPeer.h>
 #include <openpeer/stack/IMessageMonitor.h>
-#include <openpeer/stack/IRSAPublicKey.h>
 
 #include <openpeer/stack/message/bootstrapper/ServicesGetRequest.h>
 #include <openpeer/stack/message/bootstrapper/ServicesGetResult.h>
 #include <openpeer/stack/message/certificates/CertificatesGetRequest.h>
 #include <openpeer/stack/message/certificates/CertificatesGetResult.h>
+
+#include <openpeer/services/IHelper.h>
+#include <openpeer/services/IRSAPublicKey.h>
 
 #include <zsLib/Log.h>
 #include <zsLib/helpers.h>
@@ -60,7 +61,7 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
+      using services::IHelper;
 
       using namespace stack::message;
       using namespace stack::message::bootstrapper;
@@ -346,10 +347,11 @@ namespace openpeer
         String id;
         String domain;
         String service;
-        signedElement = IHelper::getSignatureInfo(signedElement, &signatureEl, NULL, &id, &domain, &service);
+        signedElement = stack::IHelper::getSignatureInfo(signedElement, &signatureEl, NULL, &id, &domain, &service);
         
-#define VERY_BAD_HACK_TO_TEMPORARILY_DISABLE_SIGNATURE_VALIDATION 1
-#define VERY_BAD_HACK_TO_TEMPORARILY_DISABLE_SIGNATURE_VALIDATION 2
+#define FIX_VERY_BAD_HACK_TO_TEMPORARILY_DISABLE_SIGNATURE_VALIDATION 1
+#define FIX_VERY_BAD_HACK_TO_TEMPORARILY_DISABLE_SIGNATURE_VALIDATION 2
+
         return true;
 
         if (!signedElement) {
@@ -532,13 +534,13 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark BootstrappedNetwork => IBootstrappedNetworkAsyncDelegate
+      #pragma mark BootstrappedNetwork =>IWakeDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void BootstrappedNetwork::onStep()
+      void BootstrappedNetwork::onWake()
       {
-        ZS_LOG_DEBUG(log("on step"))
+        ZS_LOG_DEBUG(log("on wake"))
         AutoRecursiveLock lock(getLock());
         step();
       }
@@ -574,10 +576,10 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
 
-        ZS_LOG_DEBUG(log("on http complete") + ", query ID=" + Stringize<PUID>(query->getID()).string())
+        ZS_LOG_DEBUG(log("on http complete") + ", query ID=" + string(query->getID()))
 
         // do step asynchronously
-        IBootstrappedNetworkAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+       IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
 
         PendingRequestMap::iterator found = mPendingRequests.find(query);
         if (found == mPendingRequests.end()) {
@@ -629,7 +631,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String BootstrappedNetwork::log(const char *message) const
       {
-        return String("BootstrappedNetwork [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("BootstrappedNetwork [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -637,16 +639,16 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("bootstrapped network id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("bootstrapped network id", string(mID), firstTime) +
                Helper::getDebugValue("domain", mDomain, firstTime) +
                Helper::getDebugValue("complete", mCompleted ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("error code", 0 != mErrorCode ? Stringize<typeof(mErrorCode)>(mErrorCode).string() : String(), firstTime) +
+               Helper::getDebugValue("error code", 0 != mErrorCode ? string(mErrorCode) : String(), firstTime) +
                Helper::getDebugValue("error reason", mErrorReason, firstTime) +
                Helper::getDebugValue("service get dns name", mServicesGetDNSName, firstTime) +
-               Helper::getDebugValue("redirection attempts", 0 != mRedirectionAttempts ? Stringize<typeof(mRedirectionAttempts)>(mRedirectionAttempts).string() : String(), firstTime) +
-               Helper::getDebugValue("service types", mServiceTypeMap.size() > 0 ? Stringize<size_t>(mServiceTypeMap.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("certificates", mCertificates.size() > 0 ? Stringize<size_t>(mCertificates.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("pending", mPendingRequests.size() > 0 ? Stringize<size_t>(mPendingRequests.size()).string() : String(), firstTime);
+               Helper::getDebugValue("redirection attempts", 0 != mRedirectionAttempts ? string(mRedirectionAttempts) : String(), firstTime) +
+               Helper::getDebugValue("service types", mServiceTypeMap.size() > 0 ? string(mServiceTypeMap.size()) : String(), firstTime) +
+               Helper::getDebugValue("certificates", mCertificates.size() > 0 ? string(mCertificates.size()) : String(), firstTime) +
+               Helper::getDebugValue("pending", mPendingRequests.size() > 0 ? string(mPendingRequests.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -1025,7 +1027,7 @@ namespace openpeer
         }
 
         if (0 != mErrorCode) {
-          ZS_LOG_WARNING(Detail, log("failure reason already set") + ", requesting error=" + Stringize<typeof(errorCode)>(errorCode).string() + ", requesting reason=" + reason + getDebugValueString())
+          ZS_LOG_WARNING(Detail, log("failure reason already set") + ", requesting error=" + string(errorCode) + ", requesting reason=" + reason + getDebugValueString())
           return;
         }
 
@@ -1081,7 +1083,7 @@ namespace openpeer
         buffer.CleanNew(size+sizeof(char));
         query->readData(buffer, size);
         ZS_LOG_TRACE(log("------------ http data read start --------------"))
-        ZS_LOG_TRACE(log("HTTP DATA") + ", size=" + Stringize<typeof(size)>(size).string() + ", data=\n" + ((const char *)((const BYTE *)buffer)) + "\n")
+        ZS_LOG_TRACE(log("HTTP DATA") + ", size=" + string(size) + ", data=\n" + ((const char *)((const BYTE *)buffer)) + "\n")
         ZS_LOG_TRACE(log("------------- http data read end ---------------"))
         DocumentPtr doc = Document::createFromAutoDetect((const char *)((const BYTE *)buffer));
         if (outDocument) {
@@ -1183,21 +1185,21 @@ namespace openpeer
     {
       ZS_THROW_INVALID_ARGUMENT_IF(!identityProofBundleEl)
       String domain;
-      IHelper::getSignatureInfo(
-                                identityProofBundleEl,
-                                NULL,
-                                NULL,
-                                NULL,
-                                &domain,
-                                NULL
-                                );
+      stack::IHelper::getSignatureInfo(
+                                       identityProofBundleEl,
+                                       NULL,
+                                       NULL,
+                                       NULL,
+                                       &domain,
+                                       NULL
+                                       );
 
       if (domain.isEmpty()) {
         ZS_LOG_WARNING(Detail, "IServiceIdentity [] domain missing from signture")
         return IServiceIdentityPtr();
       }
 
-      if (!IHelper::isValidDomain(domain)) {
+      if (!services::IHelper::isValidDomain(domain)) {
         ZS_LOG_WARNING(Detail, String("IServiceIdentity [] domain from signture is not valid") + ", domain=" + domain)
         return IServiceIdentityPtr();
       }

@@ -34,6 +34,9 @@
 #include <openpeer/services/internal/types.h>
 #include <openpeer/services/IICESocketSession.h>
 #include <openpeer/services/ISTUNRequester.h>
+
+#include <openpeer/services/IWakeDelegate.h>
+
 #include <zsLib/types.h>
 #include <zsLib/Timer.h>
 #include <zsLib/MessageQueueAssociator.h>
@@ -100,19 +103,6 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IICESocketSessionAsyncDelegate
-      #pragma mark
-
-      interaction IICESocketSessionAsyncDelegate
-      {
-        virtual void onStep() = 0;
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark ICESocketSession
       #pragma mark
 
@@ -120,7 +110,7 @@ namespace openpeer
                                public MessageQueueAssociator,
                                public IICESocketSession,
                                public IICESocketSessionForICESocket,
-                               public IICESocketSessionAsyncDelegate,
+                               public IWakeDelegate,
                                public IICESocketDelegate,
                                public ISTUNRequesterDelegate,
                                public ITimerDelegate
@@ -248,10 +238,10 @@ namespace openpeer
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ICESocketSession => IICESocketSessionAsyncDelegate
+        #pragma mark ICESocketSession => IWakeDelegate
         #pragma mark
 
-        virtual void onStep();
+        virtual void onWake();
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -389,7 +379,3 @@ namespace openpeer
     }
   }
 }
-
-ZS_DECLARE_PROXY_BEGIN(openpeer::services::internal::IICESocketSessionAsyncDelegate)
-ZS_DECLARE_PROXY_METHOD_0(onStep)
-ZS_DECLARE_PROXY_END()

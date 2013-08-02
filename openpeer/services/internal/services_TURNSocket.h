@@ -31,10 +31,13 @@
 
 #pragma once
 
+#include <openpeer/services/internal/types.h>
+
 #include <openpeer/services/ITURNSocket.h>
 #include <openpeer/services/ISTUNRequester.h>
 #include <openpeer/services/IDNS.h>
-#include <openpeer/services/internal/types.h>
+#include <openpeer/services/IWakeDelegate.h>
+
 #include <zsLib/MessageQueueAssociator.h>
 #include <zsLib/ISocket.h>
 #include <zsLib/Timer.h>
@@ -63,26 +66,13 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ITURNSocketAsyncDelegate
-      #pragma mark
-
-      interaction ITURNSocketAsyncDelegate
-      {
-        virtual void onStep() = 0;
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark TURNSocket
       #pragma mark
 
       class TURNSocket : public Noop,
                          public MessageQueueAssociator,
                          public ITURNSocket,
-                         public ITURNSocketAsyncDelegate,
+                         public IWakeDelegate,
                          public ISTUNRequesterDelegate,
                          public IDNSDelegate,
                          public ISocketDelegate,
@@ -214,10 +204,10 @@ namespace openpeer
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark TURNSocket => ITURNSocketAsyncDelegate
+        #pragma mark TURNSocket => IWakeDelegate
         #pragma mark
 
-        virtual void onStep();
+        virtual void onWake();
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -534,7 +524,3 @@ namespace openpeer
     }
   }
 }
-
-ZS_DECLARE_PROXY_BEGIN(openpeer::services::internal::ITURNSocketAsyncDelegate)
-ZS_DECLARE_PROXY_METHOD_0(onStep)
-ZS_DECLARE_PROXY_END()

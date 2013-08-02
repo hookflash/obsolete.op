@@ -41,6 +41,8 @@
 #include <openpeer/stack/IPublication.h>
 #include <openpeer/stack/IHelper.h>
 
+#include <openpeer/services/IHelper.h>
+
 #include <zsLib/Stringize.h>
 #include <zsLib/helpers.h>
 
@@ -53,8 +55,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
-
       typedef IConversationThreadParser::Thread Thread;
       typedef IConversationThreadParser::ThreadPtr ThreadPtr;
       typedef IConversationThreadParser::ThreadContact ThreadContact;
@@ -113,7 +113,7 @@ namespace openpeer
                                                      ) :
         MessageQueueAssociator(queue),
         mID(zsLib::createPUID()),
-        mThreadID(threadID ? String(threadID) : stack::IHelper::randomString(32)),
+        mThreadID(threadID ? String(threadID) : services::IHelper::randomString(32)),
         mBaseThread(baseThread),
         mCurrentState(ConversationThreadHostState_Pending),
         mAccount(account),
@@ -407,7 +407,7 @@ namespace openpeer
         mHostThread->setContacts(contactMap);
         publish(mHostThread->updateEnd(), true);
 
-        IConversationThreadHostAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -435,7 +435,7 @@ namespace openpeer
         mHostThread->setContacts(contactMap);
         publish(mHostThread->updateEnd(), true);
 
-        IConversationThreadHostAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -490,7 +490,7 @@ namespace openpeer
         mHostThread->updateDialogs(additions);
         publish(mHostThread->updateEnd(), true);
 
-        IConversationThreadHostAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
         return true;
       }
 
@@ -518,7 +518,7 @@ namespace openpeer
         mHostThread->updateDialogs(updates);
         publish(mHostThread->updateEnd(), true);
 
-        IConversationThreadHostAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -549,7 +549,7 @@ namespace openpeer
         mHostThread->removeDialogs(removals);
         publish(mHostThread->updateEnd(), true);
 
-        IConversationThreadHostAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -771,7 +771,7 @@ namespace openpeer
 
         if (baseThread) baseThreadID = baseThread->forHostOrSlave().getThreadID();
 
-        return String("ConversationThreadHost [") + Stringize<PUID>(mID).string() + "] "  + message + ", base thread ID=" + baseThreadID + ", thread ID=" + mThreadID;
+        return String("ConversationThreadHost [") + string(mID) + "] "  + message + ", base thread ID=" + baseThreadID + ", thread ID=" + mThreadID;
       }
 
       //-----------------------------------------------------------------------
@@ -780,12 +780,12 @@ namespace openpeer
         AutoRecursiveLock lock(getLock());
         ConversationThreadPtr base = mBaseThread.lock();
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("host thread id=", Stringize<PUID>(mID).string(), firstTime) +
+        return Helper::getDebugValue("host thread id=", string(mID), firstTime) +
                Helper::getDebugValue("host thread id (s)=", mThreadID, firstTime) +
                Helper::getDebugValue("base thread id (s)=", base ? base->forHostOrSlave().getThreadID() : String(), firstTime) +
                Helper::getDebugValue("state=", toString(mCurrentState), firstTime) +
-               Helper::getDebugValue("delivery states=", mMessageDeliveryStates.size() > 0 ? Stringize<size_t>(mMessageDeliveryStates.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("peer contacts=", mPeerContacts.size() > 0 ? Stringize<size_t>(mPeerContacts.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("delivery states=", mMessageDeliveryStates.size() > 0 ? string(mMessageDeliveryStates.size()) : String(), firstTime) +
+               Helper::getDebugValue("peer contacts=", mPeerContacts.size() > 0 ? string(mPeerContacts.size()) : String(), firstTime) +
                Thread::toDebugString(mHostThread);
       }
 
@@ -1215,7 +1215,7 @@ namespace openpeer
       void ConversationThreadHost::PeerContact::notifyStep(bool performStepAsync)
       {
         if (performStepAsync) {
-          IPeerContactAsyncProxy::create(mThisWeak.lock())->onStep();
+          IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
           return;
         }
 
@@ -1422,7 +1422,7 @@ namespace openpeer
 
         PeerContactPtr pThis = mThisWeak.lock();
         if (pThis) {
-          IPeerContactAsyncProxy::create(mThisWeak.lock())->onStep();
+          IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
         }
       }
 
@@ -1449,7 +1449,7 @@ namespace openpeer
         if (mContact) {
           peerURI = mContact->forConversationThread().getPeerURI();
         }
-        return String("ConversationThreadHost::PeerContact [") + Stringize<typeof(mID)>(mID).string() + "] " + message + ", peer URI=" + peerURI;
+        return String("ConversationThreadHost::PeerContact [") + string(mID) + "] " + message + ", peer URI=" + peerURI;
       }
 
       //-----------------------------------------------------------------------
@@ -1457,14 +1457,14 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("host peer contact id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("host peer contact id", string(mID), firstTime) +
                Helper::getDebugValue("state", toString(mCurrentState), firstTime) +
                IContact::toDebugString(mContact) +
                Helper::getDebugValue("profile bundle", mProfileBundleEl ? String("true") : String(), firstTime) +
                IPeerSubscription::toDebugString(mSlaveSubscription) +
                Helper::getDebugValue("slave delivery timer", mSlaveMessageDeliveryTimer ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("locations", mPeerLocations.size() > 0 ? Stringize<size_t>(mPeerLocations.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("delivery states", mMessageDeliveryStates.size() > 0 ? Stringize<size_t>(mMessageDeliveryStates.size()).string() : String(), firstTime);
+               Helper::getDebugValue("locations", mPeerLocations.size() > 0 ? string(mPeerLocations.size()) : String(), firstTime) +
+               Helper::getDebugValue("delivery states", mMessageDeliveryStates.size() > 0 ? string(mMessageDeliveryStates.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -1663,7 +1663,7 @@ namespace openpeer
             if (((IPeer::PeerFindState_Finding != state) &&
                  (peerLocations->size() < 1)) ||
                 (lastStateChangeTime + Seconds(OPENPEER_CONVERSATION_THREAD_MAX_WAIT_DELIVERY_TIME_BEFORE_PUSH_IN_SECONDS) < tick)) {
-              ZS_LOG_DEBUG(log("state must now be set to undeliverable") + ", message ID=" + message->getDebugValueString() + ", peer find state=" + IPeer::toString(state) + ", last state changed time=" + Stringize<Time>(lastStateChangeTime).string() + ", current time=" + Stringize<Time>(tick).string())
+              ZS_LOG_DEBUG(log("state must now be set to undeliverable") + ", message ID=" + message->getDebugValueString() + ", peer find state=" + IPeer::toString(state) + ", last state changed time=" + string(lastStateChangeTime) + ", current time=" + string(tick))
               mMessageDeliveryStates[message->messageID()] = DeliveryStatePair(zsLib::now(), IConversationThread::MessageDeliveryState_UserNotAvailable);
               outer->notifyMessageDeliveryStateChanged(message->messageID(), IConversationThread::MessageDeliveryState_UserNotAvailable);
 
@@ -2189,7 +2189,7 @@ namespace openpeer
         String peerURI = mPeerLocation->getPeerURI();
         String locationID = mPeerLocation->getLocationID();
 
-        return String("ConversationThreadHost::PeerLocation [") + Stringize<PUID>(mID).string() + "] " + message + ", peer peer URI=" + peerURI + ", peer location ID=" + locationID;
+        return String("ConversationThreadHost::PeerLocation [") + string(mID) + "] " + message + ", peer peer URI=" + peerURI + ", peer location ID=" + locationID;
       }
 
       //-----------------------------------------------------------------------
@@ -2197,12 +2197,12 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("host peer location id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("host peer location id", string(mID), firstTime) +
                ILocation::toDebugString(mPeerLocation) +
                Thread::toDebugString(mSlaveThread) +
                IConversationThreadDocumentFetcher::toDebugString(mFetcher) +
-               Helper::getDebugValue("message delivery states", mMessageDeliveryStates.size() > 0 ? Stringize<size_t>(mMessageDeliveryStates.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("incoming call handlers", mIncomingCallHandlers.size() > 0 ? Stringize<size_t>(mIncomingCallHandlers.size()).string() : String(), firstTime);
+               Helper::getDebugValue("message delivery states", mMessageDeliveryStates.size() > 0 ? string(mMessageDeliveryStates.size()) : String(), firstTime) +
+               Helper::getDebugValue("incoming call handlers", mIncomingCallHandlers.size() > 0 ? string(mIncomingCallHandlers.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------

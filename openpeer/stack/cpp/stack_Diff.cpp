@@ -43,7 +43,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
       using zsLib::Numeric;
 
       typedef String ElementName;
@@ -291,7 +290,7 @@ namespace openpeer
             // will need some kind of index since there are other elements with the same name at this level
             if (foundOtherWithID) {
               // needs to be a numeric index as there are multiple elements with the same ID
-              subPathStr = name + "[" + Stringize<Index>(index).string() + "]";
+              subPathStr = name + "[" + string(index) + "]";
             } else {
               if ((String::npos == id.find('\"')) &&
                   (String::npos == id.find('\''))) {
@@ -299,7 +298,7 @@ namespace openpeer
                 subPathStr += name + "[\"" + id + "\"]";
               } else {
                 // not safe to use the ID since it contains a quote so must use a numeric index instead
-                subPathStr = name + "[" + Stringize<Index>(index).string() + "]";
+                subPathStr = name + "[" + string(index) + "]";
               }
             }
           } else {

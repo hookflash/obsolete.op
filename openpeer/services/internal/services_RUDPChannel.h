@@ -35,6 +35,7 @@
 #include <openpeer/services/internal/services_IRUDPChannelStream.h>
 #include <openpeer/services/IRUDPChannel.h>
 #include <openpeer/services/ISTUNRequester.h>
+#include <openpeer/services/IWakeDelegate.h>
 
 #include <zsLib/Timer.h>
 
@@ -159,19 +160,6 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IRUDPChannelAsyncDelegate
-      #pragma mark
-
-      interaction IRUDPChannelAsyncDelegate
-      {
-        virtual void onStep() = 0;
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark RUDPChannel
       #pragma mark
 
@@ -180,7 +168,7 @@ namespace openpeer
                           public IRUDPChannel,
                           public IRUDPChannelForRUDPICESocketSession,
                           public IRUDPChannelForRUDPListener,
-                          public IRUDPChannelAsyncDelegate,
+                          public IWakeDelegate,
                           public IRUDPChannelStreamDelegate,
                           public ISTUNRequesterDelegate,
                           public ITimerDelegate
@@ -342,10 +330,10 @@ namespace openpeer
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark RUDPChannel => IRUDPChannelAsyncDelegate
+        #pragma mark RUDPChannel => IWakeDelegate
         #pragma mark
 
-        virtual void onStep();
+        virtual void onWake();
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -571,8 +559,4 @@ ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::internal::RUDPChannelPtr, RUDPChann
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::internal::IRUDPChannelDelegateForSessionAndListener::RUDPChannelStates, RUDPChannelStates)
 ZS_DECLARE_PROXY_METHOD_2(onRUDPChannelStateChanged, RUDPChannelPtr, RUDPChannelStates)
 ZS_DECLARE_PROXY_METHOD_SYNC_RETURN_4(notifyRUDPChannelSendPacket, bool, RUDPChannelPtr, const IPAddress &, const BYTE *, ULONG)
-ZS_DECLARE_PROXY_END()
-
-ZS_DECLARE_PROXY_BEGIN(openpeer::services::internal::IRUDPChannelAsyncDelegate)
-ZS_DECLARE_PROXY_METHOD_0(onStep)
 ZS_DECLARE_PROXY_END()

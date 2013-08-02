@@ -34,13 +34,15 @@
 #include <openpeer/stack/IAccount.h>
 #include <openpeer/stack/internal/types.h>
 #include <openpeer/stack/IMessageMonitor.h>
-#include <openpeer/services/IRUDPICESocket.h>
-#include <openpeer/services/IRUDPICESocketSession.h>
-#include <openpeer/services/IRUDPMessaging.h>
 
 #include <openpeer/stack/message/peer-finder/SessionCreateResult.h>
 #include <openpeer/stack/message/peer-finder/SessionKeepAliveResult.h>
 #include <openpeer/stack/message/peer-finder/SessionDeleteResult.h>
+
+#include <openpeer/services/IRUDPICESocket.h>
+#include <openpeer/services/IRUDPICESocketSession.h>
+#include <openpeer/services/IRUDPMessaging.h>
+#include <openpeer/services/IWakeDelegate.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 #include <zsLib/Timer.h>
@@ -104,26 +106,13 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IAccountFinderAsyncDelegate
-      #pragma mark
-
-      interaction IAccountFinderAsyncDelegate
-      {
-        virtual void onStep() = 0;
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark AccountFinder
       #pragma mark
 
       class AccountFinder : public Noop,
                             public MessageQueueAssociator,
                             public IAccountFinderForAccount,
-                            public IAccountFinderAsyncDelegate,
+                            public IWakeDelegate,
                             public IRUDPICESocketDelegate,
                             public IRUDPICESocketSessionDelegate,
                             public IRUDPMessagingDelegate,
@@ -185,10 +174,10 @@ namespace openpeer
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark AccountFinder => IAccountFinderAsyncDelegate
+        #pragma mark AccountFinder => IWakeDelegate
         #pragma mark
 
-        virtual void onStep();
+        virtual void onWake();
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -386,10 +375,6 @@ namespace openpeer
     }
   }
 }
-
-ZS_DECLARE_PROXY_BEGIN(openpeer::stack::internal::IAccountFinderAsyncDelegate)
-ZS_DECLARE_PROXY_METHOD_0(onStep)
-ZS_DECLARE_PROXY_END()
 
 ZS_DECLARE_PROXY_BEGIN(openpeer::stack::internal::IAccountFinderDelegate)
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::internal::AccountFinderPtr, AccountFinderPtr)

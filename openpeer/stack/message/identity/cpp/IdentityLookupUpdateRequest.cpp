@@ -31,10 +31,11 @@
 
 #include <openpeer/stack/message/identity/IdentityLookupUpdateRequest.h>
 #include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
-#include <openpeer/stack/IHelper.h>
 #include <openpeer/stack/IPeerFiles.h>
 #include <openpeer/stack/IPeerFilePrivate.h>
 #include <openpeer/stack/IPeerFilePublic.h>
+
+#include <openpeer/services/IHelper.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>
@@ -50,6 +51,8 @@ namespace openpeer
   {
     namespace message
     {
+      using services::IHelper;
+
       namespace identity
       {
         using zsLib::Seconds;
@@ -114,7 +117,7 @@ namespace openpeer
           lockboxInfo.mAccessToken = mLockboxInfo.mAccessToken;
           if (mLockboxInfo.mAccessSecret.hasData()) {
             lockboxInfo.mAccessSecretProofExpires = zsLib::now() + Seconds(OPENPEER_STACK_MESSAGE_IDENTITY_ACCESS_LOCKBOX_UPDATE_EXPIRES_TIME_IN_SECONDS);
-            lockboxInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::convertToBuffer(mLockboxInfo.mAccessSecret), "lockbox-access-validate:" + clientNonce + ":" + IMessageHelper::timeToString(lockboxInfo.mAccessSecretProofExpires) + ":" + lockboxInfo.mAccessToken + ":identity-lookup-update"));
+            lockboxInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(mLockboxInfo.mAccessSecret), "lockbox-access-validate:" + clientNonce + ":" + IHelper::timeToString(lockboxInfo.mAccessSecretProofExpires) + ":" + lockboxInfo.mAccessToken + ":identity-lookup-update"));
           }
 
           IdentityInfo identityInfo;
@@ -125,7 +128,7 @@ namespace openpeer
           identityInfo.mAccessToken = mIdentityInfo.mAccessToken;
           if (mIdentityInfo.mAccessSecret.hasData()) {
             identityInfo.mAccessSecretProofExpires = zsLib::now() + Seconds(OPENPEER_STACK_MESSAGE_IDENTITY_ACCESS_LOCKBOX_UPDATE_EXPIRES_TIME_IN_SECONDS);
-            identityInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::convertToBuffer(mIdentityInfo.mAccessSecret), "identity-access-validate:" + identityInfo.mURI + ":" + clientNonce + ":" + IMessageHelper::timeToString(identityInfo.mAccessSecretProofExpires) + ":" + identityInfo.mAccessToken + ":identity-lookup-update"));
+            identityInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(mIdentityInfo.mAccessSecret), "identity-access-validate:" + identityInfo.mURI + ":" + clientNonce + ":" + IHelper::timeToString(identityInfo.mAccessSecretProofExpires) + ":" + identityInfo.mAccessToken + ":identity-lookup-update"));
           }
 
           identityInfo.mStableID = mIdentityInfo.mStableID;
@@ -151,8 +154,8 @@ namespace openpeer
             Time created = zsLib::now();
             Time expires = created + Hours(OPENPEER_STACK_MESSAGE_IDENTITY_ACCESS_CONTACT_PROOF_EXPIRES_IN_HOURS);
 
-            contactProofEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("created", IMessageHelper::timeToString(created)));
-            contactProofEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("expires", IMessageHelper::timeToString(expires)));
+            contactProofEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("created", IHelper::timeToString(created)));
+            contactProofEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("expires", IHelper::timeToString(expires)));
 
             identityInfo.mContactProofBundle = Element::create("contactProofBundle");
             identityInfo.mContactProofBundle->adoptAsLastChild(contactProofEl);

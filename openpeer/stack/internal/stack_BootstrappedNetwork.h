@@ -43,6 +43,7 @@
 
 #include <openpeer/services/IDNS.h>
 #include <openpeer/services/IHTTP.h>
+#include <openpeer/services/IWakeDelegate.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 
@@ -163,19 +164,6 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IBootstrappedNetworkAsyncDelegate
-      #pragma mark
-
-      interaction IBootstrappedNetworkAsyncDelegate
-      {
-        virtual void onStep() = 0;
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark BootstrappedNetwork
       #pragma mark
 
@@ -190,7 +178,7 @@ namespace openpeer
                                   public IBootstrappedNetworkForAccountFinder,
                                   public IBootstrappedNetworkForServices,
                                   public IBootstrappedNetworkForBootstrappedNetworkManager,
-                                  public IBootstrappedNetworkAsyncDelegate,
+                                  public IWakeDelegate,
                                   public IDNSDelegate,
                                   public IHTTPQueryDelegate,
                                   public IMessageSource
@@ -388,10 +376,10 @@ namespace openpeer
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark BootstrappedNetwork => IBootstrappedNetworkAsyncDelegate
+        #pragma mark BootstrappedNetwork =>IWakeDelegate
         #pragma mark
 
-        virtual void onStep();
+        virtual void onWake();
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -504,6 +492,3 @@ namespace openpeer
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(openpeer::stack::internal::IBootstrappedNetworkAsyncDelegate)
-ZS_DECLARE_PROXY_METHOD_0(onStep)
-ZS_DECLARE_PROXY_END()

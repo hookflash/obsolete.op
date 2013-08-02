@@ -32,10 +32,11 @@
 #include <openpeer/stack/internal/stack_Publication.h>
 #include <openpeer/stack/internal/stack_PublicationMetaData.h>
 #include <openpeer/stack/message/IMessageHelper.h>
-#include <openpeer/stack/IHelper.h>
 #include <openpeer/stack/IPeer.h>
 #include <openpeer/stack/internal/stack_Diff.h>
 #include <openpeer/stack/internal/stack_Location.h>
+
+#include <openpeer/services/IHelper.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/Log.h>
@@ -48,7 +49,6 @@ namespace openpeer
 {
   namespace stack
   {
-    using zsLib::Stringize;
     using message::IMessageHelper;
 
     typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
@@ -541,7 +541,7 @@ namespace openpeer
           contactEl = contactEl->findNextSiblingElement("contact");
         }
 
-        ZS_LOG_TRACE(log("end of getting as contact list") + ", total=" + Stringize<size_t>(outList.size()).string())
+        ZS_LOG_TRACE(log("end of getting as contact list") + ", total=" + string(outList.size()))
         return result;
       }
 
@@ -629,7 +629,7 @@ namespace openpeer
       void Publication::setExpires(Time expires)
       {
         AutoRecursiveLock lock(mLock);
-        ZS_LOG_TRACE(log("updating expires time") + ", was=" + Stringize<Time>(mExpires).string() + ", now=" + Stringize<Time>(expires).string())
+        ZS_LOG_TRACE(log("updating expires time") + ", was=" + string(mExpires) + ", now=" + string(expires))
 
         mExpires = expires;
       }
@@ -741,12 +741,12 @@ namespace openpeer
         for (ULONG from = fromVersionNumber; from <= toVersionNumber; ++from) {
           DiffDocumentMap::const_iterator found = mDiffDocuments.find(from);
           if (found == mDiffDocuments.end()) {
-            ZS_LOG_TRACE(log("diff is not available (thus returning entire document size)") + ", from=" + Stringize<ULONG>(fromVersionNumber).string() + ", current=" + Stringize<ULONG>(from).string() + getDebugValuesString())
+            ZS_LOG_TRACE(log("diff is not available (thus returning entire document size)") + ", from=" + string(fromVersionNumber) + ", current=" + string(from) + getDebugValuesString())
             getEntirePublicationOutputSize(outOutputSizeInBytes);
             return;
           }
 
-          ZS_LOG_TRACE(log("returning size of latest version diff's document") + ", from=" + Stringize<ULONG>(fromVersionNumber).string() + ", current=" + Stringize<ULONG>(from).string() +  + getDebugValuesString())
+          ZS_LOG_TRACE(log("returning size of latest version diff's document") + ", from=" + string(fromVersionNumber) + ", current=" + string(from) +  + getDebugValuesString())
           const DocumentPtr &doc = (*found).second;
           GeneratorPtr generator = Generator::createJSONGenerator();
           outOutputSizeInBytes += generator->getOutputSize(doc);
@@ -781,18 +781,18 @@ namespace openpeer
 
         bool first = !includeCommaPrefix;
 
-        return debugNameValue(first, "id", Stringize<PUID>(mID).string())
+        return debugNameValue(first, "id", string(mID))
              + debugNameValue(first, "name", mName)
-             + debugNameValue(first, "version", (0 == mVersion ? String() : Stringize<ULONG>(mVersion).string()))
-             + debugNameValue(first, "base version", (0 == mBaseVersion ? String() : Stringize<ULONG>(mBaseVersion).string()))
-             + debugNameValue(first, "lineage", (0 == mLineage ? String() : Stringize<ULONG>(mLineage).string()))
+             + debugNameValue(first, "version", (0 == mVersion ? String() : string(mVersion)))
+             + debugNameValue(first, "base version", (0 == mBaseVersion ? String() : string(mBaseVersion)))
+             + debugNameValue(first, "lineage", (0 == mLineage ? String() : string(mLineage)))
              + debugNameValue(first, "creator: ", creatorLocation ? creatorLocation->forPublication().getDebugValueString() : String(), false)
              + debugNameValue(first, "published: ", publishedLocation ? publishedLocation->forPublication().getDebugValueString() : String(), false)
              + debugNameValue(first, "mime type", mMimeType)
-             + debugNameValue(first, "expires", (Time() == mExpires ? String() : Stringize<Time>(mExpires).string()))
-             + debugNameValue(first, "data length", mData ? (0 == mData->SizeInBytes() ? String() : Stringize<size_t>(mData->SizeInBytes()).string()) : String())
-             + debugNameValue(first, "diffs total", (mDiffDocuments.size() < 1 ? String() : Stringize<size_t>(mDiffDocuments.size())))
-             + debugNameValue(first, "total relationships", (mPublishedRelationships.size() < 1 ? String() : Stringize<size_t>(mPublishedRelationships.size())));
+             + debugNameValue(first, "expires", (Time() == mExpires ? String() : string(mExpires)))
+             + debugNameValue(first, "data length", mData ? (0 == mData->SizeInBytes() ? String() : string(mData->SizeInBytes())) : String())
+             + debugNameValue(first, "diffs total", (mDiffDocuments.size() < 1 ? String() : string(mDiffDocuments.size())))
+             + debugNameValue(first, "total relationships", (mPublishedRelationships.size() < 1 ? String() : string(mPublishedRelationships.size())));
       }
 
       //-----------------------------------------------------------------------
@@ -830,7 +830,7 @@ namespace openpeer
         switch (encoding) {
           case IPublicationMetaData::Encoding_Binary: {
             String base64String = dataEl->getTextDecoded();
-            pThis->mData = IHelper::convertFromBase64(base64String);
+            pThis->mData = services::IHelper::convertFromBase64(base64String);
             break;
           }
           case IPublicationMetaData::Encoding_JSON: {
@@ -858,7 +858,7 @@ namespace openpeer
       {
         AutoRecursiveLock lock(mLock);
 
-        ZS_LOG_DEBUG(log("requested JSON diffs") + ", from version=" +Stringize<ULONG>(ioFromVersion).string() + ", to version=" + Stringize<ULONG>(toVersion).string())
+        ZS_LOG_DEBUG(log("requested JSON diffs") + ", from version=" +string(ioFromVersion) + ", to version=" + string(toVersion))
 
         if ((0 == toVersion) ||
             (toVersion >= mVersion)) {
@@ -873,7 +873,7 @@ namespace openpeer
 
           ZS_LOG_WARNING(Detail, log("returning data as base 64 encoded") + getDebugValuesString())
 
-          String data = IHelper::convertToBase64(*mData);
+          String data = services::IHelper::convertToBase64(*mData);
           TextPtr text = Text::create();
           text->setValue(data);
           return text;
@@ -887,7 +887,7 @@ namespace openpeer
           return firstEl->clone();
         }
 
-        ZS_LOG_DEBUG(log("publishing or fetching differences from last version published") + ", from base version=" + Stringize<ULONG>(toVersion).string() + getDebugValuesString() + ", to version=" + Stringize<ULONG>(toVersion).string())
+        ZS_LOG_DEBUG(log("publishing or fetching differences from last version published") + ", from base version=" + string(toVersion) + getDebugValuesString() + ", to version=" + string(toVersion))
 
         // see if we have diffs from the last published point
         DiffDocumentMap::const_iterator foundFrom = mDiffDocuments.find(ioFromVersion);
@@ -913,10 +913,10 @@ namespace openpeer
         for (DiffDocumentMap::const_iterator iter = foundFrom; iter != foundTo; ++iter, ++currentVersion) {
           const VersionNumber &versionNumber = (*iter).first;
 
-          ZS_LOG_TRACE(log("processing diff") + ", version=" + Stringize<VersionNumber>(versionNumber).string())
+          ZS_LOG_TRACE(log("processing diff") + ", version=" + string(versionNumber))
 
           if (currentVersion != versionNumber) {
-            ZS_LOG_ERROR(Detail, log("JSON differences has a version number hole") + ", expecting=" + Stringize<VersionNumber>(currentVersion).string() + ", found=" + Stringize<VersionNumber>(versionNumber).string())
+            ZS_LOG_ERROR(Detail, log("JSON differences has a version number hole") + ", expecting=" + string(currentVersion) + ", found=" + string(versionNumber))
             ioFromVersion = 0;
             return getDiffs(ioFromVersion, toVersion);
           }
@@ -940,7 +940,7 @@ namespace openpeer
               }
             }
           } catch (CheckFailed &) {
-            ZS_LOG_ERROR(Detail, log("JSON diff document is corrupted (recovering by returning entire document)") + ", version=" + Stringize<VersionNumber>(versionNumber).string())
+            ZS_LOG_ERROR(Detail, log("JSON diff document is corrupted (recovering by returning entire document)") + ", version=" + string(versionNumber))
             ioFromVersion = 0;
             return getDiffs(ioFromVersion, toVersion);
           }
@@ -965,7 +965,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String Publication::log(const char *message) const
       {
-        return String("Publication [") + Stringize<PUID>(mID).string() + "] " + message;
+        return String("Publication [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -978,7 +978,7 @@ namespace openpeer
           if (mDocument) {
             ZS_LOG_BASIC(log("publication contains JSON:") + "\n" + internal::toString(mDocument) + "\n")
           } else if (mData) {
-            ZS_LOG_BASIC(log("publication contains binary data") + ", length=" + Stringize<size_t>(mData ? mData->SizeInBytes() : 0).string())
+            ZS_LOG_BASIC(log("publication contains binary data") + ", length=" + string(mData ? mData->SizeInBytes() : 0))
           } else {
             ZS_LOG_BASIC(log("publication is NULL"))
           }

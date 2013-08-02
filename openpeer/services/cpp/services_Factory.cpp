@@ -255,6 +255,82 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IMessageLayerSecurityChannelFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IMessageLayerSecurityChannelFactory &IMessageLayerSecurityChannelFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      MessageLayerSecurityChannelPtr IMessageLayerSecurityChannelFactory::create(
+                                                                                 IMessageLayerSecurityChannelDelegatePtr delegate,
+                                                                                 ITransportStreamPtr receiveStreamEncoded,
+                                                                                 ITransportStreamPtr receiveStreamDecoded,
+                                                                                 ITransportStreamPtr sendStreamDecoded,
+                                                                                 ITransportStreamPtr sendStreamEncoded,
+                                                                                 const char *contextID
+                                                                                 )
+      {
+        return MessageLayerSecurityChannel::create(delegate, receiveStreamEncoded, receiveStreamDecoded, sendStreamDecoded, sendStreamEncoded, contextID);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRSAPrivateKeyFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IRSAPrivateKeyFactory &IRSAPrivateKeyFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      RSAPrivateKeyPtr IRSAPrivateKeyFactory::generate(
+                                                       RSAPublicKeyPtr &outPublicKey,
+                                                       ULONG keySizeInBites
+                                                       )
+      {
+        return RSAPrivateKey::generate(outPublicKey, keySizeInBites);
+      }
+
+      //-----------------------------------------------------------------------
+      RSAPrivateKeyPtr IRSAPrivateKeyFactory::loadPrivateKey(const SecureByteBlock &buffer)
+      {
+        return RSAPrivateKey::load(buffer);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRSAPublicKeyFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IRSAPublicKeyFactory &IRSAPublicKeyFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      RSAPublicKeyPtr IRSAPublicKeyFactory::loadPublicKey(const SecureByteBlock &buffer)
+      {
+        return RSAPublicKey::load(buffer);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark IRUDPChannelFactory
       #pragma mark
 
@@ -560,6 +636,69 @@ namespace openpeer
       STUNRequesterManagerPtr ISTUNRequesterManagerFactory::createSTUNRequesterManager()
       {
         return STUNRequesterManager::create();
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ITCPMessagingFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      ITCPMessagingFactory &ITCPMessagingFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      TCPMessagingPtr ITCPMessagingFactory::accept(
+                                                   ITCPMessagingDelegatePtr delegate,
+                                                   ITransportStreamPtr receiveStream,
+                                                   ITransportStreamPtr sendStream,
+                                                   bool framesHaveChannelNumber,
+                                                   SocketPtr socket,
+                                                   ULONG maxMessageSizeInBytes
+                                                   )
+      {
+        return internal::TCPMessaging::accept(delegate, receiveStream, sendStream, framesHaveChannelNumber, socket, maxMessageSizeInBytes);
+      }
+
+      //-----------------------------------------------------------------------
+      TCPMessagingPtr ITCPMessagingFactory::connect(
+                                                    ITCPMessagingDelegatePtr delegate,
+                                                    ITransportStreamPtr receiveStream,
+                                                    ITransportStreamPtr sendStream,
+                                                    bool framesHaveChannelNumber,
+                                                    IPAddress remoteIP,
+                                                    ULONG maxMessageSizeInBytes
+                                                    )
+      {
+        return internal::TCPMessaging::connect(delegate, receiveStream, sendStream, framesHaveChannelNumber, remoteIP, maxMessageSizeInBytes);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ITransportStreamFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      ITransportStreamFactory &ITransportStreamFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      TransportStreamPtr ITransportStreamFactory::create(
+                                                         ITransportStreamWriterDelegatePtr writerDelegate,
+                                                         ITransportStreamReaderDelegatePtr readerDelegate
+                                                         )
+      {
+        return internal::TransportStream::create(writerDelegate, readerDelegate);
       }
 
       //-----------------------------------------------------------------------

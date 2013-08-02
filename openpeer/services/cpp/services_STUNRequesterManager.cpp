@@ -45,8 +45,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
-
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -253,7 +251,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String STUNRequesterManager::log(const char *message) const
       {
-        return String("STUNRequesterManager [") + Stringize<PUID>(mID).string() + "] " + message;
+        return String("STUNRequesterManager [") + string(mID) + "] " + message;
       }
     }
 

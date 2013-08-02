@@ -46,8 +46,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
-
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -162,14 +160,14 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String PeerFiles::log(const char *message) const
       {
-        return String("PeerFiles [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("PeerFiles [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
       String PeerFiles::getDebugValueString(bool includeCommaPrefix) const
       {
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("peer files id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("peer files id", string(mID), firstTime) +
                IPeerFilePublic::toDebugString(mPublic);
       }
     }

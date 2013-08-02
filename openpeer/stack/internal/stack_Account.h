@@ -85,6 +85,22 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IAccountForFinderRelayChannel
+      #pragma mark
+
+      interaction IAccountForFinderRelayChannel
+      {
+        IAccountForFinderRelayChannel &forFinderRelay() {return *this;}
+        const IAccountForFinderRelayChannel &forFinderRelay() const {return *this;}
+
+        virtual IPeerFilesPtr getPeerFiles() const = 0;
+      };
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark IAccountForAccountPeerLocation
       #pragma mark
 
@@ -256,19 +272,6 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IAccountAsyncDelegate
-      #pragma mark
-
-      interaction IAccountAsyncDelegate
-      {
-        virtual void onStep() = 0;
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark Account
       #pragma mark
 
@@ -276,6 +279,7 @@ namespace openpeer
                       public MessageQueueAssociator,
                       public IAccount,
                       public IAccountForAccountFinder,
+                      public IAccountForFinderRelayChannel,
                       public IAccountForAccountPeerLocation,
                       public IAccountForLocation,
                       public IAccountForMessageIncoming,
@@ -284,7 +288,7 @@ namespace openpeer
                       public IAccountForPeerSubscription,
                       public IAccountForPublicationRepository,
                       public IAccountForServiceLockboxSession,
-                      public IAccountAsyncDelegate,
+                      public IWakeDelegate,
                       public IAccountFinderDelegate,
                       public IAccountPeerLocationDelegate,
                       public IDNSDelegate,
@@ -380,6 +384,13 @@ namespace openpeer
                                        Finder &outFinder,
                                        IPAddress &outFinderIP
                                        );
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark Account => IAccountForFinderRelayChannel
+        #pragma mark
+
+        // (duplicate) virtual IPeerFilesPtr getPeerFiles() const;
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -541,10 +552,10 @@ namespace openpeer
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark Account => IAccountAsyncDelegate
+        #pragma mark Account => IWakeDelegate
         #pragma mark
 
-        virtual void onStep();
+        virtual void onWake();
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -748,8 +759,3 @@ namespace openpeer
     }
   }
 }
-
-
-ZS_DECLARE_PROXY_BEGIN(openpeer::stack::internal::IAccountAsyncDelegate)
-ZS_DECLARE_PROXY_METHOD_0(onStep)
-ZS_DECLARE_PROXY_END()

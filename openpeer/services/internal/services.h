@@ -39,6 +39,9 @@
 #include <openpeer/services/internal/services_HTTP.h>
 #include <openpeer/services/internal/services_ICESocket.h>
 #include <openpeer/services/internal/services_ICESocketSession.h>
+#include <openpeer/services/internal/services_MessageLayerSecurityChannel.h>
+#include <openpeer/services/internal/services_RSAPrivateKey.h>
+#include <openpeer/services/internal/services_RSAPublicKey.h>
 #include <openpeer/services/internal/services_RUDPChannel.h>
 #include <openpeer/services/internal/services_RUDPChannelStream.h>
 #include <openpeer/services/internal/services_RUDPICESocket.h>
@@ -48,4 +51,6 @@
 #include <openpeer/services/internal/services_STUNDiscovery.h>
 #include <openpeer/services/internal/services_STUNRequester.h>
 #include <openpeer/services/internal/services_STUNRequesterManager.h>
+#include <openpeer/services/internal/services_TCPMessaging.h>
+#include <openpeer/services/internal/services_TransportStream.h>
 #include <openpeer/services/internal/services_TURNSocket.h>

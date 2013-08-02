@@ -37,10 +37,14 @@
 #include <openpeer/stack/internal/stack_Diff.h>
 #include <openpeer/stack/internal/stack_BootstrappedNetwork.h>
 #include <openpeer/stack/internal/stack_BootstrappedNetworkManager.h>
+#include <openpeer/stack/internal/stack_IFinderRelayChannel.h>
+#include <openpeer/stack/internal/stack_FinderRelayChannel.h>
+#include <openpeer/stack/internal/stack_IFinderConnection.h>
+#include <openpeer/stack/internal/stack_IFinderConnectionRelayChannel.h>
+#include <openpeer/stack/internal/stack_FinderConnectionMultiplexOutgoing.h>
 #include <openpeer/stack/internal/stack_Helper.h>
 #include <openpeer/stack/internal/stack_Location.h>
 #include <openpeer/stack/internal/stack_MessageIncoming.h>
-#include <openpeer/stack/internal/stack_MessageLayerSecurityChannel.h>
 #include <openpeer/stack/internal/stack_MessageMonitor.h>
 #include <openpeer/stack/internal/stack_MessageMonitorManager.h>
 #include <openpeer/stack/internal/stack_Peer.h>
@@ -51,8 +55,6 @@
 #include <openpeer/stack/internal/stack_Publication.h>
 #include <openpeer/stack/internal/stack_PublicationMetaData.h>
 #include <openpeer/stack/internal/stack_PublicationRepository.h>
-#include <openpeer/stack/internal/stack_RSAPrivateKey.h>
-#include <openpeer/stack/internal/stack_RSAPublicKey.h>
 #include <openpeer/stack/internal/stack_ServiceCertificatesValidateQuery.h>
 #include <openpeer/stack/internal/stack_ServiceIdentitySession.h>
 #include <openpeer/stack/internal/stack_ServiceLockboxSession.h>

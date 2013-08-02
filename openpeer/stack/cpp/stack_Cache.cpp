@@ -47,7 +47,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
       using namespace zsLib::XML;
 
       //-----------------------------------------------------------------------
@@ -233,7 +232,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String Cache::log(const char *message) const
       {
-        return String("stack::Cache [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("stack::Cache [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------

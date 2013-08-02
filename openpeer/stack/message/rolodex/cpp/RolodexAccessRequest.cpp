@@ -32,7 +32,8 @@
 #include <openpeer/stack/message/rolodex/RolodexAccessRequest.h>
 #include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
 #include <openpeer/stack/internal/stack_Stack.h>
-#include <openpeer/stack/IHelper.h>
+
+#include <openpeer/services/IHelper.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>
@@ -47,6 +48,8 @@ namespace openpeer
   {
     namespace message
     {
+      using services::IHelper;
+
       namespace rolodex
       {
         using zsLib::Seconds;
@@ -99,7 +102,7 @@ namespace openpeer
           identityInfo.mAccessToken = mIdentityInfo.mAccessToken;
           if (mIdentityInfo.mAccessSecret.hasData()) {
             identityInfo.mAccessSecretProofExpires = zsLib::now() + Seconds(OPENPEER_STACK_MESSAGE_ROLODEX_ACCESS_REQUEST_EXPIRES_TIME_IN_SECONDS);
-            identityInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::convertToBuffer(mIdentityInfo.mAccessSecret), "identity-access-validate:" + identityInfo.mURI + ":" + clientNonce + ":" + IMessageHelper::timeToString(identityInfo.mAccessSecretProofExpires) + ":" + identityInfo.mAccessToken + ":lockbox-access"));
+            identityInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(mIdentityInfo.mAccessSecret), "identity-access-validate:" + identityInfo.mURI + ":" + clientNonce + ":" + IHelper::timeToString(identityInfo.mAccessSecretProofExpires) + ":" + identityInfo.mAccessToken + ":lockbox-access"));
           }
 
           rootEl->adoptAsLastChild(IMessageHelper::createElementWithText("nonce", clientNonce));

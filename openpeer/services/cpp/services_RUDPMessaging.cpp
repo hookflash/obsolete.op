@@ -48,8 +48,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
-
       typedef RUDPMessaging::MessageBuffer MessageBuffer;
 
       //-----------------------------------------------------------------------
@@ -220,7 +218,7 @@ namespace openpeer
         {
           AutoRecursiveLock lock(mLock);
           mInformedWriteReady = false;  // if the send was called in response to a write-ready event then the write-ready flag must be cleared so the event can be fired again
-          ZS_LOG_DEBUG(log("send called") + ", message length=" + Stringize<ULONG>(messsageLengthInBytes).string())
+          ZS_LOG_DEBUG(log("send called") + ", message length=" + string(messsageLengthInBytes))
         }
 
         if ((NULL == message) ||
@@ -290,7 +288,7 @@ namespace openpeer
 
         ULONG available = mChannel->getReceiveSizeAvailableInBytes();
         if (available < mNextMessageSizeInBytes) {
-          ZS_LOG_DEBUG(log("not enough data received to deliver message to delegate") + ", available= " + Stringize<ULONG>(available).string() + ", next message size=" + Stringize<DWORD>(mNextMessageSizeInBytes).string())
+          ZS_LOG_DEBUG(log("not enough data received to deliver message to delegate") + ", available= " + string(available) + ", next message size=" + string(mNextMessageSizeInBytes))
           return 0;
         }
 
@@ -309,7 +307,7 @@ namespace openpeer
         if (0 == nextMessageSize) return 0;
 
         ULONG received = mChannel->receive(outBuffer, nextMessageSize);
-        ZS_LOG_DEBUG(log("channel data received") + ", size=" + Stringize<ULONG>(received).string())
+        ZS_LOG_DEBUG(log("channel data received") + ", size=" + string(received))
 
         if (0 == received) return 0;
         mInformedReadReady = false; // if the receive was called in response to a read-ready event then the read-ready event flag must be cleared so the event can fire again
@@ -436,7 +434,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String RUDPMessaging::log(const char *message) const
       {
-        return String("RUDPMessaging [") + Stringize<PUID>(mID).string() + "] " + message;
+        return String("RUDPMessaging [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------

@@ -49,9 +49,6 @@ namespace openpeer
         static String getAttributeID(ElementPtr node);
         static void setAttributeID(ElementPtr node, const String &value);
 
-        static Time stringToTime(const String &s);
-        static String timeToString(const Time &value);
-
         static Time getAttributeEpoch(ElementPtr node);
         static void setAttributeTimestamp(ElementPtr node, const Time &value);
 

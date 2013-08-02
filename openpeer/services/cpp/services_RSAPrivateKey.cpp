@@ -29,9 +29,9 @@
 
  */
 
-#include <openpeer/stack/internal/stack_RSAPrivateKey.h>
-#include <openpeer/stack/internal/stack_RSAPublicKey.h>
-#include <openpeer/stack/IHelper.h>
+#include <openpeer/services/internal/services_RSAPrivateKey.h>
+#include <openpeer/services/internal/services_RSAPublicKey.h>
+#include <openpeer/services/IHelper.h>
 #include <zsLib/Log.h>
 #include <zsLib/helpers.h>
 #include <zsLib/Stringize.h>
@@ -40,16 +40,14 @@
 #include <cryptopp/rsa.h>
 
 
-namespace openpeer { namespace stack { ZS_DECLARE_SUBSYSTEM(openpeer_stack) } }
+namespace openpeer { namespace services { ZS_DECLARE_SUBSYSTEM(openpeer_services) } }
 
 namespace openpeer
 {
-  namespace stack
+  namespace services
   {
     namespace internal
     {
-      using zsLib::Stringize;
-
       using CryptoPP::ByteQueue;
       using CryptoPP::AutoSeededRandomPool;
       typedef CryptoPP::RSA::PublicKey PublicKey;
@@ -112,14 +110,17 @@ namespace openpeer
       #pragma mark
 
       //-----------------------------------------------------------------------
-      RSAPrivateKeyPtr RSAPrivateKey::generate(RSAPublicKeyPtr &outPublicKey)
+      RSAPrivateKeyPtr RSAPrivateKey::generate(
+                                               RSAPublicKeyPtr &outPublicKey,
+                                               ULONG keySizeInBites
+                                               )
       {
         AutoSeededRandomPool rng;
         SecureByteBlock publicKeyBuffer;
 
         RSAPrivateKeyPtr pThis(new RSAPrivateKey);
 
-        pThis->mPrivateKey.GenerateRandomWithKeySize(rng, OPENPEER_STACK_RSA_PRIVATE_KEY_GENERATION_SIZE);
+        pThis->mPrivateKey.GenerateRandomWithKeySize(rng, keySizeInBites);
         if (!pThis->mPrivateKey.Validate(rng, 3)) {
           ZS_LOG_ERROR(Basic, "failed to generate a new private key")
           return RSAPrivateKeyPtr();
@@ -229,7 +230,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String RSAPrivateKey::log(const char *message) const
       {
-        return String("RSAPrivateKey [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("RSAPrivateKey [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -263,10 +264,13 @@ namespace openpeer
     #pragma mark
 
     //-------------------------------------------------------------------------
-    IRSAPrivateKeyPtr IRSAPrivateKey::generate(IRSAPublicKeyPtr &outPublicKey)
+    IRSAPrivateKeyPtr IRSAPrivateKey::generate(
+                                               IRSAPublicKeyPtr &outPublicKey,
+                                               ULONG keySizeInBites
+                                               )
     {
       internal::RSAPublicKeyPtr publicKey;
-      IRSAPrivateKeyPtr result = internal::IRSAPrivateKeyFactory::singleton().generate(publicKey);
+      IRSAPrivateKeyPtr result = internal::IRSAPrivateKeyFactory::singleton().generate(publicKey, keySizeInBites);
       outPublicKey = publicKey;
       return result;
     }

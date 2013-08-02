@@ -32,8 +32,8 @@
 #include <openpeer/stack/message/certificates/CertificatesGetResult.h>
 #include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
 
-#include <openpeer/stack/IHelper.h>
-#include <openpeer/stack/IRSAPublicKey.h>
+#include <openpeer/services/IHelper.h>
+#include <openpeer/services/IRSAPublicKey.h>
 
 #include <zsLib/XML.h>
 
@@ -43,6 +43,8 @@ namespace openpeer
   {
     namespace message
     {
+      using services::IHelper;
+
       namespace certificates
       {
         //---------------------------------------------------------------------
@@ -76,7 +78,7 @@ namespace openpeer
 
               certificate.mID = IMessageHelper::getAttributeID(certificateEl);
               certificate.mService = IMessageHelper::getElementText(certificateEl->findFirstChildElement("service"));
-              certificate.mExpires = IMessageHelper::stringToTime(IMessageHelper::getElementText(certificateEl->findFirstChildElement("expires")));
+              certificate.mExpires = IHelper::stringToTime(IMessageHelper::getElementText(certificateEl->findFirstChildElement("expires")));
 
               ElementPtr keyEl = certificateEl->findFirstChildElement("key");
               if (keyEl) {

@@ -31,34 +31,42 @@
 
 #pragma once
 
-#include <openpeer/stack/types.h>
-
+#include <openpeer/stack/message/MessageResult.h>
+#include <openpeer/stack/message/peer-finder/MessageFactoryPeerFinder.h>
 
 namespace openpeer
 {
   namespace stack
   {
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    #pragma mark
-    #pragma mark IRSAPrivateKey
-    #pragma mark
-
-    interaction IRSAPrivateKey
+    namespace message
     {
-      static IRSAPrivateKeyPtr generate(IRSAPublicKeyPtr &outPublicKey);
+      namespace peer_finder
+      {
+        class ChannelMapResult : public MessageResult
+        {
+        public:
+          enum AttributeTypes
+          {
+          };
 
-      static IRSAPrivateKeyPtr load(const SecureByteBlock &buffer);
+        public:
+          static ChannelMapResultPtr convert(MessagePtr message);
 
-      virtual SecureByteBlockPtr save() const = 0;
+          static ChannelMapResultPtr create(
+                                               ElementPtr root,
+                                               IMessageSourcePtr messageSource
+                                               );
 
-      virtual SecureByteBlockPtr sign(const SecureByteBlock &inBufferToSign) const = 0;
+          virtual Methods method() const              {return (Message::Methods)MessageFactoryPeerFinder::Method_ChannelMap;}
 
-      virtual SecureByteBlockPtr sign(const String &stringToSign) const = 0;
+          virtual IMessageFactoryPtr factory() const  {return MessageFactoryPeerFinder::singleton();}
 
-      virtual SecureByteBlockPtr decrypt(const SecureByteBlock &buffer) const = 0;
-    };
+          bool hasAttribute(AttributeTypes type) const;
+
+        protected:
+          ChannelMapResult();
+        };
+      }
+    }
   }
 }

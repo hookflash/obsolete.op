@@ -36,16 +36,19 @@
 #include <openpeer/stack/internal/stack_Helper.h>
 #include <openpeer/stack/internal/stack_MessageMonitor.h>
 #include <openpeer/stack/internal/stack_Stack.h>
+
 #include <openpeer/stack/message/peer-finder/SessionDeleteRequest.h>
 #include <openpeer/stack/message/peer-finder/SessionCreateRequest.h>
 #include <openpeer/stack/message/peer-finder/SessionCreateResult.h>
 #include <openpeer/stack/message/peer-finder/SessionKeepAliveRequest.h>
 #include <openpeer/stack/message/peer-finder/SessionKeepAliveResult.h>
 #include <openpeer/stack/message/peer-finder/PeerLocationFindRequest.h>
+
 #include <openpeer/stack/message/MessageResult.h>
-#include <openpeer/stack/message/IMessageHelper.h>
 #include <openpeer/stack/IPeerFiles.h>
 #include <openpeer/stack/IPeerFilePublic.h>
+
+#include <openpeer/services/IHelper.h>
 
 #include <zsLib/Log.h>
 #include <zsLib/helpers.h>
@@ -80,7 +83,8 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
+      using services::IHelper;
+      using services::IWakeDelegateProxy;
 
       using message::peer_finder::SessionCreateRequest;
       using message::peer_finder::SessionCreateRequestPtr;
@@ -141,7 +145,7 @@ namespace openpeer
       //---------------------------------------------------------------------
       void AccountFinder::init()
       {
-        IAccountFinderAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //---------------------------------------------------------------------
@@ -288,7 +292,7 @@ namespace openpeer
       void AccountFinder::notifyFinderDNSComplete()
       {
         ZS_LOG_DEBUG(log("notified finder DNS complete"))
-        IAccountFinderAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -296,11 +300,11 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark AccountFinder => IAccountFinderAsyncDelegate
+      #pragma mark AccountFinder => IWakeDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void AccountFinder::onStep()
+      void AccountFinder::onWake()
       {
         AutoRecursiveLock lock(getLock());
         step();
@@ -494,7 +498,7 @@ namespace openpeer
         setTimeout(result->expires());
         mServerAgent = result->serverAgent();
 
-        (IAccountFinderAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
+        (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
         return true;
       }
 
@@ -539,7 +543,7 @@ namespace openpeer
 
         setTimeout(result->expires());
 
-        (IAccountFinderAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
+        (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
         return true;
       }
 
@@ -581,7 +585,7 @@ namespace openpeer
           return false;
         }
 
-        (IAccountFinderAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
+        (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
         return true;
       }
 
@@ -598,7 +602,7 @@ namespace openpeer
           return false;
         }
 
-        (IAccountFinderAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
+        (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
         return true;
       }
 
@@ -689,7 +693,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String AccountFinder::log(const char *message) const
       {
-        return String("AccountFinder [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("AccountFinder [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -697,15 +701,15 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("finder id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("finder id", string(mID), firstTime) +
                Helper::getDebugValue("state", IAccount::toString(mCurrentState), firstTime) +
-               Helper::getDebugValue("rudp ice socket subscription id", mSocketSubscription ? Stringize<typeof(PUID)>(mSocketSubscription->getID()).string() : String(), firstTime) +
-               Helper::getDebugValue("rudp ice socket session id", mSocketSession ? Stringize<typeof(PUID)>(mSocketSession->getID()).string() : String(), firstTime) +
-               Helper::getDebugValue("rudp messagine id", mMessaging ? Stringize<typeof(PUID)>(mMessaging->getID()).string() : String(), firstTime) +
+               Helper::getDebugValue("rudp ice socket subscription id", mSocketSubscription ? string(mSocketSubscription->getID()) : String(), firstTime) +
+               Helper::getDebugValue("rudp ice socket session id", mSocketSession ? string(mSocketSession->getID()) : String(), firstTime) +
+               Helper::getDebugValue("rudp messagine id", mMessaging ? string(mMessaging->getID()) : String(), firstTime) +
                mFinder.getDebugValueString() +
                Helper::getDebugValue("finder IP", !mFinderIP.isAddressEmpty() ? mFinderIP.string() : String(), firstTime) +
                Helper::getDebugValue("server agent", mServerAgent, firstTime) +
-               Helper::getDebugValue("created time", Time() != mSessionCreatedTime ? IMessageHelper::timeToString(mSessionCreatedTime) : String(), firstTime) +
+               Helper::getDebugValue("created time", Time() != mSessionCreatedTime ? IHelper::timeToString(mSessionCreatedTime) : String(), firstTime) +
                Helper::getDebugValue("session create monitor", mSessionCreateMonitor ? String("true") : String(), firstTime) +
                Helper::getDebugValue("session keep alive monitor", mSessionKeepAliveMonitor ? String("true") : String(), firstTime) +
                Helper::getDebugValue("session delete monitor", mSessionDeleteMonitor ? String("true") : String(), firstTime);
@@ -889,7 +893,7 @@ namespace openpeer
         }
 
         // ensure the socket has been woken up during the subscription process
-        IAccountFinderAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
         return false;
       }
 

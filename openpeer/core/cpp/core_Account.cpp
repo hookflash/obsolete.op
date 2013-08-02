@@ -61,7 +61,7 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
+      using zsLib::string;
       typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
 
       //-----------------------------------------------------------------------
@@ -214,7 +214,7 @@ namespace openpeer
           lockboxDomain = reloginInformation->findFirstChildElementChecked("lockboxDomain")->getTextDecoded();
           accountID = reloginInformation->findFirstChildElementChecked("accountID")->getTextDecoded();
           grantID = reloginInformation->findFirstChildElementChecked("grantID")->getTextDecoded();
-          lockboxKey = stack::IHelper::convertFromBase64(reloginInformation->findFirstChildElementChecked("lockboxKey")->getTextDecoded());
+          lockboxKey = services::IHelper::convertFromBase64(reloginInformation->findFirstChildElementChecked("lockboxKey")->getTextDecoded());
         } catch (CheckFailed &) {
           return AccountPtr();
         }
@@ -314,7 +314,7 @@ namespace openpeer
         reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("lockboxDomain", lockboxDomain));
         reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("accountID", accountID));
         reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("grantID", grantID));
-        reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("lockboxKey", stack::IHelper::convertToBase64(*lockboxKey)));
+        reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("lockboxKey", services::IHelper::convertToBase64(*lockboxKey)));
 
         return reloginEl;
       }
@@ -748,7 +748,7 @@ namespace openpeer
           mLockboxSession->associateIdentities(add, remove);
         }
 
-        IAccountAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -1000,14 +1000,14 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark Account => IAccountAsyncDelegate
+      #pragma mark Account => IWakeDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void Account::onStep()
+      void Account::onWake()
       {
         AutoRecursiveLock lock(mLock);
-        ZS_LOG_DEBUG(log("on step"))
+        ZS_LOG_DEBUG(log("on wake"))
         step();
       }
 
@@ -1049,8 +1049,8 @@ namespace openpeer
           return ConversationThreadPtr();
         }
 
-        String baseThreadID = stack::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_BASE_THREAD_ID_INDEX);
-        String hostThreadID = stack::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_HOST_THREAD_ID_INDEX);
+        String baseThreadID = services::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_BASE_THREAD_ID_INDEX);
+        String hostThreadID = services::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_HOST_THREAD_ID_INDEX);
         if ((baseThreadID.size() < 1) ||
             (hostThreadID.size() < 1)) {
           ZS_LOG_WARNING(Debug, log("converation thread publication did not have a thread ID") + IPublicationMetaData::toDebugString(metaData))
@@ -1082,8 +1082,8 @@ namespace openpeer
                                           const SplitMap &split
                                           )
       {
-        String baseThreadID = stack::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_BASE_THREAD_ID_INDEX);
-        String hostThreadID = stack::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_HOST_THREAD_ID_INDEX);
+        String baseThreadID = services::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_BASE_THREAD_ID_INDEX);
+        String hostThreadID = services::IHelper::get(split, OPENPEER_CONVERSATION_THREAD_HOST_THREAD_ID_INDEX);
         if ((baseThreadID.size() < 1) ||
             (hostThreadID.size() < 1)) {
           ZS_LOG_WARNING(Debug, log("converation thread publication did not have a thread ID") + IPublicationMetaData::toDebugString(metaData))
@@ -1112,7 +1112,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String Account::log(const char *message) const
       {
-        return String("core::Account [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("core::Account [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -1120,9 +1120,9 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("core account id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("core account id", string(mID), firstTime) +
                Helper::getDebugValue("state", toString(mCurrentState), firstTime) +
-               Helper::getDebugValue("error code", 0 != mLastErrorCode ? Stringize<typeof(mLastErrorCode)>(mLastErrorCode).string() : String(), firstTime) +
+               Helper::getDebugValue("error code", 0 != mLastErrorCode ? string(mLastErrorCode) : String(), firstTime) +
                Helper::getDebugValue("error reason", mLastErrorReason, firstTime) +
                Helper::getDebugValue("delegate", mDelegate ? String("true") : String(), firstTime) +
                Helper::getDebugValue("conversation thread delegate", mConversationThreadDelegate ? String("true") : String(), firstTime) +
@@ -1131,12 +1131,12 @@ namespace openpeer
                stack::IServiceNamespaceGrantSession::toDebugString(mGrantSession) +
                stack::IServiceLockboxSession::toDebugString(mLockboxSession) +
                Helper::getDebugValue("force new lockbox account", mLockboxForceCreateNewAccount ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("identities", mIdentities.size() > 0 ? Stringize<IdentityMap::size_type>(mIdentities.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("identities", mIdentities.size() > 0 ? string(mIdentities.size()) : String(), firstTime) +
                stack::IPeerSubscription::toDebugString(mPeerSubscription) +
                IContact::toDebugString(mSelfContact) +
-               Helper::getDebugValue("contacts", mContacts.size() > 0 ? Stringize<ContactMap::size_type>(mContacts.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("contact subscription", mContactSubscriptions.size() > 0 ? Stringize<ContactMap::size_type>(mContactSubscriptions.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("conversations", mConversationThreads.size() > 0 ? Stringize<ConversationThreadMap::size_type>(mConversationThreads.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("contacts", mContacts.size() > 0 ? string(mContacts.size()) : String(), firstTime) +
+               Helper::getDebugValue("contact subscription", mContactSubscriptions.size() > 0 ? string(mContactSubscriptions.size()) : String(), firstTime) +
+               Helper::getDebugValue("conversations", mConversationThreads.size() > 0 ? string(mConversationThreads.size()) : String(), firstTime) +
                Helper::getDebugValue("call transport", mCallTransport ? String("true") : String(), firstTime) +
                Helper::getDebugValue("subscribers permission document", mSubscribersPermissionDocument ? String("true") : String(), firstTime);
       }
@@ -1530,7 +1530,7 @@ namespace openpeer
         }
 
         if (0 != mLastErrorCode) {
-          ZS_LOG_WARNING(Detail, log("error was already set (thus ignoring)") + ", new error=" + Stringize<typeof(errorCode)>(errorCode).string() + ", new reason=" + reason + getDebugValueString())
+          ZS_LOG_WARNING(Detail, log("error was already set (thus ignoring)") + ", new error=" + string(errorCode) + ", new reason=" + reason + getDebugValueString())
           return;
         }
 
@@ -1729,7 +1729,7 @@ namespace openpeer
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void Account::ContactSubscription::onStep()
+      void Account::ContactSubscription::onWake()
       {
         AutoRecursiveLock lock(getLock());
         step();
@@ -1851,7 +1851,7 @@ namespace openpeer
         ZS_LOG_DEBUG(log("erasing location subscription") + ", location ID=" + locationID)
         mLocations.erase(found);
 
-        IContactSubscriptionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -1873,7 +1873,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String Account::ContactSubscription::log(const char *message) const
       {
-        return String("openpeer::Account::ContactSubscription [") + Stringize<typeof(mID)>(mID).string() + "] " + message + ", peer URI=" + mContact->forAccount().getPeerURI();
+        return String("openpeer::Account::ContactSubscription [") + string(mID) + "] " + message + ", peer URI=" + mContact->forAccount().getPeerURI();
       }
 
       //-----------------------------------------------------------------------
@@ -1881,12 +1881,12 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("contact subscription id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("contact subscription id", string(mID), firstTime) +
                Helper::getDebugValue("state", toString(mCurrentState), firstTime) +
                IContact::toDebugString(mContact) +
                IPeerSubscription::toDebugString(mPeerSubscription) +
                Helper::getDebugValue("timer", mPeerSubscriptionAutoCloseTimer ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("locations", mLocations.size() > 0 ? Stringize<size_t>(mLocations.size()).string() : String(), firstTime);
+               Helper::getDebugValue("locations", mLocations.size() > 0 ? string(mLocations.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -2109,7 +2109,7 @@ namespace openpeer
         String name = metaData->getName();
 
         SplitMap result;
-        stack::IHelper::split(name, result);
+        services::IHelper::split(name, result);
 
         if (result.size() < 6) {
           ZS_LOG_WARNING(Debug, log("subscription path is too short") + IPublicationMetaData::toDebugString(metaData))
@@ -2164,7 +2164,7 @@ namespace openpeer
         String name = metaData->getName();
 
         SplitMap result;
-        stack::IHelper::split(name, result);
+        services::IHelper::split(name, result);
 
         if (result.size() < 6) {
           ZS_LOG_WARNING(Debug, log("subscription path is too short") + ", path=" + name)
@@ -2205,7 +2205,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String Account::LocationSubscription::log(const char *message) const
       {
-        return String("openpeer::Account::LocationSubscription [") + Stringize<typeof(mID)>(mID).string() + "] " + message + ", peer URI=" + getPeerURI() + ", location ID=" + getLocationID();
+        return String("openpeer::Account::LocationSubscription [") + string(mID) + "] " + message + ", peer URI=" + getPeerURI() + ", location ID=" + getLocationID();
       }
 
       //-----------------------------------------------------------------------
@@ -2213,11 +2213,11 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("location subscription id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("location subscription id", string(mID), firstTime) +
                Helper::getDebugValue("state", toString(mCurrentState), firstTime) +
                ILocation::toDebugString(mPeerLocation) +
                IPublicationSubscription::toDebugString(mPublicationSubscription) +
-               Helper::getDebugValue("conversation thread", mConversationThreads.size() > 0 ? Stringize<size_t>(mConversationThreads.size()).string() : String(), firstTime);
+               Helper::getDebugValue("conversation thread", mConversationThreads.size() > 0 ? string(mConversationThreads.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------

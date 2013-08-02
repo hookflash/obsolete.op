@@ -207,7 +207,7 @@ namespace openpeer
 #pragma mark
       class TestBootstrappedNetworkForAccount : public MessageQueueAssociator,
       public internal::BootstrappedNetwork
-      //                                      public IBootstrappedNetworkAsyncDelegate
+      //                                      publicIWakeDelegate
       {
       public:
         friend interaction TestFactoryForAccount;
@@ -234,7 +234,7 @@ namespace openpeer
         //                                  const char *url,
         //                                  MessagePtr message
         //                                   );
-        //        virtual void onStep();
+        //        virtual void onWake();
       protected:
         //TestBootstrappedNetworkForAccountWeakPtr mThisWeak;
       };

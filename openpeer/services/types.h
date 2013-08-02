@@ -33,6 +33,7 @@
 
 #include <zsLib/types.h>
 #include <zsLib/Proxy.h>
+#include <zsLib/ProxySubscriptions.h>
 #include <cryptopp/secblock.h>
 
 namespace openpeer
@@ -52,11 +53,17 @@ namespace openpeer
     using zsLib::Duration;
     using zsLib::Seconds;
     using zsLib::IPAddress;
+    using zsLib::Socket;
+    using zsLib::SocketPtr;
+    using zsLib::ISocketDelegate;
+    using zsLib::ISocketDelegatePtr;
     using zsLib::RecursiveLock;
     using zsLib::IMessageQueuePtr;
     using zsLib::Log;
     using zsLib::XML::Element;
     using zsLib::XML::ElementPtr;
+    using zsLib::XML::Document;
+    using zsLib::XML::DocumentPtr;
 
     typedef CryptoPP::SecByteBlock SecureByteBlock;
     typedef boost::shared_ptr<SecureByteBlock> SecureByteBlockPtr;
@@ -114,6 +121,28 @@ namespace openpeer
     typedef boost::weak_ptr<IHTTPQueryDelegate> IHTTPQueryDelegateWeakPtr;
     typedef zsLib::Proxy<IHTTPQueryDelegate> IHTTPQueryDelegateProxy;
 
+    interaction IMessageLayerSecurityChannel;
+    typedef boost::shared_ptr<IMessageLayerSecurityChannel> IMessageLayerSecurityChannelPtr;
+    typedef boost::weak_ptr<IMessageLayerSecurityChannel> IMessageLayerSecurityChannelWeakPtr;
+
+    interaction IMessageLayerSecurityChannelDelegate;
+    typedef boost::shared_ptr<IMessageLayerSecurityChannelDelegate> IMessageLayerSecurityChannelDelegatePtr;
+    typedef boost::weak_ptr<IMessageLayerSecurityChannelDelegate> IMessageLayerSecurityChannelDelegateWeakPtr;
+    typedef zsLib::Proxy<IMessageLayerSecurityChannelDelegate> IMessageLayerSecurityChannelDelegateProxy;
+
+    interaction IMessageLayerSecurityChannelSubscription;
+    typedef boost::shared_ptr<IMessageLayerSecurityChannelSubscription> IMessageLayerSecurityChannelSubscriptionPtr;
+    typedef boost::weak_ptr<IMessageLayerSecurityChannelSubscription> IMessageLayerSecurityChannelSubscriptionWeakPtr;
+    typedef zsLib::ProxySubscriptions<IMessageLayerSecurityChannelDelegate, IMessageLayerSecurityChannelSubscription> IMessageLayerSecurityChannelDelegateSubscriptions;
+
+    interaction IRSAPrivateKey;
+    typedef boost::shared_ptr<IRSAPrivateKey> IRSAPrivateKeyPtr;
+    typedef boost::weak_ptr<IRSAPrivateKey> IRSAPrivateKeyWeakPtr;
+
+    interaction IRSAPublicKey;
+    typedef boost::shared_ptr<IRSAPublicKey> IRSAPublicKeyPtr;
+    typedef boost::weak_ptr<IRSAPublicKey> IRSAPublicKeyWeakPtr;
+    
     interaction IRUDPListener;
     typedef boost::shared_ptr<IRUDPListener> IRUDPListenerPtr;
     typedef boost::weak_ptr<IRUDPListener> IRUDPListenerWeakPtr;
@@ -189,6 +218,49 @@ namespace openpeer
     typedef boost::shared_ptr<STUNPacket> STUNPacketPtr;
     typedef boost::weak_ptr<STUNPacket> STUNPacketWeakPtr;
 
+    interaction ITCPMessaging;
+    typedef boost::shared_ptr<ITCPMessaging> ITCPMessagingPtr;
+    typedef boost::weak_ptr<ITCPMessaging> ITCPMessagingWeakPtr;
+
+    interaction ITCPMessagingDelegate;
+    typedef boost::shared_ptr<ITCPMessagingDelegate> ITCPMessagingDelegatePtr;
+    typedef boost::weak_ptr<ITCPMessagingDelegate> ITCPMessagingDelegateWeakPtr;
+
+    interaction ITCPMessagingSubscription;
+    typedef boost::shared_ptr<ITCPMessagingSubscription> ITCPMessagingSubscriptionPtr;
+    typedef boost::weak_ptr<ITCPMessagingSubscription> ITCPMessagingSubscriptionWeakPtr;
+    typedef zsLib::ProxySubscriptions<ITCPMessagingDelegate, ITCPMessagingSubscription> ITCPMessagingDelegateSubscriptions;
+
+    interaction ITransportStream;
+    typedef boost::shared_ptr<ITransportStream> ITransportStreamPtr;
+    typedef boost::weak_ptr<ITransportStream> ITransportStreamWeakPtr;
+
+    interaction ITransportStreamWriter;
+    typedef boost::shared_ptr<ITransportStreamWriter> ITransportStreamWriterPtr;
+    typedef boost::weak_ptr<ITransportStreamWriter> ITransportStreamWriterWeakPtr;
+
+    interaction ITransportStreamWriterDelegate;
+    typedef boost::shared_ptr<ITransportStreamWriterDelegate> ITransportStreamWriterDelegatePtr;
+    typedef boost::weak_ptr<ITransportStreamWriterDelegate> ITransportStreamWriterDelegateWeakPtr;
+
+    interaction ITransportStreamWriterSubscription;
+    typedef boost::shared_ptr<ITransportStreamWriterSubscription> ITransportStreamWriterSubscriptionPtr;
+    typedef boost::weak_ptr<ITransportStreamWriterSubscription> ITransportStreamWriterSubscriptionWeakPtr;
+    typedef zsLib::ProxySubscriptions<ITransportStreamWriterDelegate, ITransportStreamWriterSubscription> ITransportStreamWriterDelegateSubscriptions;
+
+    interaction ITransportStreamReader;
+    typedef boost::shared_ptr<ITransportStreamReader> ITransportStreamReaderPtr;
+    typedef boost::weak_ptr<ITransportStreamReader> ITransportStreamReaderWeakPtr;
+
+    interaction ITransportStreamReaderDelegate;
+    typedef boost::shared_ptr<ITransportStreamReaderDelegate> ITransportStreamReaderDelegatePtr;
+    typedef boost::weak_ptr<ITransportStreamReaderDelegate> ITransportStreamReaderDelegateWeakPtr;
+
+    interaction ITransportStreamReaderSubscription;
+    typedef boost::shared_ptr<ITransportStreamReaderSubscription> ITransportStreamReaderSubscriptionPtr;
+    typedef boost::weak_ptr<ITransportStreamReaderSubscription> ITransportStreamReaderSubscriptionWeakPtr;
+    typedef zsLib::ProxySubscriptions<ITransportStreamReaderDelegate, ITransportStreamReaderSubscription> ITransportStreamReaderDelegateSubscriptions;
+
     interaction ITURNSocket;
     typedef boost::shared_ptr<ITURNSocket> ITURNSocketPtr;
     typedef boost::weak_ptr<ITURNSocket> ITURNSocketWeakPtr;
@@ -197,5 +269,10 @@ namespace openpeer
     typedef boost::shared_ptr<ITURNSocketDelegate> ITURNSocketDelegatePtr;
     typedef boost::weak_ptr<ITURNSocketDelegate> ITURNSocketDelegateWeakPtr;
     typedef zsLib::Proxy<ITURNSocketDelegate> ITURNSocketDelegateProxy;
+
+    interaction IWakeDelegate;
+    typedef boost::shared_ptr<IWakeDelegate> IWakeDelegatePtr;
+    typedef boost::weak_ptr<IWakeDelegate> IWakeDelegateWeakPtr;
+    typedef zsLib::Proxy<IWakeDelegate> IWakeDelegateProxy;
   }
 }

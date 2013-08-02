@@ -29,8 +29,11 @@
 
  */
 
-#include <openpeer/stack/internal/stack_RSAPublicKey.h>
-#include <openpeer/stack/internal/stack_RSAPrivateKey.h>
+#include <openpeer/services/internal/services_RSAPublicKey.h>
+#include <openpeer/services/internal/services_RSAPrivateKey.h>
+#include <openpeer/services/internal/services_Helper.h>
+
+#include <zsLib/XML.h>
 #include <zsLib/Log.h>
 #include <zsLib/Stringize.h>
 #include <zsLib/helpers.h>
@@ -40,16 +43,16 @@
 #include <cryptopp/rsa.h>
 
 
-namespace openpeer { namespace stack { ZS_DECLARE_SUBSYSTEM(openpeer_stack) } }
+namespace openpeer { namespace services { ZS_DECLARE_SUBSYSTEM(openpeer_services) } }
 
 
 namespace openpeer
 {
-  namespace stack
+  namespace services
   {
     namespace internal
     {
-      using zsLib::Stringize;
+      typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
 
       typedef CryptoPP::ByteQueue ByteQueue;
       typedef CryptoPP::AutoSeededRandomPool AutoSeededRandomPool;
@@ -133,6 +136,7 @@ namespace openpeer
         try
         {
           pThis->mPublicKey.Load(byteQueue);
+          pThis->mFingerprint = IHelper::convertToHex(*IHelper::hash(buffer));
           if (!pThis->mPublicKey.Validate(rng, 3)) {
             ZS_LOG_ERROR(Basic, "Failed to load an existing public key")
             return RSAPublicKeyPtr();
@@ -161,6 +165,12 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      String RSAPublicKey::getFingerprint() const
+      {
+        return mFingerprint;
+      }
+
+      //-----------------------------------------------------------------------
       bool RSAPublicKey::verify(
                                 const SecureByteBlock &inOriginalBufferSigned,
                                 const SecureByteBlock &inSignature
@@ -178,6 +188,55 @@ namespace openpeer
         return verify((const BYTE *)inOriginalStringSigned.c_str(), inOriginalStringSigned.length(), inSignature);
       }
 
+      //-----------------------------------------------------------------------
+      bool RSAPublicKey::verifySignature(ElementPtr signedEl) const
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(!signedEl)
+
+        ElementPtr signatureEl;
+        signedEl = IHelper::getSignatureInfo(signedEl, &signatureEl);
+
+        if (!signedEl) {
+          ZS_LOG_WARNING(Detail, log("signature validation failed because no signed element found"))
+          return false;
+        }
+
+        // found the signature reference, now check if the peer URIs match - they must...
+        try {
+          String algorithm = signatureEl->findFirstChildElementChecked("algorithm")->getTextDecoded();
+          if (algorithm != OPENPEER_SERVICES_JSON_SIGNATURE_ALGORITHM) {
+            ZS_LOG_WARNING(Detail, log("signature validation algorithm is not understood, algorithm=") + algorithm)
+            return false;
+          }
+
+          String signatureDigestAsString = signatureEl->findFirstChildElementChecked("digestValue")->getTextDecoded();
+
+          ElementPtr canonicalSigned = Helper::cloneAsCanonicalJSON(signedEl);
+
+          GeneratorPtr generator = Generator::createJSONGenerator();
+          boost::shared_array<char> signedElAsJSON = generator->write(canonicalSigned);
+
+          SecureByteBlockPtr actualDigest = IHelper::hash((const char *)(signedElAsJSON.get()), IHelper::HashAlgorthm_SHA1);
+
+          if (0 != IHelper::compare(*actualDigest, *IHelper::convertFromBase64(signatureDigestAsString))) {
+            ZS_LOG_WARNING(Detail, log("digest values did not match, signature digest=") + signatureDigestAsString + ", actual digest=" + IHelper::convertToBase64(*actualDigest))
+            return false;
+          }
+
+          SecureByteBlockPtr signatureDigestSigned = IHelper::convertFromBase64(signatureEl->findFirstChildElementChecked("digestSigned")->getTextDecoded());
+
+          if (!verify(*actualDigest, *signatureDigestSigned)) {
+            ZS_LOG_WARNING(Detail, log("signature failed to validate") + ", fingerprint=" + mFingerprint)
+            return false;
+          }
+
+        } catch(CheckFailed &) {
+          ZS_LOG_WARNING(Detail, log("signature missing element"))
+          return false;
+        }
+        return true;
+      }
+      
       //-----------------------------------------------------------------------
       SecureByteBlockPtr RSAPublicKey::encrypt(const SecureByteBlock &buffer) const
       {
@@ -213,7 +272,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String RSAPublicKey::log(const char *message) const
       {
-        return String("RSAPublicKey [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("RSAPublicKey [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------

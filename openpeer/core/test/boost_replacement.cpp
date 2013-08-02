@@ -34,11 +34,11 @@
 
 #include <zsLib/types.h>
 #include <zsLib/helpers.h>
-#include <openpeer/services/IHelper.h>
+#include <openpeer/services/ILogger.h>
 
 #include <iostream>
 
-typedef openpeer::services::IHelper IHelper;
+typedef openpeer::services::ILogger ILogger;
 
 void doFakeGUITest();
 void doMediaEngineTest();
@@ -69,19 +69,19 @@ namespace BoostReplacement
   void installLogger()
   {
     std::cout << "INSTALLING LOGGER...\n\n";
-    IHelper::setLogLevel("zsLib", zsLib::Log::Trace);
-    IHelper::setLogLevel("openpeer_services", zsLib::Log::Trace);
+    ILogger::setLogLevel("zsLib", zsLib::Log::Trace);
+    ILogger::setLogLevel("openpeer_services", zsLib::Log::Trace);
     
     if (OPENPEER_CORE_TEST_USE_STDOUT_LOGGING) {
-      IHelper::installStdOutLogger(false);
+      ILogger::installStdOutLogger(false);
     }
     
     if (OPENPEER_CORE_TEST_USE_FIFO_LOGGING) {
-      IHelper::installFileLogger(OPENPEER_CORE_TEST_FIFO_LOGGING_FILE, true);
+      ILogger::installFileLogger(OPENPEER_CORE_TEST_FIFO_LOGGING_FILE, true);
     }
     
     if (OPENPEER_CORE_TEST_USE_TELNET_LOGGING) {
-      IHelper::installTelnetLogger(OPENPEER_CORE_TEST_TELNET_LOGGING_PORT, 60, true);
+      ILogger::installTelnetLogger(OPENPEER_CORE_TEST_TELNET_LOGGING_PORT, 60, true);
     }
     
     std::cout << "INSTALLED LOGGER...\n\n";
@@ -92,13 +92,13 @@ namespace BoostReplacement
     std::cout << "REMOVING LOGGER...\n\n";
     
     if (OPENPEER_CORE_TEST_USE_STDOUT_LOGGING) {
-      IHelper::uninstallStdOutLogger();
+      ILogger::uninstallStdOutLogger();
     }
     if (OPENPEER_CORE_TEST_USE_FIFO_LOGGING) {
-      IHelper::uninstallFileLogger();
+      ILogger::uninstallFileLogger();
     }
     if (OPENPEER_CORE_TEST_USE_TELNET_LOGGING) {
-      IHelper::uninstallTelnetLogger();
+      ILogger::uninstallTelnetLogger();
     }
     
     std::cout << "REMOVED LOGGER...\n\n";
@@ -115,6 +115,6 @@ namespace BoostReplacement
   void runAllTests()
   {
     //doFakeGUITest();
-    doMediaEngineTest();
+    //doMediaEngineTest();
   }
 }

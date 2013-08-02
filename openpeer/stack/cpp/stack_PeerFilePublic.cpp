@@ -33,9 +33,10 @@
 #include <openpeer/stack/internal/stack_PeerFilePublic.h>
 #include <openpeer/stack/internal/stack_PeerFilePrivate.h>
 #include <openpeer/stack/internal/stack_Helper.h>
-#include <openpeer/stack/message/IMessageHelper.h>
 #include <openpeer/stack/IPeer.h>
-#include <openpeer/stack/IRSAPublicKey.h>
+
+#include <openpeer/services/IHelper.h>
+#include <openpeer/services/IRSAPublicKey.h>
 
 #include <zsLib/Log.h>
 #include <zsLib/XML.h>
@@ -54,7 +55,7 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
+      using services::IHelper;
 
       typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
 
@@ -190,7 +191,7 @@ namespace openpeer
           return Time();
         }
         try {
-          return message::IMessageHelper::stringToTime(sectionAEl->findFirstChildElementChecked("created")->getTextDecoded());
+          return IHelper::stringToTime(sectionAEl->findFirstChildElementChecked("created")->getTextDecoded());
         } catch(CheckFailed &) {
           ZS_LOG_WARNING(Detail, log("failed to find created, peer URI=") + mPeerURI)
         }
@@ -206,7 +207,7 @@ namespace openpeer
           return Time();
         }
         try {
-          return message::IMessageHelper::stringToTime(sectionAEl->findFirstChildElementChecked("expires")->getTextDecoded());
+          return IHelper::stringToTime(sectionAEl->findFirstChildElementChecked("expires")->getTextDecoded());
         } catch(CheckFailed &) {
           ZS_LOG_WARNING(Detail, log("failed to find expires, peer URI=") + mPeerURI)
         }
@@ -299,53 +300,37 @@ namespace openpeer
         ZS_THROW_BAD_STATE_IF(!mPublicKey)
         ZS_THROW_INVALID_ARGUMENT_IF(!signedEl)
 
+        String peerURI;
+        String fullPublicKey;
+        String fingerprint;
+
         ElementPtr signatureEl;
-        signedEl = IHelper::getSignatureInfo(signedEl, &signatureEl);
+        signedEl = stack::IHelper::getSignatureInfo(signedEl, &signatureEl, &peerURI, NULL, NULL, NULL, &fullPublicKey, &fingerprint);
 
         if (!signedEl) {
           ZS_LOG_WARNING(Detail, log("signature validation failed because no signed element found"))
           return false;
         }
 
-        // found the signature reference, now check if the peer URIs match - they must...
-        try {
-          String foundURI = signatureEl->findFirstChildElementChecked("key")->findFirstChildElementChecked("uri")->getTextDecoded();
-          if (foundURI != mPeerURI) {
-            ZS_LOG_WARNING(Detail, log("signature validation failed since was not signed by this peer file, signature's URI=") + foundURI + ", peer file URI=" + mPeerURI)
+        if (peerURI.hasData()) {
+          if (peerURI != mPeerURI) {
+            ZS_LOG_WARNING(Detail, log("signature validation failed since was not signed by this peer file") + ", signature's URI=" + peerURI + ", peer file URI=" + mPeerURI)
             return false;
           }
+        }
 
-          String algorithm = signatureEl->findFirstChildElementChecked("algorithm")->getTextDecoded();
-          if (algorithm != OPENPEER_STACK_PEER_FILE_SIGNATURE_ALGORITHM) {
-            ZS_LOG_WARNING(Detail, log("signature validation algorithm is not understood, algorithm=") + algorithm)
+        if (fingerprint.hasData()) {
+          if (fingerprint != mPublicKey->getFingerprint()) {
+            ZS_LOG_WARNING(Detail, log("signature validation failed since was not signed by this peer file") + ", signature's fingerprint=" + fingerprint + ", peer fingerprint=" + mPublicKey->getFingerprint() + ", peer file URI=" + mPeerURI)
             return false;
           }
+        }
 
-          String signatureDigestAsString = signatureEl->findFirstChildElementChecked("digestValue")->getTextDecoded();
-
-          ElementPtr canonicalSigned = Helper::cloneAsCanonicalJSON(signedEl);
-
-          GeneratorPtr generator = Generator::createJSONGenerator();
-          boost::shared_array<char> signedElAsJSON = generator->write(canonicalSigned);
-
-          SecureByteBlockPtr actualDigest = IHelper::hash((const char *)(signedElAsJSON.get()), IHelper::HashAlgorthm_SHA1);
-
-          if (0 != IHelper::compare(*actualDigest, *IHelper::convertFromBase64(signatureDigestAsString))) {
-            ZS_LOG_WARNING(Detail, log("digest values did not match, signature digest=") + signatureDigestAsString + ", actual digest=" + IHelper::convertToBase64(*actualDigest))
-            return false;
-          }
-
-          SecureByteBlockPtr signatureDigestSigned = IHelper::convertFromBase64(signatureEl->findFirstChildElementChecked("digestSigned")->getTextDecoded());
-
-          if (!mPublicKey->verify(*actualDigest, *signatureDigestSigned)) {
-            ZS_LOG_WARNING(Detail, log("signature failed to validate") + ", peer URI=" + mPeerURI)
-            return false;
-          }
-
-        } catch(CheckFailed &) {
-          ZS_LOG_WARNING(Detail, log("signature missing element"))
+        if (!mPublicKey->verifySignature(signedEl)) {
+          ZS_LOG_WARNING(Detail, log("signature failed to validate") + ", peer URI=" + peerURI + ", fingerprint=" + fingerprint + ", full public key=" + fullPublicKey)
           return false;
         }
+
         return true;
       }
 
@@ -367,10 +352,10 @@ namespace openpeer
       String PeerFilePublic::getDebugValueString(bool includeCommaPrefix) const
       {
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("peer file public id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("peer file public id", string(mID), firstTime) +
                Helper::getDebugValue("peer uri", mPeerURI, firstTime) +
-               Helper::getDebugValue("created", IMessageHelper::timeToString(getCreated()), firstTime) +
-               Helper::getDebugValue("expires", IMessageHelper::timeToString(getExpires()), firstTime) +
+               Helper::getDebugValue("created", IHelper::timeToString(getCreated()), firstTime) +
+               Helper::getDebugValue("expires", IHelper::timeToString(getExpires()), firstTime) +
                Helper::getDebugValue("find secret", getFindSecret(), firstTime);
       }
 
@@ -431,7 +416,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String PeerFilePublic::log(const char *message) const
       {
-        return String("PeerFilePublic [") + Stringize<PUID>(mID).string() + "] " + message;
+        return String("PeerFilePublic [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -456,7 +441,7 @@ namespace openpeer
           {
             ULONG length = 0;
             ElementPtr bundleAEl = sectionAEl->getParentElementChecked();
-            ElementPtr canonicalBundleAEl = Helper::cloneAsCanonicalJSON(bundleAEl);
+            ElementPtr canonicalBundleAEl = services::IHelper::cloneAsCanonicalJSON(bundleAEl);
             boost::shared_array<char> sectionAsString = generator->write(canonicalBundleAEl, &length);
 
             SHA256 sha256;
@@ -466,7 +451,7 @@ namespace openpeer
             sha256.Update((const BYTE *)(sectionAsString.get()), length);
             sha256.Final(bundleHash);
 
-            contactID = IHelper::convertToHex(bundleHash);
+            contactID = services::IHelper::convertToHex(bundleHash);
           }
 
           ElementPtr domainEl;
@@ -498,7 +483,7 @@ namespace openpeer
             return false;
           }
 
-          SecureByteBlockPtr x509Certificate = IHelper::convertFromBase64(signatureEl->findFirstChildElementChecked("key")->findFirstChildElementChecked("x509Data")->getTextDecoded());
+          SecureByteBlockPtr x509Certificate = services::IHelper::convertFromBase64(signatureEl->findFirstChildElementChecked("key")->findFirstChildElementChecked("x509Data")->getTextDecoded());
 
           mPublicKey = IRSAPublicKey::load(*x509Certificate);
           if (!mPublicKey) {
@@ -508,24 +493,24 @@ namespace openpeer
 
           {
             ULONG length = 0;
-            ElementPtr canonicalSectionAEl = Helper::cloneAsCanonicalJSON(sectionAEl);
+            ElementPtr canonicalSectionAEl = services::IHelper::cloneAsCanonicalJSON(sectionAEl);
             boost::shared_array<char> sectionAAsString = generator->write(canonicalSectionAEl, &length);
 
-            SecureByteBlockPtr sectionHash = IHelper::hash((const char *)(sectionAAsString.get()), IHelper::HashAlgorthm_SHA1);
+            SecureByteBlockPtr sectionHash = services::IHelper::hash((const char *)(sectionAAsString.get()), services::IHelper::HashAlgorthm_SHA1);
             String algorithm = signatureEl->findFirstChildElementChecked("algorithm")->getTextDecoded();
             if (OPENPEER_STACK_PEER_FILE_SIGNATURE_ALGORITHM != algorithm) {
               ZS_LOG_WARNING(Detail, log("signature algorithm was not understood, peer URI=") + mPeerURI + ", algorithm=" + algorithm + ", expecting=" + OPENPEER_STACK_PEER_FILE_SIGNATURE_ALGORITHM)
               return false;
             }
 
-            SecureByteBlockPtr digestValue = IHelper::convertFromBase64(signatureEl->findFirstChildElementChecked("digestValue")->getTextDecoded());
+            SecureByteBlockPtr digestValue = services::IHelper::convertFromBase64(signatureEl->findFirstChildElementChecked("digestValue")->getTextDecoded());
 
-            if (0 != IHelper::compare(*sectionHash, *digestValue)) {
-              ZS_LOG_ERROR(Detail, log("digest value does not match on section A signature on public peer file, peer URI=") + mPeerURI +  ", calculated digest=" + IHelper::convertToBase64(*sectionHash) + ", signature digest=" + IHelper::convertToBase64(*digestValue))
+            if (0 != services::IHelper::compare(*sectionHash, *digestValue)) {
+              ZS_LOG_ERROR(Detail, log("digest value does not match on section A signature on public peer file, peer URI=") + mPeerURI +  ", calculated digest=" + services::IHelper::convertToBase64(*sectionHash) + ", signature digest=" + services::IHelper::convertToBase64(*digestValue))
               return false;
             }
 
-            SecureByteBlockPtr digestSigned =  IHelper::convertFromBase64(signatureEl->findFirstChildElementChecked("digestSigned")->getTextDecoded());
+            SecureByteBlockPtr digestSigned =  services::IHelper::convertFromBase64(signatureEl->findFirstChildElementChecked("digestSigned")->getTextDecoded());
             if (!mPublicKey->verify(*sectionHash, *digestSigned)) {
               ZS_LOG_ERROR(Detail, log("signature on section A of public peer file failed to validate, peer URI=") + mPeerURI)
               return false;

@@ -43,7 +43,7 @@ namespace openpeer
   namespace stack
   {
     using internal::Helper;
-    using zsLib::Stringize;
+    using zsLib::string;
 
     bool LocationInfo::hasData() const
     {
@@ -67,7 +67,7 @@ namespace openpeer
              Helper::getDebugValue("os", mOS, firstTime) +
              Helper::getDebugValue("system", mSystem, firstTime) +
              Helper::getDebugValue("host", mHost, firstTime) +
-             Helper::getDebugValue("candidates", mCandidates.size() > 0 ? Stringize<size_t>(mCandidates.size()).string() : String(), firstTime);
+             Helper::getDebugValue("candidates", mCandidates.size() > 0 ? string(mCandidates.size()) : String(), firstTime);
     }
   }
 }

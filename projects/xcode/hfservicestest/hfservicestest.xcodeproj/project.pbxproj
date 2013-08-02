@@ -22,6 +22,7 @@
 		0063C49D16CAA46A00E6DB4D /* libboost_date_time.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063C49A16CAA46A00E6DB4D /* libboost_date_time.a */; };
 		0063C49E16CAA46A00E6DB4D /* libboost_regex.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063C49B16CAA46A00E6DB4D /* libboost_regex.a */; };
 		0063C49F16CAA46A00E6DB4D /* libboost_thread.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063C49C16CAA46A00E6DB4D /* libboost_thread.a */; };
+		00ABD44E17A8431D00178078 /* TestTCPMessagingLoopback.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00ABD44C17A8431D00178078 /* TestTCPMessagingLoopback.cpp */; };
 		00AD9015177BF88D009590EB /* libhfservices.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0063D2D916CB0A9400E6DB4D /* libhfservices.a */; };
 		00AD9016177BF8EF009590EB /* libcryptopp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C90628177BF5390090BD8B /* libcryptopp.a */; };
 		00AD9017177BF8FE009590EB /* libzsLib.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C90618177BF4F50090BD8B /* libzsLib.a */; };
@@ -119,6 +120,7 @@
 		0063C49B16CAA46A00E6DB4D /* libboost_regex.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_regex.a; path = ../../../libs/boost/staging/lib/libboost_regex.a; sourceTree = SOURCE_ROOT; };
 		0063C49C16CAA46A00E6DB4D /* libboost_thread.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libboost_thread.a; path = ../../../libs/boost/staging/lib/libboost_thread.a; sourceTree = SOURCE_ROOT; };
 		0063D2D416CB0A9300E6DB4D /* hfservices.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = hfservices.xcodeproj; path = ../hfservices/hfservices.xcodeproj; sourceTree = "<group>"; };
+		00ABD44C17A8431D00178078 /* TestTCPMessagingLoopback.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestTCPMessagingLoopback.cpp; sourceTree = "<group>"; };
 		00C90613177BF4F50090BD8B /* zsLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = zsLib.xcodeproj; path = ../../../libs/zsLib/projects/xcode/zsLib/zsLib.xcodeproj; sourceTree = "<group>"; };
 		00C9061B177BF5130090BD8B /* udns.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = udns.xcodeproj; path = ../../../libs/udns/projects/xcode/udns/udns.xcodeproj; sourceTree = "<group>"; };
 		00C90623177BF5380090BD8B /* cryptopp.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = cryptopp.xcodeproj; path = ../../../libs/cryptopp/projects/xcode/cryptopp/cryptopp.xcodeproj; sourceTree = "<group>"; };
@@ -195,6 +197,7 @@
 				0063C29016CAA03800E6DB4D /* TestRUDPListener.cpp */,
 				0063C29116CAA03800E6DB4D /* TestSTUNDiscovery.cpp */,
 				0063C29216CAA03800E6DB4D /* TestTURNSocket.cpp */,
+				00ABD44C17A8431D00178078 /* TestTCPMessagingLoopback.cpp */,
 			);
 			path = test;
 			sourceTree = "<group>";
@@ -375,6 +378,7 @@
 				0063C3F016CAA03800E6DB4D /* TestRUDPListener.cpp in Sources */,
 				0063C3F116CAA03800E6DB4D /* TestSTUNDiscovery.cpp in Sources */,
 				0063C3F216CAA03800E6DB4D /* TestTURNSocket.cpp in Sources */,
+				00ABD44E17A8431D00178078 /* TestTCPMessagingLoopback.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

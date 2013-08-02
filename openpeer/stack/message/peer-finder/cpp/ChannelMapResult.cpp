@@ -29,42 +29,51 @@
 
  */
 
-#pragma once
-
-#include <openpeer/stack/types.h>
-
+#include <openpeer/stack/message/peer-finder/ChannelMapResult.h>
+#include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
 
 namespace openpeer
 {
   namespace stack
   {
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    #pragma mark
-    #pragma mark IRSAPublicKey
-    #pragma mark
-
-    interaction IRSAPublicKey
+    namespace message
     {
-      static IRSAPublicKeyPtr generate(IRSAPrivateKeyPtr &outPrivateKey);
+      namespace peer_finder
+      {
+        //---------------------------------------------------------------------
+        ChannelMapResultPtr ChannelMapResult::convert(MessagePtr message)
+        {
+          return boost::dynamic_pointer_cast<ChannelMapResult>(message);
+        }
 
-      static IRSAPublicKeyPtr load(const SecureByteBlock &buffer);
+        //---------------------------------------------------------------------
+        ChannelMapResult::ChannelMapResult()
+        {
+        }
 
-      virtual SecureByteBlockPtr save() const = 0;
+        //---------------------------------------------------------------------
+        ChannelMapResultPtr ChannelMapResult::create(
+                                                     ElementPtr root,
+                                                     IMessageSourcePtr messageSource
+                                                     )
+        {
+          ChannelMapResultPtr ret(new ChannelMapResult);
+          IMessageHelper::fill(*ret, root, messageSource);
+          return ret;
+        }
 
-      virtual bool verify(
-                          const SecureByteBlock &inOriginalBufferSigned,
-                          const SecureByteBlock &inSignature
-                          ) const = 0;
+        //---------------------------------------------------------------------
+        bool ChannelMapResult::hasAttribute(AttributeTypes type) const
+        {
+          switch (type)
+          {
+            default:                        break;
+          }
+          return MessageResult::hasAttribute((MessageResult::AttributeTypes)type);
+        }
 
-      virtual bool verify(
-                          const String &inOriginalStringSigned,
-                          const SecureByteBlock &inSignature
-                          ) const = 0;
 
-      virtual SecureByteBlockPtr encrypt(const SecureByteBlock &buffer) const = 0;
-    };
+      }
+    }
   }
 }

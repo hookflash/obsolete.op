@@ -32,7 +32,8 @@
 #include <openpeer/stack/message/namespace-grant/NamespaceGrantStartNotify.h>
 #include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
 #include <openpeer/stack/internal/stack_Stack.h>
-#include <openpeer/stack/IHelper.h>
+
+#include <openpeer/services/IHelper.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>
@@ -47,6 +48,8 @@ namespace openpeer
   {
     namespace message
     {
+      using services::IHelper;
+
       namespace namespace_grant
       {
         using zsLib::Seconds;

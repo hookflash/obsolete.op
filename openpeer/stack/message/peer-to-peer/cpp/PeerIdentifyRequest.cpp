@@ -34,10 +34,11 @@
 #include <openpeer/stack/IPeerFilePublic.h>
 #include <openpeer/stack/IPeerFilePrivate.h>
 #include <openpeer/stack/IPeerFiles.h>
-#include <openpeer/stack/IHelper.h>
 #include <openpeer/stack/internal/stack_Account.h>
 #include <openpeer/stack/internal/stack_Location.h>
 #include <openpeer/stack/internal/stack_Peer.h>
+
+#include <openpeer/services/IHelper.h>
 
 #include <zsLib/Stringize.h>
 #include <zsLib/helpers.h>
@@ -53,9 +54,10 @@ namespace openpeer
   {
     namespace message
     {
+      using services::IHelper;
+
       namespace peer_to_peer
       {
-        using zsLib::Stringize;
         using zsLib::Seconds;
         using namespace stack::internal;
         using namespace message::internal;
@@ -120,9 +122,9 @@ namespace openpeer
               return PeerIdentifyRequestPtr();
             }
 
-            Time expires = IMessageHelper::stringToTime(peerIdentityProofEl->findFirstChildElementChecked("expires")->getText());
+            Time expires = IHelper::stringToTime(peerIdentityProofEl->findFirstChildElementChecked("expires")->getText());
             if (zsLib::now() > expires) {
-              ZS_LOG_WARNING(Detail, "PeerIdentifyRequest [] request expired, expires=" + IMessageHelper::timeToString(expires) + ", now=" + IMessageHelper::timeToString(zsLib::now()))
+              ZS_LOG_WARNING(Detail, "PeerIdentifyRequest [] request expired, expires=" + IHelper::timeToString(expires) + ", now=" + IHelper::timeToString(zsLib::now()))
               return PeerIdentifyRequestPtr();
             }
 
@@ -212,7 +214,7 @@ namespace openpeer
           peerIdentityProofEl->adoptAsLastChild(IMessageHelper::createElementWithText("nonce", IHelper::randomString(32)));
 
           Time expires = zsLib::now() + Duration(Seconds(OPENPEER_STACK_MESSAGE_PEER_IDENTIFY_REQUEST_LIFETIME_IN_SECONDS));
-          peerIdentityProofEl->adoptAsLastChild(IMessageHelper::createElementWithText("expires", IMessageHelper::timeToString(expires)));
+          peerIdentityProofEl->adoptAsLastChild(IMessageHelper::createElementWithText("expires", IHelper::timeToString(expires)));
 
           if (hasAttribute(AttributeType_FindSecret)) {
             peerIdentityProofEl->adoptAsLastChild(IMessageHelper::createElementWithText("findSecret", mFindSecret));

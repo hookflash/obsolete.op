@@ -38,10 +38,12 @@
 
 #include <openpeer/stack/IAccount.h>
 #include <openpeer/stack/IPeerSubscription.h>
-#include <openpeer/stack/IHelper.h>
 #include <openpeer/stack/IPublicationRepository.h>
 #include <openpeer/stack/IServiceLockbox.h>
 #include <openpeer/stack/IServiceNamespaceGrant.h>
+
+#include <openpeer/services/IHelper.h>
+#include <openpeer/services/IWakeDelegate.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 
@@ -51,7 +53,7 @@ namespace openpeer
   {
     namespace internal
     {
-      typedef stack::IHelper::SplitMap SplitMap;
+      typedef services::IHelper::SplitMap SplitMap;
 
 
       //-----------------------------------------------------------------------
@@ -181,19 +183,6 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IAccountAsyncDelegate
-      #pragma mark
-
-      interaction IAccountAsyncDelegate
-      {
-        virtual void onStep() = 0;
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark Account
       #pragma mark
 
@@ -210,16 +199,11 @@ namespace openpeer
                       public IPeerSubscriptionDelegate,
                       public IServiceLockboxSessionDelegate,
                       public IServiceNamespaceGrantSessionDelegate,
-                      public IAccountAsyncDelegate
+                      public IWakeDelegate
       {
       public:
         friend interaction IAccountFactory;
         friend interaction IAccount;
-
-        interaction IContactSubscriptionAsyncDelegate;
-        typedef boost::shared_ptr<IContactSubscriptionAsyncDelegate> IContactSubscriptionAsyncDelegatePtr;
-        typedef boost::weak_ptr<IContactSubscriptionAsyncDelegate> IContactSubscriptionAsyncDelegateWeakPtr;
-        typedef zsLib::Proxy<IContactSubscriptionAsyncDelegate> IContactSubscriptionAsyncDelegateProxy;
 
         class ContactSubscription;
         friend class ContactSubscription;
@@ -460,10 +444,10 @@ namespace openpeer
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark Account => IAccountAsyncDelegate
+        #pragma mark Account => IWakeDelegate
         #pragma mark
 
-        virtual void onStep();
+        virtual void onWake();
 
       protected:
         //---------------------------------------------------------------------
@@ -529,24 +513,11 @@ namespace openpeer
         //---------------------------------------------------------------------
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark Account::IContactSubscriptionAsyncDelegate
-        #pragma mark
-
-        interaction IContactSubscriptionAsyncDelegate
-        {
-          virtual void onStep() = 0;
-        };
-
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        #pragma mark
         #pragma mark Account::ContactSubscription
         #pragma mark
 
         class ContactSubscription : public MessageQueueAssociator,
-                                    public IContactSubscriptionAsyncDelegate,
+                                    public IWakeDelegate,
                                     public IPeerSubscriptionDelegate,
                                     public ITimerDelegate
         {
@@ -602,10 +573,10 @@ namespace openpeer
 
           //-------------------------------------------------------------------
           #pragma mark
-          #pragma mark Account::ContactSubscription => IContactSubscriptionAsyncDelegate
+          #pragma mark Account::ContactSubscription => IWakeDelegate
           #pragma mark
 
-          virtual void onStep();
+          virtual void onWake();
 
           //-------------------------------------------------------------------
           #pragma mark
@@ -908,10 +879,3 @@ namespace openpeer
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(openpeer::core::internal::IAccountAsyncDelegate)
-ZS_DECLARE_PROXY_METHOD_0(onStep)
-ZS_DECLARE_PROXY_END()
-
-ZS_DECLARE_PROXY_BEGIN(openpeer::core::internal::Account::IContactSubscriptionAsyncDelegate)
-ZS_DECLARE_PROXY_METHOD_0(onStep)
-ZS_DECLARE_PROXY_END()

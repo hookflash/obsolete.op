@@ -43,6 +43,8 @@
 #include <openpeer/stack/message/peer-to-peer/PeerIdentifyResult.h>
 #include <openpeer/stack/message/peer-to-peer/PeerKeepAliveResult.h>
 
+#include <openpeer/services/IWakeDelegate.h>
+
 #include <zsLib/MessageQueueAssociator.h>
 
 #include <map>
@@ -126,26 +128,13 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IAccountPeerLocationAsyncDelegate
-      #pragma mark
-
-      interaction IAccountPeerLocationAsyncDelegate
-      {
-        virtual void onStep() = 0;
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark AccountPeerLocation
       #pragma mark
 
       class AccountPeerLocation : public Noop,
                                   public MessageQueueAssociator,
                                   public IAccountPeerLocationForAccount,
-                                  public IAccountPeerLocationAsyncDelegate,
+                                  public IWakeDelegate,
                                   public services::IRUDPICESocketDelegate,
                                   public services::IRUDPICESocketSessionDelegate,
                                   public services::IRUDPMessagingDelegate,
@@ -220,10 +209,10 @@ namespace openpeer
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark AccountPeerLocation => IAccountPeerLocationAsyncDelegate
+        #pragma mark AccountPeerLocation => IWakeDelegate
         #pragma mark
 
-        virtual void onStep();
+        virtual void onWake();
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -410,8 +399,4 @@ ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::internal::AccountPeerLocation::Account
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::message::MessagePtr, MessagePtr)
 ZS_DECLARE_PROXY_METHOD_2(onAccountPeerLocationStateChanged, AccountPeerLocationPtr, AccountStates)
 ZS_DECLARE_PROXY_METHOD_2(onAccountPeerLocationMessageIncoming, AccountPeerLocationPtr, MessagePtr)
-ZS_DECLARE_PROXY_END()
-
-ZS_DECLARE_PROXY_BEGIN(openpeer::stack::internal::IAccountPeerLocationAsyncDelegate)
-ZS_DECLARE_PROXY_METHOD_0(onStep)
 ZS_DECLARE_PROXY_END()

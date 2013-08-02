@@ -203,6 +203,88 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IFinderRelayChannelFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IFinderRelayChannelFactory &IFinderRelayChannelFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      FinderRelayChannelPtr IFinderRelayChannelFactory::connect(
+                                                                IFinderRelayChannelDelegatePtr delegate,
+                                                                AccountPtr account,
+                                                                ITransportStreamPtr receiveStream,
+                                                                ITransportStreamPtr sendStream,
+                                                                IPAddress remoteFinderIP,
+                                                                const char *localContextID,
+                                                                const char *relayAccessToken,
+                                                                const char *relayAccessSecretProof,
+                                                                const char *encryptDataUsingEncodingPassphrase
+                                                                )
+      {
+        return FinderRelayChannel::connect(delegate, account, receiveStream, sendStream, remoteFinderIP, localContextID, relayAccessToken, relayAccessSecretProof, encryptDataUsingEncodingPassphrase);
+      }
+
+      //-----------------------------------------------------------------------
+      FinderRelayChannelPtr IFinderRelayChannelFactory::createIncoming(
+                                                                       IFinderRelayChannelDelegatePtr delegate,
+                                                                       AccountPtr account,
+                                                                       ITransportStreamPtr outerReceiveStream,
+                                                                       ITransportStreamPtr outerSendStream,
+                                                                       ITransportStreamPtr wireReceiveStream,
+                                                                       ITransportStreamPtr wireSendStream
+                                                                       )
+      {
+        return FinderRelayChannel::createIncoming(delegate, account, outerReceiveStream, outerSendStream, wireReceiveStream, wireSendStream);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IFinderConnectionRelayChannelFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IFinderConnectionRelayChannelFactory &IFinderConnectionRelayChannelFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      IFinderConnectionPtr IFinderConnectionRelayChannelFactory::connect(
+                                                                         IFinderConnectionDelegatePtr delegate,
+                                                                         const IPAddress &remoteFinderIP,
+                                                                         ITransportStreamPtr receiveStream,
+                                                                         ITransportStreamPtr sendStream
+                                                                         )
+      {
+        return FinderConnectionMultiplexOutgoing::connect(delegate, remoteFinderIP, receiveStream, sendStream);
+      }
+
+      //-----------------------------------------------------------------------
+      IFinderConnectionRelayChannelPtr IFinderConnectionRelayChannelFactory::connect(
+                                                                                 IFinderConnectionRelayChannelDelegatePtr delegate,
+                                                                                 const IPAddress &remoteFinderIP,
+                                                                                 const char *localContextID,
+                                                                                 const char *relayAccessToken,
+                                                                                 const char *relayAccessSecretProof,
+                                                                                 ITransportStreamPtr receiveStream,
+                                                                                 ITransportStreamPtr sendStream
+                                                                                 )
+      {
+        return FinderConnectionMultiplexOutgoing::connect(delegate, remoteFinderIP, localContextID, relayAccessToken, relayAccessSecretProof, receiveStream, sendStream);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark IMessageIncomingFactory
       #pragma mark
 
@@ -220,24 +302,6 @@ namespace openpeer
                                                          )
       {
         return MessageIncoming::create(account, location, message);
-      }
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark IMessageLayerSecurityChannelFactory
-      #pragma mark
-
-      MessageLayerSecurityChannelPtr IMessageLayerSecurityChannelFactory::create(
-                                                                                 IMessageLayerSecurityChannelDelegatePtr delegate,
-                                                                                 IPeerFilesPtr localPeerFiles,
-                                                                                 LocalPublicKeyReferenceTypes localPublicKeyReferenceType,
-                                                                                 IAccountPtr account
-                                                                                 )
-      {
-        return MessageLayerSecurityChannel::create(delegate, localPeerFiles, localPublicKeyReferenceType, account);
       }
 
       //-----------------------------------------------------------------------
@@ -645,52 +709,6 @@ namespace openpeer
       PublicationRepositoryPtr IPublicationRepositoryFactory::createPublicationRepository(AccountPtr account)
       {
         return PublicationRepository::create(account);
-      }
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark IRSAPrivateKeyFactory
-      #pragma mark
-
-      //-----------------------------------------------------------------------
-      IRSAPrivateKeyFactory &IRSAPrivateKeyFactory::singleton()
-      {
-        return *(Factory::singleton().get());
-      }
-
-      //-----------------------------------------------------------------------
-      RSAPrivateKeyPtr IRSAPrivateKeyFactory::generate(RSAPublicKeyPtr &outPublicKey)
-      {
-        return RSAPrivateKey::generate(outPublicKey);
-      }
-
-      //-----------------------------------------------------------------------
-      RSAPrivateKeyPtr IRSAPrivateKeyFactory::loadPrivateKey(const SecureByteBlock &buffer)
-      {
-        return RSAPrivateKey::load(buffer);
-      }
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark IRSAPublicKeyFactory
-      #pragma mark
-
-      //-----------------------------------------------------------------------
-      IRSAPublicKeyFactory &IRSAPublicKeyFactory::singleton()
-      {
-        return *(Factory::singleton().get());
-      }
-
-      //-----------------------------------------------------------------------
-      RSAPublicKeyPtr IRSAPublicKeyFactory::loadPublicKey(const SecureByteBlock &buffer)
-      {
-        return RSAPublicKey::load(buffer);
       }
 
       //-----------------------------------------------------------------------

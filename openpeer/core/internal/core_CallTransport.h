@@ -32,11 +32,10 @@
 #pragma once
 
 #include <openpeer/core/internal/types.h>
-//#include <openpeer/core/internal/core_IConversationThreadParser.h>
 #include <openpeer/core/internal/core_MediaEngine.h>
-//
-//#include <openpeer/services/IICESocket.h>
-//
+
+#include <openpeer/services/IWakeDelegate.h>
+
 #include <zsLib/MessageQueueAssociator.h>
 #include <zsLib/Timer.h>
 
@@ -183,8 +182,6 @@ namespace openpeer
 
       interaction ICallTransportAsync
       {
-        virtual void onStep() = 0;
-
         virtual void onStart() = 0;
         virtual void onStop() = 0;
       };
@@ -200,6 +197,7 @@ namespace openpeer
                              public ICallTransport,
                              public ICallTransportForAccount,
                              public ICallTransportForCall,
+                             public IWakeDelegate,
                              public ICallTransportAsync,
                              public ITimerDelegate
       {
@@ -308,10 +306,16 @@ namespace openpeer
 
         //---------------------------------------------------------------------
         #pragma mark
+        #pragma mark CallTransport => IWakeDelegate
+        #pragma mark
+
+        virtual void onWake() {step();}
+
+        //---------------------------------------------------------------------
+        #pragma mark
         #pragma mark CallTransport => ICallTransportAsync
         #pragma mark
 
-        virtual void onStep() {step();}
         virtual void onStart() {start();}
         virtual void onStop() {stop();}
 
@@ -497,7 +501,6 @@ ZS_DECLARE_PROXY_METHOD_2(onCallTransportStateChanged, ICallTransportPtr, CallTr
 ZS_DECLARE_PROXY_END()
 
 ZS_DECLARE_PROXY_BEGIN(openpeer::core::internal::ICallTransportAsync)
-ZS_DECLARE_PROXY_METHOD_0(onStep)
 ZS_DECLARE_PROXY_METHOD_0(onStart)
 ZS_DECLARE_PROXY_METHOD_0(onStop)
 ZS_DECLARE_PROXY_END()

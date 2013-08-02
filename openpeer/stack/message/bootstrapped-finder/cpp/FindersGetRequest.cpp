@@ -41,8 +41,6 @@ namespace openpeer
   {
     namespace message
     {
-      using zsLib::Stringize;
-
       namespace bootstrapped_finder
       {
         //---------------------------------------------------------------------
@@ -82,7 +80,7 @@ namespace openpeer
           ElementPtr root = ret->getFirstChildElement();
 
           if (hasAttribute(AttributeType_TotalServers)) {
-            root->adoptAsLastChild(IMessageHelper::createElementWithNumber("servers", Stringize<typeof(mTotalFinders)>(mTotalFinders).string()));
+            root->adoptAsLastChild(IMessageHelper::createElementWithNumber("servers", string(mTotalFinders)));
           }
           return ret;
         }

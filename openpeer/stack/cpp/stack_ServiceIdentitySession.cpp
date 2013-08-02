@@ -52,6 +52,8 @@
 #include <openpeer/stack/message/IMessageHelper.h>
 #include <openpeer/stack/internal/stack_Stack.h>
 
+#include <openpeer/services/IHelper.h>
+
 #include <zsLib/Log.h>
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>
@@ -78,12 +80,14 @@ namespace openpeer
 {
   namespace stack
   {
-    using zsLib::Stringize;
+    using zsLib::string;
     using zsLib::Hours;
     using stack::message::IMessageHelper;
 
     namespace internal
     {
+      using services::IHelper;
+
       typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
 
       using message::identity::IdentityAccessWindowRequest;
@@ -202,8 +206,8 @@ namespace openpeer
           ElementPtr createdEl = contactProofEl->findFirstChildElementChecked("created");
           ElementPtr expiresEl = contactProofEl->findFirstChildElementChecked("expires");
 
-          Time created = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(createdEl));
-          Time expires = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(expiresEl));
+          Time created = IHelper::stringToTime(IMessageHelper::getElementTextAndDecode(createdEl));
+          Time expires = IHelper::stringToTime(IMessageHelper::getElementTextAndDecode(expiresEl));
 
           if ((outStableID) &&
               (stableIDEl)) {
@@ -239,12 +243,12 @@ namespace openpeer
 
           Time tick = zsLib::now();
           if (created < tick + Hours(OPENPEER_STACK_SERVIC_IDENTITY_SIGN_CREATE_SHOULD_NOT_BE_BEFORE_NOW_IN_HOURS)) {
-            ZS_LOG_WARNING(Detail, String("IServiceIdentity [] creation date is invalid") + ", created=" + IMessageHelper::timeToString(created) + ", now=" + IMessageHelper::timeToString(tick))
+            ZS_LOG_WARNING(Detail, String("IServiceIdentity [] creation date is invalid") + ", created=" + IHelper::timeToString(created) + ", now=" + IHelper::timeToString(tick))
             return false;
           }
 
           if (tick > expires) {
-            ZS_LOG_WARNING(Detail, String("IServiceIdentity [] signature expired") + ", expires=" + IMessageHelper::timeToString(expires) + ", now=" + IMessageHelper::timeToString(tick))
+            ZS_LOG_WARNING(Detail, String("IServiceIdentity [] signature expired") + ", expires=" + IHelper::timeToString(expires) + ", now=" + IHelper::timeToString(tick))
             return false;
           }
           
@@ -683,7 +687,7 @@ namespace openpeer
             mNeedsBrowserWindowVisible = true;
           }
 
-          IServiceIdentitySessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+          IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
           return;
         }
 
@@ -707,7 +711,7 @@ namespace openpeer
             return;
           }
 
-          IServiceIdentitySessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+          IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
 
           notifyLockboxStateChanged();
           return;
@@ -733,7 +737,7 @@ namespace openpeer
 
         mRolodexInfo.mVersion = String(inLastDownloadedVersion);
 
-        IServiceIdentitySessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -745,7 +749,7 @@ namespace openpeer
 
         mRolodexInfo.mUpdateNext = Time();  // reset when the next update is allowed to occur
         mForceRefresh = zsLib::now();
-        IServiceIdentitySessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -766,7 +770,7 @@ namespace openpeer
           return false;
         }
 
-        ZS_LOG_DEBUG(log("returning downloaded contacts") + ", total=" + Stringize<IdentityInfoList::size_type>(mIdentities.size()).string())
+        ZS_LOG_DEBUG(log("returning downloaded contacts") + ", total=" + string(mIdentities.size()))
 
         outFlushAllRolodexContacts = refreshed;
         outVersionDownloaded = mRolodexInfo.mVersion;
@@ -905,7 +909,7 @@ namespace openpeer
         AutoRecursiveLock lock(getLock());
         ZS_LOG_DEBUG(log("associate called"))
         mAssociatedLockbox = lockbox;
-        IServiceIdentitySessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -944,7 +948,7 @@ namespace openpeer
         mLockboxUpdated = false;
         mIdentityLookupUpdated = false;
 
-        IServiceIdentitySessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -952,7 +956,7 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         ZS_LOG_DEBUG(log("notify state changed"))
-        IServiceIdentitySessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -988,11 +992,11 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServiceIdentitySession => IServiceIdentitySessionAsyncDelegate
+      #pragma mark ServiceIdentitySession => IWakeDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void ServiceIdentitySession::onStep()
+      void ServiceIdentitySession::onWake()
       {
         AutoRecursiveLock lock(getLock());
         ZS_LOG_DEBUG(log("on step"))
@@ -1283,7 +1287,7 @@ namespace openpeer
 
             Duration::sec_type percentageUsed = ((consumed.total_seconds() * 100) / total.total_seconds());
             if (percentageUsed > OPENPEER_STACK_SERVIC_IDENTITY_MAX_CONSUMED_TIME_PERCENTAGE_BEFORE_IDENTITY_PROOF_REFRESH) {
-              ZS_LOG_WARNING(Detail, log("identity bundle proof too close to expiry, will recreate identity proof") + ", percentage used=" + Stringize<typeof(percentageUsed)>(percentageUsed).string() + ", consumed=" + Stringize<Duration::sec_type>(consumed.total_seconds()).string() + ", total=" + Stringize<Duration::sec_type>(total.total_seconds()).string())
+              ZS_LOG_WARNING(Detail, log("identity bundle proof too close to expiry, will recreate identity proof") + ", percentage used=" + string(percentageUsed) + ", consumed=" + string(consumed.total_seconds()) + ", total=" + string(total.total_seconds()))
               validProof = false;
             }
 
@@ -1503,7 +1507,7 @@ namespace openpeer
           return false;
         }
 
-        ZS_LOG_WARNING(Detail, log("rolodex contacts get failure") + ", error code=" + Stringize<RolodexContactsGetResult::ErrorCodeType>(result->errorCode()).string() + ", error reason=" + result->errorReason())
+        ZS_LOG_WARNING(Detail, log("rolodex contacts get failure") + ", error code=" + string(result->errorCode()) + ", error reason=" + result->errorReason())
         ++mFailuresInARow;
 
         if ((mFailuresInARow < 2) &&
@@ -1546,7 +1550,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String ServiceIdentitySession::log(const char *message) const
       {
-        return String("ServiceIdentitySession [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("ServiceIdentitySession [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -1554,20 +1558,20 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("identity session id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("identity session id", string(mID), firstTime) +
                Helper::getDebugValue("delegate", mDelegate ? String("true") : String(), firstTime) +
                Helper::getDebugValue("state", toString(mCurrentState), firstTime) +
                Helper::getDebugValue("reported", toString(mLastReportedState), firstTime) +
-               Helper::getDebugValue("error code", 0 != mLastError ? Stringize<typeof(mLastError)>(mLastError).string() : String(), firstTime) +
+               Helper::getDebugValue("error code", 0 != mLastError ? string(mLastError) : String(), firstTime) +
                Helper::getDebugValue("error reason", mLastErrorReason, firstTime) +
                Helper::getDebugValue("kill association", mKillAssociation ? String("true") : String(), firstTime) +
                (mIdentityInfo.hasData() ? mIdentityInfo.getDebugValueString() : String()) +
                IBootstrappedNetwork::toDebugString(mProviderBootstrappedNetwork) +
                IBootstrappedNetwork::toDebugString(mIdentityBootstrappedNetwork) +
                Helper::getDebugValue("active boostrapper", (mActiveBootstrappedNetwork ? (mIdentityBootstrappedNetwork == mActiveBootstrappedNetwork ? String("identity") : String("provider")) : String()), firstTime) +
-               Helper::getDebugValue("grant session id", mGrantSession ? Stringize<PUID>(mGrantSession->forServices().getID()).string() : String(), firstTime) +
-               Helper::getDebugValue("grant query id", mGrantQuery ? Stringize<PUID>(mGrantQuery->getID()).string() : String(), firstTime) +
-               Helper::getDebugValue("grant wait id", mGrantWait ? Stringize<PUID>(mGrantWait->getID()).string() : String(), firstTime) +
+               Helper::getDebugValue("grant session id", mGrantSession ? string(mGrantSession->forServices().getID()) : String(), firstTime) +
+               Helper::getDebugValue("grant query id", mGrantQuery ? string(mGrantQuery->getID()) : String(), firstTime) +
+               Helper::getDebugValue("grant wait id", mGrantWait ? string(mGrantWait->getID()) : String(), firstTime) +
                Helper::getDebugValue("identity access lockbox update monitor", mIdentityAccessLockboxUpdateMonitor ? String("true") : String(), firstTime) +
                Helper::getDebugValue("identity lookup update monitor", mIdentityLookupUpdateMonitor ? String("true") : String(), firstTime) +
                Helper::getDebugValue("identity access rolodex credentials get monitor", mIdentityAccessRolodexCredentialsGetMonitor ? String("true") : String(), firstTime) +
@@ -1584,14 +1588,14 @@ namespace openpeer
                Helper::getDebugValue("identity lookup updated", mIdentityLookupUpdated ? String("true") : String(), firstTime) +
                (mPreviousLookupInfo.hasData() ? mPreviousLookupInfo.getDebugValueString() : String()) +
                Helper::getDebugValue("outer frame url", mOuterFrameURLUponReload, firstTime) +
-               Helper::getDebugValue("pending messages", mPendingMessagesToDeliver.size() > 0 ? Stringize<DocumentList::size_type>(mPendingMessagesToDeliver.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("pending messages", mPendingMessagesToDeliver.size() > 0 ? string(mPendingMessagesToDeliver.size()) : String(), firstTime) +
                (mRolodexInfo.hasData() ? mRolodexInfo.getDebugValueString() : String()) +
                Helper::getDebugValue("download timer", mTimer ? String("true") : String(), firstTime) +
                Helper::getDebugValue("force refresh", Time() != mForceRefresh ? String("true") : String(), firstTime) +
                Helper::getDebugValue("fresh download", Time() != mFreshDownload ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("pending identities", mIdentities.size() > 0 ? Stringize<IdentityInfoList::size_type>(mIdentities.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("failures in a row", mFailuresInARow > 0 ? Stringize<typeof(mFailuresInARow)>(mFailuresInARow).string() : String(), firstTime) +
-               Helper::getDebugValue("next retry (seconds)", mNextRetryAfterFailureTime.total_seconds() ? Stringize<Duration::sec_type>(mNextRetryAfterFailureTime.total_seconds()).string() : String(), firstTime);
+               Helper::getDebugValue("pending identities", mIdentities.size() > 0 ? string(mIdentities.size()) : String(), firstTime) +
+               Helper::getDebugValue("failures in a row", mFailuresInARow > 0 ? string(mFailuresInARow) : String(), firstTime) +
+               Helper::getDebugValue("next retry (seconds)", mNextRetryAfterFailureTime.total_seconds() ? string(mNextRetryAfterFailureTime.total_seconds()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -1675,7 +1679,7 @@ namespace openpeer
           }
 
           if (!mProviderBootstrappedNetwork) {
-            ZS_LOG_ERROR(Detail, log("bootstrapped network failed for identity and there is no provider identity service specified") + ", error=" + Stringize<typeof(errorCode)>(errorCode).string() + ", reason=" + reason)
+            ZS_LOG_ERROR(Detail, log("bootstrapped network failed for identity and there is no provider identity service specified") + ", error=" + string(errorCode) + ", reason=" + reason)
 
             setError(errorCode, reason);
             cancel();
@@ -1704,7 +1708,7 @@ namespace openpeer
           return true;
         }
 
-        ZS_LOG_ERROR(Detail, log("bootstrapped network failed for provider") + ", error=" + Stringize<typeof(errorCode)>(errorCode).string() + ", reason=" + reason)
+        ZS_LOG_ERROR(Detail, log("bootstrapped network failed for provider") + ", error=" + string(errorCode) + ", reason=" + reason)
 
         setError(errorCode, reason);
         cancel();
@@ -2012,7 +2016,7 @@ namespace openpeer
             return true;
           }
           case IServiceLockboxSession::SessionState_Shutdown: {
-            ZS_LOG_ERROR(Detail, log("lockbox shutdown") + ", error=" + Stringize<typeof(errorCode)>(errorCode).string() + ", reason=" + reason)
+            ZS_LOG_ERROR(Detail, log("lockbox shutdown") + ", error=" + string(errorCode) + ", reason=" + reason)
 
             setError(errorCode, reason);
             cancel();
@@ -2319,7 +2323,7 @@ namespace openpeer
           }
           mTimer = Timer::create(mThisWeak.lock(), waitTime, false);
 
-          ZS_LOG_DEBUG(log("delaying downloading contacts") + ", wait time (seconds)=" + Stringize<Duration::sec_type>(waitTime.total_seconds()).string())
+          ZS_LOG_DEBUG(log("delaying downloading contacts") + ", wait time (seconds)=" + string(waitTime.total_seconds()))
           return true;
         }
 
@@ -2342,12 +2346,12 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void ServiceIdentitySession::setState(SessionStates state)
       {
-        if (state != mCurrentState) {
-          ZS_LOG_DEBUG(log("state changed") + ", state=" + toString(state) + ", old state=" + toString(mCurrentState))
-          mCurrentState = state;
+        if (state == mCurrentState) return;
 
-          notifyLockboxStateChanged();
-        }
+        ZS_LOG_DEBUG(log("state changed") + ", state=" + toString(state) + ", old state=" + toString(mCurrentState))
+        mCurrentState = state;
+
+        notifyLockboxStateChanged();
 
         if (mLastReportedState != mCurrentState) {
           ServiceIdentitySessionPtr pThis = mThisWeak.lock();
@@ -2373,14 +2377,14 @@ namespace openpeer
         }
 
         if (0 != mLastError) {
-          ZS_LOG_WARNING(Detail, log("error already set thus ignoring new error") + ", new error=" + Stringize<typeof(errorCode)>(errorCode).string() + ", new reason=" + reason + getDebugValueString())
+          ZS_LOG_WARNING(Detail, log("error already set thus ignoring new error") + ", new error=" + string(errorCode) + ", new reason=" + reason + getDebugValueString())
           return;
         }
 
         mLastError = errorCode;
         mLastErrorReason = reason;
 
-        ZS_LOG_WARNING(Detail, log("error set") + ", code=" + Stringize<typeof(mLastError)>(mLastError).string() + ", reason=" + mLastErrorReason + getDebugValueString())
+        ZS_LOG_WARNING(Detail, log("error set") + ", code=" + string(mLastError) + ", reason=" + mLastErrorReason + getDebugValueString())
       }
 
       //-----------------------------------------------------------------------
@@ -2572,7 +2576,7 @@ namespace openpeer
         //---------------------------------------------------------------------
         String log(const char *message) const
         {
-          return String("IdentityProofBundleQuery [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+          return String("IdentityProofBundleQuery [") + string(mID) + "] " + message;
         }
 
         //---------------------------------------------------------------------
@@ -2583,14 +2587,14 @@ namespace openpeer
           }
 
           if (0 != mErrorCode) {
-            ZS_LOG_WARNING(Debug, log("attempting to set an error when error already set") + ", new error code=" + Stringize<typeof(errorCode)>(mErrorCode).string() + ", new reason=" + reason + ", existing error code=" + Stringize<typeof(mErrorCode)>(mErrorCode).string() + ", existing reason=" + mErrorReason)
+            ZS_LOG_WARNING(Debug, log("attempting to set an error when error already set") + ", new error code=" + string(mErrorCode) + ", new reason=" + reason + ", existing error code=" + string(mErrorCode) + ", existing reason=" + mErrorReason)
             return;
           }
 
           mErrorCode = errorCode;
           mErrorReason = reason;
 
-          ZS_LOG_WARNING(Debug, log("setting error code") + ", identity uri=" + mIdentityURI + ", error code=" + Stringize<typeof(errorCode)>(mErrorCode).string() + ", reason=" + reason)
+          ZS_LOG_WARNING(Debug, log("setting error code") + ", identity uri=" + mIdentityURI + ", error code=" + string(mErrorCode) + ", reason=" + reason)
         }
 
         //---------------------------------------------------------------------
@@ -2821,7 +2825,7 @@ namespace openpeer
       WORD errorCode = 0;
       String reason;
       if (!bootstrapper->wasSuccessful(&errorCode, &reason)) {
-        ZS_LOG_WARNING(Detail, String("IServiceIdentity [] bootstapped network was not successful") + ", error=" + Stringize<typeof(errorCode)>(errorCode).string() + ", reason=" + reason)
+        ZS_LOG_WARNING(Detail, String("IServiceIdentity [] bootstapped network was not successful") + ", error=" + string(errorCode) + ", reason=" + reason)
         return false;
       }
 

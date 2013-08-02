@@ -41,13 +41,13 @@
 #include <openpeer/stack/internal/stack_BootstrappedNetwork.h>
 #include <openpeer/stack/internal/stack_Account.h>
 #include <openpeer/stack/internal/stack_Helper.h>
-#include <openpeer/stack/IHelper.h>
 #include <openpeer/stack/IPeer.h>
 #include <openpeer/stack/IPeerFiles.h>
 #include <openpeer/stack/IPeerFilePrivate.h>
 #include <openpeer/stack/IPeerFilePublic.h>
-#include <openpeer/stack/message/IMessageHelper.h>
 #include <openpeer/stack/internal/stack_Stack.h>
+
+#include <openpeer/services/IHelper.h>
 
 #include <zsLib/Log.h>
 #include <zsLib/XML.h>
@@ -83,11 +83,11 @@ namespace openpeer
   {
     namespace internal
     {
+      using services::IHelper;
+
       using CryptoPP::Weak::MD5;
 
       typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
-
-      using zsLib::Stringize;
 
       using message::identity_lockbox::LockboxAccessRequest;
       using message::identity_lockbox::LockboxAccessRequestPtr;
@@ -342,7 +342,7 @@ namespace openpeer
           mPendingRemoveIdentities[session->forLockbox().getID()] = session;
         }
         // handle the association now (but do it asynchronously)
-        IServiceLockboxSessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -451,7 +451,7 @@ namespace openpeer
         AutoRecursiveLock lock(getLock());
         mAccount = account;
 
-        IServiceLockboxSessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -546,7 +546,7 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         ZS_LOG_DEBUG(log("notify state changed"))
-        IServiceLockboxSessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -554,14 +554,14 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServiceLockboxSession => IServiceLockboxSessionAsyncDelegate
+      #pragma mark ServiceLockboxSession => IWakeDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void ServiceLockboxSession::onStep()
+      void ServiceLockboxSession::onWake()
       {
         AutoRecursiveLock lock(getLock());
-        ZS_LOG_DEBUG(log("on step"))
+        ZS_LOG_DEBUG(log("on wake"))
         step();
       }
 
@@ -981,7 +981,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String ServiceLockboxSession::log(const char *message) const
       {
-        return String("ServiceLockboxSession [") + Stringize<PUID>(mID).string() + "] " + message;
+        return String("ServiceLockboxSession [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -989,16 +989,16 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("lockbox id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("lockbox id", string(mID), firstTime) +
                IBootstrappedNetwork::toDebugString(mBootstrappedNetwork) +
                Helper::getDebugValue("delegate", mDelegate ? String("true") : String(), firstTime) +
                Helper::getDebugValue("state", toString(mCurrentState), firstTime) +
-               Helper::getDebugValue("error code", 0 != mLastError ? Stringize<typeof(mLastError)>(mLastError).string() : String(), firstTime) +
+               Helper::getDebugValue("error code", 0 != mLastError ? string(mLastError) : String(), firstTime) +
                Helper::getDebugValue("error reason", mLastErrorReason, firstTime) +
                IBootstrappedNetwork::toDebugString(mBootstrappedNetwork) +
-               Helper::getDebugValue("grant session", mGrantSession ? Stringize<PUID>(mGrantSession->forServices().getID()).string() : String(), firstTime) +
-               Helper::getDebugValue("grant query", mGrantQuery ? Stringize<PUID>(mGrantQuery->getID()).string() : String(), firstTime) +
-               Helper::getDebugValue("grant wait", mGrantWait ? Stringize<PUID>(mGrantWait->getID()).string() : String(), firstTime) +
+               Helper::getDebugValue("grant session", mGrantSession ? string(mGrantSession->forServices().getID()) : String(), firstTime) +
+               Helper::getDebugValue("grant query", mGrantQuery ? string(mGrantQuery->getID()) : String(), firstTime) +
+               Helper::getDebugValue("grant wait", mGrantWait ? string(mGrantWait->getID()) : String(), firstTime) +
                Helper::getDebugValue("lockbox access monitor", mLockboxAccessMonitor ? String("true") : String(), firstTime) +
                Helper::getDebugValue("lockbox grant validate monitor", mLockboxNamespaceGrantChallengeValidateMonitor ? String("true") : String(), firstTime) +
                Helper::getDebugValue("lockbox identities update monitor", mLockboxIdentitiesUpdateMonitor ? String("true") : String(), firstTime) +
@@ -1012,14 +1012,14 @@ namespace openpeer
                Helper::getDebugValue("peer files need upload", mPeerFilesNeedUpload ? String("true") : String(), firstTime) +
                Helper::getDebugValue("login identity set to become associated", mLoginIdentitySetToBecomeAssociated ? String("true") : String(), firstTime) +
                Helper::getDebugValue("force new account", mForceNewAccount ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("salt query id", mSaltQuery ? Stringize<PUID>(mSaltQuery->getID()).string() : String(), firstTime) +
-               Helper::getDebugValue("services by type", mServicesByType.size() > 0 ? Stringize<ServiceTypeMap::size_type>(mServicesByType.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("server identities", mServerIdentities.size() > 0 ? Stringize<ServiceIdentitySessionMap::size_type>(mServicesByType.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("associated identities", mAssociatedIdentities.size() > 0 ? Stringize<ServiceIdentitySessionMap::size_type>(mAssociatedIdentities.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("salt query id", mSaltQuery ? string(mSaltQuery->getID()) : String(), firstTime) +
+               Helper::getDebugValue("services by type", mServicesByType.size() > 0 ? string(mServicesByType.size()) : String(), firstTime) +
+               Helper::getDebugValue("server identities", mServerIdentities.size() > 0 ? string(mServicesByType.size()) : String(), firstTime) +
+               Helper::getDebugValue("associated identities", mAssociatedIdentities.size() > 0 ? string(mAssociatedIdentities.size()) : String(), firstTime) +
                Helper::getDebugValue("last notification hash", mLastNotificationHash ? IHelper::convertToHex(*mLastNotificationHash) : String(), firstTime) +
-               Helper::getDebugValue("pending updated identities", mPendingUpdateIdentities.size() > 0 ? Stringize<ServiceIdentitySessionMap::size_type>(mPendingUpdateIdentities.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("pending remove identities", mPendingRemoveIdentities.size() > 0 ? Stringize<ServiceIdentitySessionMap::size_type>(mPendingRemoveIdentities.size()).string() : String(), firstTime);
-               Helper::getDebugValue("content", mContent.size() > 0 ? Stringize<NamespaceURLNameValueMap::size_type>(mContent.size()).string() : String(), firstTime);
+               Helper::getDebugValue("pending updated identities", mPendingUpdateIdentities.size() > 0 ? string(mPendingUpdateIdentities.size()) : String(), firstTime) +
+               Helper::getDebugValue("pending remove identities", mPendingRemoveIdentities.size() > 0 ? string(mPendingRemoveIdentities.size()) : String(), firstTime);
+               Helper::getDebugValue("content", mContent.size() > 0 ? string(mContent.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -1072,7 +1072,7 @@ namespace openpeer
           return true;
         }
 
-        ZS_LOG_ERROR(Detail, log("bootstrapped network failed for lockbox") + ", error=" + Stringize<typeof(errorCode)>(errorCode).string() + ", reason=" + reason)
+        ZS_LOG_ERROR(Detail, log("bootstrapped network failed for lockbox") + ", error=" + string(errorCode) + ", reason=" + reason)
 
         setError(errorCode, reason);
         cancel();
@@ -1195,7 +1195,7 @@ namespace openpeer
             mLockboxInfo.mHash.clear();
             mLockboxInfo.mResetFlag = true;
 
-            mLockboxInfo.mKey = stack::IHelper::random(32);
+            mLockboxInfo.mKey = IHelper::random(32);
 
             ZS_LOG_DEBUG(log("created new lockbox key") + ", identity half=" + IHelper::convertToBase64(*mLockboxInfo.mKey))
           }
@@ -1341,7 +1341,7 @@ namespace openpeer
           WORD errorCode = 0;
           String reason;
           if (!mSaltQuery->wasSuccessful(&errorCode, &reason)) {
-            ZS_LOG_ERROR(Detail, log("failed to fetch signed salt") + ", error=" + Stringize<typeof(errorCode)>(errorCode).string() + ", reason=" + reason)
+            ZS_LOG_ERROR(Detail, log("failed to fetch signed salt") + ", error=" + string(errorCode) + ", reason=" + reason)
             setError(errorCode, reason);
             cancel();
             return false;
@@ -1380,7 +1380,7 @@ namespace openpeer
           Time now = zsLib::now();
 
           if (now > expires) {
-            ZS_LOG_WARNING(Detail, log("peer file expired") + IPeerFilePublic::toDebugString(peerFilePublic) + ", now=" + IMessageHelper::timeToString(now))
+            ZS_LOG_WARNING(Detail, log("peer file expired") + IPeerFilePublic::toDebugString(peerFilePublic) + ", now=" + IHelper::timeToString(now))
             mPeerFiles.reset();
           }
 
@@ -1388,7 +1388,7 @@ namespace openpeer
           Duration lifeConsumed (now - created);
 
           if (((lifeConsumed.seconds() * 100) / totalLifetime.seconds()) > OPENPEER_STACK_SERVICE_LOCKBOX_EXPIRES_TIME_PERCENTAGE_CONSUMED_CAUSES_REGENERATION) {
-            ZS_LOG_WARNING(Detail, log("peer file are past acceptable expiry window") + ", lifetime consumed seconds=" + Stringize<Duration::sec_type>(lifeConsumed.seconds()).string() + ", " + Stringize<Duration::sec_type>(totalLifetime.seconds()).string() + IPeerFilePublic::toDebugString(peerFilePublic) + ", now=" + IMessageHelper::timeToString(now))
+            ZS_LOG_WARNING(Detail, log("peer file are past acceptable expiry window") + ", lifetime consumed seconds=" + string(lifeConsumed.seconds()) + ", " + string(totalLifetime.seconds()) + IPeerFilePublic::toDebugString(peerFilePublic) + ", now=" + IHelper::timeToString(now))
             mPeerFiles.reset();
           }
 
@@ -1816,7 +1816,7 @@ namespace openpeer
         NamespaceURLNameValueMap namespaces;
 
         if (reloginValues.size() > 0) {
-          ZS_LOG_DEBUG(log("contains relogin values to update") + "values=" + Stringize<size_t>(reloginValues.size()).string())
+          ZS_LOG_DEBUG(log("contains relogin values to update") + "values=" + string(reloginValues.size()))
           namespaces[OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE] = reloginValues;
         }
 
@@ -1880,7 +1880,7 @@ namespace openpeer
           }
         }
 
-        ZS_LOG_DEBUG(log("associating and removing of identities completed") + ", updated=" + Stringize<size_t>(completedIdentities.size()).string() + ", removed=" + Stringize<size_t>(removedIdentities.size()).string())
+        ZS_LOG_DEBUG(log("associating and removing of identities completed") + ", updated=" + string(completedIdentities.size()) + ", removed=" + string(removedIdentities.size()))
         return true;
       }
 
@@ -1928,14 +1928,14 @@ namespace openpeer
           reason = IHTTP::toString(IHTTP::toStatusCode(errorCode));
         }
         if (0 != mLastError) {
-          ZS_LOG_WARNING(Detail, log("erorr already set thus ignoring new error") + ", new error=" + Stringize<typeof(errorCode)>(errorCode).string() + ", new reason=" + reason + getDebugValueString())
+          ZS_LOG_WARNING(Detail, log("erorr already set thus ignoring new error") + ", new error=" + string(errorCode) + ", new reason=" + reason + getDebugValueString())
           return;
         }
 
         mLastError = errorCode;
         mLastErrorReason = reason;
 
-        ZS_LOG_WARNING(Detail, log("error set") + ", code=" + Stringize<typeof(mLastError)>(mLastError).string() + ", reason=" + mLastErrorReason + getDebugValueString())
+        ZS_LOG_WARNING(Detail, log("error set") + ", code=" + string(mLastError) + ", reason=" + mLastErrorReason + getDebugValueString())
       }
 
       //-----------------------------------------------------------------------

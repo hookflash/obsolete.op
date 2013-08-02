@@ -31,17 +31,15 @@
 
 #pragma once
 
-#include <openpeer/stack/internal/types.h>
-#include <openpeer/stack/IRSAPrivateKey.h>
+#include <openpeer/services/internal/types.h>
+#include <openpeer/services/IRSAPrivateKey.h>
 
 #include <cryptopp/rsa.h>
 #include <cryptopp/secblock.h>
 
-#define OPENPEER_STACK_RSA_PRIVATE_KEY_GENERATION_SIZE (2048)
-
 namespace openpeer
 {
-  namespace stack
+  namespace services
   {
     namespace internal
     {
@@ -93,7 +91,10 @@ namespace openpeer
         #pragma mark RSAPrivateKey => IRSAPrivateKey
         #pragma mark
 
-        static RSAPrivateKeyPtr generate(RSAPublicKeyPtr &outPublicKey);
+        static RSAPrivateKeyPtr generate(
+                                         RSAPublicKeyPtr &outPublicKey,
+                                         ULONG keySizeInBites = OPENPEER_SERVICES_RSA_PRIVATE_KEY_GENERATION_SIZE
+                                         );
 
         static RSAPrivateKeyPtr load(const SecureByteBlock &buffer);
 
@@ -141,7 +142,10 @@ namespace openpeer
       {
         static IRSAPrivateKeyFactory &singleton();
 
-        virtual RSAPrivateKeyPtr generate(RSAPublicKeyPtr &outPublicKey);
+        virtual RSAPrivateKeyPtr generate(
+                                          RSAPublicKeyPtr &outPublicKey,
+                                          ULONG keySizeInBites = OPENPEER_SERVICES_RSA_PRIVATE_KEY_GENERATION_SIZE
+                                          );
 
         virtual RSAPrivateKeyPtr loadPrivateKey(const SecureByteBlock &buffer);
       };

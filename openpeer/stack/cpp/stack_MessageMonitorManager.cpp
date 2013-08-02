@@ -46,8 +46,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
-
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -142,7 +140,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String MessageMonitorManager::log(const char *message) const
       {
-        return String("MessageMonitorManager [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("MessageMonitorManager [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------

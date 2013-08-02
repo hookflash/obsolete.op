@@ -64,7 +64,7 @@ using zsLib::SocketPtr;
 using zsLib::ISocketPtr;
 using zsLib::IPAddress;
 using zsLib::String;
-using zsLib::Stringize;
+using zsLib::string;
 using openpeer::services::IDNS;
 using openpeer::services::IDNSQuery;
 using openpeer::services::ITURNSocket;
@@ -486,7 +486,7 @@ void doTestRUDPICESocketLoopback()
 
     do
     {
-      ZS_LOG_BASIC(String("STEP:         ---------->>>>>>>>>> ") + Stringize<ULONG>(step).string() + " <<<<<<<<<<----------")
+      ZS_LOG_BASIC(String("STEP:         ---------->>>>>>>>>> ") + string(step) + " <<<<<<<<<<----------")
 
       ULONG expecting = 0;
       switch (step) {

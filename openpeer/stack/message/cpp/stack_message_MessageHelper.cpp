@@ -47,7 +47,9 @@
 #include <openpeer/stack/IPublicationRepository.h>
 #include <openpeer/stack/IHelper.h>
 #include <openpeer/stack/IPeerFilePublic.h>
-#include <openpeer/stack/IRSAPublicKey.h>
+
+#include <openpeer/services/IHelper.h>
+#include <openpeer/services/IRSAPublicKey.h>
 
 #include <zsLib/Numeric.h>
 #include <zsLib/XML.h>
@@ -63,10 +65,10 @@ namespace openpeer
     {
       using zsLib::DWORD;
       using zsLib::QWORD;
-      using zsLib::Stringize;
       using zsLib::Numeric;
 
       using namespace stack::internal;
+      using services::IHelper;
 
       using peer_common::MessageFactoryPeerCommon;
       using peer_common::PeerPublishRequest;
@@ -130,7 +132,7 @@ namespace openpeer
               errorEl = IMessageHelper::createElement("error");
             }
             if (msgResult->hasAttribute(MessageResult::AttributeType_ErrorCode)) {
-              IMessageHelper:setAttributeID(errorEl, Stringize<MessageResult::ErrorCodeType>(msgResult->errorCode()));
+              IMessageHelper:setAttributeID(errorEl, string(msgResult->errorCode()));
             }
 
             rootEl->adoptAsLastChild(errorEl);
@@ -167,46 +169,16 @@ namespace openpeer
       }
 
       //---------------------------------------------------------------------
-      String IMessageHelper::timeToString(const Time &value)
-      {
-        if (Time() == value) return String();
-
-        time_t epoch = zsLib::toEpoch(value);
-        return Stringize<time_t>(epoch).string();
-      }
-
-      //---------------------------------------------------------------------
-      Time IMessageHelper::stringToTime(const String &s)
-      {
-        if (s.isEmpty()) return Time();
-
-        try {
-          time_t timestamp = Numeric<time_t>(s);
-          return zsLib::toTime(timestamp);
-        } catch (Numeric<time_t>::ValueOutOfRange &) {
-          ZS_LOG_WARNING(Detail, "unable to convert value to time_t, value=" + s)
-          try {
-            QWORD timestamp = Numeric<QWORD>(s);
-            ZS_LOG_WARNING(Debug, "date exceeds maximum time_t, value=" + Stringize<typeof(timestamp)>(timestamp).string())
-            return Time(boost::date_time::max_date_time);
-          } catch (Numeric<QWORD>::ValueOutOfRange &) {
-            ZS_LOG_WARNING(Detail, "even QWORD failed to convert value to max_date_time, value=" + s)
-          }
-        }
-        return Time();
-      }
-
-      //---------------------------------------------------------------------
       Time IMessageHelper::getAttributeEpoch(ElementPtr node)
       {
-        return IMessageHelper::stringToTime(IMessageHelper::getAttribute(node, "timestamp"));
+        return IHelper::stringToTime(IMessageHelper::getAttribute(node, "timestamp"));
       }
 
       //---------------------------------------------------------------------
       void IMessageHelper::setAttributeTimestamp(ElementPtr elem, const Time &value)
       {
         if (Time() == value) return;
-        elem->setAttribute("timestamp", timeToString(value), false);
+        elem->setAttribute("timestamp", IHelper::timeToString(value), false);
       }
 
       //-----------------------------------------------------------------------
@@ -288,7 +260,7 @@ namespace openpeer
                                                        Time time
                                                        )
       {
-        return createElementWithNumber(elName, timeToString(time));
+        return createElementWithNumber(elName, IHelper::timeToString(time));
       }
 
       //-----------------------------------------------------------------------
@@ -397,7 +369,7 @@ namespace openpeer
 
           ElementPtr ipEl = IMessageHelper::createElementWithText("ip", candidate.mIPAddress.string(false));
           candidateEl->adoptAsLastChild(ipEl);
-          candidateEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("port", Stringize<WORD>(candidate.mIPAddress.getPort())));
+          candidateEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("port", string(candidate.mIPAddress.getPort())));
 
           if (!candidate.mUsernameFrag.isEmpty())
           {
@@ -416,7 +388,7 @@ namespace openpeer
 
           if (candidate.mPriority > 0)
           {
-            candidateEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("priority", Stringize<DWORD>(candidate.mPriority)));
+            candidateEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("priority", string(candidate.mPriority)));
           }
 
           if (!candidate.mProtocol.isEmpty())
@@ -510,13 +482,13 @@ namespace openpeer
             identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("accessSecret", identity.mAccessSecret));
           }
           if (Time() != identity.mAccessSecretExpires) {
-            identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("accessSecretExpires", IMessageHelper::timeToString(identity.mAccessSecretExpires)));
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("accessSecretExpires", IHelper::timeToString(identity.mAccessSecretExpires)));
           }
           if (!identity.mAccessSecretProof.isEmpty()) {
             identityEl->adoptAsLastChild(IMessageHelper::createElementWithText("accessSecretProof", identity.mAccessSecretProof));
           }
           if (Time() != identity.mAccessSecretProofExpires) {
-            identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("accessSecretProofExpires", IMessageHelper::timeToString(identity.mAccessSecretProofExpires)));
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("accessSecretProofExpires", IHelper::timeToString(identity.mAccessSecretProofExpires)));
           }
 
           if (!identity.mReloginKey.isEmpty()) {
@@ -543,21 +515,21 @@ namespace openpeer
 
           if ((0 != identity.mPriority) ||
               (forcePriorityWeightOutput)) {
-            identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("priority", Stringize<WORD>(identity.mPriority).string()));
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("priority", string(identity.mPriority)));
           }
           if ((0 != identity.mWeight) ||
               (forcePriorityWeightOutput)) {
-            identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("weight", Stringize<WORD>(identity.mWeight).string()));
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("weight", string(identity.mWeight)));
           }
 
           if (Time() != identity.mCreated) {
-            identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("created", IMessageHelper::timeToString(identity.mCreated)));
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("created", IHelper::timeToString(identity.mCreated)));
           }
           if (Time() != identity.mUpdated) {
-            identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("updated", IMessageHelper::timeToString(identity.mUpdated)));
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("updated", IHelper::timeToString(identity.mUpdated)));
           }
           if (Time() != identity.mExpires) {
-            identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("expires", IMessageHelper::timeToString(identity.mExpires)));
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("expires", IHelper::timeToString(identity.mExpires)));
           }
 
           if (!identity.mName.isEmpty()) {
@@ -588,10 +560,10 @@ namespace openpeer
                 avatarEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("name", avatar.mURL));
               }
               if (0 != avatar.mWidth) {
-                avatarEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("width", Stringize<int>(avatar.mWidth).string()));
+                avatarEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("width", string(avatar.mWidth)));
               }
               if (0 != avatar.mHeight) {
-                avatarEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("height", Stringize<int>(avatar.mHeight).string()));
+                avatarEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("height", string(avatar.mHeight)));
               }
 
               if (avatarEl->hasChildren()) {
@@ -631,13 +603,13 @@ namespace openpeer
             lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithText("accessSecret", info.mAccessSecret));
           }
           if (Time() != info.mAccessSecretExpires) {
-            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("accessSecretExpires", IMessageHelper::timeToString(info.mAccessSecretExpires)));
+            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("accessSecretExpires", IHelper::timeToString(info.mAccessSecretExpires)));
           }
           if (info.mAccessSecretProof.hasData()) {
             lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithText("accessSecretProof", info.mAccessSecretProof));
           }
           if (Time() != info.mAccessSecretProofExpires) {
-            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("accessSecretProofExpires", IMessageHelper::timeToString(info.mAccessSecretProofExpires)));
+            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("accessSecretProofExpires", IHelper::timeToString(info.mAccessSecretProofExpires)));
           }
 
           if (info.mKey) {
@@ -706,7 +678,7 @@ namespace openpeer
             namespaceEl->setAttribute("id", info.mURL);
           }
           if (Time() != info.mLastUpdated) {
-            namespaceEl->setAttribute("updated", timeToString(info.mLastUpdated));
+            namespaceEl->setAttribute("updated", IHelper::timeToString(info.mLastUpdated));
           }
 
           return namespaceEl;
@@ -728,20 +700,20 @@ namespace openpeer
             lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithText("accessSecret", info.mAccessSecret));
           }
           if (Time() != info.mAccessSecretExpires) {
-            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("accessSecretExpires", IMessageHelper::timeToString(info.mAccessSecretExpires)));
+            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("accessSecretExpires", IHelper::timeToString(info.mAccessSecretExpires)));
           }
           if (!info.mAccessSecretProof.isEmpty()) {
             lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithText("accessSecretProof", info.mAccessSecretProof));
           }
           if (Time() != info.mAccessSecretExpires) {
-            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("accessSecretProofExpires", IMessageHelper::timeToString(info.mAccessSecretProofExpires)));
+            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("accessSecretProofExpires", IHelper::timeToString(info.mAccessSecretProofExpires)));
           }
 
           if (!info.mVersion.isEmpty()) {
             lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithText("version", info.mVersion));
           }
           if (Time() != info.mUpdateNext) {
-            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("updateNext", IMessageHelper::timeToString(info.mUpdateNext)));
+            lockboxEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("updateNext", IHelper::timeToString(info.mUpdateNext)));
           }
 
           if (info.mRefreshFlag) {
@@ -906,14 +878,14 @@ namespace openpeer
           }
 
           ElementPtr nameEl = IMessageHelper::createElementWithText("name", publicationMetaData->getName());
-          ElementPtr versionEl = IMessageHelper::createElementWithNumber("version", Stringize<ULONG>(toVersion));
-          ElementPtr baseVersionEl = IMessageHelper::createElementWithNumber("baseVersion", Stringize<ULONG>(fromVersion));
-          ElementPtr lineageEl = IMessageHelper::createElementWithNumber("lineage", Stringize<ULONG>(publicationMetaData->getLineage()));
+          ElementPtr versionEl = IMessageHelper::createElementWithNumber("version", string(toVersion));
+          ElementPtr baseVersionEl = IMessageHelper::createElementWithNumber("baseVersion", string(fromVersion));
+          ElementPtr lineageEl = IMessageHelper::createElementWithNumber("lineage", string(publicationMetaData->getLineage()));
           ElementPtr chunkEl = IMessageHelper::createElementWithText("chunk", "1/1");
 
           ElementPtr expiresEl;
           if (publicationMetaData->getExpires() != Time()) {
-            expiresEl = IMessageHelper::createElementWithNumber("expires", timeToString(publicationMetaData->getExpires()));
+            expiresEl = IMessageHelper::createElementWithNumber("expires", IHelper::timeToString(publicationMetaData->getExpires()));
           }
 
           ElementPtr mimeTypeEl = IMessageHelper::createElementWithText("mime", publicationMetaData->getMimeType());
@@ -1309,7 +1281,7 @@ namespace openpeer
             Time expires;
             if (expiresEl) {
               String expiresStr = expiresEl->getText();
-              expires = IMessageHelper::stringToTime(expiresStr);
+              expires = IHelper::stringToTime(expiresStr);
             }
 
             String mimeType;
@@ -1632,8 +1604,8 @@ namespace openpeer
           }
 
           ret.mRegion = IMessageHelper::getElementText(elem->findFirstChildElement("region"));
-          ret.mCreated = stringToTime(IMessageHelper::getElementText(elem->findFirstChildElement("created")));
-          ret.mExpires = stringToTime(IMessageHelper::getElementText(elem->findFirstChildElement("expires")));
+          ret.mCreated = IHelper::stringToTime(IMessageHelper::getElementText(elem->findFirstChildElement("created")));
+          ret.mExpires = IHelper::stringToTime(IMessageHelper::getElementText(elem->findFirstChildElement("expires")));
 
           try
           {
@@ -1700,9 +1672,9 @@ namespace openpeer
 
           info.mAccessToken = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessToken"));
           info.mAccessSecret = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecret"));
-          info.mAccessSecretExpires = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretExpires")));
+          info.mAccessSecretExpires = IHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretExpires")));
           info.mAccessSecretProof = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretProof"));
-          info.mAccessSecretProofExpires = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretProofExpires")));
+          info.mAccessSecretProofExpires = IHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretProofExpires")));
 
           info.mReloginKey = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("reloginKey"));
 
@@ -1725,9 +1697,9 @@ namespace openpeer
           } catch(Numeric<WORD>::ValueOutOfRange &) {
           }
 
-          info.mUpdated = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("created")));
-          info.mUpdated = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("updated")));
-          info.mExpires = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("expires")));
+          info.mUpdated = IHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("created")));
+          info.mUpdated = IHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("updated")));
+          info.mExpires = IHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("expires")));
 
           info.mName = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("name"));
           info.mProfile = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("profile"));
@@ -1779,14 +1751,14 @@ namespace openpeer
           info.mAccountID = MessageHelper::getAttributeID(elem);
           info.mAccessToken = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessToken"));
           info.mAccessSecret = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecret"));
-          info.mAccessSecretExpires = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretExpires")));
+          info.mAccessSecretExpires = IHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretExpires")));
           info.mAccessSecretProof = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretProof"));
-          info.mAccessSecretProofExpires = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretProofExpires")));
+          info.mAccessSecretProofExpires = IHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretProofExpires")));
 
           String key = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("key"));
 
           if (key.hasData()) {
-            info.mKey = stack::IHelper::convertFromBase64(key);
+            info.mKey = IHelper::convertFromBase64(key);
           }
           info.mHash = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("hash"));
 
@@ -1840,12 +1812,12 @@ namespace openpeer
 
           info.mAccessToken = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessToken"));
           info.mAccessSecret = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecret"));
-          info.mAccessSecretExpires = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretExpires")));
+          info.mAccessSecretExpires = IHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretExpires")));
           info.mAccessSecretProof = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretProof"));
-          info.mAccessSecretProofExpires = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretProofExpires")));
+          info.mAccessSecretProofExpires = IHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("accessSecretProofExpires")));
 
           info.mVersion = IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("version"));
-          info.mUpdateNext = IMessageHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("updateNext")));
+          info.mUpdateNext = IHelper::stringToTime(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("updateNext")));
 
           try {
             info.mRefreshFlag = Numeric<bool>(IMessageHelper::getElementTextAndDecode(elem->findFirstChildElement("refresh")));

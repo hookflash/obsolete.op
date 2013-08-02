@@ -91,7 +91,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String TestMediaEngine::log(const char *message) const
       {
-        return String("TestMediaEngine [") + zsLib::Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("TestMediaEngine [") + zsLib::string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -210,7 +210,7 @@ namespace openpeer
           
           mError = mVoiceRtpRtcp->GetRTPStatistics(mVoiceChannel, averageJitterMs, maxJitterMs, discardedPackets);
           if (0 != mError) {
-            ZS_LOG_ERROR(Detail, log("failed to get RTP statistics for voice (error: ") + zsLib::Stringize<internal::INT>(mVoiceBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to get RTP statistics for voice (error: ") + string(mVoiceBase->LastError()) + ")")
             return;
           }
           

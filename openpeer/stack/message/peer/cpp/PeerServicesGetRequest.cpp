@@ -31,10 +31,11 @@
 
 #include <openpeer/stack/message/peer/PeerServicesGetRequest.h>
 #include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
-#include <openpeer/stack/IHelper.h>
 #include <openpeer/stack/IPeerFiles.h>
 #include <openpeer/stack/IPeerFilePrivate.h>
 #include <openpeer/stack/IPeerFilePublic.h>
+
+#include <openpeer/services/IHelper.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>
@@ -49,6 +50,8 @@ namespace openpeer
   {
     namespace message
     {
+      using services::IHelper;
+
       namespace peer
       {
         using zsLib::Seconds;
@@ -96,7 +99,7 @@ namespace openpeer
           lockboxInfo.mAccessToken = mLockboxInfo.mAccessToken;
           if (mLockboxInfo.mAccessSecret.hasData()) {
             lockboxInfo.mAccessSecretProofExpires = zsLib::now() + Seconds(OPENPEER_STACK_MESSAGE_PEER_SERVICES_GET_REQUEST_EXPIRES_TIME_IN_SECONDS);
-            lockboxInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::convertToBuffer(mLockboxInfo.mAccessSecret), "lockbox-access-validate:" + clientNonce + ":" + IMessageHelper::timeToString(lockboxInfo.mAccessSecretProofExpires) + ":" + lockboxInfo.mAccessToken + ":peer-services-get"));
+            lockboxInfo.mAccessSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(mLockboxInfo.mAccessSecret), "lockbox-access-validate:" + clientNonce + ":" + IHelper::timeToString(lockboxInfo.mAccessSecretProofExpires) + ":" + lockboxInfo.mAccessToken + ":peer-services-get"));
           }
 
           root->adoptAsLastChild(IMessageHelper::createElementWithText("nonce", clientNonce));

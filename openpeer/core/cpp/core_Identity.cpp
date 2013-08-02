@@ -51,8 +51,6 @@ namespace openpeer
 
     namespace internal
     {
-      using zsLib::Stringize;
-
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -187,7 +185,7 @@ namespace openpeer
         String identity(identityURI_or_identityBaseURI);
         String domain(identityProviderDomain);
 
-        ZS_THROW_INVALID_ARGUMENT_IF(!stack::IHelper::isValidDomain(domain))
+        ZS_THROW_INVALID_ARGUMENT_IF(!services::IHelper::isValidDomain(domain))
 
         IServiceIdentityPtr provider;
         ZS_LOG_DEBUG(pThis->log("preparing bootstrapped network domain") + ", identity=" + identity + ", domain=" + domain)
@@ -238,7 +236,7 @@ namespace openpeer
 
         String domain(identityProviderDomain);
 
-        ZS_THROW_INVALID_ARGUMENT_IF(!stack::IHelper::isValidDomain(domain))
+        ZS_THROW_INVALID_ARGUMENT_IF(!services::IHelper::isValidDomain(domain))
 
         IServiceIdentityPtr provider;
         ZS_LOG_DEBUG(pThis->log("preparing bootstrapped network domain") + ", identity=" + identity + ", domain=" + domain)
@@ -513,7 +511,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String Identity::log(const char *message) const
       {
-        return String("core::Identity [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("core::Identity [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------

@@ -46,7 +46,6 @@ namespace openpeer
   {
     namespace message
     {
-      using zsLib::Stringize;
       using internal::MessageFactoryUnknown;
       using internal::MessageFactoryUnknownPtr;
       using internal::MessageFactoryManager;

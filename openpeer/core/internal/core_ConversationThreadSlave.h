@@ -38,6 +38,8 @@
 
 #include <openpeer/stack/IPeerSubscription.h>
 
+#include <openpeer/services/IWakeDelegate.h>
+
 #include <zsLib/MessageQueueAssociator.h>
 #include <zsLib/String.h>
 #include <zsLib/Timer.h>
@@ -74,19 +76,6 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IConversationThreadSlaveAsync
-      #pragma mark
-
-      interaction IConversationThreadSlaveAsync
-      {
-        virtual void onStep() = 0;
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark ConversationThreadSlave
       #pragma mark
 
@@ -94,7 +83,7 @@ namespace openpeer
                                        public MessageQueueAssociator,
                                        public IConversationThreadSlaveForConversationThread,
                                        public IConversationThreadDocumentFetcherDelegate,
-                                       public IConversationThreadSlaveAsync,
+                                       public IWakeDelegate,
                                        public ITimerDelegate,
                                        public IPeerSubscriptionDelegate
       {
@@ -227,10 +216,10 @@ namespace openpeer
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ConversationThreadSlave => IConversationThreadSlaveAsync
+        #pragma mark ConversationThreadSlave => IWakeDelegate
         #pragma mark
 
-        virtual void onStep() {step();}
+        virtual void onWake() {step();}
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -348,7 +337,3 @@ namespace openpeer
     }
   }
 }
-
-ZS_DECLARE_PROXY_BEGIN(openpeer::core::internal::IConversationThreadSlaveAsync)
-ZS_DECLARE_PROXY_METHOD_0(onStep)
-ZS_DECLARE_PROXY_END()

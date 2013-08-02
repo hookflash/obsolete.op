@@ -52,6 +52,9 @@ namespace openpeer
                       public IHTTPFactory,
                       public IICESocketFactory,
                       public IICESocketSessionFactory,
+                      public IMessageLayerSecurityChannelFactory,
+                      public IRSAPrivateKeyFactory,
+                      public IRSAPublicKeyFactory,
                       public IRUDPChannelFactory,
                       public IRUDPChannelStreamFactory,
                       public IRUDPICESocketFactory,
@@ -61,6 +64,8 @@ namespace openpeer
                       public ISTUNDiscoveryFactory,
                       public ISTUNRequesterFactory,
                       public ISTUNRequesterManagerFactory,
+                      public ITCPMessagingFactory,
+                      public ITransportStreamFactory,
                       public ITURNSocketFactory
       {
       public:

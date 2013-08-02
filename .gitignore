@@ -8,6 +8,7 @@
 *.o
 *.a
 .metadata
+xcuserdata
 xcschememanagement.plist
 hookflash-staging/
 WorkspaceSettings.xcsettings

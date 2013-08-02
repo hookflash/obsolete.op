@@ -52,8 +52,6 @@ namespace openpeer
     {
       //      typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
 
-      using zsLib::Stringize;
-
       using message::peer_salt::SignedSaltGetRequest;
       using message::peer_salt::SignedSaltGetRequestPtr;
 
@@ -323,7 +321,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String ServiceSaltFetchSignedSaltQuery::log(const char *message) const
       {
-        return String("ServiceSaltFetchSignedSaltQuery [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("ServiceSaltFetchSignedSaltQuery [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -331,12 +329,12 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("fetch signed salt id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("fetch signed salt id", string(mID), firstTime) +
                IBootstrappedNetwork::toDebugString(mBootstrappedNetwork) +
                IMessageMonitor::toDebugString(mSaltMonitor) +
-               Helper::getDebugValue("salt bundles", mSaltBundles.size() > 0 ? Stringize<size_t>(mSaltBundles.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("total to fetch", 0 != mTotalToFetch ? Stringize<typeof(mTotalToFetch)>(mTotalToFetch).string() : String(), firstTime) +
-               Helper::getDebugValue("error code", 0 != mLastError ? Stringize<typeof(mLastError)>(mLastError).string() : String(), firstTime) +
+               Helper::getDebugValue("salt bundles", mSaltBundles.size() > 0 ? string(mSaltBundles.size()) : String(), firstTime) +
+               Helper::getDebugValue("total to fetch", 0 != mTotalToFetch ? string(mTotalToFetch) : String(), firstTime) +
+               Helper::getDebugValue("error code", 0 != mLastError ? string(mLastError) : String(), firstTime) +
                Helper::getDebugValue("error reason", mLastErrorReason, firstTime);
       }
 

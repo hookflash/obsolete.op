@@ -37,14 +37,17 @@
 #include <openpeer/stack/internal/stack_Helper.h>
 #include <openpeer/stack/internal/stack_Peer.h>
 #include <openpeer/stack/internal/stack_Stack.h>
+
 #include <openpeer/stack/IPeerFiles.h>
 #include <openpeer/stack/IPeerFilePublic.h>
+
 #include <openpeer/stack/message/peer-to-peer/PeerIdentifyRequest.h>
 #include <openpeer/stack/message/peer-to-peer/PeerKeepAliveRequest.h>
 #include <openpeer/stack/message/peer-finder/PeerLocationFindRequest.h>
 #include <openpeer/stack/message/peer-finder/PeerLocationFindResult.h>
 #include <openpeer/stack/message/peer-finder/PeerLocationFindReply.h>
-#include <openpeer/stack/message/IMessageHelper.h>
+
+#include <openpeer/services/IHelper.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/Log.h>
@@ -72,7 +75,7 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
+      using services::IHelper;
 
       using message::peer_to_peer::PeerIdentifyRequest;
       using message::peer_to_peer::PeerIdentifyRequestPtr;
@@ -245,7 +248,7 @@ namespace openpeer
           return;
         }
 
-        ZS_LOG_DETAIL(log("creating session from remote candidates") + ", total candidates=" + Stringize<size_t>(candidates.size()).string())
+        ZS_LOG_DETAIL(log("creating session from remote candidates") + ", total candidates=" + string(candidates.size()))
 
         mSocketSession = socket->createSessionFromRemoteCandidates(mThisWeak.lock(), candidates, control);
 
@@ -261,7 +264,7 @@ namespace openpeer
           ZS_LOG_ERROR(Detail, log("failed to create socket session"))
         }
 
-        (IAccountPeerLocationAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
+        (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -273,7 +276,7 @@ namespace openpeer
         mIncoming = true;
 
         mPendingRequests.push_back(request);
-        (IAccountPeerLocationAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
+        (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -384,14 +387,14 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark AccountPeerLocation => IAccountPeerLocationAsyncDelegate
+      #pragma mark AccountPeerLocation => IWakeDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void AccountPeerLocation::onStep()
+      void AccountPeerLocation::onWake()
       {
         AutoRecursiveLock lock(getLock());
-        ZS_LOG_DEBUG(log("on step"))
+        ZS_LOG_DEBUG(log("on wake"))
         step();
       }
 
@@ -432,12 +435,12 @@ namespace openpeer
         AutoRecursiveLock lock(getLock());
 
         if (isShutdown()) {
-          ZS_LOG_WARNING(Detail, log("received socket session state after already shutdown") + ", session ID=" + Stringize<PUID>(session->getID()).string())
+          ZS_LOG_WARNING(Detail, log("received socket session state after already shutdown") + ", session ID=" + string(session->getID()))
           return;
         }
 
         if (session != mSocketSession) {
-          ZS_LOG_WARNING(Detail, log("received socket session state changed from an obsolete session") + ", session ID=" + Stringize<PUID>(session->getID()).string())
+          ZS_LOG_WARNING(Detail, log("received socket session state changed from an obsolete session") + ", session ID=" + string(session->getID()))
           return;
         }
 
@@ -462,7 +465,7 @@ namespace openpeer
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!session)
 
-        ZS_LOG_DEBUG(log("received RUDP channel waiting") + ", sessionID=" + Stringize<PUID>(session->getID()).string())
+        ZS_LOG_DEBUG(log("received RUDP channel waiting") + ", sessionID=" + string(session->getID()))
 
         AutoRecursiveLock lock(getLock());
 
@@ -549,7 +552,7 @@ namespace openpeer
         if (isShutdown()) return;
 
         if (messaging != mMessaging) {
-          ZS_LOG_WARNING(Detail, log("received messaging state changed from an obsolete RUDP messaging") + ", messaging ID=" + Stringize<PUID>(messaging->getID()).string())
+          ZS_LOG_WARNING(Detail, log("received messaging state changed from an obsolete RUDP messaging") + ", messaging ID=" + string(messaging->getID()))
           return;
         }
 
@@ -756,7 +759,7 @@ namespace openpeer
 
         mIdentifyTime = zsLib::now();
 
-        (IAccountPeerLocationAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
+        (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
         return true;
       }
 
@@ -849,7 +852,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String AccountPeerLocation::log(const char *message) const
       {
-        return String("AccountPeerLocation [") + Stringize<PUID>(mID).string() + "] " + message;
+        return String("AccountPeerLocation [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -857,19 +860,19 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("account peer location id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("account peer location id", string(mID), firstTime) +
                Helper::getDebugValue("state", IAccount::toString(mCurrentState), firstTime) +
                Helper::getDebugValue("refind", mShouldRefindNow ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("last activity", Time() != mLastActivity ? IMessageHelper::timeToString(mLastActivity) : String(), firstTime) +
-               Helper::getDebugValue("pending requests", mPendingRequests.size() > 0 ? Stringize<size_t>(mPendingRequests.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("last activity", Time() != mLastActivity ? IHelper::timeToString(mLastActivity) : String(), firstTime) +
+               Helper::getDebugValue("pending requests", mPendingRequests.size() > 0 ? string(mPendingRequests.size()) : String(), firstTime) +
                mLocationInfo.getDebugValueString() +
                (mLocation != mLocationInfo.mLocation ? ILocation::toDebugString(mLocation) : String()) +
                IPeer::toDebugString(mPeer) +
-               Helper::getDebugValue("rudp ice socket subscription id", mSocketSubscription ? Stringize<PUID>(mSocketSubscription->getID()).string() : String(), firstTime) +
-               Helper::getDebugValue("rudp ice socket session id", mSocketSession ? Stringize<PUID>(mSocketSession->getID()).string() : String(), firstTime) +
-               Helper::getDebugValue("rudp messagine id", mMessaging ? Stringize<PUID>(mMessaging->getID()).string() : String(), firstTime) +
+               Helper::getDebugValue("rudp ice socket subscription id", mSocketSubscription ? string(mSocketSubscription->getID()) : String(), firstTime) +
+               Helper::getDebugValue("rudp ice socket session id", mSocketSession ? string(mSocketSession->getID()) : String(), firstTime) +
+               Helper::getDebugValue("rudp messagine id", mMessaging ? string(mMessaging->getID()) : String(), firstTime) +
                Helper::getDebugValue("incoming", mIncoming ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("identify time", Time() != mIdentifyTime ? IMessageHelper::timeToString(mIdentifyTime) : String(), firstTime) +
+               Helper::getDebugValue("identify time", Time() != mIdentifyTime ? IHelper::timeToString(mIdentifyTime) : String(), firstTime) +
                Helper::getDebugValue("identity monitor", mIdentifyMonitor ? String("true") : String(), firstTime) +
                Helper::getDebugValue("keep alive monitor", mKeepAliveMonitor ? String("true") : String(), firstTime);
       }
@@ -1012,7 +1015,7 @@ namespace openpeer
         }
 
         // ensure the socket has been woken up during the subscription process
-        IAccountPeerLocationAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
         return false;
       }
 

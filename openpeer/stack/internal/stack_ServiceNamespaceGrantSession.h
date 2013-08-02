@@ -39,6 +39,8 @@
 
 #include <openpeer/stack/IServiceSalt.h>
 
+#include <openpeer/services/IWakeDelegate.h>
+
 #include <zsLib/MessageQueueAssociator.h>
 
 #include <list>
@@ -152,19 +154,6 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IServiceNamespaceGrantSessionAsyncDelegate
-      #pragma mark
-
-      interaction IServiceNamespaceGrantSessionAsyncDelegate
-      {
-        virtual void onStep() = 0;
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark ServiceNamespaceGrantSession
       #pragma mark
 
@@ -173,7 +162,7 @@ namespace openpeer
                                            public IServiceNamespaceGrantSession,
                                            public IMessageSource,
                                            public IServiceNamespaceGrantSessionForServices,
-                                           public IServiceNamespaceGrantSessionAsyncDelegate,
+                                           public IWakeDelegate,
                                            public IBootstrappedNetworkDelegate
       {
       public:
@@ -282,10 +271,10 @@ namespace openpeer
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServiceNamespaceGrantSession => IServiceNamespaceGrantSessionAsyncDelegate
+        #pragma mark ServiceNamespaceGrantSession => IWakeDelegate
         #pragma mark
 
-        virtual void onStep();
+        virtual void onWake();
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -529,10 +518,6 @@ namespace openpeer
     }
   }
 }
-
-ZS_DECLARE_PROXY_BEGIN(openpeer::stack::internal::IServiceNamespaceGrantSessionAsyncDelegate)
-ZS_DECLARE_PROXY_METHOD_0(onStep)
-ZS_DECLARE_PROXY_END()
 
 ZS_DECLARE_PROXY_BEGIN(openpeer::stack::internal::IServiceNamespaceGrantSessionForServicesWaitForWaitDelegate)
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::IServiceNamespaceGrantSessionPtr, IServiceNamespaceGrantSessionPtr)

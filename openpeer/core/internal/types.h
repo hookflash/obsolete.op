@@ -41,6 +41,7 @@ namespace openpeer
   {
     namespace internal
     {
+      using zsLib::string;
       using zsLib::Noop;
       using zsLib::BYTE;
       using zsLib::CSTR;
@@ -131,15 +132,14 @@ namespace openpeer
       using services::IICESocketSession;
       using services::IICESocketSessionPtr;
       using services::IHTTP;
+      using services::IWakeDelegate;
+      using services::IWakeDelegatePtr;
+      using services::IWakeDelegateWeakPtr;
+      using services::IWakeDelegateProxy;
 
       class Account;
       typedef boost::shared_ptr<Account> AccountPtr;
       typedef boost::weak_ptr<Account> AccountWeakPtr;
-
-      interaction IAccountAsyncDelegate;
-      typedef boost::shared_ptr<IAccountAsyncDelegate> IAccountAsyncDelegatePtr;
-      typedef boost::weak_ptr<IAccountAsyncDelegate> IAccountAsyncDelegateWeakPtr;
-      typedef zsLib::Proxy<IAccountAsyncDelegate> IAccountAsyncDelegateProxy;
 
       class Cache;
       typedef boost::shared_ptr<Cache> CachePtr;
@@ -184,11 +184,6 @@ namespace openpeer
       typedef boost::shared_ptr<ConversationThread> ConversationThreadPtr;
       typedef boost::weak_ptr<ConversationThread> ConversationThreadWeakPtr;
 
-      interaction IConversationThreadAsync;
-      typedef boost::shared_ptr<IConversationThreadAsync> IConversationThreadAsyncPtr;
-      typedef boost::weak_ptr<IConversationThreadAsync> IConversationThreadAsyncWeakPtr;
-      typedef zsLib::Proxy<IConversationThreadAsync> IConversationThreadAsyncProxy;
-
       interaction IConversationThreadHostSlaveBase;
       typedef boost::shared_ptr<IConversationThreadHostSlaveBase> IConversationThreadHostSlaveBasePtr;
       typedef boost::weak_ptr<IConversationThreadHostSlaveBase> IConversationThreadHostSlaveBaseWeakPtr;
@@ -197,19 +192,9 @@ namespace openpeer
       typedef boost::shared_ptr<ConversationThreadHost> ConversationThreadHostPtr;
       typedef boost::weak_ptr<ConversationThreadHost> ConversationThreadHostWeakPtr;
 
-      interaction IConversationThreadHostAsync;
-      typedef boost::shared_ptr<IConversationThreadHostAsync> IConversationThreadHostAsyncPtr;
-      typedef boost::weak_ptr<ConversationThreadHost> IConversationThreadHostAsyncWeakPtr;
-      typedef zsLib::Proxy<IConversationThreadHostAsync> IConversationThreadHostAsyncProxy;
-
       class ConversationThreadSlave;
       typedef boost::shared_ptr<ConversationThreadSlave> ConversationThreadSlavePtr;
       typedef boost::weak_ptr<ConversationThreadSlave> ConversationThreadSlaveWeakPtr;
-
-      interaction IConversationThreadSlaveAsync;
-      typedef boost::shared_ptr<IConversationThreadSlaveAsync> IConversationThreadSlaveAsyncPtr;
-      typedef boost::weak_ptr<IConversationThreadSlaveAsync> IConversationThreadSlaveAsyncWeakPtr;
-      typedef zsLib::Proxy<IConversationThreadSlaveAsync> IConversationThreadSlaveAsyncProxy;
 
       interaction IConversationThreadDocumentFetcher;
       typedef boost::shared_ptr<IConversationThreadDocumentFetcher> IConversationThreadDocumentFetcherPtr;

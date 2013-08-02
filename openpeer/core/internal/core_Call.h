@@ -38,6 +38,7 @@
 
 #include <openpeer/services/IICESocket.h>
 #include <openpeer/services/IICESocketSession.h>
+#include <openpeer/services/IWakeDelegate.h>
 
 #include <zsLib/Timer.h>
 
@@ -132,7 +133,6 @@ namespace openpeer
 
       interaction ICallAsync
       {
-        virtual void onStep() = 0;
         virtual void onSetFocus(bool on) = 0;
         virtual void onHangup() = 0;
       };
@@ -150,6 +150,7 @@ namespace openpeer
                     public ICall,
                     public ICallForConversationThread,
                     public ICallForCallTransport,
+                    public IWakeDelegate,
                     public ICallAsync,
                     public IICESocketDelegate,
                     public ITimerDelegate
@@ -166,11 +167,6 @@ namespace openpeer
 
         typedef IConversationThreadParser::DialogPtr DialogPtr;
         typedef IConversationThreadForCall::LocationDialogMap LocationDialogMap;
-
-        interaction ICallLocationAsync;
-        typedef boost::shared_ptr<ICallLocationAsync> ICallLocationAsyncPtr;
-        typedef boost::weak_ptr<ICallLocationAsync> ICallLocationAsyncWeakPtr;
-        typedef zsLib::Proxy<ICallLocationAsync> ICallLocationAsyncProxy;
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -300,10 +296,16 @@ namespace openpeer
 
         //---------------------------------------------------------------------
         #pragma mark
+        #pragma mark Call => IWakeDelegate
+        #pragma mark
+
+        virtual void onWake() {step();}
+
+        //---------------------------------------------------------------------
+        #pragma mark
         #pragma mark Call => ICallAsync
         #pragma mark
 
-        virtual void onStep() {step();}
         virtual void onSetFocus(bool on);
         virtual void onHangup() {cancel();}
 
@@ -463,18 +465,6 @@ namespace openpeer
         bool placeCallWithConversationThread();
 
       public:
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark Call::ICallLocationAsync
-        #pragma mark
-
-        interaction ICallLocationAsync
-        {
-          virtual void onStep() = 0;
-        };
 
         //---------------------------------------------------------------------
         //---------------------------------------------------------------------
@@ -486,7 +476,7 @@ namespace openpeer
 
         class CallLocation : public ICallLocation,
                              public services::IICESocketSessionDelegate,
-                             public ICallLocationAsync
+                             public IWakeDelegate
         {
         public:
 
@@ -578,10 +568,10 @@ namespace openpeer
 
           //-------------------------------------------------------------------
           #pragma mark
-          #pragma mark Call::CallLocation => ICallLocationAsync
+          #pragma mark Call::CallLocation => IWakeDelegate
           #pragma mark
 
-          virtual void onStep() {step();}
+          virtual void onWake() {step();}
 
         private:
           //-------------------------------------------------------------------
@@ -761,11 +751,6 @@ namespace openpeer
 }
 
 ZS_DECLARE_PROXY_BEGIN(openpeer::core::internal::ICallAsync)
-ZS_DECLARE_PROXY_METHOD_0(onStep)
 ZS_DECLARE_PROXY_METHOD_1(onSetFocus, bool)
 ZS_DECLARE_PROXY_METHOD_0(onHangup)
-ZS_DECLARE_PROXY_END()
-
-ZS_DECLARE_PROXY_BEGIN(openpeer::core::internal::Call::ICallLocationAsync)
-ZS_DECLARE_PROXY_METHOD_0(onStep)
 ZS_DECLARE_PROXY_END()

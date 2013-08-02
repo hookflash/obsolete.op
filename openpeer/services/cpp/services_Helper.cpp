@@ -32,14 +32,14 @@
 #include <openpeer/services/internal/services_Helper.h>
 #include <openpeer/services/IDNS.h>
 #include <cryptopp/osrng.h>
+
 #include <zsLib/Stringize.h>
+#include <zsLib/Numeric.h>
 #include <zsLib/helpers.h>
 #include <zsLib/Log.h>
-#include <zsLib/ISocket.h>
-#include <zsLib/Socket.h>
+#include <zsLib/XML.h>
 #include <zsLib/MessageQueueThread.h>
-#include <zsLib/Timer.h>
-#include <zsLib/Numeric.h>
+#include <zsLib/RegEx.h>
 
 #include <iostream>
 #include <fstream>
@@ -47,68 +47,59 @@
 #include <pthread.h>
 #endif //ndef _WIN32
 
-#ifdef __QNX__
-#ifndef NDEBUG
-#include <QDebug>
-#endif //ndef NDEBUG
-#endif //__QNX__
-
 #include <boost/shared_array.hpp>
+
+#include <cryptopp/modes.h>
+#include <cryptopp/hex.h>
+#include <cryptopp/base64.h>
+#include <cryptopp/aes.h>
+#include <cryptopp/sha.h>
+#define CRYPTOPP_ENABLE_NAMESPACE_WEAK 1
+#include <cryptopp/md5.h>
+#include <cryptopp/hmac.h>
+
 
 namespace openpeer { namespace services { ZS_DECLARE_SUBSYSTEM(openpeer_services) } }
 
-#define OPENPEER_DEFAULT_OUTGOING_TELNET_PORT (59999)
-
-#define OPENPEER_SERVICES_SEQUENCE_ESCAPE                    "\x1B"
-#define OPENPEER_SERVICES_SEQUENCE_COLOUR_RESET              OPENPEER_SERVICES_SEQUENCE_ESCAPE "[0m"
-#define OPENPEER_SERVICES_SEQUENCE_COLOUR_THREAD             OPENPEER_SERVICES_SEQUENCE_COLOUR_RESET OPENPEER_SERVICES_SEQUENCE_ESCAPE "[33m"
-#define OPENPEER_SERVICES_SEQUENCE_COLOUR_TIME               OPENPEER_SERVICES_SEQUENCE_COLOUR_RESET OPENPEER_SERVICES_SEQUENCE_ESCAPE "[33m"
-#define OPENPEER_SERVICES_SEQUENCE_COLOUR_SEVERITY_INFO      OPENPEER_SERVICES_SEQUENCE_COLOUR_RESET OPENPEER_SERVICES_SEQUENCE_ESCAPE "[36m"
-#define OPENPEER_SERVICES_SEQUENCE_COLOUR_SEVERITY_WARNING   OPENPEER_SERVICES_SEQUENCE_COLOUR_RESET OPENPEER_SERVICES_SEQUENCE_ESCAPE "[35m"
-#define OPENPEER_SERVICES_SEQUENCE_COLOUR_SEVERITY_ERROR     OPENPEER_SERVICES_SEQUENCE_COLOUR_RESET OPENPEER_SERVICES_SEQUENCE_ESCAPE "[31m"
-#define OPENPEER_SERVICES_SEQUENCE_COLOUR_SEVERITY_FATAL     OPENPEER_SERVICES_SEQUENCE_COLOUR_RESET OPENPEER_SERVICES_SEQUENCE_ESCAPE "[31m"
-#define OPENPEER_SERVICES_SEQUENCE_COLOUR_SEVERITY           OPENPEER_SERVICES_SEQUENCE_COLOUR_RESET OPENPEER_SERVICES_SEQUENCE_ESCAPE "[36m"
-#define OPENPEER_SERVICES_SEQUENCE_COLOUR_MESSAGE_BASIC      OPENPEER_SERVICES_SEQUENCE_COLOUR_RESET OPENPEER_SERVICES_SEQUENCE_ESCAPE "[1m" OPENPEER_SERVICES_SEQUENCE_ESCAPE "[30m"
-#define OPENPEER_SERVICES_SEQUENCE_COLOUR_MESSAGE_DETAIL     OPENPEER_SERVICES_SEQUENCE_COLOUR_RESET OPENPEER_SERVICES_SEQUENCE_ESCAPE "[1m" OPENPEER_SERVICES_SEQUENCE_ESCAPE "[30m"
-#define OPENPEER_SERVICES_SEQUENCE_COLOUR_MESSAGE_DEBUG      OPENPEER_SERVICES_SEQUENCE_COLOUR_RESET OPENPEER_SERVICES_SEQUENCE_ESCAPE "[30m"
-#define OPENPEER_SERVICES_SEQUENCE_COLOUR_MESSAGE_TRACE      OPENPEER_SERVICES_SEQUENCE_COLOUR_RESET OPENPEER_SERVICES_SEQUENCE_ESCAPE "[34m"
-#define OPENPEER_SERVICES_SEQUENCE_COLOUR_FILENAME           OPENPEER_SERVICES_SEQUENCE_COLOUR_RESET OPENPEER_SERVICES_SEQUENCE_ESCAPE "[32m"
-#define OPENPEER_SERVICES_SEQUENCE_COLOUR_LINENUMBER         OPENPEER_SERVICES_SEQUENCE_COLOUR_RESET OPENPEER_SERVICES_SEQUENCE_ESCAPE "[32m"
-#define OPENPEER_SERVICES_SEQUENCE_COLOUR_FUNCTION           OPENPEER_SERVICES_SEQUENCE_COLOUR_RESET OPENPEER_SERVICES_SEQUENCE_ESCAPE "[36m"
-
 
 namespace openpeer
 {
   namespace services
   {
-    using zsLib::Stringize;
-    using zsLib::Numeric;
-
     namespace internal
     {
-      interaction ITelnetLoggerAsync;
-      typedef boost::shared_ptr<ITelnetLoggerAsync> ITelnetLoggerAsyncPtr;
-      typedef boost::weak_ptr<ITelnetLoggerAsync> ITelnetLoggerAsyncWeakPtr;
-      typedef zsLib::Proxy<ITelnetLoggerAsync> ITelnetLoggerAsyncProxy;
+      using zsLib::Numeric;
+      using zsLib::QWORD;
 
-      interaction ITelnetLoggerAsync
+      using CryptoPP::CFB_Mode;
+      using CryptoPP::HMAC;
+
+      using CryptoPP::HexEncoder;
+      using CryptoPP::HexDecoder;
+      using CryptoPP::StringSink;
+      using CryptoPP::ByteQueue;
+      using CryptoPP::Base64Encoder;
+      using CryptoPP::Base64Decoder;
+      using CryptoPP::AES;
+      using CryptoPP::Weak::MD5;
+      using CryptoPP::SHA256;
+      using CryptoPP::SHA1;
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark (helpers)
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      static String getElementTextAndDecode(ElementPtr node)
       {
-        virtual void onStep() = 0;
-      };
-    }
-  }
-}
+        if (!node) return String();
+        return node->getTextDecoded();
+      }
 
-ZS_DECLARE_PROXY_BEGIN(openpeer::services::internal::ITelnetLoggerAsync)
-ZS_DECLARE_PROXY_METHOD_0(onStep)
-ZS_DECLARE_PROXY_END()
-
-namespace openpeer
-{
-  namespace services
-  {
-    namespace internal
-    {
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -239,1275 +230,6 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark (helpers)
-      #pragma mark
-
-      //-----------------------------------------------------------------------
-      static String currentThreadIDAsString()
-      {
-#ifdef _WIN32
-        return Stringize<DWORD>(GetCurrentThreadId());
-#else
-#ifdef APPLE
-        return Stringize<mach_port_t>(pthread_mach_thread_np(pthread_self()));
-#else
-        return Stringize<pthread_t>(pthread_self());
-#endif //APPLE
-#endif //_WIN32
-      }
-
-      //-----------------------------------------------------------------------
-      static String toColorString(
-                                  const Subsystem &inSubsystem,
-                                  Log::Severity inSeverity,
-                                  Log::Level inLevel,
-                                  CSTR inMessage,
-                                  CSTR inFunction,
-                                  CSTR inFilePath,
-                                  ULONG inLineNumber,
-                                  bool eol = true
-                                  )
-      {
-        const char *posBackslash = strrchr(inFilePath, '\\');
-        const char *posSlash = strrchr(inFilePath, '/');
-
-        const char *fileName = inFilePath;
-
-        if (!posBackslash)
-          posBackslash = posSlash;
-
-        if (!posSlash)
-          posSlash = posBackslash;
-
-        if (posSlash) {
-          if (posBackslash > posSlash)
-            posSlash = posBackslash;
-          fileName = posSlash + 1;
-        }
-
-        std::string current = to_simple_string(zsLib::now()).substr(12);
-
-        const char *colorSeverity = OPENPEER_SERVICES_SEQUENCE_COLOUR_SEVERITY_INFO;
-        const char *severity = "NONE";
-        switch (inSeverity) {
-          case Log::Informational:   severity = "i:"; colorSeverity = OPENPEER_SERVICES_SEQUENCE_COLOUR_SEVERITY_INFO; break;
-          case Log::Warning:         severity = "W:"; colorSeverity = OPENPEER_SERVICES_SEQUENCE_COLOUR_SEVERITY_WARNING; break;
-          case Log::Error:           severity = "E:"; colorSeverity = OPENPEER_SERVICES_SEQUENCE_COLOUR_SEVERITY_ERROR; break;
-          case Log::Fatal:           severity = "F:"; colorSeverity = OPENPEER_SERVICES_SEQUENCE_COLOUR_SEVERITY_FATAL; break;
-        }
-
-        const char *colorLevel = OPENPEER_SERVICES_SEQUENCE_COLOUR_MESSAGE_TRACE;
-        switch (inLevel) {
-          case Log::Basic:           colorLevel = OPENPEER_SERVICES_SEQUENCE_COLOUR_MESSAGE_BASIC; break;
-          case Log::Detail:          colorLevel = OPENPEER_SERVICES_SEQUENCE_COLOUR_MESSAGE_DETAIL; break;
-          case Log::Debug:           colorLevel = OPENPEER_SERVICES_SEQUENCE_COLOUR_MESSAGE_DEBUG; break;
-          case Log::Trace:           colorLevel = OPENPEER_SERVICES_SEQUENCE_COLOUR_MESSAGE_TRACE; break;
-          case Log::None:            break;
-        }
-
-        String result = String(OPENPEER_SERVICES_SEQUENCE_COLOUR_TIME) + current
-                      + OPENPEER_SERVICES_SEQUENCE_COLOUR_RESET + " "
-                      + colorSeverity + severity
-                      + OPENPEER_SERVICES_SEQUENCE_COLOUR_RESET + " "
-                      + OPENPEER_SERVICES_SEQUENCE_COLOUR_THREAD + "<" + currentThreadIDAsString() + ">"
-                      + OPENPEER_SERVICES_SEQUENCE_COLOUR_RESET + " "
-                      + colorLevel + inMessage
-                      + OPENPEER_SERVICES_SEQUENCE_COLOUR_RESET + " "
-                      + OPENPEER_SERVICES_SEQUENCE_COLOUR_FILENAME + "@" + fileName
-                      + OPENPEER_SERVICES_SEQUENCE_COLOUR_LINENUMBER + "(" + Stringize<ULONG>(inLineNumber).string() + ")"
-                      + OPENPEER_SERVICES_SEQUENCE_COLOUR_RESET + " "
-                      + OPENPEER_SERVICES_SEQUENCE_COLOUR_FUNCTION + "[" + inFunction + "]"
-                      + OPENPEER_SERVICES_SEQUENCE_COLOUR_RESET + (eol ? "\n" : "");
-
-        return result;
-      }
-
-      //-----------------------------------------------------------------------
-      static String toBWString(
-                               const Subsystem &inSubsystem,
-                               Log::Severity inSeverity,
-                               Log::Level inLevel,
-                               CSTR inMessage,
-                               CSTR inFunction,
-                               CSTR inFilePath,
-                               ULONG inLineNumber,
-                               bool eol = true
-                               )
-      {
-        const char *posBackslash = strrchr(inFilePath, '\\');
-        const char *posSlash = strrchr(inFilePath, '/');
-
-        const char *fileName = inFilePath;
-
-        if (!posBackslash)
-          posBackslash = posSlash;
-
-        if (!posSlash)
-          posSlash = posBackslash;
-
-        if (posSlash) {
-          if (posBackslash > posSlash)
-            posSlash = posBackslash;
-          fileName = posSlash + 1;
-        }
-
-        std::string current = to_simple_string(zsLib::now()).substr(12);
-
-        const char *severity = "NONE";
-        switch (inSeverity) {
-          case Log::Informational:   severity = "i:"; break;
-          case Log::Warning:         severity = "W:"; break;
-          case Log::Error:           severity = "E:"; break;
-          case Log::Fatal:           severity = "F:"; break;
-        }
-
-        String result = current + " " + severity + " <"  + currentThreadIDAsString() + "> " + inMessage + " " + "@" + fileName + "(" + Stringize<ULONG>(inLineNumber).string() + ")" + " " + "[" + inFunction + "]" + (eol ? "\n" : "");
-        return result;
-      }
-
-      //-----------------------------------------------------------------------
-      static String toWindowsString(
-                                    const Subsystem &inSubsystem,
-                                    Log::Severity inSeverity,
-                                    Log::Level inLevel,
-                                    CSTR inMessage,
-                                    CSTR inFunction,
-                                    CSTR inFilePath,
-                                    ULONG inLineNumber,
-                                    bool eol = true
-                                    )
-      {
-        std::string current = to_simple_string(zsLib::now()).substr(12);
-
-        const char *severity = "NONE";
-        switch (inSeverity) {
-          case Log::Informational:   severity = "i:"; break;
-          case Log::Warning:         severity = "W:"; break;
-          case Log::Error:           severity = "E:"; break;
-          case Log::Fatal:           severity = "F:"; break;
-        }
-
-        String result = String(inFilePath) +  "(" + Stringize<ULONG>(inLineNumber).string() + ") " + severity + current + " : <" + currentThreadIDAsString() + "> " + inMessage + (eol ? "\n" : "");
-        return result;
-      }
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark LogLevelLogger
-      #pragma mark
-
-      class LogLevelLogger;
-      typedef boost::shared_ptr<LogLevelLogger> LogLevelLoggerPtr;
-      typedef boost::weak_ptr<LogLevelLogger> LogLevelLoggerWeakPtr;
-
-      //-----------------------------------------------------------------------
-      class LogLevelLogger : public ILogDelegate
-      {
-        //---------------------------------------------------------------------
-        void init()
-        {
-          LogPtr log = Log::singleton();
-          log->addListener(mThisWeak.lock());
-        }
-
-      public:
-        //---------------------------------------------------------------------
-        LogLevelLogger() :
-          mDefaultLogLevelSet(false),
-          mDefaultLogLevel(Log::None)
-        {}
-
-        //---------------------------------------------------------------------
-        static LogLevelLoggerPtr create()
-        {
-          LogLevelLoggerPtr pThis(new LogLevelLogger());
-          pThis->mThisWeak = pThis;
-          pThis->init();
-          return pThis;
-        }
-
-        //---------------------------------------------------------------------
-        static LogLevelLoggerPtr singleton() {
-          AutoRecursiveLock lock(Helper::getGlobalLock());
-          static LogLevelLoggerPtr logger = LogLevelLogger::create();
-          return logger;
-        }
-
-        //---------------------------------------------------------------------
-        void setLogLevel(Log::Level level)
-        {
-          AutoRecursiveLock lock(mLock);
-
-          mLevels.clear();
-
-          mDefaultLogLevelSet = true;
-          mDefaultLogLevel = level;
-          for (SubsystemMap::iterator iter = mSubsystems.begin(); iter != mSubsystems.end(); ++iter) {
-            Subsystem * &subsystem = (*iter).second;
-            (*subsystem).setOutputLevel(level);
-          }
-        }
-
-        //---------------------------------------------------------------------
-        void setLogLevel(const char *component, Log::Level level)
-        {
-          AutoRecursiveLock lock(mLock);
-          mLevels[component] = level;
-
-          SubsystemMap::iterator found = mSubsystems.find(component);
-          if (found == mSubsystems.end()) return;
-
-          Subsystem * &subsystem = (*found).second;
-          (*subsystem).setOutputLevel(level);
-        }
-
-        //---------------------------------------------------------------------
-        virtual void onNewSubsystem(Subsystem &inSubsystem)
-        {
-          AutoRecursiveLock lock(mLock);
-
-          const char *name = inSubsystem.getName();
-          mSubsystems[name] = &(inSubsystem);
-
-          LevelMap::iterator found = mLevels.find(name);
-          if (found == mLevels.end()) {
-            if (!mDefaultLogLevelSet) return;
-            inSubsystem.setOutputLevel(mDefaultLogLevel);
-            return;
-          }
-
-          Log::Level level = (*found).second;
-          inSubsystem.setOutputLevel(level);
-        }
-
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark LogLevelLogger => ILogDelegate
-        #pragma mark
-
-        //---------------------------------------------------------------------
-        // notification of a log event
-        virtual void log(
-                         const Subsystem &,
-                         Log::Severity,
-                         Log::Level,
-                         CSTR,
-                         CSTR,
-                         CSTR,
-                         ULONG
-                         )
-        {
-        }
-
-      private:
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark LogLevelLogger => (data)
-        #pragma mark
-
-        LogLevelLoggerWeakPtr mThisWeak;
-
-        mutable RecursiveLock mLock;
-
-        typedef std::map<String, Subsystem *> SubsystemMap;
-        typedef std::map<String, Log::Level> LevelMap;
-
-        SubsystemMap mSubsystems;
-        LevelMap mLevels;
-
-        bool mDefaultLogLevelSet;
-        Log::Level mDefaultLogLevel;
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark StdOutLogger
-      #pragma mark
-
-      class StdOutLogger;
-      typedef boost::shared_ptr<StdOutLogger> StdOutLoggerPtr;
-      typedef boost::weak_ptr<StdOutLogger> StdOutLoggerWeakPtr;
-
-      class StdOutLogger : public ILogDelegate
-      {
-        //---------------------------------------------------------------------
-        void init()
-        {
-          LogPtr log = Log::singleton();
-          log->addListener(mThisWeak.lock());
-        }
-
-      public:
-        //---------------------------------------------------------------------
-        StdOutLogger(bool colorizeOutput) : mColorizeOutput(colorizeOutput) {}
-
-        //---------------------------------------------------------------------
-        static StdOutLoggerPtr create(bool colorizeOutput)
-        {
-          StdOutLoggerPtr pThis(new StdOutLogger(colorizeOutput));
-          pThis->mThisWeak = pThis;
-          pThis->init();
-          return pThis;
-        }
-
-        //---------------------------------------------------------------------
-        static StdOutLoggerPtr singleton(bool colorizeOutput, bool reset = false) {
-          AutoRecursiveLock lock(Helper::getGlobalLock());
-          static StdOutLoggerPtr logger = (reset ? StdOutLoggerPtr() : StdOutLogger::create(colorizeOutput));
-          if ((reset) &&
-              (logger)) {
-            LogPtr log = Log::singleton();
-            log->removeListener(logger->mThisWeak.lock());
-            logger.reset();
-          }
-          if ((!reset) &&
-              (!logger)) {
-            logger = StdOutLogger::create(colorizeOutput);
-          }
-          return logger;
-        }
-
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark StdOutLogger => ILogDelegate
-        #pragma mark
-
-        virtual void onNewSubsystem(Subsystem &)
-        {
-        }
-
-        //---------------------------------------------------------------------
-        // notification of a log event
-        virtual void log(
-                         const Subsystem &inSubsystem,
-                         Log::Severity inSeverity,
-                         Log::Level inLevel,
-                         CSTR inMessage,
-                         CSTR inFunction,
-                         CSTR inFilePath,
-                         ULONG inLineNumber
-                         )
-        {
-          if (mColorizeOutput) {
-            std:: cout << toColorString(inSubsystem, inSeverity, inLevel, inMessage, inFunction, inFilePath, inLineNumber);
-          } else {
-            std:: cout << toBWString(inSubsystem, inSeverity, inLevel, inMessage, inFunction, inFilePath, inLineNumber);
-          }
-        }
-
-      private:
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark StdOutLogger => (data)
-        #pragma mark
-
-        StdOutLoggerWeakPtr mThisWeak;
-        bool mColorizeOutput;
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark FileLogger
-      #pragma mark
-
-      class FileLogger;
-      typedef boost::shared_ptr<FileLogger> FileLoggerPtr;
-      typedef boost::weak_ptr<FileLogger> FileLoggerWeakPtr;
-
-      class FileLogger : public ILogDelegate
-      {
-        //---------------------------------------------------------------------
-        void init(const char *fileName)
-        {
-          mFile.open(fileName, std::ios::out | std::ios::binary);
-          LogPtr log = Log::singleton();
-          log->addListener(mThisWeak.lock());
-        }
-
-      public:
-        //---------------------------------------------------------------------
-        FileLogger(bool colorizeOutput) : mColorizeOutput(colorizeOutput) {}
-
-        //---------------------------------------------------------------------
-        static FileLoggerPtr create(const char *fileName, bool colorizeOutput)
-        {
-          FileLoggerPtr pThis(new FileLogger(colorizeOutput));
-          pThis->mThisWeak = pThis;
-          pThis->init(fileName);
-          return pThis;
-        }
-
-        //---------------------------------------------------------------------
-        static FileLoggerPtr singleton(const char *fileName, bool colorizeOutput, bool reset = false) {
-          AutoRecursiveLock lock(Helper::getGlobalLock());
-          static FileLoggerPtr logger = (reset ? FileLoggerPtr() : FileLogger::create(fileName, colorizeOutput));
-          if ((reset) &&
-              (logger)) {
-            LogPtr log = Log::singleton();
-            log->removeListener(logger->mThisWeak.lock());
-            logger.reset();
-          }
-          if ((!reset) &&
-              (!logger)) {
-            logger = FileLogger::create(fileName, colorizeOutput);
-          }
-          return logger;
-        }
-
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark FileLogger => ILogDelegate
-        #pragma mark
-
-        virtual void onNewSubsystem(Subsystem &)
-        {
-        }
-
-        //---------------------------------------------------------------------
-        // notification of a log event
-        virtual void log(
-                         const Subsystem &inSubsystem,
-                         Log::Severity inSeverity,
-                         Log::Level inLevel,
-                         CSTR inMessage,
-                         CSTR inFunction,
-                         CSTR inFilePath,
-                         ULONG inLineNumber
-                         )
-        {
-          if (mFile.is_open()) {
-            String output;
-            if (mColorizeOutput) {
-              output = toColorString(inSubsystem, inSeverity, inLevel, inMessage, inFunction, inFilePath, inLineNumber);
-            } else {
-              output = toBWString(inSubsystem, inSeverity, inLevel, inMessage, inFunction, inFilePath, inLineNumber);
-            }
-            mFile << output;
-            mFile.flush();
-          }
-        }
-
-      private:
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark FileLogger => (data)
-        #pragma mark
-
-        FileLoggerWeakPtr mThisWeak;
-        bool mColorizeOutput;
-
-        std::ofstream mFile;
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark DebuggerLogger
-      #pragma mark
-
-      class DebuggerLogger;
-      typedef boost::shared_ptr<DebuggerLogger> DebuggerLoggerPtr;
-      typedef boost::weak_ptr<DebuggerLogger> DebuggerLoggerWeakPtr;
-
-      class DebuggerLogger : public ILogDelegate
-      {
-        //---------------------------------------------------------------------
-        void init()
-        {
-          LogPtr log = Log::singleton();
-          log->addListener(mThisWeak.lock());
-        }
-
-      public:
-        //---------------------------------------------------------------------
-        DebuggerLogger(bool colorizeOutput) : mColorizeOutput(colorizeOutput) {}
-
-        //---------------------------------------------------------------------
-        static DebuggerLoggerPtr create(bool colorizeOutput)
-        {
-          DebuggerLoggerPtr pThis(new DebuggerLogger(colorizeOutput));
-          pThis->mThisWeak = pThis;
-          pThis->init();
-          return pThis;
-        }
-
-        //---------------------------------------------------------------------
-        static DebuggerLoggerPtr singleton(bool colorizeOutput, bool reset = false)
-        {
-#if (defined(_WIN32)) || ((defined(__QNX__) && (!defined(NDEBUG))))
-          AutoRecursiveLock lock(Helper::getGlobalLock());
-          static DebuggerLoggerPtr logger = (reset ? DebuggerLoggerPtr() : DebuggerLogger::create(colorizeOutput));
-          if ((reset) &&
-              (logger)) {
-            LogPtr log = Log::singleton();
-            log->removeListener(logger->mThisWeak.lock());
-            logger.reset();
-          }
-          if ((!reset) &&
-              (!logger)) {
-            logger = DebuggerLogger::create(colorizeOutput);
-          }
-          return logger;
-#else
-          return DebuggerLoggerPtr();
-#endif //_WIN32
-        }
-
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark DebuggerLogger => ILogDelegate
-        #pragma mark
-
-        //---------------------------------------------------------------------
-        virtual void onNewSubsystem(Subsystem &)
-        {
-        }
-
-        //---------------------------------------------------------------------
-        // notification of a log event
-        virtual void log(
-                         const Subsystem &inSubsystem,
-                         Log::Severity inSeverity,
-                         Log::Level inLevel,
-                         CSTR inMessage,
-                         CSTR inFunction,
-                         CSTR inFilePath,
-                         ULONG inLineNumber
-                         )
-        {
-#ifdef __QNX__
-#ifndef NDEBUG
-          String output;
-          if (mColorizeOutput)
-            output = toColorString(inSubsystem, inSeverity, inLevel, inMessage, inFunction, inFilePath, inLineNumber, false);
-          else
-            output = toBWString(inSubsystem, inSeverity, inLevel, inMessage, inFunction, inFilePath, inLineNumber, false);
-          qDebug() << output.c_str();
-#endif //ndef NDEBUG
-#endif //__QNX__
-#ifdef _WIN32
-          String output = toWindowsString(inSubsystem, inSeverity, inLevel, inMessage, inFunction, inFilePath, inLineNumber);
-          OutputDebugStringW(output.wstring().c_str());
-#endif //_WIN32
-        }
-
-      private:
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark DebuggerLogger => (data)
-        #pragma mark
-
-        DebuggerLoggerWeakPtr mThisWeak;
-        bool mColorizeOutput;
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark TelnetLogger
-      #pragma mark
-
-      class TelnetLogger;
-      typedef boost::shared_ptr<TelnetLogger> TelnetLoggerPtr;
-      typedef boost::weak_ptr<TelnetLogger> TelnetLoggerWeakPtr;
-
-      class TelnetLogger : public ILogDelegate,
-                           public MessageQueueAssociator,
-                           public ISocketDelegate,
-                           public IDNSDelegate,
-                           public ITimerDelegate,
-                           public ITelnetLoggerAsync
-      {
-        //---------------------------------------------------------------------
-        void init(
-                  USHORT listenPort,
-                  ULONG maxSecondsWaitForSocketToBeAvailable
-                  )
-        {
-          mListenPort = listenPort;
-          mMaxWaitTimeForSocketToBeAvailable = Seconds(maxSecondsWaitForSocketToBeAvailable);
-
-          LogPtr log = Log::singleton();
-          log->addListener(mThisWeak.lock());
-
-          listen();
-        }
-
-        //---------------------------------------------------------------------
-        void init(
-                  const char *serverHostWithPort,
-                  const char *sendStringUponConnection
-                  )
-        {
-          mOutgoingMode = true;
-          mBackupStringToSendUponConnection = (sendStringUponConnection ? sendStringUponConnection : "");
-          mServerLookupName = (serverHostWithPort ? serverHostWithPort : "");
-
-          String::size_type pos = mServerLookupName.find(":");
-          if (pos != mServerLookupName.npos) {
-            String portStr = mServerLookupName.substr(pos+1);
-            mServerLookupName = mServerLookupName.substr(0, pos);
-
-            try {
-              mListenPort = Numeric<WORD>(portStr);
-            } catch(Numeric<WORD>::ValueOutOfRange &) {
-            }
-          }
-
-          if (0 == mListenPort) {
-            mListenPort = OPENPEER_DEFAULT_OUTGOING_TELNET_PORT;
-          }
-
-          // do this from outside the stack to prevent this from happening during any kind of lock
-          ITelnetLoggerAsyncProxy::create(mThisWeak.lock())->onStep();
-
-          LogPtr log = Log::singleton();
-          log->addListener(mThisWeak.lock());
-        }
-
-        //---------------------------------------------------------------------
-        void listen()
-        {
-          if (!mListenSocket) {
-            mListenSocket = Socket::createTCP();
-            try {
-#ifndef __QNX__
-              mListenSocket->setOptionFlag(ISocket::SetOptionFlag::IgnoreSigPipe, true);
-#endif //ndef __QNX__
-            } catch(ISocket::Exceptions::UnsupportedSocketOption &) {
-            }
-            mListenSocket->setOptionFlag(Socket::SetOptionFlag::NonBlocking, true);
-          }
-
-          IPAddress any = IPAddress::anyV4();
-          any.setPort(mListenPort);
-
-          int error = 0;
-
-          std::cout << "TELNET LOGGER: Attempting to listen for client connections on port: " << mListenPort << " (start time=" << Stringize<Time>(mStartListenTime).string() << ")...\n";
-          mListenSocket->bind(any, &error);
-
-          Time tick = zsLib::now();
-
-          if (0 != error) {
-            mListenSocket->close();
-            mListenSocket.reset();
-
-            if (mStartListenTime + mMaxWaitTimeForSocketToBeAvailable < tick) {
-              std::cout << "TELNET LOGGER: ***ABANDONED***\n";
-              if (mListenTimer) {
-                mListenTimer->cancel();
-                mListenTimer.reset();
-              }
-              return;
-            }
-            if (!mListenTimer) {
-              mListenTimer = Timer::create(mThisWeak.lock(), Seconds(1));
-            }
-            std::cout << "TELNET LOGGER: Failed to listen...\n";
-            return;
-          } else {
-            std::cout << "TELNET LOGGER: Succeeded.\n\n";
-          }
-
-          if (mListenTimer) {
-            mListenTimer->cancel();
-            mListenTimer.reset();
-          }
-
-          mListenSocket->setDelegate(mThisWeak.lock());
-          mListenSocket->listen();
-        }
-
-      public:
-        //---------------------------------------------------------------------
-        TelnetLogger(
-                     MessageQueueThreadPtr thread,
-                     bool colorizeOutput
-                     ) :
-          MessageQueueAssociator(thread),
-          mThread(thread),
-          mColorizeOutput(colorizeOutput),
-          mOutgoingMode(false),
-          mConnected(false),
-          mClosed(false),
-          mListenPort(0),
-          mMaxWaitTimeForSocketToBeAvailable(Seconds(60)),
-          mStartListenTime(zsLib::now())
-        {}
-
-        //---------------------------------------------------------------------
-        ~TelnetLogger()
-        {
-          close();
-        }
-
-        //---------------------------------------------------------------------
-        void close()
-        {
-          MessageQueueThreadPtr thread;
-
-          {
-            AutoRecursiveLock lock(mLock);
-
-            mClosed = true;
-
-            mBufferedList.clear();
-            mConnected = false;
-
-            if (mOutgoingServerQuery) {
-              mOutgoingServerQuery->cancel();
-              mOutgoingServerQuery.reset();
-            }
-
-            mServers.reset();
-
-            if (mTelnetSocket) {
-              mTelnetSocket->close();
-              mTelnetSocket.reset();
-            }
-            if (mListenSocket) {
-              mListenSocket->close();
-              mListenSocket.reset();
-            }
-            if (mListenTimer) {
-              mListenTimer->cancel();
-              mListenTimer.reset();
-            }
-            if (mThread) {
-              thread = mThread;
-              mThread.reset();
-            }
-          }
-
-          if (thread) {
-            thread->waitForShutdown();
-          }
-        }
-
-        //---------------------------------------------------------------------
-        static TelnetLoggerPtr create(USHORT listenPort, ULONG maxSecondsWaitForSocketToBeAvailable, bool colorizeOutput)
-        {
-          MessageQueueThreadPtr thread = MessageQueueThread::createBasic();
-          TelnetLoggerPtr pThis(new TelnetLogger(thread, colorizeOutput));
-          pThis->mThisWeak = pThis;
-          pThis->init(listenPort, maxSecondsWaitForSocketToBeAvailable);
-          return pThis;
-        }
-
-        //---------------------------------------------------------------------
-        static TelnetLoggerPtr create(
-                                      const char *serverHostWithPort,
-                                      bool colorizeOutput,
-                                      const char *sendStringUponConnection
-                                      )
-        {
-          MessageQueueThreadPtr thread = MessageQueueThread::createBasic();
-          TelnetLoggerPtr pThis(new TelnetLogger(thread, colorizeOutput));
-          pThis->mThisWeak = pThis;
-          pThis->init(serverHostWithPort, sendStringUponConnection);
-          return pThis;
-        }
-
-        //---------------------------------------------------------------------
-        static TelnetLoggerPtr singleton(USHORT listenPort, ULONG maxSecondsWaitForSocketToBeAvailable, bool colorizeOutput, bool reset = false) {
-          AutoRecursiveLock lock(Helper::getGlobalLock());
-          static TelnetLoggerPtr logger = (reset ? TelnetLoggerPtr() : TelnetLogger::create(listenPort, maxSecondsWaitForSocketToBeAvailable, colorizeOutput));
-          if ((reset) &&
-              (logger)) {
-            LogPtr log = Log::singleton();
-            log->removeListener(logger->mThisWeak.lock());
-            logger->close();
-            logger.reset();
-          }
-          if ((!reset) &&
-              (!logger)) {
-            logger = TelnetLogger::create(listenPort, maxSecondsWaitForSocketToBeAvailable, colorizeOutput);
-          }
-          return logger;
-        }
-
-        //---------------------------------------------------------------------
-        static TelnetLoggerPtr singleton(
-                                         const char *serverHostWithPort,
-                                         bool colorizeOutput,
-                                         const char *sendStringUponConnection
-                                         )
-        {
-          bool reset = (NULL == serverHostWithPort);
-
-          AutoRecursiveLock lock(Helper::getGlobalLock());
-          static TelnetLoggerPtr logger = (reset ? TelnetLoggerPtr() : TelnetLogger::create(serverHostWithPort, colorizeOutput, sendStringUponConnection));
-          if ((reset) &&
-              (logger)) {
-            LogPtr log = Log::singleton();
-            log->removeListener(logger->mThisWeak.lock());
-            logger->close();
-            logger.reset();
-          }
-
-          if ((!reset) &&
-              (!logger)) {
-            logger = TelnetLogger::create(serverHostWithPort, colorizeOutput, sendStringUponConnection);
-          }
-          return logger;
-        }
-
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark TelnetLogger => ILogDelegate
-        #pragma mark
-
-        //---------------------------------------------------------------------
-        virtual void onNewSubsystem(Subsystem &)
-        {
-        }
-
-        //---------------------------------------------------------------------
-        virtual void log(
-                         const Subsystem &inSubsystem,
-                         Log::Severity inSeverity,
-                         Log::Level inLevel,
-                         CSTR inMessage,
-                         CSTR inFunction,
-                         CSTR inFilePath,
-                         ULONG inLineNumber
-                         )
-        {
-          AutoRecursiveLock lock(mLock);
-
-          if (!mTelnetSocket)
-            return;
-
-          bool wouldBlock = false;
-          ULONG sent = 0;
-
-          String output;
-          if (mColorizeOutput) {
-            output = toColorString(inSubsystem, inSeverity, inLevel, inMessage, inFunction, inFilePath, inLineNumber);
-          } else {
-            output = toBWString(inSubsystem, inSeverity, inLevel, inMessage, inFunction, inFilePath, inLineNumber);
-          }
-
-          bool okayToSend = mBufferedList.size() < 1;
-
-          if (mOutgoingMode) {
-            if (!mConnected) return;
-          }
-
-          if (okayToSend) {
-            int errorCode = 0;
-            sent = mTelnetSocket->send((const BYTE *)(output.c_str()), output.length(), &wouldBlock, 0, &errorCode);
-            if (!wouldBlock) {
-              if (0 != errorCode) {
-                connectOutgoingAgain();
-                return;
-              }
-            }
-          }
-
-          if (sent < output.length()) {
-            // we need to buffer the data for later...
-            ULONG length = (output.length() - sent);
-            BufferedData data;
-            boost::shared_array<BYTE> buffer(new BYTE[length]);
-            memcpy(&(buffer[0]), output.c_str() + sent, length);
-
-            data.first = buffer;
-            data.second = length;
-
-            mBufferedList.push_back(data);
-          }
-        }
-
-        //---------------------------------------------------------------------
-        virtual void onReadReady(ISocketPtr inSocket)
-        {
-          AutoRecursiveLock lock(mLock);
-
-          if (mOutgoingMode) {
-            if (!mConnected) return;
-          }
-
-          if (inSocket == mListenSocket) {
-            if (mTelnetSocket)
-            {
-              mTelnetSocket->close();
-              mTelnetSocket.reset();
-            }
-
-            IPAddress ignored;
-            int noThrowError = 0;
-            mTelnetSocket = mListenSocket->accept(ignored, &noThrowError);
-            if (!mTelnetSocket)
-              return;
-
-            try {
-#ifndef __QNX__
-              mTelnetSocket->setOptionFlag(ISocket::SetOptionFlag::IgnoreSigPipe, true);
-#endif //ndef __QNX__
-            } catch(ISocket::Exceptions::UnsupportedSocketOption &) {
-            }
-
-            mTelnetSocket->setOptionFlag(Socket::SetOptionFlag::NonBlocking, true);
-            mTelnetSocket->setDelegate(mThisWeak.lock());
-          }
-
-          if (inSocket == mTelnetSocket) {
-            char buffer[1024+1];
-            memset(&(buffer[0]), 0, sizeof(buffer));
-            ULONG length = 0;
-
-            bool wouldBlock = false;
-            int errorCode = 0;
-            length = mTelnetSocket->receive((BYTE *)(&(buffer[0])), sizeof(buffer)-sizeof(buffer[0]), &wouldBlock, 0, &errorCode);
-
-            if (length < 1) return;
-
-            mCommand += (CSTR)(&buffer[0]);
-            if (mCommand.size() > (sizeof(buffer)*3)) {
-              mCommand.clear();
-            }
-            while (true) {
-              const char *posLineFeed = strchr(mCommand, '\n');
-              const char *posCarrageReturn = strchr(mCommand, '\r');
-
-              if ((NULL == posLineFeed) &&
-                  (NULL == posCarrageReturn)) {
-                return;
-              }
-
-              if (NULL == posCarrageReturn)
-                posCarrageReturn = posLineFeed;
-              if (NULL == posLineFeed)
-                posLineFeed = posCarrageReturn;
-
-              if (posCarrageReturn < posLineFeed)
-                posLineFeed = posCarrageReturn;
-
-              String command = mCommand.substr(0, (posLineFeed - mCommand.c_str()));
-              mCommand = mCommand.substr((posLineFeed - mCommand.c_str()) + 1);
-
-              if (command.size() > 0) {
-                handleCommand(command);
-              }
-            }
-          }
-        }
-
-        //---------------------------------------------------------------------
-        virtual void onWriteReady(ISocketPtr socket)
-        {
-          AutoRecursiveLock lock(mLock);
-          if (socket != mTelnetSocket) return;
-
-          if (mOutgoingMode) {
-            mConnected = true;
-          }
-
-          if (!mStringToSendUponConnection.isEmpty()) {
-
-            ULONG length = mStringToSendUponConnection.length();
-
-            BufferedData data;
-            boost::shared_array<BYTE> buffer(new BYTE[length]);
-            memcpy(&(buffer[0]), mStringToSendUponConnection.c_str(), length);
-
-            data.first = buffer;
-            data.second = length;
-
-            mBufferedList.push_front(data);
-
-            mStringToSendUponConnection.clear();
-          }
-
-          while (mBufferedList.size() > 0) {
-            BufferedData &data = mBufferedList.front();
-            bool wouldBlock = false;
-            ULONG sent = 0;
-
-            int errorCode = 0;
-            sent = mTelnetSocket->send(data.first.get(), data.second, &wouldBlock, 0, &errorCode);
-            if (!wouldBlock) {
-              if (0 != errorCode) {
-                connectOutgoingAgain();
-                return;
-              }
-            }
-
-            if (sent == data.second) {
-              mBufferedList.pop_front();
-              continue;
-            }
-
-            ULONG length = (data.second - sent);
-            memcpy(data.first.get() + sent, data.first.get(), length);
-            data.second = length;
-            break;
-          }
-        }
-
-        //---------------------------------------------------------------------
-        virtual void onException(ISocketPtr inSocket)
-        {
-          AutoRecursiveLock lock(mLock);
-          if (inSocket == mListenSocket) {
-            mListenSocket->close();
-            mListenSocket.reset();
-            if (!mClosed) {
-              mStartListenTime = zsLib::now();
-              listen();
-            }
-          }
-          if (inSocket == mTelnetSocket) {
-            connectOutgoingAgain();
-          }
-        }
-
-        //---------------------------------------------------------------------
-        virtual void onLookupCompleted(IDNSQueryPtr query)
-        {
-          AutoRecursiveLock lock(mLock);
-          IDNS::AResult::IPAddressList list;
-          IDNS::AResultPtr resultA = query->getA();
-          if (resultA) {
-            list = resultA->mIPAddresses;
-          }
-          IDNS::AAAAResultPtr resultAAAA = query->getAAAA();
-          if (resultAAAA) {
-            if (list.size() < 1) {
-              list = resultAAAA->mIPAddresses;
-            } else if (resultAAAA->mIPAddresses.size() > 0) {
-              list.merge(resultAAAA->mIPAddresses);
-            }
-          }
-
-          mOutgoingServerQuery.reset();
-
-          if (list.size() < 1) return;
-
-          mServers = IDNS::convertIPAddressesToSRVResult("logger", "tcp", list, mListenPort);
-
-          connectOutgoingAgain();
-        }
-
-        //---------------------------------------------------------------------
-        virtual void onStep()
-        {
-          String serverName;
-
-          {
-            AutoRecursiveLock lock(mLock);
-            if (mServerLookupName) {
-              serverName = mServerLookupName;
-              mServerLookupName.clear();
-            }
-          }
-
-          if (serverName.isEmpty()) return;
-
-          // DNS is not created during any kind of lock at all...
-          IDNSQueryPtr query = IDNS::lookupAorAAAA(mThisWeak.lock(), serverName);
-
-          {
-            AutoRecursiveLock lock(mLock);
-            // we can guarentee result will not happen until after "onStep"
-            // exits because both occupy the same thread queue...
-            mOutgoingServerQuery = query;
-          }
-        }
-
-        virtual void onTimer(TimerPtr timer)
-        {
-          if (timer != mListenTimer) {
-            return;
-          }
-          listen();
-        }
-
-      protected:
-        //---------------------------------------------------------------------
-        void connectOutgoingAgain()
-        {
-          mConnected = false;
-          mBufferedList.clear();
-
-          if (mTelnetSocket) {
-            mTelnetSocket->close();
-            mTelnetSocket.reset();
-          }
-
-          if (!mOutgoingMode) return;
-
-          if (!mServers) return;
-
-          IPAddress result;
-          if (!IDNS::extractNextIP(mServers, result)) {
-            mServers.reset();
-            return;
-          }
-
-          mStringToSendUponConnection = mBackupStringToSendUponConnection;
-
-          mTelnetSocket = Socket::createTCP();
-          try {
-#ifndef __QNX__
-            mTelnetSocket->setOptionFlag(ISocket::SetOptionFlag::IgnoreSigPipe, true);
-#endif //ndef __QNX__
-          } catch(ISocket::Exceptions::UnsupportedSocketOption &) {
-          }
-          mTelnetSocket->setBlocking(false);
-          mTelnetSocket->setDelegate(mThisWeak.lock());
-
-          bool wouldBlock = false;
-          int errorCode = 0;
-          mTelnetSocket->connect(result, &wouldBlock, &errorCode);
-          if (0 != errorCode) {
-          }
-        }
-
-        //---------------------------------------------------------------------
-        void handleCommand(String command)
-        {
-          String input = command;
-
-          typedef std::list<String> StringList;
-          StringList split;
-
-          // split the command by the space character...
-          while (true) {
-            const char *posSpace = strchr(command, ' ');
-            if (NULL == posSpace) {
-              if (command.size() > 0) {
-                split.push_back(command);
-              }
-              break;
-            }
-            String sub = command.substr(0, (posSpace - command.c_str()));
-            command = command.substr((posSpace - command.c_str()) + 1);
-
-            if (sub.size() > 0) {
-              split.push_back(sub);
-            }
-          }
-
-          bool output = false;
-          String subsystem;
-          String level;
-
-          if (split.size() > 0) {
-            command = split.front(); split.pop_front();
-            if ((command == "set") && (split.size() > 0)) {
-              command = split.front(); split.pop_front();
-              if ((command == "log") && (split.size() > 0)) {
-                level = split.front(); split.pop_front();
-                output = true;
-                if (level == "trace") {
-                  IHelper::setLogLevel(Log::Trace);
-                } else if (level == "debug") {
-                  IHelper::setLogLevel(Log::Debug);
-                } else if (level == "detail") {
-                  IHelper::setLogLevel(Log::Detail);
-                } else if (level == "basic") {
-                  IHelper::setLogLevel(Log::Basic);
-                } else if (level == "none") {
-                  IHelper::setLogLevel(Log::None);
-                } else if (split.size() > 0) {
-                  subsystem = level;
-                  level = split.front(); split.pop_front();
-                  if (level == "trace") {
-                    IHelper::setLogLevel(subsystem, Log::Trace);
-                  } else if (level == "debug") {
-                    IHelper::setLogLevel(subsystem, Log::Debug);
-                  } else if (level == "detail") {
-                    IHelper::setLogLevel(subsystem, Log::Detail);
-                  } else if (level == "basic") {
-                    IHelper::setLogLevel(subsystem, Log::Basic);
-                  } else if (level == "none") {
-                    IHelper::setLogLevel(subsystem, Log::None);
-                  } else {
-                    output = false;
-                  }
-                } else {
-                  output = false;
-                }
-              }
-            }
-          }
-
-          String echo;
-          if (output) {
-            if (subsystem.size() > 0) {
-              echo = "==> Setting log level for \"" + subsystem + "\" to \"" + level + "\"\n";
-            } else {
-              echo = "==> Setting all log compoment levels to \"" + level + "\"\n";
-            }
-          } else {
-            echo = "==> Command not recognized \"" + input + "\"\n";
-          }
-          bool wouldBlock = false;
-          int errorCode = 0;
-          mTelnetSocket->send((const BYTE *)(echo.c_str()), echo.length(), &wouldBlock, 0, &errorCode);
-        }
-
-      private:
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark TelnetLogger => (data)
-        #pragma mark
-
-        mutable RecursiveLock mLock;
-
-        MessageQueueThreadPtr mThread;
-
-        TelnetLoggerWeakPtr mThisWeak;
-        bool mColorizeOutput;
-
-        SocketPtr mListenSocket;
-        ISocketPtr mTelnetSocket;
-
-        bool mClosed;
-
-        String mCommand;
-
-        typedef std::pair< boost::shared_array<BYTE>, ULONG> BufferedData;
-        typedef std::list<BufferedData> BufferedDataList;
-
-        BufferedDataList mBufferedList;
-
-        WORD mListenPort;
-        Duration mMaxWaitTimeForSocketToBeAvailable;
-        Time mStartListenTime;
-        TimerPtr mListenTimer;
-
-        bool mOutgoingMode;
-        bool mConnected;
-        IDNSQueryPtr mOutgoingServerQuery;
-        String mStringToSendUponConnection;
-        String mBackupStringToSendUponConnection;
-
-        String mServerLookupName;
-        IDNS::SRVResultPtr mServers;
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark Helper
       #pragma mark
 
@@ -1526,6 +248,36 @@ namespace openpeer
           return String(name) + "=" + value;
         }
         return String(", ") + name + "=" + value;
+      }
+
+      //---------------------------------------------------------------------
+      String Helper::timeToString(const Time &value)
+      {
+        if (Time() == value) return String();
+
+        time_t epoch = zsLib::toEpoch(value);
+        return string(epoch);
+      }
+
+      //---------------------------------------------------------------------
+      Time Helper::stringToTime(const String &str)
+      {
+        if (str.isEmpty()) return Time();
+
+        try {
+          time_t timestamp = Numeric<time_t>(str);
+          return zsLib::toTime(timestamp);
+        } catch (Numeric<time_t>::ValueOutOfRange &) {
+          ZS_LOG_WARNING(Detail, "unable to convert value to time_t, value=" + str)
+          try {
+            QWORD timestamp = Numeric<QWORD>(str);
+            ZS_LOG_WARNING(Debug, "date exceeds maximum time_t, value=" + string(timestamp))
+            return Time(boost::date_time::max_date_time);
+          } catch (Numeric<QWORD>::ValueOutOfRange &) {
+            ZS_LOG_WARNING(Detail, "even QWORD failed to convert value to max_date_time, value=" + str)
+          }
+        }
+        return Time();
       }
 
       //-----------------------------------------------------------------------
@@ -1572,12 +324,847 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      ULONG Helper::random(ULONG minValue, ULONG maxValue)
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(minValue > maxValue)
+        if (minValue == maxValue) return minValue;
+
+        ULONG range = maxValue - minValue;
+
+        ULONG value = 0;
+        
+        AutoSeededRandomPool rng;
+        rng.GenerateBlock((BYTE *) &value, sizeof(ULONG));
+
+        value = minValue + (value % range);
+
+        return value;
+      }
+
+      //-----------------------------------------------------------------------
       IMessageQueuePtr Helper::getServiceQueue()
       {
         ServiceThreadPtr thread = ServiceThread::singleton();
         return thread->getThread();
       }
 
+
+      //-----------------------------------------------------------------------
+      int Helper::compare(
+                          const SecureByteBlock &left,
+                          const SecureByteBlock &right
+                          )
+      {
+        if (left.SizeInBytes() < right.SizeInBytes()) {
+          return -1;
+        }
+        if (right.SizeInBytes() < left.SizeInBytes()) {
+          return 1;
+        }
+        if (0 == left.SizeInBytes()) {
+          return 0;
+        }
+        return memcmp(left, right, left.SizeInBytes());
+      }
+
+      //-------------------------------------------------------------------------
+      SecureByteBlockPtr Helper::clone(SecureByteBlockPtr pBuffer)
+      {
+        if (!pBuffer) return SecureByteBlockPtr();
+        return Helper::clone(*pBuffer);
+      }
+
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr Helper::clone(const SecureByteBlock &buffer)
+      {
+        SecureByteBlockPtr pBuffer(new SecureByteBlock);
+        SecureByteBlock::size_type size = buffer.SizeInBytes();
+        if (size < 1) return pBuffer;
+        pBuffer->CleanNew(size);
+
+        memcpy(pBuffer->BytePtr(), buffer.BytePtr(), size);
+        return pBuffer;
+      }
+
+      //-----------------------------------------------------------------------
+      String Helper::convertToString(const SecureByteBlock &buffer)
+      {
+        if (buffer.size() < 1) return String();
+
+        // check if buffer ia already NUL terminated
+        if ('\0' == (char)((buffer.BytePtr())[(sizeof(char)*buffer.size())-sizeof(char)])) {
+          return (const char *)(buffer.BytePtr());  // return buffer cast as const char *
+        }
+
+        SecureByteBlock outputFinal;
+        outputFinal.CleanNew(buffer.SizeInBytes()+sizeof(char));
+
+        memcpy(outputFinal, buffer, buffer.SizeInBytes());
+
+        return (const char *)((const BYTE *)(outputFinal));
+      }
+
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr Helper::convertToBuffer(
+                                                 const char *input,
+                                                 bool appendNUL
+                                                 )
+      {
+        if (NULL == input) return SecureByteBlockPtr();
+
+        SecureByteBlockPtr output(new SecureByteBlock);
+        output->CleanNew(((sizeof(char)*strlen(input)) + (appendNUL ? sizeof(char) : 0)));
+
+        memcpy(*output, input, sizeof(char)*(strlen(input)));
+        return output;
+      }
+
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr Helper::convertToBuffer(
+                                                 const BYTE *buffer,
+                                                 ULONG bufferLengthInBytes,
+                                                 bool appendNULIfMissing
+                                                 )
+      {
+        SecureByteBlockPtr output(new SecureByteBlock);
+
+        ULONG finalLength = bufferLengthInBytes;
+        if (bufferLengthInBytes) {
+          if (0 != finalLength) {
+            if (0 != buffer[bufferLengthInBytes-1]) {
+              finalLength += sizeof(char);
+            }
+          } else {
+            finalLength += sizeof(char);
+          }
+        }
+
+        if (0 == finalLength) {
+          return output;
+        }
+
+        output->CleanNew(finalLength);
+
+        if (0 != bufferLengthInBytes) {
+          memcpy(*output, buffer, finalLength);
+        }
+        return output;
+      }
+
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr Helper::makeBufferStringSafe(const SecureByteBlock &input)
+      {
+        return convertToBuffer(input.BytePtr(), input.SizeInBytes(), true);
+      }
+
+      //-----------------------------------------------------------------------
+      String Helper::convertToBase64(
+                                     const BYTE *buffer,
+                                     ULONG bufferLengthInBytes
+                                     )
+      {
+        String result;
+        Base64Encoder encoder(new StringSink(result), false);
+        encoder.Put(buffer, bufferLengthInBytes);
+        encoder.MessageEnd();
+        return result;
+      }
+
+      //-----------------------------------------------------------------------
+      String Helper::convertToBase64(const String &input)
+      {
+        if (input.isEmpty()) return String();
+        return IHelper::convertToBase64((const BYTE *)(input.c_str()), input.length());
+      }
+
+      //-----------------------------------------------------------------------
+      String Helper::convertToBase64(const SecureByteBlock &input)
+      {
+        if (input.size() < 1) return String();
+        return IHelper::convertToBase64(input, input.size());
+      }
+
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr Helper::convertFromBase64(const String &input)
+      {
+        SecureByteBlockPtr output(new SecureByteBlock);
+
+        ByteQueue queue;
+        queue.Put((BYTE *)input.c_str(), input.size());
+
+        ByteQueue *outputQueue = new ByteQueue;
+        Base64Decoder decoder(outputQueue);
+        queue.CopyTo(decoder);
+        decoder.MessageEnd();
+
+        size_t outputLengthInBytes = (size_t)outputQueue->CurrentSize();
+        output->CleanNew(outputLengthInBytes);
+
+        outputQueue->Get(*output, outputLengthInBytes);
+        return output;
+      }
+
+      //-----------------------------------------------------------------------
+      String Helper::convertToHex(
+                                  const BYTE *buffer,
+                                  ULONG bufferLengthInBytes,
+                                  bool outputUpperCase
+                                  )
+      {
+        String result;
+
+        HexEncoder encoder(new StringSink(result), outputUpperCase);
+        encoder.Put(buffer, bufferLengthInBytes);
+        encoder.MessageEnd();
+
+        return result;
+      }
+
+      //-----------------------------------------------------------------------
+      String Helper::convertToHex(
+                                  SecureByteBlock &input,
+                                  bool outputUpperCase
+                                  )
+      {
+        return convertToHex(input, input.size(), outputUpperCase);
+      }
+
+      //-------------------------------------------------------------------------
+      SecureByteBlockPtr Helper::convertFromHex(const String &input)
+      {
+        SecureByteBlockPtr output(new SecureByteBlock);
+        ByteQueue queue;
+        queue.Put((BYTE *)input.c_str(), input.size());
+
+        ByteQueue *outputQueue = new ByteQueue;
+        HexDecoder decoder(outputQueue);
+        queue.CopyTo(decoder);
+        decoder.MessageEnd();
+
+        SecureByteBlock::size_type outputLengthInBytes = (SecureByteBlock::size_type)outputQueue->CurrentSize();
+        output->CleanNew(outputLengthInBytes);
+
+        outputQueue->Get(*output, outputLengthInBytes);
+        return output;
+      }
+
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr Helper::encrypt(
+                                         const SecureByteBlock &key, // key length of 32 = AES/256
+                                         const SecureByteBlock &iv,
+                                         const SecureByteBlock &buffer,
+                                         EncryptionAlgorthms algorithm
+                                         )
+      {
+        return encrypt(key, iv, buffer, buffer.size(), algorithm);
+      }
+
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr Helper::encrypt(
+                                         const SecureByteBlock &key, // key length of 32 = AES/256
+                                         const SecureByteBlock &iv,
+                                         const char *value,
+                                         EncryptionAlgorthms algorithm
+                                         )
+      {
+        return encrypt(key, iv, (const BYTE *)value, strlen(value)*sizeof(char), algorithm);
+      }
+
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr Helper::encrypt(
+                                         const SecureByteBlock &key, // key length of 32 = AES/256
+                                         const SecureByteBlock &iv,
+                                         const BYTE *buffer,
+                                         size_t bufferLengthInBytes,
+                                         EncryptionAlgorthms algorithm
+                                         )
+      {
+        SecureByteBlockPtr output(new SecureByteBlock(bufferLengthInBytes));
+        CFB_Mode<AES>::Encryption cfbEncryption(key, key.size(), iv);
+        cfbEncryption.ProcessData(*output, buffer, bufferLengthInBytes);
+        return output;
+      }
+
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr Helper::decrypt(
+                                         const SecureByteBlock &key,
+                                         const SecureByteBlock &iv,
+                                         const SecureByteBlock &buffer,
+                                         EncryptionAlgorthms algorithm
+                                         )
+      {
+        SecureByteBlockPtr output(new SecureByteBlock(buffer.size()));
+        CFB_Mode<AES>::Decryption cfbDecryption(key, key.size(), iv);
+        cfbDecryption.ProcessData(*output, buffer, buffer.size());
+        return output;
+      }
+
+      //-----------------------------------------------------------------------
+      size_t Helper::getHashDigestSize(HashAlgorthms algorithm)
+      {
+        switch (algorithm) {
+          case HashAlgorthm_MD5:      {
+            MD5 hasher;
+            return hasher.DigestSize();
+          }
+          case HashAlgorthm_SHA1:     {
+            SHA1 hasher;
+            return hasher.DigestSize();
+          }
+          case HashAlgorthm_SHA256:   {
+            SHA256 hasher;
+            return hasher.DigestSize();
+          }
+        }
+
+        return 0;
+      }
+
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr Helper::hash(
+                                      const char *value,
+                                      HashAlgorthms algorithm
+                                      )
+      {
+        SecureByteBlockPtr output;
+
+        switch (algorithm) {
+          case HashAlgorthm_MD5:      {
+            MD5 hasher;
+            output = SecureByteBlockPtr(new SecureByteBlock(hasher.DigestSize()));
+            hasher.Update((const BYTE *)(value), strlen(value));
+            hasher.Final(*output);
+            break;
+          }
+          case HashAlgorthm_SHA1:     {
+            SHA1 hasher;
+            output = SecureByteBlockPtr(new SecureByteBlock(hasher.DigestSize()));
+            hasher.Update((const BYTE *)(value), strlen(value));
+            hasher.Final(*output);
+            break;
+          }
+          case HashAlgorthm_SHA256:   {
+            SHA256 hasher;
+            output = SecureByteBlockPtr(new SecureByteBlock(hasher.DigestSize()));
+            hasher.Update((const BYTE *)(value), strlen(value));
+            hasher.Final(*output);
+            break;
+          }
+        }
+
+        return output;
+      }
+
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr Helper::hash(
+                                      const SecureByteBlock &buffer,
+                                      HashAlgorthms algorithm
+                                      )
+      {
+        SecureByteBlockPtr output;
+
+        switch (algorithm) {
+          case HashAlgorthm_MD5:      {
+            MD5 hasher;
+            output = SecureByteBlockPtr(new SecureByteBlock(hasher.DigestSize()));
+            hasher.Update(buffer.BytePtr(), buffer.SizeInBytes());
+            hasher.Final(*output);
+            break;
+          }
+          case HashAlgorthm_SHA1:     {
+            SHA1 hasher;
+            output = SecureByteBlockPtr(new SecureByteBlock(hasher.DigestSize()));
+            hasher.Update(buffer.BytePtr(), buffer.SizeInBytes());
+            hasher.Final(*output);
+            break;
+          }
+          case HashAlgorthm_SHA256:   {
+            SHA256 hasher;
+            output = SecureByteBlockPtr(new SecureByteBlock(hasher.DigestSize()));
+            hasher.Update(buffer.BytePtr(), buffer.SizeInBytes());
+            hasher.Final(*output);
+            break;
+          }
+        }
+
+        return output;
+      }
+
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr Helper::hmacKeyFromPassphrase(const char *passphrase)
+      {
+        return convertToBuffer(passphrase, false);
+      }
+
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr Helper::hmacKeyFromPassphrase(const std::string &passphrase)
+      {
+        return convertToBuffer(passphrase.c_str(), false);
+      }
+
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr Helper::hmac(
+                                      const SecureByteBlock &key,
+                                      const String &value,
+                                      HashAlgorthms algorithm
+                                      )
+      {
+        return hmac(key, (const BYTE *)(value.c_str()), value.length(), algorithm);
+      }
+
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr Helper::hmac(
+                                      const SecureByteBlock &key,
+                                      const SecureByteBlock &buffer,
+                                      HashAlgorthms algorithm
+                                      )
+      {
+        return hmac(key, buffer, buffer.size(), algorithm);
+      }
+
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr Helper::hmac(
+                                      const SecureByteBlock &key,
+                                      const BYTE *buffer,
+                                      size_t bufferLengthInBytes,
+                                      HashAlgorthms algorithm
+                                      )
+      {
+        SecureByteBlockPtr output;
+
+        switch (algorithm) {
+          case HashAlgorthm_MD5:      {
+            HMAC<MD5> hasher(key, key.size());
+            output = SecureByteBlockPtr(new SecureByteBlock(hasher.DigestSize()));
+            hasher.Update(buffer, bufferLengthInBytes);
+            hasher.Final(*output);
+            break;
+          }
+          case HashAlgorthm_SHA1:     {
+            HMAC<SHA1> hasher(key, key.size());
+            output = SecureByteBlockPtr(new SecureByteBlock(hasher.DigestSize()));
+            hasher.Update(buffer, bufferLengthInBytes);
+            hasher.Final(*output);
+            break;
+          }
+          case HashAlgorthm_SHA256:   {
+            HMAC<SHA256> hasher(key, key.size());
+            output = SecureByteBlockPtr(new SecureByteBlock(hasher.DigestSize()));
+            hasher.Update(buffer, bufferLengthInBytes);
+            hasher.Final(*output);
+            break;
+          }
+        }
+
+        return output;
+      }
+
+      //-----------------------------------------------------------------------
+      void Helper::splitKey(
+                            const SecureByteBlock &key,
+                            SecureByteBlockPtr &part1,
+                            SecureByteBlockPtr &part2
+                            )
+      {
+        if (key.size() < 1) return;
+
+        SecureByteBlockPtr hash = IHelper::hash(key);
+        ZS_THROW_BAD_STATE_IF(!hash)
+
+        SecureByteBlockPtr randomData = IHelper::random(key.SizeInBytes() + hash->SizeInBytes());
+
+        SecureByteBlockPtr final(new SecureByteBlock);
+        final->CleanNew(key.SizeInBytes() + hash->SizeInBytes());
+
+        BYTE *dest = final->BytePtr();
+        const BYTE *source = key.BytePtr();
+        const BYTE *random = randomData->BytePtr();
+
+        SecureByteBlock::size_type length1 = key.SizeInBytes();
+        for (; length1 > 0; --length1, ++dest, ++source, ++random)
+        {
+          *dest = (*source) ^ (*random);
+        }
+
+        SecureByteBlock::size_type length2 = hash->SizeInBytes();
+        source = hash->BytePtr();
+        for (; length2 > 0; --length2, ++dest, ++source, ++random)
+        {
+          *dest = (*source) ^ (*random);
+        }
+
+        // set the output split key into the base 64 values
+        part1 = randomData;
+        part2 = final;
+      }
+
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr Helper::combineKey(
+                                            const SecureByteBlockPtr &part1,
+                                            const SecureByteBlockPtr &part2
+                                            )
+      {
+        if ((!part1) || (!part2)) {
+          ZS_LOG_WARNING(Detail, String("value missing") + ", part1=" + (part1 ? "true" : "(null)") + ", part2=" + (part2 ? "true" : "(null)"))
+          return SecureByteBlockPtr();
+        }
+
+        SecureByteBlockPtr extracted = IHelper::hash("empty");
+
+        if (part1->SizeInBytes() != part2->SizeInBytes()) {
+          ZS_LOG_WARNING(Detail, String("illegal size") + ", part1 size=" + string(part1->SizeInBytes()) + ", part2 size=" + string(part2->SizeInBytes()))
+          return SecureByteBlockPtr();
+        }
+        if (part1->SizeInBytes() <= extracted->SizeInBytes()) {
+          ZS_LOG_WARNING(Detail, String("illegal hash size") + ", part size=" + string(part1->SizeInBytes()) + ", hash size=" + string(extracted->SizeInBytes()))
+          return SecureByteBlockPtr();
+        }
+
+        SecureByteBlockPtr buffer(new SecureByteBlock);
+        buffer->CleanNew(part1->SizeInBytes() - extracted->SizeInBytes());
+
+        BYTE *dest = buffer->BytePtr();
+        const BYTE *src1 = part1->BytePtr();
+        const BYTE *src2 = part2->BytePtr();
+
+        SecureByteBlock::size_type length1 = part1->SizeInBytes() - extracted->SizeInBytes();
+        for (; 0 != length1; --length1, ++dest, ++src1, ++src2)
+        {
+          *dest = (*src1) ^ (*src2);
+        }
+
+        SecureByteBlock::size_type length2 = extracted->SizeInBytes();
+        dest = extracted->BytePtr();
+        for (; 0 != length2; --length2, ++dest, ++src1, ++src2)
+        {
+          *dest = (*src1) ^ (*src2);
+        }
+
+        SecureByteBlockPtr hash = IHelper::hash(*buffer);
+
+        if (0 != IHelper::compare(*extracted, *hash)) {
+          ZS_LOG_WARNING(Detail, String("extracted hash does not match calculated hash") + ", extracted=" + IHelper::convertToBase64(*extracted) + ", calculated=" + IHelper::convertToBase64(*hash))
+          return SecureByteBlockPtr();
+        }
+
+        return buffer;
+      }
+
+      //-----------------------------------------------------------------------
+      ElementPtr Helper::getSignatureInfo(
+                                          ElementPtr signedEl,
+                                          ElementPtr *outSignatureEl,
+                                          String *outFullPublicKey,
+                                          String *outFingerprint
+                                          )
+      {
+        if (!signedEl) {
+          ZS_LOG_WARNING(Detail, "requested to get signature info on a null element")
+          return ElementPtr();
+        }
+
+        ElementPtr signatureEl = signedEl->findNextSiblingElement("signature");
+        if (!signatureEl) {
+          // if this element does not have a signed next sibling then it can't be the signed elemnt thus assume it's the bundle passed in instead
+          signedEl = signedEl->getFirstChildElement();
+          while (signedEl) {
+            if ("signature" != signedEl->getValue()) {
+              break;
+            }
+            signedEl = signedEl->getNextSiblingElement();
+          }
+
+          if (!signedEl) {
+            ZS_LOG_DETAIL("no signed element was found (is okay if signing element for first time)")
+            return ElementPtr();
+          }
+
+          signatureEl = signedEl->findNextSiblingElement("signature");
+        }
+
+        String id = signedEl->getAttributeValue("id");
+        if (id.length() < 1) {
+          ZS_LOG_WARNING(Detail, "ID is missing on signed element")
+          return ElementPtr();
+        }
+
+        id = "#" + id;
+
+        while (signatureEl) {
+          ElementPtr referenceEl = signatureEl->findFirstChildElementChecked("reference");
+          if (referenceEl) {
+            String referenceID = referenceEl->getTextDecoded();
+            if (referenceID == id) {
+              ZS_LOG_TRACE("found the signature reference, reference id=" + id)
+              break;
+            }
+          }
+
+          signatureEl = signatureEl->findNextSiblingElement("signature");
+        }
+
+        if (!signatureEl) {
+          ZS_LOG_WARNING(Detail, "could not find signature element")
+          return ElementPtr();
+        }
+
+        ElementPtr keyEl = signatureEl->findFirstChildElement("key");
+        if (keyEl) {
+          if (outFullPublicKey) {
+            *outFullPublicKey = getElementTextAndDecode(keyEl->findFirstChildElement("x509Data"));
+          }
+          if (outFingerprint) {
+            *outFingerprint = getElementTextAndDecode(keyEl->findFirstChildElement("fingerprint"));
+          }
+        }
+
+        if (outSignatureEl) {
+          *outSignatureEl = signatureEl;
+        }
+        return signedEl;
+      }
+
+      //-----------------------------------------------------------------------
+      ElementPtr Helper::cloneAsCanonicalJSON(ElementPtr element)
+      {
+        if (!element) return element;
+
+        class Walker : public WalkSink
+        {
+        public:
+          Walker() {}
+
+          virtual bool onElementEnter(ElementPtr inElement)
+          {
+            typedef std::list<NodePtr> ChildrenList;
+            typedef std::list<AttributePtr> ChildrenAttributeList;
+
+            // sort the elements and "other" node types
+            {
+              ChildrenList children;
+
+              while (inElement->hasChildren()) {
+                NodePtr child = inElement->getFirstChild();
+                child->orphan();
+                children.push_back(child);
+              }
+
+              NodePtr lastInsert;
+              bool insertedElement = false;
+              while (children.size() > 0)
+              {
+                NodePtr currentNode = children.front();
+                children.pop_front();
+
+                ElementPtr currentEl = (currentNode->isElement() ? currentNode->toElement() : ElementPtr());
+
+                if (!insertedElement) {
+                  inElement->adoptAsLastChild(currentNode);
+                  lastInsert = currentNode;
+                  insertedElement = true;
+                  continue;
+                }
+
+                if (!currentEl) {
+                  lastInsert->adoptAsNextSibling(currentNode);
+                  lastInsert = currentNode;
+                  continue;
+                }
+
+                insertedElement = true; // will have to be true now as this child is an element
+
+                String currentName = currentEl->getValue();
+
+                // I know this isn't optmized as it's insertion sort but this was not meant to canonicalize the entire text of a book, but rather tiny snippets of JSON...
+
+                bool inserted = false;
+
+                ElementPtr childEl = inElement->getFirstChildElement();
+                while (childEl) {
+                  String childName = childEl->getValue();
+
+                  if (currentName < childName) {
+                    // must insert before this child
+                    childEl->adoptAsPreviousSibling(currentEl);
+                    lastInsert = currentEl;
+                    inserted = true;
+                    break;
+                  }
+
+                  childEl = childEl->getNextSiblingElement();
+                }
+
+                if (inserted)
+                  continue;
+
+                inElement->adoptAsLastChild(currentEl);
+                lastInsert = currentEl;
+              }
+
+              ZS_THROW_BAD_STATE_IF(children.size() > 0)
+            }
+
+            // sort the attributes
+            {
+              ChildrenAttributeList children;
+
+              while (inElement->getFirstAttribute()) {
+                AttributePtr child = inElement->getFirstAttribute();
+                child->orphan();
+                children.push_back(child);
+              }
+
+              while (children.size() > 0)
+              {
+                AttributePtr current = children.front();
+                children.pop_front();
+
+                // I know this isn't optimized as it's insertion sort but this was not meant to canonicalize the entire text of a book, but rather tiny snippets of JSON...
+
+                AttributePtr child = inElement->getFirstAttribute();
+                if (!child) {
+                  inElement->setAttribute(current);
+                  continue;
+                }
+
+                bool inserted = false;
+                String currentName = current->getName();
+
+                while (child) {
+                  String childName = child->getName();
+
+                  if (currentName < childName) {
+                    // must insert before this child
+                    child->adoptAsPreviousSibling(current);
+                    inserted = true;
+                    break;
+                  }
+
+                  NodePtr nextNode = child->getNextSibling();
+                  if (!nextNode) break;
+                  child = nextNode->toAttribute();
+                }
+
+                if (inserted)
+                  continue;
+
+                // there *MUST* be a last attribute or crash
+                inElement->getLastAttributeChecked()->adoptAsNextSibling(current);
+              }
+
+              ZS_THROW_BAD_STATE_IF(children.size() > 0)
+            }
+
+            return false;
+          }
+
+        private:
+        };
+
+        if (ZS_IS_LOGGING(Trace)) {
+          ZS_LOG_BASIC("vvvvvvvvvvvv -- PRE-SORT  -- vvvvvvvvvvvv")
+          {
+            GeneratorPtr generator = Generator::createJSONGenerator();
+            boost::shared_array<char> output = generator->write(element);
+            ZS_LOG_BASIC( ((CSTR)output.get()) )
+          }
+          ZS_LOG_BASIC("^^^^^^^^^^^^ -- PRE-SORT  -- ^^^^^^^^^^^^")
+        }
+        ElementPtr convertEl = element->clone()->toElement();
+
+        Node::FilterList filter;
+        filter.push_back(Node::NodeType::Element);
+        Walker walker;
+        convertEl->walk(walker, &filter);
+
+        if (ZS_IS_LOGGING(Trace)) {
+          // let's output some logging...
+          ZS_LOG_BASIC("vvvvvvvvvvvv -- POST-SORT -- vvvvvvvvvvvv")
+          {
+            GeneratorPtr generator = Generator::createJSONGenerator();
+            boost::shared_array<char> output = generator->write(convertEl);
+            ZS_LOG_BASIC( ((CSTR)output.get()) )
+          }
+          ZS_LOG_BASIC("^^^^^^^^^^^^ -- POST-SORT -- ^^^^^^^^^^^^")
+        }
+
+        return convertEl;
+      }
+
+      //-----------------------------------------------------------------------
+      bool Helper::isValidDomain(const char *inDomain)
+      {
+        String domain(inDomain ? String(inDomain) : String());
+        zsLib::RegEx regex("^([a-zA-Z0-9]([a-zA-Z0-9\\-]{0,61}[a-zA-Z0-9])?\\.)+[a-zA-Z]{2,6}$");
+        if (!regex.hasMatch(inDomain)) {
+          ZS_LOG_WARNING(Detail, "Helper [] domain name is not valid, domain=" + domain)
+          return false;
+        }
+        ZS_LOG_TRACE("Helper [] valid domain, domain=" + domain)
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      void Helper::split(
+                         const String &input,
+                         SplitMap &outResult,
+                         char splitChar
+                         )
+      {
+        if (0 == input.size()) return;
+
+        size_t start = input.find(splitChar);
+        size_t end = String::npos;
+
+        Index index = 0;
+        if (String::npos == start) {
+          outResult[index] = input;
+          return;
+        }
+
+        if (0 != start) {
+          // special case where start is not a /
+          outResult[index] = input.substr(0, start);
+          ++index;
+        }
+        
+        do {
+          end = input.find(splitChar, start+1);
+          
+          if (end == String::npos) {
+            // there is no more splits left so copy from start / to end
+            outResult[index] = input.substr(start+1);
+            ++index;
+            break;
+          }
+          
+          // take the mid-point of the string
+          if (end != start+1) {
+            outResult[index] = input.substr(start+1, end-(start+1));
+            ++index;
+          }
+          
+          // the next starting point will be the current end point
+          start = end;
+        } while (true);
+      }
+      
+      //-----------------------------------------------------------------------
+      const zsLib::String &Helper::get(
+                                       const SplitMap &inResult,
+                                       Index index
+                                       )
+      {
+        static String empty;
+        SplitMap::const_iterator found = inResult.find(index);
+        if (found == inResult.end()) return empty;
+        return (*found).second;
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
     }
 
     //-------------------------------------------------------------------------
@@ -1595,6 +1182,30 @@ namespace openpeer
     }
 
     //-------------------------------------------------------------------------
+    static String timeToString(const Time &value)
+    {
+      return internal::Helper::timeToString(value);
+    }
+
+    //-------------------------------------------------------------------------
+    IMessageQueuePtr IHelper::getServiceQueue()
+    {
+      return internal::Helper::getServiceQueue();
+    }
+
+    //-------------------------------------------------------------------------
+    Time IHelper::stringToTime(const String &str)
+    {
+      return internal::Helper::stringToTime(str);
+    }
+
+    //-------------------------------------------------------------------------
+    String IHelper::timeToString(const Time &value)
+    {
+      return internal::Helper::timeToString(value);
+    }
+    
+    //-------------------------------------------------------------------------
     String IHelper::randomString(UINT lengthInChars)
     {
       return internal::Helper::randomString(lengthInChars);
@@ -1607,88 +1218,331 @@ namespace openpeer
     }
 
     //-------------------------------------------------------------------------
-    IMessageQueuePtr IHelper::getServiceQueue()
+    ULONG IHelper::random(ULONG minValue, ULONG maxValue)
     {
-      return internal::Helper::getServiceQueue();
+      return internal::Helper::random(minValue, maxValue);
     }
 
     //-------------------------------------------------------------------------
-    void IHelper::installStdOutLogger(bool colorizeOutput)
+    int IHelper::compare(
+                         const SecureByteBlock &left,
+                         const SecureByteBlock &right
+                         )
     {
-      internal::StdOutLogger::singleton(colorizeOutput);
+      return internal::Helper::compare(left, right);
     }
 
     //-------------------------------------------------------------------------
-    void IHelper::installFileLogger(const char *fileName, bool colorizeOutput)
+    SecureByteBlockPtr IHelper::clone(SecureByteBlockPtr pBuffer)
     {
-      internal::FileLogger::singleton(fileName, colorizeOutput);
+      return internal::Helper::clone(pBuffer);
     }
 
     //-------------------------------------------------------------------------
-    void IHelper::installTelnetLogger(WORD listenPort, ULONG maxSecondsWaitForSocketToBeAvailable,  bool colorizeOutput)
+    SecureByteBlockPtr IHelper::clone(const SecureByteBlock &buffer)
     {
-      internal::TelnetLogger::singleton(listenPort, maxSecondsWaitForSocketToBeAvailable, colorizeOutput);
+      return internal::Helper::clone(buffer);
     }
 
     //-------------------------------------------------------------------------
-    void IHelper::installOutgoingTelnetLogger(
-                                              const char *serverHostWithPort,
-                                              bool colorizeOutput,
-                                              const char *sendStringUponConnection
-                                              )
+    String IHelper::convertToString(const SecureByteBlock &buffer)
     {
-      internal::TelnetLogger::singleton(serverHostWithPort, colorizeOutput, sendStringUponConnection);
+      return internal::Helper::convertToString(buffer);
     }
 
     //-------------------------------------------------------------------------
-    void IHelper::installDebuggerLogger(bool colorizeOutput)
+    SecureByteBlockPtr IHelper::convertToBuffer(
+                                                const char *input,
+                                                bool appendNUL
+                                                )
     {
-      internal::DebuggerLogger::singleton(colorizeOutput);
+      return internal::Helper::convertToBuffer(input, appendNUL);
     }
 
     //-------------------------------------------------------------------------
-    void IHelper::uninstallStdOutLogger()
+    SecureByteBlockPtr IHelper::convertToBuffer(
+                                                const std::string &input,
+                                                bool appendNUL
+                                                )
     {
-      internal::StdOutLogger::singleton(false, true);
+      return internal::Helper::convertToBuffer(input.c_str(), appendNUL);
     }
 
     //-------------------------------------------------------------------------
-    void IHelper::uninstallFileLogger()
+    SecureByteBlockPtr IHelper::convertToBuffer(
+                                                const BYTE *buffer,
+                                                ULONG bufferLengthInBytes,
+                                                bool appendNULIfMissing
+                                                )
     {
-      internal::FileLogger::singleton(NULL, false, true);
+      return internal::Helper::convertToBuffer(buffer, bufferLengthInBytes, appendNULIfMissing);
     }
 
     //-------------------------------------------------------------------------
-    void IHelper::uninstallTelnetLogger()
+    SecureByteBlockPtr IHelper::makeBufferStringSafe(const SecureByteBlock &input)
     {
-      internal::TelnetLogger::singleton(0, 0, false, true);
+      return internal::Helper::makeBufferStringSafe(input);
     }
 
     //-------------------------------------------------------------------------
-    void IHelper::uninstallOutgoingTelnetLogger()
+    String IHelper::convertToBase64(
+                                    const BYTE *buffer,
+                                    ULONG bufferLengthInBytes
+                                    )
     {
-      internal::TelnetLogger::singleton((const char *)NULL, false, (const char *)NULL);
+      return internal::Helper::convertToBase64(buffer, bufferLengthInBytes);
     }
 
     //-------------------------------------------------------------------------
-    void IHelper::uninstallDebuggerLogger()
+    String IHelper::convertToBase64(const String &input)
     {
-      internal::DebuggerLogger::singleton(false, true);
+      return internal::Helper::convertToBase64(input);
     }
 
     //-------------------------------------------------------------------------
-    void IHelper::setLogLevel(Log::Level logLevel)
+    String IHelper::convertToBase64(const SecureByteBlock &input)
     {
-      internal::LogLevelLoggerPtr logger = internal::LogLevelLogger::singleton();
-      logger->setLogLevel(logLevel);
+      return internal::Helper::convertToBase64(input);
     }
 
     //-------------------------------------------------------------------------
-    void IHelper::setLogLevel(const char *component, Log::Level logLevel)
+    SecureByteBlockPtr IHelper::convertFromBase64(const String &input)
     {
-      internal::LogLevelLoggerPtr logger = internal::LogLevelLogger::singleton();
-      logger->setLogLevel(component, logLevel);
+      return internal::Helper::convertFromBase64(input);
     }
 
+    //-------------------------------------------------------------------------
+    String IHelper::convertStringFromBase64(const String &input)
+    {
+      return internal::Helper::convertStringFromBase64(input);
+    }
+
+    //-------------------------------------------------------------------------
+    String IHelper::convertToHex(
+                                 const BYTE *buffer,
+                                 ULONG bufferLengthInBytes,
+                                 bool outputUpperCase
+                                 )
+    {
+      return internal::Helper::convertToHex(buffer, bufferLengthInBytes, outputUpperCase);
+    }
+
+    //-------------------------------------------------------------------------
+    String IHelper::convertToHex(
+                                 SecureByteBlock &input,
+                                 bool outputUpperCase
+                                 )
+    {
+      return internal::Helper::convertToHex(input, outputUpperCase);
+    }
+
+    //-------------------------------------------------------------------------
+    SecureByteBlockPtr IHelper::convertFromHex(const String &input)
+    {
+      return internal::Helper::convertFromHex(input);
+    }
+
+    //-------------------------------------------------------------------------
+    SecureByteBlockPtr IHelper::encrypt(
+                                        const SecureByteBlock &key,
+                                        const SecureByteBlock &iv,
+                                        const SecureByteBlock &buffer,
+                                        EncryptionAlgorthms algorithm
+                                        )
+    {
+      return internal::Helper::encrypt(key, iv, buffer, algorithm);
+    }
+
+    //-------------------------------------------------------------------------
+    SecureByteBlockPtr IHelper::encrypt(
+                                        const SecureByteBlock &key, // key length of 32 = AES/256
+                                        const SecureByteBlock &iv,
+                                        const char *value,
+                                        EncryptionAlgorthms algorithm
+                                        )
+    {
+      return internal::Helper::encrypt(key, iv, value, algorithm);
+    }
+
+    //-------------------------------------------------------------------------
+    SecureByteBlockPtr IHelper::encrypt(
+                                        const SecureByteBlock &key, // key length of 32 = AES/256
+                                        const SecureByteBlock &iv,
+                                        const std::string &value,
+                                        EncryptionAlgorthms algorithm
+                                        )
+    {
+      return internal::Helper::encrypt(key, iv, value.c_str(), algorithm);
+    }
+
+    //-------------------------------------------------------------------------
+    SecureByteBlockPtr IHelper::encrypt(
+                                        const SecureByteBlock &key, // key length of 32 = AES/256
+                                        const SecureByteBlock &iv,
+                                        const BYTE *buffer,
+                                        size_t bufferLengthInBytes,
+                                        EncryptionAlgorthms algorithm
+                                        )
+    {
+      return internal::Helper::encrypt(key, iv, buffer, bufferLengthInBytes, algorithm);
+    }
+
+    //-------------------------------------------------------------------------
+    SecureByteBlockPtr IHelper::decrypt(
+                                        const SecureByteBlock &key,
+                                        const SecureByteBlock &iv,
+                                        const SecureByteBlock &buffer,
+                                        EncryptionAlgorthms algorithm
+                                        )
+    {
+      return internal::Helper::decrypt(key, iv, buffer, algorithm);
+    }
+
+    //-------------------------------------------------------------------------
+    size_t IHelper::getHashDigestSize(HashAlgorthms algorithm)
+    {
+      return internal::Helper::getHashDigestSize(algorithm);
+    }
+
+    //-------------------------------------------------------------------------
+    SecureByteBlockPtr IHelper::hash(
+                                     const char *buffer,
+                                     HashAlgorthms algorithm
+                                     )
+    {
+      return internal::Helper::hash(buffer, algorithm);
+    }
+
+    //-------------------------------------------------------------------------
+    SecureByteBlockPtr IHelper::hash(
+                                     const std::string &buffer,
+                                     HashAlgorthms algorithm
+                                     )
+    {
+      return internal::Helper::hash(buffer.c_str(), algorithm);
+    }
+
+    //-------------------------------------------------------------------------
+    SecureByteBlockPtr IHelper::hash(
+                                     const SecureByteBlock &buffer,
+                                     HashAlgorthms algorithm
+                                     )
+    {
+      return internal::Helper::hash(buffer, algorithm);
+    }
+
+    //-------------------------------------------------------------------------
+    SecureByteBlockPtr IHelper::hmacKeyFromPassphrase(const char *passphrase)
+    {
+      return internal::Helper::hmacKeyFromPassphrase(passphrase);
+    }
+
+    //-------------------------------------------------------------------------
+    SecureByteBlockPtr IHelper::hmacKeyFromPassphrase(const std::string &passphrase)
+    {
+      return internal::Helper::hmacKeyFromPassphrase(passphrase);
+    }
+
+    //-------------------------------------------------------------------------
+    SecureByteBlockPtr IHelper::hmac(
+                                     const SecureByteBlock &key,
+                                     const char *value,
+                                     HashAlgorthms algorithm
+                                     )
+    {
+      return internal::Helper::hmac(key, value, algorithm);
+    }
+
+    //-------------------------------------------------------------------------
+    SecureByteBlockPtr IHelper::hmac(
+                                     const SecureByteBlock &key,
+                                     const std::string &value,
+                                     HashAlgorthms algorithm
+                                     )
+    {
+      return internal::Helper::hmac(key, value.c_str(), algorithm);
+    }
+
+    //-------------------------------------------------------------------------
+    SecureByteBlockPtr IHelper::hmac(
+                                     const SecureByteBlock &key,
+                                     const SecureByteBlock &buffer,
+                                     HashAlgorthms algorithm
+                                     )
+    {
+      return internal::Helper::hmac(key, buffer, algorithm);
+    }
+
+    //-------------------------------------------------------------------------
+    SecureByteBlockPtr IHelper::hmac(
+                                     const SecureByteBlock &key,
+                                     const BYTE *buffer,
+                                     size_t bufferLengthInBytes,
+                                     HashAlgorthms algorithm
+                                     )
+    {
+      return internal::Helper::hmac(key, buffer, bufferLengthInBytes, algorithm);
+    }
+
+    //-------------------------------------------------------------------------
+    void IHelper::splitKey(
+                           const SecureByteBlock &key,
+                           SecureByteBlockPtr &part1,
+                           SecureByteBlockPtr &part2
+                           )
+    {
+      return internal::Helper::splitKey(key, part1, part2);
+    }
+
+    //-------------------------------------------------------------------------
+    SecureByteBlockPtr IHelper::combineKey(
+                                           const SecureByteBlockPtr &part1,
+                                           const SecureByteBlockPtr &part2
+                                           )
+    {
+      return internal::Helper::combineKey(part1, part2);
+    }
+
+    //-------------------------------------------------------------------------
+    ElementPtr IHelper::getSignatureInfo(
+                                         ElementPtr signedEl,
+                                         ElementPtr *outSignatureEl,
+                                         String *outFullPublicKey,
+                                         String *outFingerprint
+                                         )
+    {
+      return internal::Helper::getSignatureInfo(signedEl, outSignatureEl, outFullPublicKey, outFingerprint);
+    }
+
+    //-------------------------------------------------------------------------
+    ElementPtr IHelper::cloneAsCanonicalJSON(ElementPtr element)
+    {
+      return internal::Helper::cloneAsCanonicalJSON(element);
+    }
+
+    //-------------------------------------------------------------------------
+    bool IHelper::isValidDomain(const char *domain)
+    {
+      return internal::Helper::isValidDomain(domain);
+    }
+
+    //-------------------------------------------------------------------------
+    void IHelper::split(
+                        const String &input,
+                        SplitMap &outResult,
+                        char splitChar
+                        )
+    {
+      internal::Helper::split(input, outResult, splitChar);
+    }
+
+    //-------------------------------------------------------------------------
+    const String &IHelper::get(
+                               const SplitMap &inResult,
+                               Index index
+                               )
+    {
+      return internal::Helper::get(inResult, index);
+    }
   }
 }
