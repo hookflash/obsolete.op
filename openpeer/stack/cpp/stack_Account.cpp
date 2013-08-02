@@ -88,6 +88,8 @@ namespace openpeer
       using services::IHelper;
       using zsLib::Stringize;
 
+      using services::IWakeDelegateProxy;
+
       using message::peer_finder::PeerLocationFindRequest;
       using message::peer_finder::PeerLocationFindRequestPtr;
       using message::peer_finder::PeerLocationFindResult;
@@ -317,7 +319,7 @@ namespace openpeer
         return true;
 
       extract_failure:
-        IAccountAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
         mAvailableFinderSRVResult.reset();
         ZS_LOG_WARNING(Detail, log("extract next IP failed") + ", reason=" + reason)
         return false;
@@ -643,7 +645,7 @@ namespace openpeer
         peerInfo->findTimeReset();
 
         ZS_LOG_DEBUG(log("received hint about peer location that will be added to hint search") + PeerInfo::toDebugString(peerInfo))
-        (IAccountAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
+        (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -860,7 +862,7 @@ namespace openpeer
 
         ++(peerInfo->mTotalSubscribers);
 
-        IAccountAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -895,7 +897,7 @@ namespace openpeer
 
         mPeerSubscriptions.erase(found);
 
-        IAccountAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -1194,7 +1196,7 @@ namespace openpeer
       void Account::notifyServiceLockboxSessionStateChanged()
       {
         AutoRecursiveLock lock(getLock());
-        IAccountAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -1287,7 +1289,7 @@ namespace openpeer
             ZS_LOG_ERROR(Detail, log("finders get failed, will try later") + Message::toDebugString(message))
 
             handleFinderRelatedFailure();
-            IAccountAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+            IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
             return true;
           }
 
@@ -1297,7 +1299,7 @@ namespace openpeer
             handleFinderRelatedFailure();
           }
 
-          IAccountAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+          IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
           return true;
         }
 
@@ -1491,13 +1493,13 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark Account => IAccountAsyncDelegate
+      #pragma mark Account => IWakeDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void Account::onStep()
+      void Account::onWake()
       {
-        ZS_LOG_DEBUG(log("step"))
+        ZS_LOG_DEBUG(log("on wake"))
         AutoRecursiveLock lock(getLock());
         step();
       }
@@ -1956,7 +1958,7 @@ namespace openpeer
           if (srv.isEmpty()) {
             ZS_LOG_ERROR(Detail, log("finder missing SRV name"))
             mAvailableFinders.pop_front();
-            IAccountAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+            IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
             return false;
           }
 

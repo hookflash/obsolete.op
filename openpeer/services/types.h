@@ -40,7 +40,6 @@ namespace openpeer
 {
   namespace services
   {
-    using zsLib::AutoBool;
     using zsLib::PUID;
     using zsLib::BYTE;
     using zsLib::WORD;
@@ -270,5 +269,10 @@ namespace openpeer
     typedef boost::shared_ptr<ITURNSocketDelegate> ITURNSocketDelegatePtr;
     typedef boost::weak_ptr<ITURNSocketDelegate> ITURNSocketDelegateWeakPtr;
     typedef zsLib::Proxy<ITURNSocketDelegate> ITURNSocketDelegateProxy;
+
+    interaction IWakeDelegate;
+    typedef boost::shared_ptr<IWakeDelegate> IWakeDelegatePtr;
+    typedef boost::weak_ptr<IWakeDelegate> IWakeDelegateWeakPtr;
+    typedef zsLib::Proxy<IWakeDelegate> IWakeDelegateProxy;
   }
 }

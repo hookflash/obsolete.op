@@ -687,7 +687,7 @@ namespace openpeer
             mNeedsBrowserWindowVisible = true;
           }
 
-          IServiceIdentitySessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+          IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
           return;
         }
 
@@ -711,7 +711,7 @@ namespace openpeer
             return;
           }
 
-          IServiceIdentitySessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+          IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
 
           notifyLockboxStateChanged();
           return;
@@ -737,7 +737,7 @@ namespace openpeer
 
         mRolodexInfo.mVersion = String(inLastDownloadedVersion);
 
-        IServiceIdentitySessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -749,7 +749,7 @@ namespace openpeer
 
         mRolodexInfo.mUpdateNext = Time();  // reset when the next update is allowed to occur
         mForceRefresh = zsLib::now();
-        IServiceIdentitySessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -909,7 +909,7 @@ namespace openpeer
         AutoRecursiveLock lock(getLock());
         ZS_LOG_DEBUG(log("associate called"))
         mAssociatedLockbox = lockbox;
-        IServiceIdentitySessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -948,7 +948,7 @@ namespace openpeer
         mLockboxUpdated = false;
         mIdentityLookupUpdated = false;
 
-        IServiceIdentitySessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -956,7 +956,7 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         ZS_LOG_DEBUG(log("notify state changed"))
-        IServiceIdentitySessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -992,11 +992,11 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServiceIdentitySession => IServiceIdentitySessionAsyncDelegate
+      #pragma mark ServiceIdentitySession => IWakeDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void ServiceIdentitySession::onStep()
+      void ServiceIdentitySession::onWake()
       {
         AutoRecursiveLock lock(getLock());
         ZS_LOG_DEBUG(log("on step"))

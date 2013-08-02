@@ -38,6 +38,8 @@
 
 #include <openpeer/stack/IPeerSubscription.h>
 
+#include <openpeer/services/IWakeDelegate.h>
+
 #include <zsLib/MessageQueueAssociator.h>
 #include <zsLib/String.h>
 #include <zsLib/Timer.h>
@@ -74,26 +76,13 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IConversationThreadHostAsync
-      #pragma mark
-
-      interaction IConversationThreadHostAsync
-      {
-        virtual void onStep() = 0;
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark ConversationThreadHost
       #pragma mark
 
       class ConversationThreadHost  : public Noop,
                                       public MessageQueueAssociator,
                                       public IConversationThreadHostForConversationThread,
-                                      public IConversationThreadHostAsync
+                                      public IWakeDelegate
       {
       public:
         friend interaction IConversationThreadHostFactory;
@@ -109,11 +98,6 @@ namespace openpeer
         static const char *toString(ConversationThreadHostStates state);
 
         typedef IConversationThreadParser::ThreadPtr ThreadPtr;
-
-        interaction IPeerContactAsync;
-        typedef boost::shared_ptr<IPeerContactAsync> IPeerContactAsyncPtr;
-        typedef boost::weak_ptr<IPeerContactAsync> IPeerContactAsyncWeakPtr;
-        typedef zsLib::Proxy<IPeerContactAsync> IPeerContactAsyncProxy;
 
         class PeerContact;
         typedef boost::shared_ptr<PeerContact> PeerContactPtr;
@@ -215,10 +199,10 @@ namespace openpeer
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ConversationThreadHost => IConversationThreadHostAsync
+        #pragma mark ConversationThreadHost => IWakeDelegate
         #pragma mark
 
-        virtual void onStep() {step();}
+        virtual void onWake() {step();}
 
       protected:
         //---------------------------------------------------------------------
@@ -289,25 +273,12 @@ namespace openpeer
         //---------------------------------------------------------------------
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ConversationThreadHost::IPeerContactAsync
-        #pragma mark
-
-        interaction IPeerContactAsync
-        {
-          virtual void onStep() = 0;
-        };
-
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        //---------------------------------------------------------------------
-        #pragma mark
         #pragma mark ConversationThreadHost::PeerContact
         #pragma mark
 
         class PeerContact : public MessageQueueAssociator,
                             public IPeerSubscriptionDelegate,
-                            public IPeerContactAsync,
+                            public IWakeDelegate,
                             public ITimerDelegate
         {
         public:
@@ -420,10 +391,10 @@ namespace openpeer
 
           //-------------------------------------------------------------------
           #pragma mark
-          #pragma mark ConversationThreadHost::PeerContact => IPeerContactAsync
+          #pragma mark ConversationThreadHost::PeerContact => IWakeDelegate
           #pragma mark
 
-          virtual void onStep() {step();}
+          virtual void onWake() {step();}
 
           //-------------------------------------------------------------------
           #pragma mark
@@ -691,11 +662,3 @@ namespace openpeer
     }
   }
 }
-
-ZS_DECLARE_PROXY_BEGIN(openpeer::core::internal::IConversationThreadHostAsync)
-ZS_DECLARE_PROXY_METHOD_0(onStep)
-ZS_DECLARE_PROXY_END()
-
-ZS_DECLARE_PROXY_BEGIN(openpeer::core::internal::ConversationThreadHost::IPeerContactAsync)
-ZS_DECLARE_PROXY_METHOD_0(onStep)
-ZS_DECLARE_PROXY_END()

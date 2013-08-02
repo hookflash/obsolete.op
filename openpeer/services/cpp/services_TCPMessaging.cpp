@@ -80,9 +80,7 @@ namespace openpeer
                                  ULONG maxMessageSizeInBytes
                                  ) :
         zsLib::MessageQueueAssociator(queue),
-        mID(zsLib::createPUID()),
         mCurrentState(SessionState_Pending),
-        mLastError(0),
         mReceiveStream(receiveStream->getWriter()),
         mSendStream(sendStream->getReader()),
         mFramesHaveChannelNumber(framesHaveChannelNumber),
@@ -481,7 +479,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String TCPMessaging::log(const char *message) const
       {
-        return String("TCPMessaging [" + Stringize<typeof(mID)>(mID).string() + "] " + message);
+        return String("TCPMessaging [" + mID.string() + "] " + message);
       }
 
       //-----------------------------------------------------------------------
@@ -489,7 +487,7 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("tcp messaging id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("tcp messaging id", mID.string(), firstTime) +
                Helper::getDebugValue("graceful shutdown", mGracefulShutdownReference ? String("true") : String(), firstTime) +
                Helper::getDebugValue("subscriptions", mSubscriptions.size() > 0 ? Stringize<ITCPMessagingDelegateSubscriptions::size_type>(mSubscriptions.size()).string() : String(), firstTime) +
                Helper::getDebugValue("default subscription", mDefaultSubscription ? String("true") : String(), firstTime) +
@@ -538,7 +536,7 @@ namespace openpeer
           return;
         }
 
-        mLastError = errorCode;
+        get(mLastError) = errorCode;
         mLastErrorReason = reason;
 
         ZS_LOG_WARNING(Detail, log("error set") + ", code=" + Stringize<typeof(mLastError)>(mLastError).string() + ", reason=" + mLastErrorReason + getDebugValueString())

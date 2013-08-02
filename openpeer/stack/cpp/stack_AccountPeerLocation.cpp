@@ -37,8 +37,10 @@
 #include <openpeer/stack/internal/stack_Helper.h>
 #include <openpeer/stack/internal/stack_Peer.h>
 #include <openpeer/stack/internal/stack_Stack.h>
+
 #include <openpeer/stack/IPeerFiles.h>
 #include <openpeer/stack/IPeerFilePublic.h>
+
 #include <openpeer/stack/message/peer-to-peer/PeerIdentifyRequest.h>
 #include <openpeer/stack/message/peer-to-peer/PeerKeepAliveRequest.h>
 #include <openpeer/stack/message/peer-finder/PeerLocationFindRequest.h>
@@ -74,6 +76,7 @@ namespace openpeer
     namespace internal
     {
       using services::IHelper;
+
       using zsLib::Stringize;
 
       using message::peer_to_peer::PeerIdentifyRequest;
@@ -263,7 +266,7 @@ namespace openpeer
           ZS_LOG_ERROR(Detail, log("failed to create socket session"))
         }
 
-        (IAccountPeerLocationAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
+        (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -275,7 +278,7 @@ namespace openpeer
         mIncoming = true;
 
         mPendingRequests.push_back(request);
-        (IAccountPeerLocationAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
+        (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -386,14 +389,14 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark AccountPeerLocation => IAccountPeerLocationAsyncDelegate
+      #pragma mark AccountPeerLocation => IWakeDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void AccountPeerLocation::onStep()
+      void AccountPeerLocation::onWake()
       {
         AutoRecursiveLock lock(getLock());
-        ZS_LOG_DEBUG(log("on step"))
+        ZS_LOG_DEBUG(log("on wake"))
         step();
       }
 
@@ -758,7 +761,7 @@ namespace openpeer
 
         mIdentifyTime = zsLib::now();
 
-        (IAccountPeerLocationAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
+        (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
         return true;
       }
 
@@ -1014,7 +1017,7 @@ namespace openpeer
         }
 
         // ensure the socket has been woken up during the subscription process
-        IAccountPeerLocationAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
         return false;
       }
 

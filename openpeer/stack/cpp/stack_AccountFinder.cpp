@@ -36,12 +36,14 @@
 #include <openpeer/stack/internal/stack_Helper.h>
 #include <openpeer/stack/internal/stack_MessageMonitor.h>
 #include <openpeer/stack/internal/stack_Stack.h>
+
 #include <openpeer/stack/message/peer-finder/SessionDeleteRequest.h>
 #include <openpeer/stack/message/peer-finder/SessionCreateRequest.h>
 #include <openpeer/stack/message/peer-finder/SessionCreateResult.h>
 #include <openpeer/stack/message/peer-finder/SessionKeepAliveRequest.h>
 #include <openpeer/stack/message/peer-finder/SessionKeepAliveResult.h>
 #include <openpeer/stack/message/peer-finder/PeerLocationFindRequest.h>
+
 #include <openpeer/stack/message/MessageResult.h>
 #include <openpeer/stack/IPeerFiles.h>
 #include <openpeer/stack/IPeerFilePublic.h>
@@ -84,6 +86,7 @@ namespace openpeer
       using zsLib::Stringize;
 
       using services::IHelper;
+      using services::IWakeDelegateProxy;
 
       using message::peer_finder::SessionCreateRequest;
       using message::peer_finder::SessionCreateRequestPtr;
@@ -144,7 +147,7 @@ namespace openpeer
       //---------------------------------------------------------------------
       void AccountFinder::init()
       {
-        IAccountFinderAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //---------------------------------------------------------------------
@@ -291,7 +294,7 @@ namespace openpeer
       void AccountFinder::notifyFinderDNSComplete()
       {
         ZS_LOG_DEBUG(log("notified finder DNS complete"))
-        IAccountFinderAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -299,11 +302,11 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark AccountFinder => IAccountFinderAsyncDelegate
+      #pragma mark AccountFinder => IWakeDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void AccountFinder::onStep()
+      void AccountFinder::onWake()
       {
         AutoRecursiveLock lock(getLock());
         step();
@@ -497,7 +500,7 @@ namespace openpeer
         setTimeout(result->expires());
         mServerAgent = result->serverAgent();
 
-        (IAccountFinderAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
+        (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
         return true;
       }
 
@@ -542,7 +545,7 @@ namespace openpeer
 
         setTimeout(result->expires());
 
-        (IAccountFinderAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
+        (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
         return true;
       }
 
@@ -584,7 +587,7 @@ namespace openpeer
           return false;
         }
 
-        (IAccountFinderAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
+        (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
         return true;
       }
 
@@ -601,7 +604,7 @@ namespace openpeer
           return false;
         }
 
-        (IAccountFinderAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
+        (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
         return true;
       }
 
@@ -892,7 +895,7 @@ namespace openpeer
         }
 
         // ensure the socket has been woken up during the subscription process
-        IAccountFinderAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
         return false;
       }
 

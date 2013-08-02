@@ -189,7 +189,7 @@ namespace openpeer
         #pragma mark StreamTransport => (data)
         #pragma mark
 
-        PUID mID;
+        AutoPUID mID;
         mutable RecursiveLock mLock;
         TransportStreamWeakPtr mThisWeak;
 

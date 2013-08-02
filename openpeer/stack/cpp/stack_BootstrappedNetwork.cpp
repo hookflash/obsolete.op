@@ -535,13 +535,13 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark BootstrappedNetwork => IBootstrappedNetworkAsyncDelegate
+      #pragma mark BootstrappedNetwork =>IWakeDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void BootstrappedNetwork::onStep()
+      void BootstrappedNetwork::onWake()
       {
-        ZS_LOG_DEBUG(log("on step"))
+        ZS_LOG_DEBUG(log("on wake"))
         AutoRecursiveLock lock(getLock());
         step();
       }
@@ -580,7 +580,7 @@ namespace openpeer
         ZS_LOG_DEBUG(log("on http complete") + ", query ID=" + Stringize<PUID>(query->getID()).string())
 
         // do step asynchronously
-        IBootstrappedNetworkAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+       IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
 
         PendingRequestMap::iterator found = mPendingRequests.find(query);
         if (found == mPendingRequests.end()) {

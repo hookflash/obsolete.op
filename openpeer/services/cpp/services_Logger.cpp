@@ -32,7 +32,10 @@
 #include <openpeer/services/internal/services_Logger.h>
 #include <openpeer/services/IDNS.h>
 #include <openpeer/services/IHelper.h>
+#include <openpeer/services/IWakeDelegate.h>
+
 #include <cryptopp/osrng.h>
+
 #include <zsLib/Stringize.h>
 #include <zsLib/helpers.h>
 #include <zsLib/Log.h>
@@ -84,30 +87,6 @@ namespace openpeer
   {
     using zsLib::Stringize;
     using zsLib::Numeric;
-
-    namespace internal
-    {
-      interaction ITelnetLoggerAsync;
-      typedef boost::shared_ptr<ITelnetLoggerAsync> ITelnetLoggerAsyncPtr;
-      typedef boost::weak_ptr<ITelnetLoggerAsync> ITelnetLoggerAsyncWeakPtr;
-      typedef zsLib::Proxy<ITelnetLoggerAsync> ITelnetLoggerAsyncProxy;
-
-      interaction ITelnetLoggerAsync
-      {
-        virtual void onStep() = 0;
-      };
-    }
-  }
-}
-
-ZS_DECLARE_PROXY_BEGIN(openpeer::services::internal::ITelnetLoggerAsync)
-ZS_DECLARE_PROXY_METHOD_0(onStep)
-ZS_DECLARE_PROXY_END()
-
-namespace openpeer
-{
-  namespace services
-  {
     using zsLib::AutoRecursiveLock;
 
     namespace internal
@@ -708,7 +687,7 @@ namespace openpeer
                            public ISocketDelegate,
                            public IDNSDelegate,
                            public ITimerDelegate,
-                           public ITelnetLoggerAsync
+                           public IWakeDelegate
       {
         //---------------------------------------------------------------------
         void init(
@@ -751,7 +730,7 @@ namespace openpeer
           }
 
           // do this from outside the stack to prevent this from happening during any kind of lock
-          ITelnetLoggerAsyncProxy::create(mThisWeak.lock())->onStep();
+          IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
 
           LogPtr log = Log::singleton();
           log->addListener(mThisWeak.lock());
@@ -1183,7 +1162,7 @@ namespace openpeer
         }
 
         //---------------------------------------------------------------------
-        virtual void onStep()
+        virtual void onWake()
         {
           String serverName;
 
@@ -1202,7 +1181,7 @@ namespace openpeer
 
           {
             AutoRecursiveLock lock(mLock);
-            // we can guarentee result will not happen until after "onStep"
+            // we can guarentee result will not happen until after "onWake"
             // exits because both occupy the same thread queue...
             mOutgoingServerQuery = query;
           }

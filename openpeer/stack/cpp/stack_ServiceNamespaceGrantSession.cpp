@@ -266,7 +266,7 @@ namespace openpeer
             mNeedsBrowserWindowVisible = true;
           }
 
-          IServiceNamespaceGrantSessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+          IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
           return;
         }
 
@@ -326,7 +326,7 @@ namespace openpeer
 
           mReceivedNamespaceGrantCompleteNotify = true;
 
-          IServiceNamespaceGrantSessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+          IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
           return;
         }
 
@@ -502,14 +502,14 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServiceNamespaceGrantSession => IServiceNamespaceGrantSessionAsyncDelegate
+      #pragma mark ServiceNamespaceGrantSession => IWakeDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void ServiceNamespaceGrantSession::onStep()
+      void ServiceNamespaceGrantSession::onWake()
       {
         AutoRecursiveLock lock(getLock());
-        ZS_LOG_DEBUG(log("on step"))
+        ZS_LOG_DEBUG(log("on wake"))
         step();
       }
 
@@ -598,7 +598,7 @@ namespace openpeer
 
         mWaitingDelegates.clear();
 
-        IServiceNamespaceGrantSessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -964,7 +964,7 @@ namespace openpeer
         ZS_THROW_BAD_STATE_IF(0 != mTotalWaits)
 
         if (mPendingQueries.size() > 0) {
-          IServiceNamespaceGrantSessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+          IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
         }
         return true;
       }

@@ -36,6 +36,7 @@
 #include <openpeer/core/internal/core_IConversationThreadParser.h>
 
 #include <openpeer/services/IHelper.h>
+#include <openpeer/services/IWakeDelegate.h>
 
 #define OPENPEER_CONVERSATION_THREAD_TYPE_INDEX (2)
 #define OPENPEER_CONVERSATION_THREAD_BASE_THREAD_ID_INDEX (3)
@@ -298,19 +299,6 @@ namespace openpeer
       //-------------------------------------------------------------------------
       //-------------------------------------------------------------------------
       #pragma mark
-      #pragma mark IConversationThreadAsync
-      #pragma mark
-
-      interaction IConversationThreadAsync
-      {
-        virtual void onStep() = 0;
-      };
-
-      //-------------------------------------------------------------------------
-      //-------------------------------------------------------------------------
-      //-------------------------------------------------------------------------
-      //-------------------------------------------------------------------------
-      #pragma mark
       #pragma mark ConversationThread
       #pragma mark
 
@@ -321,7 +309,7 @@ namespace openpeer
                                   public IConversationThreadForCall,
                                   public IConversationThreadForHost,
                                   public IConversationThreadForSlave,
-                                  public IConversationThreadAsync
+                                  public IWakeDelegate
       {
       public:
         friend interaction IConversationThreadFactory;
@@ -539,10 +527,10 @@ namespace openpeer
 
         //-----------------------------------------------------------------------
         #pragma mark
-        #pragma mark ConversationThread => IConversationThreadAsync
+        #pragma mark ConversationThread => IWakeDelegate
         #pragma mark
 
-        virtual void onStep() {step();}
+        virtual void onWake() {step();}
 
       protected:
         //-----------------------------------------------------------------------
@@ -635,7 +623,3 @@ namespace openpeer
     }
   }
 }
-
-ZS_DECLARE_PROXY_BEGIN(openpeer::core::internal::IConversationThreadAsync)
-ZS_DECLARE_PROXY_METHOD_0(onStep)
-ZS_DECLARE_PROXY_END()

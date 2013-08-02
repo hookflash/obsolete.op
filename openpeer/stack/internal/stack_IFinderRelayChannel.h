@@ -88,20 +88,6 @@ namespace openpeer
                                               );
 
         //---------------------------------------------------------------------
-        // PURPOSE: create a new channel that is incoming
-        // NOTE:    This method is when a finder connection receives
-        //          notification of a new incoming relay channel. The remote
-        //          peer should be known but until context information arrives
-        //          there's no way to know which peer specificially is
-        //          incoming.
-        static IFinderRelayChannelPtr createIncoming(
-                                                     IFinderRelayChannelDelegatePtr delegate, // can pass in IFinderRelayChannelDelegatePtr() if not interested in the events
-                                                     AccountPtr account,
-                                                     ITransportStreamPtr receiveStream,
-                                                     ITransportStreamPtr sendStream
-                                                     );
-
-        //---------------------------------------------------------------------
         // PURPOSE: get process unique ID for object
         virtual PUID getID() const = 0;
 

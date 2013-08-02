@@ -154,7 +154,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void CallTransport::init()
       {
-        ICallTransportAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -1058,7 +1058,7 @@ namespace openpeer
           return;
         }
 
-        ICallTransportAsyncProxy::create(outer)->onStep();
+        IWakeDelegateProxy::create(outer)->onWake();
       }
 
       //-----------------------------------------------------------------------

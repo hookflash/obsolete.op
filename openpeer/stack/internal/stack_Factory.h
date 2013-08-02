@@ -54,6 +54,7 @@ namespace openpeer
                       public IBootstrappedNetworkFactory,
                       public IBootstrappedNetworkManagerFactory,
                       public IFinderRelayChannelFactory,
+                      public IFinderConnectionRelayChannelFactory,
                       public IMessageIncomingFactory,
                       public IMessageMonitorFactory,
                       public IMessageMonitorManagerFactory,

@@ -344,7 +344,7 @@ namespace openpeer
           mPendingRemoveIdentities[session->forLockbox().getID()] = session;
         }
         // handle the association now (but do it asynchronously)
-        IServiceLockboxSessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -453,7 +453,7 @@ namespace openpeer
         AutoRecursiveLock lock(getLock());
         mAccount = account;
 
-        IServiceLockboxSessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -548,7 +548,7 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         ZS_LOG_DEBUG(log("notify state changed"))
-        IServiceLockboxSessionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -556,14 +556,14 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ServiceLockboxSession => IServiceLockboxSessionAsyncDelegate
+      #pragma mark ServiceLockboxSession => IWakeDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void ServiceLockboxSession::onStep()
+      void ServiceLockboxSession::onWake()
       {
         AutoRecursiveLock lock(getLock());
-        ZS_LOG_DEBUG(log("on step"))
+        ZS_LOG_DEBUG(log("on wake"))
         step();
       }
 

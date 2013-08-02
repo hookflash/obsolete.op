@@ -658,7 +658,7 @@ namespace openpeer
                                                              );
 
           ZS_LOG_DETAIL(log("received open channel succeeded"))
-          (IRUDPChannelAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
+          (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
           return true;
         }
 
@@ -935,14 +935,14 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark RUDPChannel => IRUDPChannelAsyncDelegate
+      #pragma mark RUDPChannel => IWakeDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void RUDPChannel::onStep()
+      void RUDPChannel::onWake()
       {
         AutoRecursiveLock lock(mLock);
-        ZS_LOG_DETAIL(log("on step"))
+        ZS_LOG_DETAIL(log("on wake"))
 
         step();
       }
@@ -1167,7 +1167,7 @@ namespace openpeer
             mStream->shutdown(false);
           }
 
-          (IRUDPChannelAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
+          (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
           return true;
         }
 

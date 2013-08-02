@@ -175,7 +175,7 @@ namespace openpeer
       void ConversationThread::init()
       {
         ZS_LOG_DEBUG(log("initialized"))
-        IConversationThreadAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -1078,7 +1078,7 @@ namespace openpeer
 
         // force a step on the conversation thread to cleanup anything state wise...
         ZS_LOG_DEBUG(log("forcing step"))
-        IConversationThreadAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -1106,7 +1106,7 @@ namespace openpeer
         mPendingCalls[call->forConversationThread().getCallID()] = call;
 
         ZS_LOG_DEBUG(log("forcing step"))
-        IConversationThreadAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
         return true;
       }
 

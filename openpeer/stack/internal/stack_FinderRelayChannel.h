@@ -34,6 +34,7 @@
 #include <openpeer/stack/internal/stack_IFinderRelayChannel.h>
 #include <openpeer/stack/message/types.h>
 #include <openpeer/stack/internal/types.h>
+#include <openpeer/stack/internal/stack_IFinderConnectionRelayChannel.h>
 
 #include <openpeer/services/IMessageLayerSecurityChannel.h>
 #include <openpeer/services/ITransportStream.h>
@@ -53,6 +54,21 @@ namespace openpeer
       using services::IMessageLayerSecurityChannelDelegate;
       using services::IMessageLayerSecurityChannelDelegatePtr;
 
+      interaction IFinderRelayChannelForFinderConnectionMultiplexOutgoing
+      {
+        IFinderRelayChannelForFinderConnectionMultiplexOutgoing &forConnection() {return *this;}
+        const IFinderRelayChannelForFinderConnectionMultiplexOutgoing &forConnection() const {return *this;}
+
+        static FinderRelayChannelPtr createIncoming(
+                                                    IFinderRelayChannelDelegatePtr delegate, // can pass in IFinderRelayChannelDelegatePtr() if not interested in the events
+                                                    AccountPtr account,
+                                                    ITransportStreamPtr outerReceiveStream,
+                                                    ITransportStreamPtr outerSendStream,
+                                                    ITransportStreamPtr wireReceiveStream,
+                                                    ITransportStreamPtr wireSendStream
+                                                    );
+      };
+
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -64,6 +80,8 @@ namespace openpeer
       class FinderRelayChannel : public Noop,
                                  public zsLib::MessageQueueAssociator,
                                  public IFinderRelayChannel,
+                                 public IFinderRelayChannelForFinderConnectionMultiplexOutgoing,
+                                 public IFinderConnectionRelayChannelDelegate,
                                  public IMessageLayerSecurityChannelDelegate
       {
       public:
@@ -85,8 +103,8 @@ namespace openpeer
                            IMessageQueuePtr queue,
                            IFinderRelayChannelDelegatePtr delegate,
                            AccountPtr account,
-                           ITransportStreamPtr receiveStream,
-                           ITransportStreamPtr sendStream
+                           ITransportStreamPtr outerReceiveStream,
+                           ITransportStreamPtr outerSendStream
                            );
 
         FinderRelayChannel(Noop) :
@@ -120,13 +138,6 @@ namespace openpeer
                                              const char *encryptDataUsingEncodingPassphrase
                                              );
 
-        static FinderRelayChannelPtr createIncoming(
-                                                    IFinderRelayChannelDelegatePtr delegate, // can pass in IFinderRelayChannelDelegatePtr() if not interested in the events
-                                                    AccountPtr account,
-                                                    ITransportStreamPtr receiveStream,
-                                                    ITransportStreamPtr sendStream
-                                                    );
-
         virtual PUID getID() const {return mID;}
 
         virtual IFinderRelayChannelSubscriptionPtr subscribe(IFinderRelayChannelDelegatePtr delegate);
@@ -151,6 +162,30 @@ namespace openpeer
         virtual IPeerPtr getRemotePeer() const;
 
         virtual IRSAPublicKeyPtr getRemotePublicKey() const;
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark FinderRelayChannel => IFinderRelayChannelForFinderConnectionMultiplexOutgoing
+        #pragma mark
+
+        static FinderRelayChannelPtr createIncoming(
+                                                    IFinderRelayChannelDelegatePtr delegate, // can pass in IFinderRelayChannelDelegatePtr() if not interested in the events
+                                                    AccountPtr account,
+                                                    ITransportStreamPtr outerReceiveStream,
+                                                    ITransportStreamPtr outerSendStream,
+                                                    ITransportStreamPtr wireReceiveStream,
+                                                    ITransportStreamPtr wireSendStream
+                                                    );
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark FinderRelayChannel => IFinderConnectionRelayChannelDelegate
+        #pragma mark
+
+        virtual void onFinderConnectionRelayChannelStateChanged(
+                                                                IFinderConnectionRelayChannelPtr channel,
+                                                                IFinderConnectionRelayChannel::SessionStates state
+                                                                );
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -186,7 +221,7 @@ namespace openpeer
         #pragma mark FinderRelayChannel => (data)
         #pragma mark
 
-        PUID mID;
+        AutoPUID mID;
         mutable RecursiveLock mLock;
         FinderRelayChannelWeakPtr mThisWeak;
 
@@ -195,13 +230,14 @@ namespace openpeer
 
         SessionStates mCurrentState;
 
-        WORD mLastError;
+        AutoWORD mLastError;
         String mLastErrorReason;
 
         AccountWeakPtr mAccount;
 
-        bool mIncoming;
+        AutoBool mIncoming;
         ConnectInfo mConnectInfo;
+        IFinderConnectionRelayChannelPtr mConnectionRelayChannel;
 
         IMessageLayerSecurityChannelPtr mMLSChannel;
 
@@ -242,8 +278,10 @@ namespace openpeer
         virtual FinderRelayChannelPtr createIncoming(
                                                      IFinderRelayChannelDelegatePtr delegate, // can pass in IFinderRelayChannelDelegatePtr() if not interested in the events
                                                      AccountPtr account,
-                                                     ITransportStreamPtr receiveStream,
-                                                     ITransportStreamPtr sendStream
+                                                     ITransportStreamPtr outerReceiveStream,
+                                                     ITransportStreamPtr outerSendStream,
+                                                     ITransportStreamPtr wireReceiveStream,
+                                                     ITransportStreamPtr wireSendStream
                                                      );
       };
       

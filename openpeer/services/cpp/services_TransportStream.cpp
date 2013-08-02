@@ -71,8 +71,7 @@ namespace openpeer
                                        ITransportStreamWriterDelegatePtr writerDelegate,
                                        ITransportStreamReaderDelegatePtr readerDelegate
                                        ) :
-        zsLib::MessageQueueAssociator(queue),
-        mID(zsLib::createPUID())
+        zsLib::MessageQueueAssociator(queue)
       {
         ZS_LOG_DEBUG(log("created"))
         if (writerDelegate) {
@@ -511,7 +510,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String TransportStream::log(const char *message) const
       {
-        return String("TransportStream [" + Stringize<typeof(mID)>(mID).string() + "] " + message);
+        return String("TransportStream [" + mID.string() + "] " + message);
       }
 
       //-----------------------------------------------------------------------
@@ -519,7 +518,7 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("transport stream id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("transport stream id", mID.string(), firstTime) +
                Helper::getDebugValue("shutdown", mShutdown ? String("true") : String(), firstTime) +
                Helper::getDebugValue("reader ready", mReaderReady ? String("true") : String(), firstTime) +
                Helper::getDebugValue("read ready notified", mReadReadyNotified ? String("true") : String(), firstTime) +

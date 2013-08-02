@@ -35,6 +35,7 @@
 #include <openpeer/services/internal/types.h>
 
 #include <openpeer/services/ITransportStream.h>
+#include <openpeer/services/IWakeDelegate.h>
 
 #include <list>
 #include <map>
@@ -52,26 +53,13 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IMessageLayerSecurityChannelAsyncDelegate
-      #pragma mark
-
-      interaction IMessageLayerSecurityChannelAsyncDelegate
-      {
-        virtual void onStep() = 0;
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark MessageLayerSecurityChannel
       #pragma mark
 
       class MessageLayerSecurityChannel : public Noop,
                                           public zsLib::MessageQueueAssociator,
                                           public IMessageLayerSecurityChannel,
-                                          public IMessageLayerSecurityChannelAsyncDelegate,
+                                          public IWakeDelegate,
                                           public ITransportStreamReaderDelegate,
                                           public ITransportStreamWriterDelegate
       {
@@ -211,10 +199,10 @@ namespace openpeer
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark MessageLayerSecurityChannel => IMessageLayerSecurityChannelAsyncDelegate
+        #pragma mark MessageLayerSecurityChannel => IWakeDelegate
         #pragma mark
 
-        virtual void onStep();
+        virtual void onWake();
 
       protected:
         //---------------------------------------------------------------------
@@ -324,7 +312,3 @@ namespace openpeer
     }
   }
 }
-
-ZS_DECLARE_PROXY_BEGIN(openpeer::services::internal::IMessageLayerSecurityChannelAsyncDelegate)
-ZS_DECLARE_PROXY_METHOD_0(onStep)
-ZS_DECLARE_PROXY_END()

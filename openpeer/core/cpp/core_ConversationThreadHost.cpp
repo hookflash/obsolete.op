@@ -409,7 +409,7 @@ namespace openpeer
         mHostThread->setContacts(contactMap);
         publish(mHostThread->updateEnd(), true);
 
-        IConversationThreadHostAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -437,7 +437,7 @@ namespace openpeer
         mHostThread->setContacts(contactMap);
         publish(mHostThread->updateEnd(), true);
 
-        IConversationThreadHostAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -492,7 +492,7 @@ namespace openpeer
         mHostThread->updateDialogs(additions);
         publish(mHostThread->updateEnd(), true);
 
-        IConversationThreadHostAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
         return true;
       }
 
@@ -520,7 +520,7 @@ namespace openpeer
         mHostThread->updateDialogs(updates);
         publish(mHostThread->updateEnd(), true);
 
-        IConversationThreadHostAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -551,7 +551,7 @@ namespace openpeer
         mHostThread->removeDialogs(removals);
         publish(mHostThread->updateEnd(), true);
 
-        IConversationThreadHostAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -1217,7 +1217,7 @@ namespace openpeer
       void ConversationThreadHost::PeerContact::notifyStep(bool performStepAsync)
       {
         if (performStepAsync) {
-          IPeerContactAsyncProxy::create(mThisWeak.lock())->onStep();
+          IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
           return;
         }
 
@@ -1424,7 +1424,7 @@ namespace openpeer
 
         PeerContactPtr pThis = mThisWeak.lock();
         if (pThis) {
-          IPeerContactAsyncProxy::create(mThisWeak.lock())->onStep();
+          IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
         }
       }
 

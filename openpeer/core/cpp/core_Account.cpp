@@ -748,7 +748,7 @@ namespace openpeer
           mLockboxSession->associateIdentities(add, remove);
         }
 
-        IAccountAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -1000,14 +1000,14 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark Account => IAccountAsyncDelegate
+      #pragma mark Account => IWakeDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void Account::onStep()
+      void Account::onWake()
       {
         AutoRecursiveLock lock(mLock);
-        ZS_LOG_DEBUG(log("on step"))
+        ZS_LOG_DEBUG(log("on wake"))
         step();
       }
 
@@ -1729,7 +1729,7 @@ namespace openpeer
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void Account::ContactSubscription::onStep()
+      void Account::ContactSubscription::onWake()
       {
         AutoRecursiveLock lock(getLock());
         step();
@@ -1851,7 +1851,7 @@ namespace openpeer
         ZS_LOG_DEBUG(log("erasing location subscription") + ", location ID=" + locationID)
         mLocations.erase(found);
 
-        IContactSubscriptionAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------

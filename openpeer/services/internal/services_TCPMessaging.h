@@ -177,7 +177,7 @@ namespace openpeer
         #pragma mark TCPMessaging => (data)
         #pragma mark
 
-        PUID mID;
+        AutoPUID mID;
         mutable RecursiveLock mLock;
         TCPMessagingWeakPtr mThisWeak;
         TCPMessagingPtr mGracefulShutdownReference;
@@ -187,7 +187,7 @@ namespace openpeer
 
         SessionStates mCurrentState;
 
-        WORD mLastError;
+        AutoWORD mLastError;
         String mLastErrorReason;
 
         ITransportStreamWriterPtr mReceiveStream;

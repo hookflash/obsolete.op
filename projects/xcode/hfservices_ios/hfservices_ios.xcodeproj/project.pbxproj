@@ -130,6 +130,7 @@
 		0095DCD616CA8A16005F53D3 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
 		00ABD40817A7FFA700178078 /* services_TCPMessaging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = services_TCPMessaging.h; sourceTree = "<group>"; };
 		00ABD40917A7FFE700178078 /* services_TCPMessaging.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_TCPMessaging.cpp; sourceTree = "<group>"; };
+		00FF147917AABDEC00F5DEB8 /* IWakeDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IWakeDelegate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -199,6 +200,7 @@
 				0095DCC516CA8A16005F53D3 /* RUDPPacket.h */,
 				0095DCC616CA8A16005F53D3 /* RUDPProtocol.h */,
 				0095DCC816CA8A16005F53D3 /* STUNPacket.h */,
+				00FF147917AABDEC00F5DEB8 /* IWakeDelegate.h */,
 			);
 			path = services;
 			sourceTree = "<group>";

@@ -39,7 +39,9 @@
 #include <openpeer/stack/internal/stack_BootstrappedNetworkManager.h>
 #include <openpeer/stack/internal/stack_IFinderRelayChannel.h>
 #include <openpeer/stack/internal/stack_FinderRelayChannel.h>
-#include <openpeer/stack/internal/stack_IFinderRelayChannelTCPOutgoing.h>
+#include <openpeer/stack/internal/stack_IFinderConnection.h>
+#include <openpeer/stack/internal/stack_IFinderConnectionRelayChannel.h>
+#include <openpeer/stack/internal/stack_FinderConnectionMultiplexOutgoing.h>
 #include <openpeer/stack/internal/stack_Helper.h>
 #include <openpeer/stack/internal/stack_Location.h>
 #include <openpeer/stack/internal/stack_MessageIncoming.h>

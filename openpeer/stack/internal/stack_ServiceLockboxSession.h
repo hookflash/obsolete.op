@@ -32,10 +32,8 @@
 #pragma once
 
 #include <openpeer/stack/internal/types.h>
-#include <openpeer/stack/IBootstrappedNetwork.h>
-#include <openpeer/stack/IMessageMonitor.h>
-#include <openpeer/stack/IMessageSource.h>
-#include <openpeer/stack/IServiceLockbox.h>
+#include <openpeer/stack/internal/stack_ServiceNamespaceGrantSession.h>
+
 #include <openpeer/stack/message/identity-lockbox/LockboxAccessResult.h>
 #include <openpeer/stack/message/identity-lockbox/LockboxNamespaceGrantChallengeValidateResult.h>
 #include <openpeer/stack/message/identity-lockbox/LockboxIdentitiesUpdateResult.h>
@@ -43,9 +41,13 @@
 #include <openpeer/stack/message/identity-lockbox/LockboxContentSetResult.h>
 #include <openpeer/stack/message/peer/PeerServicesGetResult.h>
 
+#include <openpeer/stack/IBootstrappedNetwork.h>
+#include <openpeer/stack/IMessageMonitor.h>
+#include <openpeer/stack/IMessageSource.h>
+#include <openpeer/stack/IServiceLockbox.h>
 #include <openpeer/stack/IServiceSalt.h>
 
-#include <openpeer/stack/internal/stack_ServiceNamespaceGrantSession.h>
+#include <openpeer/services/IWakeDelegate.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 
@@ -134,19 +136,6 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IServiceLockboxSessionAsyncDelegate
-      #pragma mark
-
-      interaction IServiceLockboxSessionAsyncDelegate
-      {
-        virtual void onStep() = 0;
-      };
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
       #pragma mark ServiceLockboxSession
       #pragma mark
 
@@ -156,7 +145,7 @@ namespace openpeer
                                     public IMessageSource,
                                     public IServiceLockboxSessionForAccount,
                                     public IServiceLockboxSessionForServiceIdentity,
-                                    public IServiceLockboxSessionAsyncDelegate,
+                                    public IWakeDelegate,
                                     public IBootstrappedNetworkDelegate,
                                     public IServiceSaltFetchSignedSaltQueryDelegate,
                                     public IServiceNamespaceGrantSessionForServicesWaitForWaitDelegate,
@@ -298,10 +287,10 @@ namespace openpeer
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ServiceLockboxSession => IServiceLockboxSessionAsyncDelegate
+        #pragma mark ServiceLockboxSession => IWakeDelegate
         #pragma mark
 
-        virtual void onStep();
+        virtual void onWake();
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -579,7 +568,3 @@ namespace openpeer
     }
   }
 }
-
-ZS_DECLARE_PROXY_BEGIN(openpeer::stack::internal::IServiceLockboxSessionAsyncDelegate)
-ZS_DECLARE_PROXY_METHOD_0(onStep)
-ZS_DECLARE_PROXY_END()

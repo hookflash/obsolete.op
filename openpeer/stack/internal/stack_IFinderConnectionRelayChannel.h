@@ -44,10 +44,10 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IFinderRelayChannelTCPOutgoing
+      #pragma mark IFinderConnectionRelayChannel
       #pragma mark
 
-      interaction IFinderRelayChannelTCPOutgoing
+      interaction IFinderConnectionRelayChannel
       {
         enum SessionStates
         {
@@ -63,14 +63,19 @@ namespace openpeer
         //---------------------------------------------------------------------
         // PURPOSE: create a TCP connection to a remote finder
         // NOTE:    
-        static IFinderRelayChannelTCPOutgoingPtr connect(
-                                                         IFinderRelayChannelTCPOutgoingDelegatePtr delegate,
-                                                         IFinderRelayChannelPtr channel,
-                                                         IPAddress remoteFinderIP,
-                                                         const char *localContextID,
-                                                         const char *relayAccessToken,
-                                                         const char *relayAccessSecretProof
-                                                         );
+        static IFinderConnectionRelayChannelPtr connect(
+                                                        IFinderConnectionRelayChannelDelegatePtr delegate,
+                                                        const IPAddress &remoteFinderIP,
+                                                        const char *localContextID,
+                                                        const char *relayAccessToken,
+                                                        const char *relayAccessSecretProof,
+                                                        ITransportStreamPtr receiveStream,
+                                                        ITransportStreamPtr sendStream
+                                                        );
+
+        //---------------------------------------------------------------------
+        // PURPOSE: get object instance ID
+        virtual PUID getID() const = 0;
 
         //---------------------------------------------------------------------
         // PURPOSE: immediately disconnects the channel (no signaling is needed)
@@ -89,27 +94,27 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IFinderRelayChannelTCPOutgoingDelegate
+      #pragma mark IFinderConnectionRelayChannelDelegate
       #pragma mark
 
-      interaction IFinderRelayChannelTCPOutgoingDelegate
+      interaction IFinderConnectionRelayChannelDelegate
       {
-        typedef IFinderRelayChannelTCPOutgoing::SessionStates SessionStates;
+        typedef IFinderConnectionRelayChannel::SessionStates SessionStates;
 
         //---------------------------------------------------------------------
         // PURPOSE: Notifies the delegate that the state of the connection
         //          has changed.
-        virtual void onFinderRelayChannelTCPOutgoingStateChanged(
-                                                                 IFinderRelayChannelTCPOutgoingPtr channel,
-                                                                 SessionStates state
-                                                                 ) = 0;
+        virtual void onFinderConnectionRelayChannelStateChanged(
+                                                                IFinderConnectionRelayChannelPtr channel,
+                                                                SessionStates state
+                                                                ) = 0;
       };
     }
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(openpeer::stack::internal::IFinderRelayChannelTCPOutgoingDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::internal::IFinderRelayChannelTCPOutgoingPtr, IFinderRelayChannelTCPOutgoingPtr)
-ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::internal::IFinderRelayChannelTCPOutgoing::SessionStates, SessionStates)
-ZS_DECLARE_PROXY_METHOD_2(onFinderRelayChannelTCPOutgoingStateChanged, IFinderRelayChannelTCPOutgoingPtr, SessionStates)
+ZS_DECLARE_PROXY_BEGIN(openpeer::stack::internal::IFinderConnectionRelayChannelDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::internal::IFinderConnectionRelayChannelPtr, IFinderConnectionRelayChannelPtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::internal::IFinderConnectionRelayChannel::SessionStates, SessionStates)
+ZS_DECLARE_PROXY_METHOD_2(onFinderConnectionRelayChannelStateChanged, IFinderConnectionRelayChannelPtr, SessionStates)
 ZS_DECLARE_PROXY_END()

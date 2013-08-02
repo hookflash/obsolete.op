@@ -402,7 +402,7 @@ namespace openpeer
                 mChannelIPMap[destination] = info;
                 mChannelNumberMap[freeChannelNumber] = info;
 
-                ITURNSocketAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+                IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
               }
             }
           }
@@ -430,7 +430,7 @@ namespace openpeer
               mPermissions[destination] = permission;
 
               // since the permission isn't installed yet we can't send the data just yet... best kick start that permission now...
-              (ITURNSocketAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
+              (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
               return true;
             }
 
@@ -588,11 +588,11 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark TURNSocket => ITURNSocketAsyncDelegate
+      #pragma mark TURNSocket => IWakeDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void TURNSocket::onStep()
+      void TURNSocket::onWake()
       {
         AutoRecursiveLock lock(mLock);
         step();
@@ -1714,7 +1714,7 @@ namespace openpeer
           if (!tryDifferentServer) {
             mServers.clear();
           }
-          (ITURNSocketAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
+          (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
           return true;
         }
 
@@ -1744,7 +1744,7 @@ namespace openpeer
 
         informWriteReady();
 
-        (ITURNSocketAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
+        (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
         return true;
       }
 
@@ -1771,7 +1771,7 @@ namespace openpeer
         mRelayedIP.clear();
 
         // can't simply call cancel because the "dealloc" requester will return false that it's complete until we return "true" from this method
-        (ITURNSocketAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
+        (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
         return true;
       }
 
@@ -1846,7 +1846,7 @@ namespace openpeer
               if (packet) {
                 if (packet->mPeerAddressList.size() > 1) {
                   mPermissionRequesterMaxCapacity = packet->mPeerAddressList.size() - 1;
-                  ITURNSocketAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+                  IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
                 }
               }
             }

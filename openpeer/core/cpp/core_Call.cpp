@@ -216,7 +216,7 @@ namespace openpeer
         setCurrentState(ICall::CallState_Preparing);
 
         ZS_LOG_DEBUG(log("call init called thus invoking step"))
-        ICallAsyncProxy::create(getQueue(), mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(getQueue(), mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -377,7 +377,7 @@ namespace openpeer
         mRingCalled = true;
 
         ZS_LOG_DEBUG(log("ring called thus invoking step"))
-        ICallAsyncProxy::create(getQueue(), mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(getQueue(), mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -392,7 +392,7 @@ namespace openpeer
         mAnswerCalled = true;
 
         ZS_LOG_DEBUG(log("answer called thus invoking step"))
-        ICallAsyncProxy::create(getQueue(), mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(getQueue(), mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -404,7 +404,7 @@ namespace openpeer
         mLocalOnHold = hold;
 
         ZS_LOG_DEBUG(log("hold called thus invoking step"))
-        ICallAsyncProxy::create(getQueue(), mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(getQueue(), mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -585,7 +585,7 @@ namespace openpeer
       void Call::notifyConversationThreadUpdated()
       {
         ZS_LOG_DEBUG(log("notified conversation thread updated thus invoking step"))
-        ICallAsyncProxy::create(mQueue, mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mQueue, mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -660,7 +660,7 @@ namespace openpeer
         }
 
         ZS_LOG_DEBUG(log("ICE socket state change thus invoking step"))
-        ICallAsyncProxy::create(getQueue(), mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(getQueue(), mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -818,7 +818,7 @@ namespace openpeer
         CallPtr pThis = mThisWeak.lock();
         if (pThis) {
           ZS_LOG_DEBUG(log("call location state changed thus invoking step"))
-          ICallAsyncProxy::create(getQueue(), pThis)->onStep();
+          IWakeDelegateProxy::create(getQueue(), pThis)->onWake();
         }
       }
 
@@ -1659,7 +1659,7 @@ namespace openpeer
           setCurrentState(CallState_Open);
 
           ZS_LOG_DEBUG(log("call state changed to open thus forcing step to force close unchosen locations"))
-          ICallAsyncProxy::create(getQueue(), mThisWeak.lock())->onStep();
+          IWakeDelegateProxy::create(getQueue(), mThisWeak.lock())->onWake();
         } else if (ioEarly) {
           setCurrentState(CallState_Early);
         } else if (ringing) {
@@ -1805,7 +1805,7 @@ namespace openpeer
       {
         if (locationsToClose.size() > 0) {
           ZS_LOG_DEBUG(log("since locations were closed we must invoke a step to cleanup properly"))
-          ICallAsyncProxy::create(getQueue(), mThisWeak.lock())->onStep();
+          IWakeDelegateProxy::create(getQueue(), mThisWeak.lock())->onWake();
         }
 
         // force a closing of all these call locations...
@@ -2473,7 +2473,7 @@ namespace openpeer
         }
 
         ZS_LOG_DEBUG(log("ICE socket session state changed thus invoking step"))
-        ICallLocationAsyncProxy::create(getQueue(), mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(getQueue(), mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------

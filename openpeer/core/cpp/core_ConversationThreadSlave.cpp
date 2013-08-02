@@ -252,7 +252,7 @@ namespace openpeer
 
         // kick the conversation thread step routine asynchronously to ensure
         // the thread has a subscription state to its peer
-        IConversationThreadSlaveAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
         return true;
       }
 
@@ -330,7 +330,7 @@ namespace openpeer
         mSlaveThread->setContactsToAdd(contactMap);
         publish(mSlaveThread->updateEnd(), false);
 
-        IConversationThreadSlaveAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -350,7 +350,7 @@ namespace openpeer
         mSlaveThread->setContactsToRemove(contactIDList);
         publish(mSlaveThread->updateEnd(), false);
 
-        IConversationThreadSlaveAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -412,7 +412,7 @@ namespace openpeer
         mSlaveThread->updateDialogs(additions);
         publish(mSlaveThread->updateEnd(), false);
 
-        IConversationThreadSlaveAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
         return true;
       }
 
@@ -443,7 +443,7 @@ namespace openpeer
         mSlaveThread->updateDialogs(updates);
         publish(mSlaveThread->updateEnd(), false);
 
-        IConversationThreadSlaveAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -476,7 +476,7 @@ namespace openpeer
         mSlaveThread->removeDialogs(removeCallIDs);
         publish(mSlaveThread->updateEnd(), false);
 
-        IConversationThreadSlaveAsyncProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------

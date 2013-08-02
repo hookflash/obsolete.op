@@ -232,11 +232,52 @@ namespace openpeer
       FinderRelayChannelPtr IFinderRelayChannelFactory::createIncoming(
                                                                        IFinderRelayChannelDelegatePtr delegate,
                                                                        AccountPtr account,
-                                                                       ITransportStreamPtr receiveStream,
-                                                                       ITransportStreamPtr sendStream
+                                                                       ITransportStreamPtr outerReceiveStream,
+                                                                       ITransportStreamPtr outerSendStream,
+                                                                       ITransportStreamPtr wireReceiveStream,
+                                                                       ITransportStreamPtr wireSendStream
                                                                        )
       {
-        return FinderRelayChannel::createIncoming(delegate, account, receiveStream, sendStream);
+        return FinderRelayChannel::createIncoming(delegate, account, outerReceiveStream, outerSendStream, wireReceiveStream, wireSendStream);
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IFinderConnectionRelayChannelFactory
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      IFinderConnectionRelayChannelFactory &IFinderConnectionRelayChannelFactory::singleton()
+      {
+        return *(Factory::singleton().get());
+      }
+
+      //-----------------------------------------------------------------------
+      IFinderConnectionPtr IFinderConnectionRelayChannelFactory::connect(
+                                                                         IFinderConnectionDelegatePtr delegate,
+                                                                         const IPAddress &remoteFinderIP,
+                                                                         ITransportStreamPtr receiveStream,
+                                                                         ITransportStreamPtr sendStream
+                                                                         )
+      {
+        return FinderConnectionMultiplexOutgoing::connect(delegate, remoteFinderIP, receiveStream, sendStream);
+      }
+
+      //-----------------------------------------------------------------------
+      IFinderConnectionRelayChannelPtr IFinderConnectionRelayChannelFactory::connect(
+                                                                                 IFinderConnectionRelayChannelDelegatePtr delegate,
+                                                                                 const IPAddress &remoteFinderIP,
+                                                                                 const char *localContextID,
+                                                                                 const char *relayAccessToken,
+                                                                                 const char *relayAccessSecretProof,
+                                                                                 ITransportStreamPtr receiveStream,
+                                                                                 ITransportStreamPtr sendStream
+                                                                                 )
+      {
+        return FinderConnectionMultiplexOutgoing::connect(delegate, remoteFinderIP, localContextID, relayAccessToken, relayAccessSecretProof, receiveStream, sendStream);
       }
 
       //-----------------------------------------------------------------------

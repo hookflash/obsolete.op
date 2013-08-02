@@ -466,7 +466,7 @@ namespace openpeer
         mBackgroundingTimeout = backgroundingTimeout;
 
         ZS_LOG_DEBUG(log("forcing step to ensure all timers are properly created"))
-        (IICESocketSessionAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
+        (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -825,7 +825,7 @@ namespace openpeer
             // yes, okay, it did in fact succeed - we have nominated our candidate!
             // inform that the session is now connected
             ZS_LOG_DETAIL(log("nomination request succeeded") + ", local ip=" + mNominated->mLocal.mIPAddress.string() + ", remote ip=" + mNominated->mRemote.mIPAddress.string() + ", username=" + mNominated->mLocal.mUsernameFrag + ":" + mNominated->mRemote.mUsernameFrag)
-            (IICESocketSessionAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
+            (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
           }
           return true;
         }
@@ -994,11 +994,11 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ICESocketSession => IICESocketSessionAsyncDelegate
+      #pragma mark ICESocketSession => IWakeDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void ICESocketSession::onStep()
+      void ICESocketSession::onWake()
       {
         AutoRecursiveLock lock(getLock());
         step();
@@ -1145,7 +1145,7 @@ namespace openpeer
           notifyLocalWriteReady();
           notifyRelayWriteReady();
 
-          (IICESocketSessionAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
+          (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
           return true;
         }
 
@@ -1231,7 +1231,7 @@ namespace openpeer
           mNominated.reset();
 
           // try something else instead...
-          (IICESocketSessionAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
+          (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
           return;
         }
 
@@ -1729,7 +1729,7 @@ namespace openpeer
                 // if we never had a username then we were just doing a regular STUN request to the server to detect connectivity
 
                 // we are now connected to this IP address...
-                (IICESocketSessionAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
+                (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
                 return;
               }
 
@@ -1749,7 +1749,7 @@ namespace openpeer
               mNominateRequester = ISTUNRequester::create(getAssociatedMessageQueue(), mThisWeak.lock(), mNominated->mRemote.mIPAddress, request, STUNPacket::RFC_5245_ICE);
               setState(ICESocketSessionState_Nominating);
 
-              (IICESocketSessionAsyncDelegateProxy::create(mThisWeak.lock()))->onStep();
+              (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
               return;
             }
           }

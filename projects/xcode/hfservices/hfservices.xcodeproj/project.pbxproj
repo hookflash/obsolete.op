@@ -118,6 +118,7 @@
 		00ABD44817A8423900178078 /* services_TCPMessaging.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_TCPMessaging.cpp; sourceTree = "<group>"; };
 		00ABD44A17A8424900178078 /* services_TCPMessaging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = services_TCPMessaging.h; sourceTree = "<group>"; };
 		00ABD44B17A8426100178078 /* ITCPMessaging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ITCPMessaging.h; sourceTree = "<group>"; };
+		00FF147817AAB85E00F5DEB8 /* IWakeDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IWakeDelegate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -187,6 +188,7 @@
 				00ABD44B17A8426100178078 /* ITCPMessaging.h */,
 				003BEECB17A747270002EB47 /* ITransportStream.h */,
 				0095D95616CA83EA005F53D3 /* ITURNSocket.h */,
+				00FF147817AAB85E00F5DEB8 /* IWakeDelegate.h */,
 			);
 			path = services;
 			sourceTree = "<group>";
@@ -228,6 +230,7 @@
 		0095D93816CA83EA005F53D3 /* internal */ = {
 			isa = PBXGroup;
 			children = (
+				0095D94D16CA83EA005F53D3 /* types.h */,
 				0095D93916CA83EA005F53D3 /* services.h */,
 				0095D93A16CA83EA005F53D3 /* services_CanonicalXML.h */,
 				0095D93B16CA83EA005F53D3 /* services_DNS.h */,
@@ -254,7 +257,6 @@
 				00ABD44A17A8424900178078 /* services_TCPMessaging.h */,
 				003BEECC17A7473B0002EB47 /* services_TransportStream.h */,
 				0095D94C16CA83EA005F53D3 /* services_TURNSocket.h */,
-				0095D94D16CA83EA005F53D3 /* types.h */,
 			);
 			path = internal;
 			sourceTree = "<group>";

@@ -47,6 +47,9 @@ namespace openpeer
   {
     namespace internal
     {
+      using zsLib::AutoBool;
+      using zsLib::AutoPUID;
+      using zsLib::AutoWORD;
       using zsLib::Noop;
       using zsLib::AutoRecursiveLock;
       using zsLib::CSTR;
@@ -126,11 +129,6 @@ namespace openpeer
       typedef boost::shared_ptr<ICESocketSession> ICESocketSessionPtr;
       typedef boost::weak_ptr<ICESocketSession> ICESocketSessionWeakPtr;
 
-      interaction IICESocketSessionAsyncDelegate;
-      typedef boost::shared_ptr<IICESocketSessionAsyncDelegate> IICESocketSessionAsyncDelegatePtr;
-      typedef boost::weak_ptr<IICESocketSessionAsyncDelegate> IICESocketSessionAsyncDelegateWeakPtr;
-      typedef zsLib::Proxy<IICESocketSessionAsyncDelegate> IICESocketSessionAsyncDelegateProxy;
-
       interaction HTTP;
       typedef boost::shared_ptr<HTTP> HTTPPtr;
       typedef boost::weak_ptr<HTTP> HTTPWeakPtr;
@@ -138,11 +136,6 @@ namespace openpeer
       interaction MessageLayerSecurityChannel;
       typedef boost::shared_ptr<MessageLayerSecurityChannel> MessageLayerSecurityChannelPtr;
       typedef boost::weak_ptr<MessageLayerSecurityChannel> MessageLayerSecurityChannelWeakPtr;
-
-      interaction IMessageLayerSecurityChannelAsyncDelegate;
-      typedef boost::shared_ptr<IMessageLayerSecurityChannelAsyncDelegate> IMessageLayerSecurityChannelAsyncDelegatePtr;
-      typedef boost::weak_ptr<IMessageLayerSecurityChannelAsyncDelegate> IMessageLayerSecurityChannelAsyncDelegateWeakPtr;
-      typedef zsLib::Proxy<IMessageLayerSecurityChannelAsyncDelegate> IMessageLayerSecurityChannelAsyncDelegateProxy;
 
       class RSAPrivateKey;
       typedef boost::shared_ptr<RSAPrivateKey> RSAPrivateKeyPtr;
@@ -160,11 +153,6 @@ namespace openpeer
       typedef boost::shared_ptr<IRUDPChannelDelegateForSessionAndListener> IRUDPChannelDelegateForSessionAndListenerPtr;
       typedef boost::weak_ptr<IRUDPChannelDelegateForSessionAndListener> IRUDPChannelDelegateForSessionAndListenerWeakPtr;
       typedef zsLib::Proxy<IRUDPChannelDelegateForSessionAndListener> IRUDPChannelDelegateForSessionAndListenerProxy;
-
-      interaction IRUDPChannelAsyncDelegate;
-      typedef boost::shared_ptr<IRUDPChannelAsyncDelegate> IRUDPChannelAsyncDelegatePtr;
-      typedef boost::weak_ptr<IRUDPChannelAsyncDelegate> IRUDPChannelAsyncDelegateWeakPtr;
-      typedef zsLib::Proxy<IRUDPChannelAsyncDelegate> IRUDPChannelAsyncDelegateProxy;
 
       interaction IRUDPChannelStream;
       typedef boost::shared_ptr<IRUDPChannelStream> IRUDPChannelStreamPtr;
@@ -224,11 +212,6 @@ namespace openpeer
       class TransportStream;
       typedef boost::shared_ptr<TransportStream> TransportStreamPtr;
       typedef boost::weak_ptr<TransportStream> TransportStreamWeakPtr;
-
-      interaction ITURNSocketAsyncDelegate;
-      typedef boost::shared_ptr<ITURNSocketAsyncDelegate> ITURNSocketAsyncDelegatePtr;
-      typedef boost::weak_ptr<ITURNSocketAsyncDelegate> ITURNSocketAsyncDelegateWeakPtr;
-      typedef zsLib::Proxy<ITURNSocketAsyncDelegate> ITURNSocketAsyncDelegateProxy;
 
       class TURNSocket;
       typedef boost::shared_ptr<TURNSocket> TURNSocketPtr;

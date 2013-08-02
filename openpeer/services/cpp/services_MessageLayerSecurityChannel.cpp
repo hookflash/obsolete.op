@@ -220,7 +220,7 @@ namespace openpeer
         mSendStreamDecodedSubscription = mSendStreamDecoded->subscribe(mThisWeak.lock());
         mSendStreamEncodedSubscription = mSendStreamEncoded->subscribe(mThisWeak.lock());
 
-        IMessageLayerSecurityChannelAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -452,7 +452,7 @@ namespace openpeer
 
         setState(SessionState_Pending);
 
-        IMessageLayerSecurityChannelAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -492,7 +492,7 @@ namespace openpeer
 
         setState(SessionState_Pending);
 
-        IMessageLayerSecurityChannelAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -516,7 +516,7 @@ namespace openpeer
 
         setState(SessionState_Pending);
 
-        IMessageLayerSecurityChannelAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -546,7 +546,7 @@ namespace openpeer
 
         setState(SessionState_Pending);
 
-        IMessageLayerSecurityChannelAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -571,7 +571,7 @@ namespace openpeer
 
         setState(SessionState_Pending);
 
-        IMessageLayerSecurityChannelAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -596,7 +596,7 @@ namespace openpeer
 
         setState(SessionState_Pending);
 
-        IMessageLayerSecurityChannelAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -632,7 +632,7 @@ namespace openpeer
 
         setState(SessionState_Pending);
 
-        IMessageLayerSecurityChannelAsyncDelegateProxy::create(mThisWeak.lock())->onStep();
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -685,14 +685,14 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark MessageLayerSecurityChannel => IMessageLayerSecurityChannelAsyncDelegate
+      #pragma mark MessageLayerSecurityChannel => IWakeDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void MessageLayerSecurityChannel::onStep()
+      void MessageLayerSecurityChannel::onWake()
       {
         AutoRecursiveLock lock(getLock());
-        ZS_LOG_DEBUG(log("on step"))
+        ZS_LOG_DEBUG(log("on wake"))
         step();
       }
 
