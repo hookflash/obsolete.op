@@ -51,8 +51,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
-
       typedef zsLib::ITimerDelegateProxy ITimerDelegateProxy;
 
       //-----------------------------------------------------------------------
@@ -66,7 +64,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       static String sequenceToString(QWORD value)
       {
-        return Stringize<QWORD>(value).string() + " (" + Stringize<QWORD>(value & 0xFFFFFF).string() + ")";
+        return string(value) + " (" + string(value & 0xFFFFFF) + ")";
       }
 
       //-----------------------------------------------------------------------
@@ -246,7 +244,7 @@ namespace openpeer
       void RUDPChannel::shutdownDirection(Shutdown state)
       {
         AutoRecursiveLock lock(mLock);
-        ZS_LOG_DETAIL(log("shutdown direction called") + ", state=" + Stringize<int>(state).string() + ", current shutdown=" + Stringize<int>(mShutdownDirection).string())
+        ZS_LOG_DETAIL(log("shutdown direction called") + ", state=" + string(state) + ", current shutdown=" + string(mShutdownDirection))
         mShutdownDirection = static_cast<IRUDPChannelStream::Shutdown>(mShutdownDirection | state);
         if (!mStream) return;
         mStream->shutdownDirection(mShutdownDirection);
@@ -258,7 +256,7 @@ namespace openpeer
                              ULONG dataLengthInBytes
                              )
       {
-        ZS_LOG_DEBUG(log("send called") + ", data length=" + Stringize<ULONG>(dataLengthInBytes).string())
+        ZS_LOG_DEBUG(log("send called") + ", data length=" + string(dataLengthInBytes))
 
         {
           AutoRecursiveLock lock(mLock);
@@ -308,7 +306,7 @@ namespace openpeer
         mInformedReadReady = false; // if the receive was called in response to a read-ready event then the read-ready event must be cleared so the event can fire again
 
         if (!mStream) return 0;
-        ZS_LOG_DEBUG(log("receive called") + ", buffer size=" + Stringize<ULONG>(bufferLengthInBytes).string())
+        ZS_LOG_DEBUG(log("receive called") + ", buffer size=" + string(bufferLengthInBytes))
         return mStream->receive(outBuffer, bufferLengthInBytes);
       }
 
@@ -405,7 +403,7 @@ namespace openpeer
             pThis->cancel(false);
           }
         }
-        ZS_LOG_DETAIL(pThis->log("created for socket session incoming") + ", localUsernameFrag=" + localUsernameFrag + ", remoteUsernameFrag=" + remoteUsernameFrag + ", local password=" + localPassword + ", remote password=" + remotePassword + ", incoming channel=" + Stringize<WORD>(incomingChannelNumber).string())
+        ZS_LOG_DETAIL(pThis->log("created for socket session incoming") + ", localUsernameFrag=" + localUsernameFrag + ", remoteUsernameFrag=" + remoteUsernameFrag + ", local password=" + localPassword + ", remote password=" + remotePassword + ", incoming channel=" + string(incomingChannelNumber))
         return pThis;
       }
 
@@ -448,7 +446,7 @@ namespace openpeer
         pThis->mDelegate = IRUDPChannelDelegateProxy::createWeak(queue, delegate);
         pThis->init();
         // do not allow sending to the remote party until we receive an ACK or data
-        ZS_LOG_DETAIL(pThis->log("created for socket session outgoing") + ", localUserFrag=" + localUserFrag + ", remoteUserFrag=" + remoteUserFrag + ", local password=" + localPassword + ", remote password=" + remotePassword + ", incoming channel=" + Stringize<WORD>(incomingChannelNumber).string())
+        ZS_LOG_DETAIL(pThis->log("created for socket session outgoing") + ", localUserFrag=" + localUserFrag + ", remoteUserFrag=" + remoteUserFrag + ", local password=" + localPassword + ", remote password=" + remotePassword + ", incoming channel=" + string(incomingChannelNumber))
         return pThis;
       }
       
@@ -542,7 +540,7 @@ namespace openpeer
 
         if (STUNPacket::Method_ReliableChannelOpen == stun->mMethod) {
           if (STUNPacket::Class_Request != stun->mClass) {
-            ZS_LOG_ERROR(Debug, log("received illegal class on STUN request") + ", class=" + Stringize<int>((int)stun->mClass).string())
+            ZS_LOG_ERROR(Debug, log("received illegal class on STUN request") + ", class=" + string((int)stun->mClass))
             return false;  // illegal unless it is a request, responses will come through a different method
           }
 
@@ -664,14 +662,14 @@ namespace openpeer
 
         // this has to be a reliable channel ACK or it is not legal
         if (STUNPacket::Method_ReliableChannelACK != stun->mMethod) {
-          ZS_LOG_ERROR(Debug, log("received illegal method on STUN request") + ", method=" + Stringize<int>((int)stun->mMethod).string())
+          ZS_LOG_ERROR(Debug, log("received illegal method on STUN request") + ", method=" + string((int)stun->mMethod))
           return false;
         }
 
         // only legal to be a request or an indication
         if ((STUNPacket::Class_Request != stun->mClass) &&
             (STUNPacket::Class_Indication != stun->mClass)) {
-          ZS_LOG_ERROR(Debug, log("was expecting a request or an indication only for the class on the reliable ACK") + ", class=" + Stringize<int>((int)stun->mClass).string())
+          ZS_LOG_ERROR(Debug, log("was expecting a request or an indication only for the class on the reliable ACK") + ", class=" + string((int)stun->mClass))
           return false;
         }
 
@@ -725,7 +723,7 @@ namespace openpeer
                                    ULONG bufferLengthInBytes
                                    )
       {
-        ZS_LOG_DEBUG(log("received RUDP packet") + ", length=" + Stringize<ULONG>(bufferLengthInBytes).string())
+        ZS_LOG_DEBUG(log("received RUDP packet") + ", length=" + string(bufferLengthInBytes))
 
         IRUDPChannelStreamPtr stream;
         boost::shared_array<BYTE> newBuffer;
@@ -926,7 +924,7 @@ namespace openpeer
             pThis->cancel(false);
           }
         }
-        ZS_LOG_BASIC(pThis->log("created for listener") + ", localUserFrag=" + localUsernameFrag + ", remoteUserFrag=" + remoteUsernameFrag + ", incoming channel=" + Stringize<WORD>(incomingChannelNumber).string())
+        ZS_LOG_BASIC(pThis->log("created for listener") + ", localUserFrag=" + localUsernameFrag + ", remoteUserFrag=" + remoteUsernameFrag + ", incoming channel=" + string(incomingChannelNumber))
         return pThis;
       }
       
@@ -1024,7 +1022,7 @@ namespace openpeer
                                                           ULONG packetLengthInBytes
                                                           )
       {
-        ZS_LOG_DEBUG(log("notify channel stream send packet") + ", length=" + Stringize<ULONG>(packetLengthInBytes).string())
+        ZS_LOG_DEBUG(log("notify channel stream send packet") + ", length=" + string(packetLengthInBytes))
         IRUDPChannelDelegateForSessionAndListenerPtr master;
         IPAddress remoteIP;
 
@@ -1085,7 +1083,7 @@ namespace openpeer
           }
 
           stun->packetize(packet, packetLengthInBytes, STUNPacket::RFC_draft_RUDP);
-          ZS_LOG_DETAIL(log("STUN ACK sent") + ", method=indication, stun packet size=" + Stringize<ULONG>(packetLengthInBytes).string())
+          ZS_LOG_DETAIL(log("STUN ACK sent") + ", method=indication, stun packet size=" + string(packetLengthInBytes))
           mLastSentData = zsLib::now();
         }
 
@@ -1115,7 +1113,7 @@ namespace openpeer
                                                   ULONG packetLengthInBytes
                                                   )
       {
-        ZS_LOG_DEBUG(log("notify requester send packet") + ", ip=" + destination.string() + ", length=" + Stringize<ULONG>(packetLengthInBytes).string())
+        ZS_LOG_DEBUG(log("notify requester send packet") + ", ip=" + destination.string() + ", length=" + string(packetLengthInBytes))
 
         IRUDPChannelDelegateForSessionAndListenerPtr master;
 
@@ -1207,13 +1205,13 @@ namespace openpeer
           // these attributes must be present in the response of it is illegal
           if ((!response->hasAttribute(STUNPacket::Attribute_ChannelNumber)) ||
               (!response->hasAttribute(STUNPacket::Attribute_NextSequenceNumber))) {
-            ZS_LOG_ERROR(Detail, log("open missing attributes") + ", channel=" + Stringize<WORD>(response->mChannelNumber).string() + ", sequence number=" + sequenceToString(response->mNextSequenceNumber) + ", congestion local=" + Stringize<int>(response->mLocalCongestionControl.size()).string() + ", congestion remote=" + Stringize<int>(response->mRemoteCongestionControl.size()).string())
+            ZS_LOG_ERROR(Detail, log("open missing attributes") + ", channel=" + string(response->mChannelNumber) + ", sequence number=" + sequenceToString(response->mNextSequenceNumber) + ", congestion local=" + string(response->mLocalCongestionControl.size()) + ", congestion remote=" + string(response->mRemoteCongestionControl.size()))
             return false;
           }
 
           if (response->hasAttribute(STUNPacket::Attribute_MinimumRTT)) {
             if (response->mMinimumRTT < mMinimumRTT) {
-              ZS_LOG_ERROR(Detail, log("remote party attempting lower min RTT") + ", min=" + Stringize<DWORD>(mMinimumRTT).string() + ", reply min=" + Stringize<DWORD>(response->mMinimumRTT).string())
+              ZS_LOG_ERROR(Detail, log("remote party attempting lower min RTT") + ", min=" + string(mMinimumRTT) + ", reply min=" + string(response->mMinimumRTT))
               return false;  // not legal to negotiate a lower minimum RRT
             }
             mMinimumRTT = response->mMinimumRTT;
@@ -1221,7 +1219,7 @@ namespace openpeer
 
           if (response->hasAttribute(STUNPacket::Attribute_Lifetime)) {
             if (response->mLifetime > mLifetime) {
-              ZS_LOG_ERROR(Detail, log("remote party attempting raise lifetime") + ", lifetime=" + Stringize<DWORD>(mLifetime).string() + ", reply min=" + Stringize<DWORD>(response->mLifetime).string())
+              ZS_LOG_ERROR(Detail, log("remote party attempting raise lifetime") + ", lifetime=" + string(mLifetime) + ", reply min=" + string(response->mLifetime))
               return false;  // not legal to negotiate a longer lifetime
             }
             mLifetime = response->mLifetime;
@@ -1251,7 +1249,7 @@ namespace openpeer
           mRemoteSequenceNumber = response->mNextSequenceNumber;
           mOutgoingChannelNumber = response->mChannelNumber;
 
-          ZS_LOG_DETAIL(log("open") + ", local sequence number=" + sequenceToString(mLocalSequenceNumber) + ", local sequence number=" + sequenceToString(mRemoteSequenceNumber) + ", outgoing channel number=" + Stringize<WORD>(mOutgoingChannelNumber).string() + ", incoming channel number=" + Stringize<WORD>(mIncomingChannelNumber).string())
+          ZS_LOG_DETAIL(log("open") + ", local sequence number=" + sequenceToString(mLocalSequenceNumber) + ", local sequence number=" + sequenceToString(mRemoteSequenceNumber) + ", outgoing channel number=" + string(mOutgoingChannelNumber) + ", incoming channel number=" + string(mIncomingChannelNumber))
 
           // we should have enough to open our stream now!
           mStream = IRUDPChannelStream::create(
@@ -1276,7 +1274,7 @@ namespace openpeer
             if (handleStaleNonce((*iter).second, response)) return true;
 
             if (STUNPacket::Class_ErrorResponse == response->mClass) {
-              ZS_LOG_ERROR(Detail, log("shutting down channel as ACK failed") + ", error code=" + Stringize<WORD>(response->mErrorCode).string() + " (" + STUNPacket::toString((STUNPacket::ErrorCodes)response->mErrorCode) + ")")
+              ZS_LOG_ERROR(Detail, log("shutting down channel as ACK failed") + ", error code=" + string(response->mErrorCode) + " (" + STUNPacket::toString((STUNPacket::ErrorCodes)response->mErrorCode) + ")")
               mOutstandingACKs.erase(iter);
               if (mStream) {
                 mStream->shutdown(false);
@@ -1290,7 +1288,7 @@ namespace openpeer
                 (!response->hasAttribute(STUNPacket::Attribute_GSNR)) ||
                 (!response->hasAttribute(STUNPacket::Attribute_GSNFR)) ||
                 (!response->hasAttribute(STUNPacket::Attribute_RUDPFlags))) {
-              ZS_LOG_ERROR(Detail, log("ACK reply missing attributes (thus being ignored)") + ", sequence number=" + sequenceToString(response->mNextSequenceNumber) + ", GSNR=" + sequenceToString(response->mGSNR) + ", GSNFR=" + sequenceToString(response->mGSNFR) + ", flags=" + Stringize<WORD>(((WORD)response->mReliabilityFlags)).string())
+              ZS_LOG_ERROR(Detail, log("ACK reply missing attributes (thus being ignored)") + ", sequence number=" + sequenceToString(response->mNextSequenceNumber) + ", GSNR=" + sequenceToString(response->mGSNR) + ", GSNFR=" + sequenceToString(response->mGSNFR) + ", flags=" + string(((WORD)response->mReliabilityFlags)))
               // all of these attributes are manditory or it is not legal - so ignore the response
               return false;
             }
@@ -1382,7 +1380,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String RUDPChannel::log(const char *message) const
       {
-        return String("RUDPChannel [") + Stringize<PUID>(mID).string() + "] " + message;
+        return String("RUDPChannel [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------

@@ -53,8 +53,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
-
       typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
 
       using services::IHelper;
@@ -433,7 +431,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String PeerFilePrivate::log(const char *message) const
       {
-        return String("PeerFilePrivate [") + Stringize<PUID>(mID).string() + "] " + message;
+        return String("PeerFilePrivate [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -532,8 +530,8 @@ namespace openpeer
             Time created = zsLib::now();
             Time expires = created + Duration(Hours(OPENPEER_STACK_PEER_FILE_PRIVATE_KEY_EXPIRY_IN_HOURS));
 
-            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithNumber("created", Stringize<time_t>(zsLib::toEpoch(created))));
-            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithNumber("expires", Stringize<time_t>(zsLib::toEpoch(expires))));
+            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithNumber("created", IHelper::timeToString(created)));
+            sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithNumber("expires", IHelper::timeToString(expires)));
 
             sectionEl->adoptAsLastChild(signedSaltBundleEl->clone());
 

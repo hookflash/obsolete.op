@@ -54,7 +54,6 @@ namespace openpeer
 {
   namespace stack
   {
-    using zsLib::Stringize;
     using stack::message::IMessageHelper;
 
     namespace internal
@@ -490,7 +489,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String FinderRelayChannel::log(const char *message) const
       {
-        return String("FinderRelayChannel [" + mID.string() + "] " + message);
+        return String("FinderRelayChannel [" + string(mID) + "] " + message);
       }
 
       //-----------------------------------------------------------------------
@@ -499,11 +498,11 @@ namespace openpeer
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
 
-        return Helper::getDebugValue("relay channel id", mID.string(), firstTime) +
-               Helper::getDebugValue("subscriptions", mSubscriptions.size() > 0 ? Stringize<IFinderRelayChannelDelegateSubscriptions::size_type>(mSubscriptions.size()).string() : String(), firstTime) +
+        return Helper::getDebugValue("relay channel id", string(mID), firstTime) +
+               Helper::getDebugValue("subscriptions", mSubscriptions.size() > 0 ? string(mSubscriptions.size()) : String(), firstTime) +
                Helper::getDebugValue("default subscription", mDefaultSubscription ? String("true") : String(), firstTime) +
                Helper::getDebugValue("state", toString(mCurrentState), firstTime) +
-               Helper::getDebugValue("last error", 0 != get(mLastError) ? Stringize<typeof(mLastError)>(mLastError).string() : String(), firstTime) +
+               Helper::getDebugValue("last error", 0 != get(mLastError) ? string(mLastError) : String(), firstTime) +
                Helper::getDebugValue("last reason", mLastErrorReason, firstTime) +
                Helper::getDebugValue("account", mAccount.lock() ? String("true") : String(), firstTime) +
                Helper::getDebugValue("incoming", mIncoming ? String("true") : String(), firstTime) +
@@ -540,14 +539,14 @@ namespace openpeer
         }
 
         if (0 != mLastError) {
-          ZS_LOG_WARNING(Detail, log("error already set thus ignoring new error") + ", new error=" + Stringize<typeof(errorCode)>(errorCode).string() + ", new reason=" + reason + getDebugValueString())
+          ZS_LOG_WARNING(Detail, log("error already set thus ignoring new error") + ", new error=" + string(errorCode) + ", new reason=" + reason + getDebugValueString())
           return;
         }
 
         get(mLastError) = errorCode;
         mLastErrorReason = reason;
 
-        ZS_LOG_WARNING(Detail, log("error set") + ", code=" + Stringize<typeof(mLastError)>(mLastError).string() + ", reason=" + mLastErrorReason + getDebugValueString())
+        ZS_LOG_WARNING(Detail, log("error set") + ", code=" + string(mLastError) + ", reason=" + mLastErrorReason + getDebugValueString())
       }
       
       //-----------------------------------------------------------------------

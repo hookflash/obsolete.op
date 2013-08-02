@@ -524,17 +524,17 @@ namespace openpeer
 
         bool first = !includeCommaPrefix;
 
-        return debugNameValue(first, "id", Stringize<PUID>(mID).string())
+        return debugNameValue(first, "id", string(mID))
              + debugNameValue(first, "mapped to publication", (mPublication ? "true" : "false"))
              + debugNameValue(first, "name", getName())
-             + debugNameValue(first, "version", (0 == mVersion ? String() : Stringize<ULONG>(getVersion()).string()))
-             + debugNameValue(first, "base version", (0 == mBaseVersion ? String() : Stringize<ULONG>(getBaseVersion()).string()))
-             + debugNameValue(first, "lineage", (0 == mLineage ? String() : Stringize<ULONG>(getLineage()).string()))
+             + debugNameValue(first, "version", (0 == mVersion ? String() : string(getVersion())))
+             + debugNameValue(first, "base version", (0 == mBaseVersion ? String() : string(getBaseVersion())))
+             + debugNameValue(first, "lineage", (0 == mLineage ? String() : string(getLineage())))
              + debugNameValue(first, "creator: ", creatorLocation ? creatorLocation->forPublication().getDebugValueString(false) : String(), false)
              + debugNameValue(first, "published: ", publishedLocation ? publishedLocation->forPublication().getDebugValueString(false) : String(), false)
              + debugNameValue(first, "mime type", getMimeType())
-             + debugNameValue(first, "expires", (Time() == mExpires ? String() : Stringize<Time>(getExpires()).string()))
-             + debugNameValue(first, "total relationships", (mPublishedRelationships.size() < 1 ? String() : Stringize<size_t>(mPublishedRelationships.size())));
+             + debugNameValue(first, "expires", (Time() == mExpires ? String() : string(getExpires())))
+             + debugNameValue(first, "total relationships", (mPublishedRelationships.size() < 1 ? String() : string(mPublishedRelationships.size())));
       }
 
       //-----------------------------------------------------------------------
@@ -548,7 +548,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String PublicationMetaData::log(const char *message) const
       {
-        return String("PublicationMetaData [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("PublicationMetaData [") + string(mID) + "] " + message;
       }
     }
 

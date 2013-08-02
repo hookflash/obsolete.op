@@ -53,8 +53,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
-
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -353,17 +351,17 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         if (isShutdown()) {
-          ZS_LOG_WARNING(Debug, log("notified of ICE socket session changed while shutdown") + ", ICE session ID=" + Stringize<PUID>(session->getID()).string())
+          ZS_LOG_WARNING(Debug, log("notified of ICE socket session changed while shutdown") + ", ICE session ID=" + string(session->getID()))
           return;
         }
 
         if (session != mICESession) {
-          ZS_LOG_WARNING(Debug, log("received notification of ICE socket session state changed from obsolete session") + ", ICE session ID=" + Stringize<PUID>(session->getID()).string())
+          ZS_LOG_WARNING(Debug, log("received notification of ICE socket session state changed from obsolete session") + ", ICE session ID=" + string(session->getID()))
           return;
         }
 
         if (IICESocketSession::ICESocketSessionState_Shutdown == state) {
-          ZS_LOG_WARNING(Detail, log("ICE socket session reported itself shutdown so must shutdown RUDP session") + ", ICE session ID=" + Stringize<PUID>(session->getID()).string())
+          ZS_LOG_WARNING(Detail, log("ICE socket session reported itself shutdown so must shutdown RUDP session") + ", ICE session ID=" + string(session->getID()))
           getShutdownReason(); // fix the shutdown reason if not set already
           cancel();
           return;
@@ -374,14 +372,14 @@ namespace openpeer
           Candidate nominatedRemote;
           bool hasCandidate = getNominatedCandidateInformation(nominatedLocal, nominatedRemote);
           if (!hasCandidate) {
-            ZS_LOG_WARNING(Debug, log("told is was connected but it has no nominations (session closed quickly?)") + ", ICE session ID=" + Stringize<PUID>(session->getID()).string())
+            ZS_LOG_WARNING(Debug, log("told is was connected but it has no nominations (session closed quickly?)") + ", ICE session ID=" + string(session->getID()))
             return;
           }
 
           mLocalUsernameFrag = nominatedLocal.mUsernameFrag;
           mRemoteUsernameFrag = nominatedRemote.mUsernameFrag;
 
-          ZS_LOG_DEBUG(log("notified that socket session state is nominated") + ", ICE session ID=" + Stringize<PUID>(session->getID()).string() + ", local username frag=" + mLocalUsernameFrag + ", remote username frag=" + mRemoteUsernameFrag)
+          ZS_LOG_DEBUG(log("notified that socket session state is nominated") + ", ICE session ID=" + string(session->getID()) + ", local username frag=" + mLocalUsernameFrag + ", remote username frag=" + mRemoteUsernameFrag)
 
           issueChannelConnectIfPossible();
         }
@@ -552,18 +550,18 @@ namespace openpeer
           case IRUDPChannel::RUDPChannelState_ShuttingDown: break;
           case IRUDPChannel::RUDPChannelState_Shutdown:
           {
-            ZS_LOG_DEBUG(log("channel closed notification") + ", channel ID=" + Stringize<PUID>(channel->forSession().getID()).string())
+            ZS_LOG_DEBUG(log("channel closed notification") + ", channel ID=" + string(channel->forSession().getID()))
             for (SessionMap::iterator iter = mLocalChannelNumberSessions.begin(); iter != mLocalChannelNumberSessions.end(); ++iter)
             {
               if ((*iter).second != channel) continue;
-              ZS_LOG_TRACE(log("clearing out local channel number") + ", local channel number=" + Stringize<WORD>(channel->forSession().getIncomingChannelNumber()).string())
+              ZS_LOG_TRACE(log("clearing out local channel number") + ", local channel number=" + string(channel->forSession().getIncomingChannelNumber()))
               mLocalChannelNumberSessions.erase(iter);
               break;
             }
             for (SessionMap::iterator iter = mRemoteChannelNumberSessions.begin(); iter != mRemoteChannelNumberSessions.end(); ++iter)
             {
               if ((*iter).second != channel) continue;
-              ZS_LOG_TRACE(log("clearing out remote channel number") + ", remote channel number=" + Stringize<WORD>(channel->forSession().getOutgoingChannelNumber()).string())
+              ZS_LOG_TRACE(log("clearing out remote channel number") + ", remote channel number=" + string(channel->forSession().getOutgoingChannelNumber()))
               mRemoteChannelNumberSessions.erase(iter);
               break;
             }
@@ -615,7 +613,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String RUDPICESocketSession::log(const char *message) const
       {
-        return String("RUDPICESocketSession [") + Stringize<PUID>(mID).string() + "] " + message;
+        return String("RUDPICESocketSession [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------

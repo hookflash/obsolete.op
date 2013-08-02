@@ -49,7 +49,7 @@ namespace openpeer
 {
   namespace services
   {
-    using zsLib::Stringize;
+    using zsLib::string;
 
     namespace internal
     {
@@ -557,24 +557,24 @@ namespace openpeer
         String message;
 
         message = String("RUDPPacket, message=") + (inputMessage ? inputMessage : "")
-                  + ", channel=" + Stringize<WORD>(mChannelNumber).string() +
+                  + ", channel=" + string(mChannelNumber) +
                   + ", message=" + (inputMessage ? inputMessage : "")
-                  + ", sequence number=" + Stringize<DWORD>(mSequenceNumber).string() +
-                  + ", flags=" + Stringize<UINT>(((UINT)mFlags), 16).string()
-                  + ", GSNR=" + Stringize<DWORD>(mGSNR).string();
+                  + ", sequence number=" + string(mSequenceNumber) +
+                  + ", flags=" + string(((UINT)mFlags), 16)
+                  + ", GSNR=" + string(mGSNR);
 
         if (!isFlagSet(Flag_EQ_GSNREqualsGSNFR)) {
-          message += String(", GSNFR=") + Stringize<DWORD>(mGSNFR).string();
+          message += String(", GSNFR=") + string(mGSNFR);
         }
-        message += String(", vector flags=") + Stringize<UINT>(((UINT)mVectorFlags), 16).string();
+        message += String(", vector flags=") + string(((UINT)mVectorFlags), 16);
 
         if (0 != mVectorLengthInBytes) {
-          message += ", vector length=" + Stringize<UINT>(((UINT)mVectorLengthInBytes)).string();
+          message += ", vector length=" + string(((UINT)mVectorLengthInBytes));
           message += ", vector=" + internal::convertToHex(&(mVector[0]), mVectorLengthInBytes);
         }
 
         if (0 != mDataLengthInBytes) {
-          message += ", data length=" + Stringize<WORD>(mDataLengthInBytes).string();
+          message += ", data length=" + string(mDataLengthInBytes);
         }
         message += ", flag details=";
         if (isFlagSet(Flag_PS_ParitySending)) {

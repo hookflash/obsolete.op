@@ -49,8 +49,6 @@ namespace openpeer
 
       namespace peer_finder
       {
-        using zsLib::Stringize;
-
         //---------------------------------------------------------------------
         SessionKeepAliveResultPtr SessionKeepAliveResult::convert(MessagePtr message)
         {

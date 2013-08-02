@@ -34,6 +34,8 @@
 #include <openpeer/stack/internal/stack_Stack.h>
 #include <openpeer/stack/internal/stack_FinderRelayChannel.h>
 
+#include <openpeer/stack/IMessageMonitor.h>
+
 #include <openpeer/services/IHelper.h>
 #include <openpeer/services/IHTTP.h>
 
@@ -50,12 +52,12 @@ namespace openpeer
 {
   namespace stack
   {
-    using zsLib::Stringize;
-    using stack::message::IMessageHelper;
-
     namespace internal
     {
       using services::IHelper;
+
+      typedef ITCPMessaging::ChannelHeader ChannelHeader;
+      typedef ITCPMessaging::ChannelHeaderPtr ChannelHeaderPtr;
 
 //      typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
 
@@ -393,6 +395,11 @@ namespace openpeer
         mPendingMapRequest.clear();
         mIncomingChannels.clear();
         mRemoveChannels.clear();
+
+        if (mMapRequestChannelMonitor) {
+          mMapRequestChannelMonitor->cancel();
+          mMapRequestChannelMonitor.reset();
+        }
       }
 
       //-----------------------------------------------------------------------
@@ -422,6 +429,12 @@ namespace openpeer
         ZS_LOG_DEBUG(log("accept called"))
 
         AutoRecursiveLock lock(getLock());
+
+        if (isShutdown()) {
+          ZS_LOG_WARNING(Detail, log("cannot accept channel as already shutdown"))
+          return IFinderRelayChannelPtr();
+        }
+
         stepCleanRemoval();
 
         if (mIncomingChannels.size() < 1) {
@@ -434,7 +447,7 @@ namespace openpeer
         ChannelNumber channelNumber = (*found).first;
         ChannelPtr channel = (*found).second;
 
-        ZS_LOG_DEBUG(log("accepting channel") + ", channel number=" + Stringize<typeof(channelNumber)>(channelNumber).string())
+        ZS_LOG_DEBUG(log("accepting channel") + ", channel number=" + string(channelNumber))
 
         ITransportStreamPtr wireReceiveStream;
         ITransportStreamPtr wireSendStream;
@@ -444,6 +457,11 @@ namespace openpeer
         FinderRelayChannelPtr relay = IFinderRelayChannelForFinderConnectionMultiplexOutgoing::createIncoming(delegate, account, receiveStream, sendStream, wireReceiveStream, wireSendStream);
 
         mIncomingChannels.erase(found);
+
+        if (mSendStreamNotifiedReady) {
+          ZS_LOG_DEBUG(log("notify channel that it's now write ready"))
+          channel->notifyReceivedWireWriteReady();
+        }
 
         return relay;
       }
@@ -537,7 +555,7 @@ namespace openpeer
 
             ChannelMap::iterator found = mPendingMapRequest.find(channelNumber);
             if (found != mPendingMapRequest.end()) {
-              ZS_LOG_DEBUG(log("cannot notify about write ready because channel map request has not completed yet") + ", channel number=" + Stringize<typeof(channelNumber)>(channelNumber).string())
+              ZS_LOG_DEBUG(log("cannot notify about write ready because channel map request has not completed yet") + ", channel number=" + string(channelNumber))
               continue;
             }
             channel->notifyReceivedWireWriteReady();
@@ -581,6 +599,60 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark FinderConnectionMultiplexOutgoing => IMessageMonitorResultDelegate<ChannelMapResult>
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      bool FinderConnectionMultiplexOutgoing::handleMessageMonitorResultReceived(
+                                                                                 IMessageMonitorPtr monitor,
+                                                                                 ChannelMapResultPtr result
+                                                                                 )
+      {
+        AutoRecursiveLock lock(getLock());
+        if (monitor != mMapRequestChannelMonitor) {
+          ZS_LOG_WARNING(Detail, log("notified about obsolete monitor"))
+          return false;
+        }
+
+        ZS_LOG_DEBUG(log("channel map request completed successfully") + ", channel number=" + string(mMapRequestChannelNumber))
+
+        mMapRequestChannelMonitor.reset();
+
+        // map request completed successfully...
+
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      bool FinderConnectionMultiplexOutgoing::handleMessageMonitorErrorResultReceived(
+                                                                                      IMessageMonitorPtr monitor,
+                                                                                      ChannelMapResultPtr ignore, // will always be NULL
+                                                                                      message::MessageResultPtr result
+                                                                                      )
+      {
+        AutoRecursiveLock lock(getLock());
+        if (monitor != mMapRequestChannelMonitor) {
+          ZS_LOG_WARNING(Detail, log("notified about obsolete monitor"))
+          return false;
+        }
+
+        mMapRequestChannelMonitor.reset();
+
+        // map request failed... clear out this channel
+        notifyDestroyed(mMapRequestChannelNumber);
+
+        get(mMapRequestChannelNumber) = 0;
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       #pragma mark
       #pragma mark FinderConnectionMultiplexOutgoing => friend ChannelOutgoing
       #pragma mark
@@ -593,12 +665,9 @@ namespace openpeer
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!buffer)
 
-        typedef ITCPMessaging::ChannelHeader ChannelHeader;
-        typedef ITCPMessaging::ChannelHeaderPtr ChannelHeaderPtr;
-
         AutoRecursiveLock lock(getLock());
 
-        ZS_LOG_DEBUG(log("send buffer called") + ", channel number=" + Stringize<typeof(channelNumber)>(channelNumber).string() + ", buffer size=" + Stringize<SecureByteBlock::size_type>(buffer->SizeInBytes()).string())
+        ZS_LOG_DEBUG(log("send buffer called") + ", channel number=" + string(channelNumber) + ", buffer size=" + string(buffer->SizeInBytes()))
 
         ChannelHeaderPtr header(new ChannelHeader);
         header->mChannelID = channelNumber;
@@ -611,7 +680,7 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
 
-        ZS_LOG_DEBUG(log("channel is destroyed") + ", channel number=" + Stringize<typeof(channelNumber)>(channelNumber).string())
+        ZS_LOG_DEBUG(log("channel is destroyed") + ", channel number=" + string(channelNumber))
 
         if (isShutdown()) {
           ZS_LOG_WARNING(Trace, log("finder connection already destroyed (probably okay)"))
@@ -644,7 +713,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String FinderConnectionMultiplexOutgoing::log(const char *message) const
       {
-        return String("FinderConnectionMultiplexOutgoing [" + mID.string() + "] " + message);
+        return String("FinderConnectionMultiplexOutgoing [" + string(mID) + "] " + message);
       }
 
       //-----------------------------------------------------------------------
@@ -654,12 +723,12 @@ namespace openpeer
         bool firstTime = !includeCommaPrefix;
 
         return
-        Helper::getDebugValue("finder connection multiplex id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        Helper::getDebugValue("finder connection multiplex id", string(mID), firstTime) +
         Helper::getDebugValue("outer", mOuter.lock() ? String("true") : String(), firstTime) +
-        Helper::getDebugValue("subscriptions", mSubscriptions.size() > 0 ? Stringize<IFinderConnectionDelegateSubscriptions::size_type>(mSubscriptions.size()).string() : String(), firstTime) +
+        Helper::getDebugValue("subscriptions", mSubscriptions.size() > 0 ? string(mSubscriptions.size()) : String(), firstTime) +
         Helper::getDebugValue("default subscription", mDefaultSubscription ? String("true") : String(), firstTime) +
         Helper::getDebugValue("state", toString(mCurrentState), firstTime) +
-        Helper::getDebugValue("last error", 0 != mLastError ? Stringize<typeof(mLastError)>(mLastError).string() : String(), firstTime) +
+        Helper::getDebugValue("last error", 0 != mLastError ? string(mLastError) : String(), firstTime) +
         Helper::getDebugValue("last reason", mLastErrorReason, firstTime) +
         Helper::getDebugValue("remote ip", mRemoteIP.string(), firstTime) +
         ", tcp messaging: " + ITCPMessaging::toDebugString(mTCPMessaging, false) +
@@ -669,10 +738,10 @@ namespace openpeer
         Helper::getDebugValue("last tick", Time() != mLastTick ? IHelper::timeToString(mLastTick) : String(), firstTime) +
         Helper::getDebugValue("last received data", Time() != mLastReceivedData ? IHelper::timeToString(mLastReceivedData) : String(), firstTime) +
         Helper::getDebugValue("inactivity timer", mInactivityTimer ? String("true") : String(), firstTime) +
-        Helper::getDebugValue("channels", mChannels.size() > 0 ? Stringize<ChannelMap::size_type>(mChannels.size()).string() : String(), firstTime) +
-        Helper::getDebugValue("pending map request channels", mPendingMapRequest.size() > 0 ? Stringize<ChannelMap::size_type>(mPendingMapRequest.size()).string() : String(), firstTime) +
-        Helper::getDebugValue("incoming channels", mIncomingChannels.size() > 0 ? Stringize<ChannelMap::size_type>(mIncomingChannels.size()).string() : String(), firstTime) +
-        Helper::getDebugValue("remove channels", mRemoveChannels.size() > 0 ? Stringize<ChannelMap::size_type>(mRemoveChannels.size()).string() : String(), firstTime);
+        Helper::getDebugValue("channels", mChannels.size() > 0 ? string(mChannels.size()) : String(), firstTime) +
+        Helper::getDebugValue("pending map request channels", mPendingMapRequest.size() > 0 ? string(mPendingMapRequest.size()) : String(), firstTime) +
+        Helper::getDebugValue("incoming channels", mIncomingChannels.size() > 0 ? string(mIncomingChannels.size()) : String(), firstTime) +
+        Helper::getDebugValue("remove channels", mRemoveChannels.size() > 0 ? string(mRemoveChannels.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -698,14 +767,14 @@ namespace openpeer
         }
 
         if (0 != mLastError) {
-          ZS_LOG_WARNING(Detail, log("error already set thus ignoring new error") + ", new error=" + Stringize<typeof(errorCode)>(errorCode).string() + ", new reason=" + reason + getDebugValueString())
+          ZS_LOG_WARNING(Detail, log("error already set thus ignoring new error") + ", new error=" + string(errorCode) + ", new reason=" + reason + getDebugValueString())
           return;
         }
 
         get(mLastError) = errorCode;
         mLastErrorReason = reason;
 
-        ZS_LOG_WARNING(Detail, log("error set") + ", code=" + Stringize<typeof(mLastError)>(mLastError).string() + ", reason=" + mLastErrorReason + getDebugValueString())
+        ZS_LOG_WARNING(Detail, log("error set") + ", code=" + string(mLastError) + ", reason=" + mLastErrorReason + getDebugValueString())
       }
 
       //-----------------------------------------------------------------------
@@ -719,7 +788,7 @@ namespace openpeer
 
         ZS_LOG_DEBUG(log("step") + getDebugValueString())
 
-        // TODO
+        if (!stepCleanRemoval()) return;
 
         setState(SessionState_Connected);
       }
@@ -727,8 +796,90 @@ namespace openpeer
       //-----------------------------------------------------------------------
       bool FinderConnectionMultiplexOutgoing::stepCleanRemoval()
       {
-        // TODO
-        return false;
+        if (mRemoveChannels.size() < 1) {
+          ZS_LOG_DEBUG(log("no channels to remove"))
+          return true;
+        }
+
+        for (ChannelMap::iterator iter = mRemoveChannels.begin(); iter != mRemoveChannels.end(); ++iter) {
+          ChannelNumber channelNumber = (*iter).first;
+
+          ZS_LOG_DEBUG(log("removing channel") + ", channel number=" + string(channelNumber))
+
+          bool foundInPendingMapRequest = false;
+
+          // scope: remove from pending map request
+          {
+            ChannelMap::iterator found = mPendingMapRequest.find(channelNumber);
+            if (found != mPendingMapRequest.end()) {
+              ZS_LOG_DEBUG(log("removing channel from pending map request"))
+              foundInPendingMapRequest = true;
+              mPendingMapRequest.erase(found);
+            }
+          }
+
+          if ((mMapRequestChannelMonitor) &&
+              (mMapRequestChannelNumber == channelNumber)) {
+            ZS_LOG_WARNING(Detail, log("outstanding channel map request is being cancelled for channel"))
+            mMapRequestChannelMonitor->cancel();
+            mMapRequestChannelMonitor.reset();
+          }
+
+          // scope: remove from incoming channels
+          {
+            ChannelMap::iterator found = mIncomingChannels.find(channelNumber);
+            if (found != mPendingMapRequest.end()) {
+              ZS_LOG_DEBUG(log("removing channel from incoming channels"))
+              mIncomingChannels.erase(found);
+            }
+          }
+
+          // scope: remove from incoming channels
+          {
+            ChannelMap::iterator found = mChannels.find(channelNumber);
+            if (found != mChannels.end()) {
+              ZS_LOG_DEBUG(log("removing channel from incoming channels"))
+
+              ChannelPtr channel = (*found).second;
+
+              ZS_THROW_BAD_STATE_IF(!channel)
+
+              channel->cancel();
+
+              if (0 == channelNumber) {
+                // in this special case, everything must shutdown...
+                WORD errorCode = 0;
+                String errorReason;
+                channel->getState(&errorCode, &errorReason);
+
+                ZS_LOG_DEBUG(log("master relay channel is shutdown (so must now self destruct)") + ", error code=" + string(errorCode) + ", reason=" + errorReason)
+
+                setError(errorCode, errorReason);
+                cancel();
+                return false;
+              }
+
+              mChannels.erase(found);
+            }
+          }
+
+          if (!foundInPendingMapRequest) {
+            // notify remote party of channel closure
+            ChannelHeaderPtr header(new ChannelHeader);
+            header->mChannelID = channelNumber;
+
+            SecureByteBlockPtr buffer(new SecureByteBlock);
+
+            // by writing a buffer of "0" size to the channel number, it will cause the channel to close
+            mWireSendStream->write(buffer, header);
+          }
+
+          ZS_LOG_DEBUG(log("remove channels completed"))
+
+          mRemoveChannels.clear();
+        }
+
+        return true;
       }
 
       //-----------------------------------------------------------------------

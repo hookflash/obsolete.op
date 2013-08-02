@@ -29,45 +29,44 @@
 
  */
 
-#include <openpeer/stack/internal/stack.h>
-#include <openpeer/stack/stack.h>
+#pragma once
 
-#include <zsLib/Log.h>
-#include <zsLib/Stringize.h>
-
-namespace openpeer { namespace stack { ZS_IMPLEMENT_SUBSYSTEM(openpeer_stack) } }
-
+#include <openpeer/stack/message/MessageResult.h>
+#include <openpeer/stack/message/peer-finder/MessageFactoryPeerFinder.h>
 
 namespace openpeer
 {
   namespace stack
   {
-    using internal::Helper;
-    using zsLib::string;
-
-    bool LocationInfo::hasData() const
+    namespace message
     {
-      return (((bool)mLocation) ||
-              (!mIPAddress.isEmpty()) ||
-              (mDeviceID.hasData()) ||
-              (mUserAgent.hasData()) ||
-              (mOS.hasData()) ||
-              (mSystem.hasData()) ||
-              (mHost.hasData()) ||
-              (mCandidates.size() > 0));
-    }
+      namespace peer_finder
+      {
+        class ChannelMapResult : public MessageResult
+        {
+        public:
+          enum AttributeTypes
+          {
+          };
 
-    String LocationInfo::getDebugValueString(bool includeCommaPrefix) const
-    {
-      bool firstTime = false;
-      return ILocation::toDebugString(mLocation, includeCommaPrefix) +
-             Helper::getDebugValue("IP addres", !mIPAddress.isEmpty() ? mIPAddress.string() : String(), firstTime) +
-             Helper::getDebugValue("device ID", mDeviceID, firstTime) +
-             Helper::getDebugValue("user agent", mUserAgent, firstTime) +
-             Helper::getDebugValue("os", mOS, firstTime) +
-             Helper::getDebugValue("system", mSystem, firstTime) +
-             Helper::getDebugValue("host", mHost, firstTime) +
-             Helper::getDebugValue("candidates", mCandidates.size() > 0 ? string(mCandidates.size()) : String(), firstTime);
+        public:
+          static ChannelMapResultPtr convert(MessagePtr message);
+
+          static ChannelMapResultPtr create(
+                                               ElementPtr root,
+                                               IMessageSourcePtr messageSource
+                                               );
+
+          virtual Methods method() const              {return (Message::Methods)MessageFactoryPeerFinder::Method_ChannelMap;}
+
+          virtual IMessageFactoryPtr factory() const  {return MessageFactoryPeerFinder::singleton();}
+
+          bool hasAttribute(AttributeTypes type) const;
+
+        protected:
+          ChannelMapResult();
+        };
+      }
     }
   }
 }

@@ -44,8 +44,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
-
       DNSMonitor::DNSMonitor(IMessageQueuePtr queue) :
         MessageQueueAssociator(queue),
         mID(zsLib::createPUID()),
@@ -334,7 +332,7 @@ namespace openpeer
 
       String DNSMonitor::log(const char *message) const
       {
-        return String("DNSMonitor [") + Stringize<PUID>(mID).string() + "] " + message;
+        return String("DNSMonitor [") + string(mID) + "] " + message;
       }
     }
   }

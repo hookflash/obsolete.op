@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		000CC03F17A4825A0075E86C /* stack_FinderRelayChannel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 000CC03D17A4825A0075E86C /* stack_FinderRelayChannel.cpp */; };
+		0030229617ABD9CB00DFB1C8 /* ChannelMapRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0030229417ABD9CB00DFB1C8 /* ChannelMapRequest.cpp */; };
+		0030229717ABD9CB00DFB1C8 /* ChannelMapResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0030229517ABD9CB00DFB1C8 /* ChannelMapResult.cpp */; };
 		00384C0D17596D8800113845 /* MessageFactoryNamespaceGrant.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384BF717596D8800113845 /* MessageFactoryNamespaceGrant.cpp */; };
 		00384C1217596D8800113845 /* NamespaceGrantCompleteNotify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384BFC17596D8800113845 /* NamespaceGrantCompleteNotify.cpp */; };
 		00384C1317596D8800113845 /* NamespaceGrantStartNotify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384BFD17596D8800113845 /* NamespaceGrantStartNotify.cpp */; };
@@ -136,6 +138,10 @@
 		000CC03A17A482390075E86C /* stack_IFinderRelayChannel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack_IFinderRelayChannel.h; sourceTree = "<group>"; };
 		000CC03B17A482390075E86C /* stack_IFinderConnectionRelayChannel.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack_IFinderConnectionRelayChannel.h; sourceTree = "<group>"; };
 		000CC03D17A4825A0075E86C /* stack_FinderRelayChannel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_FinderRelayChannel.cpp; sourceTree = "<group>"; };
+		0030229417ABD9CB00DFB1C8 /* ChannelMapRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChannelMapRequest.cpp; sourceTree = "<group>"; };
+		0030229517ABD9CB00DFB1C8 /* ChannelMapResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChannelMapResult.cpp; sourceTree = "<group>"; };
+		0030229817ABD9DA00DFB1C8 /* ChannelMapRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChannelMapRequest.h; sourceTree = "<group>"; };
+		0030229917ABD9DA00DFB1C8 /* ChannelMapResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChannelMapResult.h; sourceTree = "<group>"; };
 		00384BF4175961C400113845 /* IServiceNamespaceGrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IServiceNamespaceGrant.h; sourceTree = "<group>"; };
 		00384BF717596D8800113845 /* MessageFactoryNamespaceGrant.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MessageFactoryNamespaceGrant.cpp; sourceTree = "<group>"; };
 		00384BFC17596D8800113845 /* NamespaceGrantCompleteNotify.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NamespaceGrantCompleteNotify.cpp; sourceTree = "<group>"; };
@@ -830,6 +836,8 @@
 			children = (
 				0063B77B16CA8E8B00E6DB4D /* cpp */,
 				0063B78616CA8E8B00E6DB4D /* MessageFactoryPeerFinder.h */,
+				0030229817ABD9DA00DFB1C8 /* ChannelMapRequest.h */,
+				0030229917ABD9DA00DFB1C8 /* ChannelMapResult.h */,
 				0063B78716CA8E8B00E6DB4D /* PeerLocationFindReply.h */,
 				0063B78816CA8E8B00E6DB4D /* PeerLocationFindRequest.h */,
 				0063B78916CA8E8B00E6DB4D /* PeerLocationFindResult.h */,
@@ -847,6 +855,8 @@
 			isa = PBXGroup;
 			children = (
 				0063B77C16CA8E8B00E6DB4D /* MessageFactoryPeerFinder.cpp */,
+				0030229417ABD9CB00DFB1C8 /* ChannelMapRequest.cpp */,
+				0030229517ABD9CB00DFB1C8 /* ChannelMapResult.cpp */,
 				0063B77D16CA8E8B00E6DB4D /* PeerLocationFindReply.cpp */,
 				0063B77E16CA8E8B00E6DB4D /* PeerLocationFindRequest.cpp */,
 				0063B77F16CA8E8B00E6DB4D /* PeerLocationFindResult.cpp */,
@@ -1163,6 +1173,8 @@
 				006FB4CC175D23E1000C53A8 /* RolodexNamespaceGrantChallengeValidateResult.cpp in Sources */,
 				000CC03F17A4825A0075E86C /* stack_FinderRelayChannel.cpp in Sources */,
 				00FF147717A9DC1D00F5DEB8 /* stack_FinderConnectionMultiplexOutgoing.cpp in Sources */,
+				0030229617ABD9CB00DFB1C8 /* ChannelMapRequest.cpp in Sources */,
+				0030229717ABD9CB00DFB1C8 /* ChannelMapResult.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

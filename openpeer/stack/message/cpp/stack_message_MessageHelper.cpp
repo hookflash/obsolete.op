@@ -65,7 +65,6 @@ namespace openpeer
     {
       using zsLib::DWORD;
       using zsLib::QWORD;
-      using zsLib::Stringize;
       using zsLib::Numeric;
 
       using namespace stack::internal;
@@ -133,7 +132,7 @@ namespace openpeer
               errorEl = IMessageHelper::createElement("error");
             }
             if (msgResult->hasAttribute(MessageResult::AttributeType_ErrorCode)) {
-              IMessageHelper:setAttributeID(errorEl, Stringize<MessageResult::ErrorCodeType>(msgResult->errorCode()));
+              IMessageHelper:setAttributeID(errorEl, string(msgResult->errorCode()));
             }
 
             rootEl->adoptAsLastChild(errorEl);
@@ -370,7 +369,7 @@ namespace openpeer
 
           ElementPtr ipEl = IMessageHelper::createElementWithText("ip", candidate.mIPAddress.string(false));
           candidateEl->adoptAsLastChild(ipEl);
-          candidateEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("port", Stringize<WORD>(candidate.mIPAddress.getPort())));
+          candidateEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("port", string(candidate.mIPAddress.getPort())));
 
           if (!candidate.mUsernameFrag.isEmpty())
           {
@@ -389,7 +388,7 @@ namespace openpeer
 
           if (candidate.mPriority > 0)
           {
-            candidateEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("priority", Stringize<DWORD>(candidate.mPriority)));
+            candidateEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("priority", string(candidate.mPriority)));
           }
 
           if (!candidate.mProtocol.isEmpty())
@@ -516,11 +515,11 @@ namespace openpeer
 
           if ((0 != identity.mPriority) ||
               (forcePriorityWeightOutput)) {
-            identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("priority", Stringize<WORD>(identity.mPriority).string()));
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("priority", string(identity.mPriority)));
           }
           if ((0 != identity.mWeight) ||
               (forcePriorityWeightOutput)) {
-            identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("weight", Stringize<WORD>(identity.mWeight).string()));
+            identityEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("weight", string(identity.mWeight)));
           }
 
           if (Time() != identity.mCreated) {
@@ -561,10 +560,10 @@ namespace openpeer
                 avatarEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("name", avatar.mURL));
               }
               if (0 != avatar.mWidth) {
-                avatarEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("width", Stringize<int>(avatar.mWidth).string()));
+                avatarEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("width", string(avatar.mWidth)));
               }
               if (0 != avatar.mHeight) {
-                avatarEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("height", Stringize<int>(avatar.mHeight).string()));
+                avatarEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("height", string(avatar.mHeight)));
               }
 
               if (avatarEl->hasChildren()) {
@@ -879,9 +878,9 @@ namespace openpeer
           }
 
           ElementPtr nameEl = IMessageHelper::createElementWithText("name", publicationMetaData->getName());
-          ElementPtr versionEl = IMessageHelper::createElementWithNumber("version", Stringize<ULONG>(toVersion));
-          ElementPtr baseVersionEl = IMessageHelper::createElementWithNumber("baseVersion", Stringize<ULONG>(fromVersion));
-          ElementPtr lineageEl = IMessageHelper::createElementWithNumber("lineage", Stringize<ULONG>(publicationMetaData->getLineage()));
+          ElementPtr versionEl = IMessageHelper::createElementWithNumber("version", string(toVersion));
+          ElementPtr baseVersionEl = IMessageHelper::createElementWithNumber("baseVersion", string(fromVersion));
+          ElementPtr lineageEl = IMessageHelper::createElementWithNumber("lineage", string(publicationMetaData->getLineage()));
           ElementPtr chunkEl = IMessageHelper::createElementWithText("chunk", "1/1");
 
           ElementPtr expiresEl;

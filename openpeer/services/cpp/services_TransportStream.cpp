@@ -44,8 +44,6 @@ namespace openpeer
 {
   namespace services
   {
-    using zsLib::Stringize;
-
     namespace internal
     {
       //-----------------------------------------------------------------------
@@ -240,7 +238,7 @@ namespace openpeer
         buffer.mBuffer = bufferToAdopt;
         buffer.mHeader = header;
 
-        ZS_LOG_TRACE(log("buffer written") + ", written=" + Stringize<SecureByteBlock::size_type>(bufferToAdopt->SizeInBytes()).string() )
+        ZS_LOG_TRACE(log("buffer written") + ", written=" + string(bufferToAdopt->SizeInBytes()) )
 
         mBuffers.push_back(buffer);
 
@@ -310,7 +308,7 @@ namespace openpeer
 
         ULONG readSize = (buffer.mBuffer->SizeInBytes() - buffer.mRead);
 
-        ZS_LOG_TRACE(log("read size") + ", read size=" + Stringize<typeof(readSize)>(readSize).string())
+        ZS_LOG_TRACE(log("read size") + ", read size=" + string(readSize))
 
         return readSize;
       }
@@ -351,7 +349,7 @@ namespace openpeer
           total += (buffer.mBuffer->SizeInBytes() - buffer.mRead);
         }
 
-        ZS_LOG_TRACE(log("total read size available") + ", read size=" + Stringize<typeof(total)>(total).string() + ", buffers=" + Stringize<BufferList::size_type>(mBuffers.size()).string())
+        ZS_LOG_TRACE(log("total read size available") + ", read size=" + string(total) + ", buffers=" + string(mBuffers.size()))
 
         return total;
       }
@@ -434,11 +432,11 @@ namespace openpeer
           bufferLengthInBytes -= consume;
           dest += consume;
 
-          ZS_LOG_TRACE(log("buffer read") + ", read=" + Stringize<typeof(consume)>(consume).string() + ", buffer available=" + Stringize<typeof(available)>(available).string() + ", remaining=" + Stringize<typeof(bufferLengthInBytes)>(bufferLengthInBytes).string())
+          ZS_LOG_TRACE(log("buffer read") + ", read=" + string(consume) + ", buffer available=" + string(available) + ", remaining=" + string(bufferLengthInBytes))
 
           if (buffer.mRead == buffer.mBuffer->SizeInBytes()) {
             // entire buffer has not been consumed, remove it
-            ZS_LOG_TRACE(log("entire buffer consumed") + ", buffer size=" + Stringize<typeof(buffer.mRead)>(buffer.mRead).string())
+            ZS_LOG_TRACE(log("entire buffer consumed") + ", buffer size=" + string(buffer.mRead))
             mBuffers.pop_front();
             continue;
           }
@@ -483,7 +481,7 @@ namespace openpeer
             result = temp;
           }
 
-          ZS_LOG_TRACE(log("buffer read") + ", read=" + Stringize<SecureByteBlock::size_type>(result->SizeInBytes()).string())
+          ZS_LOG_TRACE(log("buffer read") + ", read=" + string(result->SizeInBytes()))
 
           mBuffers.pop_front();
         }
@@ -510,7 +508,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String TransportStream::log(const char *message) const
       {
-        return String("TransportStream [" + mID.string() + "] " + message);
+        return String("TransportStream [" + string(mID) + "] " + message);
       }
 
       //-----------------------------------------------------------------------
@@ -518,16 +516,16 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("transport stream id", mID.string(), firstTime) +
+        return Helper::getDebugValue("transport stream id", string(mID), firstTime) +
                Helper::getDebugValue("shutdown", mShutdown ? String("true") : String(), firstTime) +
                Helper::getDebugValue("reader ready", mReaderReady ? String("true") : String(), firstTime) +
                Helper::getDebugValue("read ready notified", mReadReadyNotified ? String("true") : String(), firstTime) +
                Helper::getDebugValue("write ready notified", mWriteReadyNotified ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("writer subscriptions", mWriterSubscriptions.size() > 0 ? Stringize<ITransportStreamWriterDelegateSubscriptions::size_type>(mWriterSubscriptions.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("writer subscriptions", mWriterSubscriptions.size() > 0 ? string(mWriterSubscriptions.size()) : String(), firstTime) +
                Helper::getDebugValue("default writer subscription", mDefaultWriterSubscription ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("reader subscriptions", mReaderSubscriptions.size() > 0 ? Stringize<ITransportStreamReaderDelegateSubscriptions::size_type>(mReaderSubscriptions.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("reader subscriptions", mReaderSubscriptions.size() > 0 ? string(mReaderSubscriptions.size()) : String(), firstTime) +
                Helper::getDebugValue("default reader subscription", mDefaultReaderSubscription ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("buffers", mBuffers.size() > 0 ? Stringize<BufferList::size_type>(mBuffers.size()).string() : String(), firstTime);
+               Helper::getDebugValue("buffers", mBuffers.size() > 0 ? string(mBuffers.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -554,14 +552,14 @@ namespace openpeer
                             (!mWriteReadyNotified));
 
         if (notifyRead) {
-          ZS_LOG_TRACE(log("notifying ready to read") + ", subscribers=" + Stringize<ITransportStreamReaderDelegateSubscriptions::size_type>(mReaderSubscriptions.size()).string())
+          ZS_LOG_TRACE(log("notifying ready to read") + ", subscribers=" + string(mReaderSubscriptions.size()))
           mReaderSubscriptions.delegate()->onTransportStreamReaderReady(mThisWeak.lock());
 
           get(mReadReadyNotified) = true;
         }
 
         if (notifyWrite) {
-          ZS_LOG_TRACE(log("notifying ready to write") + ", subscribers=" + Stringize<ITransportStreamWriterDelegateSubscriptions::size_type>(mWriterSubscriptions.size()).string())
+          ZS_LOG_TRACE(log("notifying ready to write") + ", subscribers=" + string(mWriterSubscriptions.size()))
           mWriterSubscriptions.delegate()->onTransportStreamWriterReady(mThisWeak.lock());
 
           get(mWriteReadyNotified) = true;

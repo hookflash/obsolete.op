@@ -56,8 +56,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
-
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -439,8 +437,8 @@ namespace openpeer
         AutoRecursiveLock lock(getLock());
 
         ZS_LOG_DEBUG(log("adjusting keep alive propertiess") +
-                     ", send keep alive (ms)=" + Stringize<Duration::tick_type>(sendKeepAliveIndications.total_milliseconds()).string() +
-                     ", expecting data within (ms)=" + Stringize<Duration::tick_type>(expectSTUNOrDataWithinWithinOrSendAliveCheck.total_milliseconds()).string())
+                     ", send keep alive (ms)=" + string(sendKeepAliveIndications.total_milliseconds()) +
+                     ", expecting data within (ms)=" + string(expectSTUNOrDataWithinWithinOrSendAliveCheck.total_milliseconds()))
 
         if (mKeepAliveTimer) {
           ZS_LOG_DEBUG(log("cancelling current keep alive timer"))
@@ -1272,7 +1270,7 @@ namespace openpeer
         if (Duration() != mBackgroundingTimeout) {
           Duration diff = tick - mLastActivity;
           if (diff > mBackgroundingTimeout) {
-            ZS_LOG_WARNING(Detail, log("backgrounding timeout forced this session to close") + ", time diff (ms)=" + Stringize<Duration::tick_type>(diff.total_milliseconds()).string())
+            ZS_LOG_WARNING(Detail, log("backgrounding timeout forced this session to close") + ", time diff (ms)=" + string(diff.total_milliseconds()))
             setShutdownReason(ICESocketSessionShutdownReason_BackgroundingTimeout);
             cancel();
             return;
@@ -1429,7 +1427,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String ICESocketSession::log(const char *message) const
       {
-        return String("ICESocketSession [") + Stringize<PUID>(mID).string() + "] " + message;
+        return String("ICESocketSession [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -1762,7 +1760,7 @@ namespace openpeer
             // it yet... wait around for it to activate... or give up if its
             // been a ridiculously long time...
             if (mStartedSearchAt + Seconds(OPENPEER_SERVICES_ICESOCKETSESSION_MAX_WAIT_TIME_FOR_CANDIDATE_TO_ACTIVATE_IF_ALL_DONE) < tick) {
-              ZS_LOG_ERROR(Basic, log("candidate found valid candidate but was never activated") + ", timeout=" + Stringize<int>(OPENPEER_SERVICES_ICESOCKETSESSION_MAX_WAIT_TIME_FOR_CANDIDATE_TO_ACTIVATE_IF_ALL_DONE).string())
+              ZS_LOG_ERROR(Basic, log("candidate found valid candidate but was never activated") + ", timeout=" + string(OPENPEER_SERVICES_ICESOCKETSESSION_MAX_WAIT_TIME_FOR_CANDIDATE_TO_ACTIVATE_IF_ALL_DONE))
               setShutdownReason(ICESocketSessionShutdownReason_Timeout);
               cancel(); // we waited as long as we could and it seems that we failed to connect...
               return;
@@ -1776,7 +1774,7 @@ namespace openpeer
             // we never found a valid candidate and we did receive some
             // response but an incoming request was never received
             if (mStartedSearchAt + Seconds(OPENPEER_SERVICES_ICESOCKETSESSION_MAX_WAIT_TIME_FOR_CANDIDATE_TO_ACTIVATE_IF_ALL_DONE) < tick) {
-              ZS_LOG_ERROR(Basic, log("all outgoing request received a response but some incoming request has not arrived yet") + ", timeout=" + Stringize<int>(OPENPEER_SERVICES_ICESOCKETSESSION_MAX_WAIT_TIME_FOR_CANDIDATE_TO_ACTIVATE_IF_ALL_DONE).string())
+              ZS_LOG_ERROR(Basic, log("all outgoing request received a response but some incoming request has not arrived yet") + ", timeout=" + string(OPENPEER_SERVICES_ICESOCKETSESSION_MAX_WAIT_TIME_FOR_CANDIDATE_TO_ACTIVATE_IF_ALL_DONE))
               setShutdownReason(ICESocketSessionShutdownReason_Timeout);
               cancel(); // we waited as long as we could and it seems that we failed to connect...
               return;
@@ -1857,16 +1855,16 @@ namespace openpeer
                                     )
       {
         if (isShutdown()) {
-          ZS_LOG_WARNING(Debug, log("cannot send packet as ICE session is closed") + ", via=" + IICESocket::toString(viaTransport) + " to ip=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + Stringize<ULONG>(bufferLengthInBytes).string() + ", user data=" + (isUserData ? "true" : "false"))
+          ZS_LOG_WARNING(Debug, log("cannot send packet as ICE session is closed") + ", via=" + IICESocket::toString(viaTransport) + " to ip=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + string(bufferLengthInBytes) + ", user data=" + (isUserData ? "true" : "false"))
           return false;
         }
         ICESocketPtr socket = mICESocketWeak.lock();
         if (!socket) {
-          ZS_LOG_WARNING(Debug, log("cannot send packet as ICE socket is closed") + ", via=" + IICESocket::toString(viaTransport) + " to ip=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + Stringize<ULONG>(bufferLengthInBytes).string() + ", user data=" + (isUserData ? "true" : "false"))
+          ZS_LOG_WARNING(Debug, log("cannot send packet as ICE socket is closed") + ", via=" + IICESocket::toString(viaTransport) + " to ip=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + string(bufferLengthInBytes) + ", user data=" + (isUserData ? "true" : "false"))
           return false;
         }
 
-        ZS_LOG_TRACE(log("sending packet") + ", via=" + IICESocket::toString(viaTransport) + " to ip=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + Stringize<ULONG>(bufferLengthInBytes).string() + ", user data=" + (isUserData ? "true" : "false"))
+        ZS_LOG_TRACE(log("sending packet") + ", via=" + IICESocket::toString(viaTransport) + " to ip=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + string(bufferLengthInBytes) + ", user data=" + (isUserData ? "true" : "false"))
         return socket->forICESocketSession().sendTo(viaTransport, destination, buffer, bufferLengthInBytes, isUserData);
       }
 

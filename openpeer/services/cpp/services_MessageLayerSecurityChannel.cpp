@@ -53,7 +53,6 @@ namespace openpeer
   namespace services
   {
     using zsLib::DWORD;
-    using zsLib::Stringize;
     using zsLib::Numeric;
 
     namespace internal
@@ -713,7 +712,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String MessageLayerSecurityChannel::log(const char *message) const
       {
-        return String("MessageLayerSecurityChannel [" + Stringize<typeof(mID)>(mID).string() + "] " + message);
+        return String("MessageLayerSecurityChannel [" + string(mID) + "] " + message);
       }
 
       //-----------------------------------------------------------------------
@@ -721,10 +720,10 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("mls channel id", Stringize<typeof(mID)>(mID).string(), firstTime) +
-               Helper::getDebugValue("subscriptions", mSubscriptions.size() > 0 ? Stringize<IMessageLayerSecurityChannelDelegateSubscriptions::size_type>(mSubscriptions.size()).string() : String(), firstTime) +
+        return Helper::getDebugValue("mls channel id", string(mID), firstTime) +
+               Helper::getDebugValue("subscriptions", mSubscriptions.size() > 0 ? string(mSubscriptions.size()) : String(), firstTime) +
                Helper::getDebugValue("state", IMessageLayerSecurityChannel::toString(mCurrentState), firstTime) +
-               Helper::getDebugValue("last error", 0 != mLastError ? Stringize<typeof(mLastError)>(mLastError).string() : String(), firstTime) +
+               Helper::getDebugValue("last error", 0 != mLastError ? string(mLastError) : String(), firstTime) +
                Helper::getDebugValue("last reason", mLastErrorReason, firstTime) +
                Helper::getDebugValue("local context ID", mLocalContextID, firstTime) +
                Helper::getDebugValue("remote context ID", mRemoteContextID, firstTime) +
@@ -732,7 +731,7 @@ namespace openpeer
                Helper::getDebugValue("sending passphrase", mSendingEncodingPassphrase, firstTime) +
                Helper::getDebugValue("sending keying needs sign doc", mSendKeyingNeedingToSignDoc ? String("true") : String(), firstTime) +
                Helper::getDebugValue("sending keying needs sign element", mSendKeyingNeedToSignEl ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("receive seq number", Stringize<typeof(mNextReceiveSequenceNumber)>(mNextReceiveSequenceNumber).string(), firstTime) +
+               Helper::getDebugValue("receive seq number", string(mNextReceiveSequenceNumber), firstTime) +
                Helper::getDebugValue("decoding type", toString(mReceiveDecodingType), firstTime) +
                Helper::getDebugValue("decoding public key fingerprint", mReceiveDecodingPublicKeyFingerprint, firstTime) +
                Helper::getDebugValue("receive decoding private key", mReceiveDecodingPrivateKey ? String("true") : String(), firstTime) +
@@ -751,8 +750,8 @@ namespace openpeer
                Helper::getDebugValue("send stream encoded subscription", mSendStreamEncodedSubscription ? String("true") : String(), firstTime) +
                Helper::getDebugValue("receive stream decoded write ready", mReceiveStreamDecodedWriteReady ? String("true") : String(), firstTime) +
                Helper::getDebugValue("send stream encoded write ready", mSendStreamEncodedWriteReady ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("receive keys", mReceiveKeys.size() > 0 ? Stringize<KeyMap::size_type>(mReceiveKeys.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("send keys", mSendKeys.size() > 0 ? Stringize<KeyMap::size_type>(mSendKeys.size()).string() : String(), firstTime);
+               Helper::getDebugValue("receive keys", mReceiveKeys.size() > 0 ? string(mReceiveKeys.size()) : String(), firstTime) +
+               Helper::getDebugValue("send keys", mSendKeys.size() > 0 ? string(mSendKeys.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -779,14 +778,14 @@ namespace openpeer
         }
 
         if (0 != mLastError) {
-          ZS_LOG_WARNING(Detail, log("error already set thus ignoring new error") + ", new error=" + Stringize<typeof(errorCode)>(errorCode).string() + ", new reason=" + reason + getDebugValueString())
+          ZS_LOG_WARNING(Detail, log("error already set thus ignoring new error") + ", new error=" + string(errorCode) + ", new reason=" + reason + getDebugValueString())
           return;
         }
 
         mLastError = errorCode;
         mLastErrorReason = reason;
 
-        ZS_LOG_WARNING(Detail, log("error set") + ", code=" + Stringize<typeof(mLastError)>(mLastError).string() + ", reason=" + mLastErrorReason + getDebugValueString())
+        ZS_LOG_WARNING(Detail, log("error set") + ", code=" + string(mLastError) + ", reason=" + mLastErrorReason + getDebugValueString())
       }
       
       //-----------------------------------------------------------------------
@@ -863,7 +862,7 @@ namespace openpeer
 
           // has to be greater than the size of a DWORD
           if (streamBuffer->SizeInBytes() <= sizeof(DWORD)) {
-            ZS_LOG_ERROR(Detail, log("algorithm bytes missing in protocol") + ", size=" + Stringize<SecureByteBlock::size_type>(streamBuffer->SizeInBytes()).string())
+            ZS_LOG_ERROR(Detail, log("algorithm bytes missing in protocol") + ", size=" + string(streamBuffer->SizeInBytes()))
             setError(IHTTP::HTTPStatusCode_Unauthorized, "buffer is not decodable");
             cancel();
             return false;
@@ -887,7 +886,7 @@ namespace openpeer
 
             KeyMap::iterator found = mReceiveKeys.find(algorithm);
             if (found == mReceiveKeys.end()) {
-              ZS_LOG_ERROR(Detail, log("attempting to decode a packet where keying algorithm does not map to a know key") + ", algorithm=" + Stringize<typeof(algorithm)>(algorithm).string())
+              ZS_LOG_ERROR(Detail, log("attempting to decode a packet where keying algorithm does not map to a know key") + ", algorithm=" + string(algorithm))
               setError(IHTTP::HTTPStatusCode_Forbidden, "attempting to decode a packet where keying algorithm does not map to a know key");
               cancel();
               return false;
@@ -900,7 +899,7 @@ namespace openpeer
 
             // must be greater in size than the hash algorithm
             if (remaining <= integritySize) {
-              ZS_LOG_ERROR(Detail, log("algorithm bytes missing in protocol") + ", size=" + Stringize<SecureByteBlock::size_type>(streamBuffer->SizeInBytes()).string())
+              ZS_LOG_ERROR(Detail, log("algorithm bytes missing in protocol") + ", size=" + string(streamBuffer->SizeInBytes()))
               setError(IHTTP::HTTPStatusCode_Unauthorized, "buffer is not decodable");
               cancel();
               return false;
@@ -1015,8 +1014,8 @@ namespace openpeer
 
           String sequenceNumber = getElementTextAndDecode(keyingEl->findFirstChildElement("sequence"));
 
-          if (sequenceNumber != Stringize<typeof(mNextReceiveSequenceNumber)>(mNextReceiveSequenceNumber).string()) {
-            ZS_LOG_ERROR(Detail, log("sequence number mismatch") + ", sequence=" + sequenceNumber + ", expecting=" + Stringize<typeof(mNextReceiveSequenceNumber)>(mNextReceiveSequenceNumber).string())
+          if (sequenceNumber != string(mNextReceiveSequenceNumber)) {
+            ZS_LOG_ERROR(Detail, log("sequence number mismatch") + ", sequence=" + sequenceNumber + ", expecting=" + string(mNextReceiveSequenceNumber))
             setError(IHTTP::HTTPStatusCode_RequestTimeout, "sequence number mismatch");
             cancel();
             outReturnResult = false;
@@ -1134,7 +1133,7 @@ namespace openpeer
                 ZS_LOG_WARNING(Detail, log("algorithm index value out of range"))
               }
               if (0 == index) {
-                ZS_LOG_WARNING(Detail, log("algorithm index value is not valid") + ", index=" + Stringize<typeof(index)>(index).string())
+                ZS_LOG_WARNING(Detail, log("algorithm index value is not valid") + ", index=" + string(index))
                 continue;
               }
 
@@ -1164,11 +1163,11 @@ namespace openpeer
               if ((!key.mSendKey) ||
                   (!key.mNextIV) ||
                   (key.mIntegrityPassphrase.isEmpty())) {
-                ZS_LOG_WARNING(Detail, log("algorithm missing vital secret, iv or integrity information") + ", index=" + Stringize<typeof(index)>(index).string())
+                ZS_LOG_WARNING(Detail, log("algorithm missing vital secret, iv or integrity information") + ", index=" + string(index))
                 continue;
               }
 
-              ZS_LOG_DEBUG(log("adding algorithm to available keying information") + ", index=" + Stringize<typeof(index)>(index).string())
+              ZS_LOG_DEBUG(log("adding algorithm to available keying information") + ", index=" + string(index))
               mReceiveKeys[index] = key;
             }
           }
@@ -1306,7 +1305,7 @@ namespace openpeer
           key.mNextIV = IHelper::hash(*IHelper::random(16), IHelper::HashAlgorthm_MD5);
 
           ElementPtr keyEl = Element::create("key");
-          keyEl->adoptAsLastChild(createElementWithNumber("index", Stringize<typeof(index)>(index).string()));
+          keyEl->adoptAsLastChild(createElementWithNumber("index", string(index)));
           keyEl->adoptAsLastChild(createElementWithText("algorithm", OPENPEER_SERVICES_MESSAGE_LAYER_SECURITY_DEFAULT_CRYPTO_ALGORITHM));
 
           ElementPtr inputsEl = Element::create("inputs");

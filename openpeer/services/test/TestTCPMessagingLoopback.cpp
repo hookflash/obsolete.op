@@ -52,7 +52,7 @@
 namespace openpeer { namespace services { namespace test { ZS_DECLARE_SUBSYSTEM(openpeer_services_test) } } }
 
 using zsLib::ULONG;
-using zsLib::Stringize;
+using zsLib::string;
 using zsLib::String;
 using zsLib::Time;
 using zsLib::ISocket;
@@ -222,7 +222,7 @@ namespace openpeer
 
           if (!type) return;
 
-          ZS_LOG_DEBUG(String("buffer written") + ", from=" + type + ", size=" + Stringize<SecureByteBlock::size_type>(send->SizeInBytes()).string() + ", writer: " + ITransportStream::toDebugString(writer->getStream(), false))
+          ZS_LOG_DEBUG(String("buffer written") + ", from=" + type + ", size=" + string(send->SizeInBytes()) + ", writer: " + ITransportStream::toDebugString(writer->getStream(), false))
 
           ITCPMessaging::ChannelHeaderPtr header;
           if (mHasChannelNumbers) {
@@ -276,7 +276,7 @@ namespace openpeer
             BOOST_EQUAL(channelHeader->mChannelID, info.mChannelNumber)
           }
 
-          ZS_LOG_DEBUG(String("buffer read") + ", to=" + type + ", size=" + Stringize<SecureByteBlock::size_type>(buffer->SizeInBytes()).string() + ", reader: " + ITransportStream::toDebugString(reader->getStream(), false))
+          ZS_LOG_DEBUG(String("buffer read") + ", to=" + type + ", size=" + string(buffer->SizeInBytes()) + ", reader: " + ITransportStream::toDebugString(reader->getStream(), false))
 
           BOOST_CHECK(info.mBuffer)
           BOOST_CHECK(buffer)
@@ -419,7 +419,7 @@ void doTestTCPMessagingLoopback()
 
     do
     {
-      ZS_LOG_BASIC(String("STEP:         ---------->>>>>>>>>> ") + Stringize<ULONG>(step).string() + " <<<<<<<<<<----------")
+      ZS_LOG_BASIC(String("STEP:         ---------->>>>>>>>>> ") + string(step) + " <<<<<<<<<<----------")
 
       ULONG expecting = 0;
       switch (step) {

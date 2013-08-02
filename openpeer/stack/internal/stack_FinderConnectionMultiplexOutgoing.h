@@ -31,10 +31,14 @@
 
 #pragma once
 
-#include <openpeer/stack/internal/stack_IFinderConnectionRelayChannel.h>
-#include <openpeer/stack/message/types.h>
 #include <openpeer/stack/internal/types.h>
+#include <openpeer/stack/internal/stack_IFinderConnectionRelayChannel.h>
 #include <openpeer/stack/internal/stack_IFinderConnection.h>
+
+#include <openpeer/stack/message/types.h>
+#include <openpeer/stack/message/peer-finder/ChannelMapResult.h>
+
+#include <openpeer/stack/IMessageMonitor.h>
 
 #include <openpeer/services/ITransportStream.h>
 #include <openpeer/services/ITCPMessaging.h>
@@ -51,6 +55,9 @@ namespace openpeer
   {
     namespace internal
     {
+      using peer_finder::ChannelMapResult;
+      using peer_finder::ChannelMapResultPtr;
+
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -67,7 +74,8 @@ namespace openpeer
                                                 public ITCPMessagingDelegate,
                                                 public ITransportStreamWriterDelegate,
                                                 public ITransportStreamReaderDelegate,
-                                                public IFinderConnectionRelayChannelDelegate
+                                                public IFinderConnectionRelayChannelDelegate,
+                                                public IMessageMonitorResultDelegate<ChannelMapResult>
       {
       public:
         typedef IFinderConnection::SessionStates SessionStates;
@@ -83,6 +91,8 @@ namespace openpeer
 
         typedef ULONG ChannelNumber;
         typedef std::map<ChannelNumber, ChannelPtr> ChannelMap;
+
+        typedef boost::value_initialized<ChannelNumber> AutoChannelNumber;
 
       protected:
         FinderConnectionMultiplexOutgoing(
@@ -196,6 +206,22 @@ namespace openpeer
                                                                  IFinderConnectionRelayChannelPtr channel,
                                                                  IFinderConnectionRelayChannel::SessionStates state
                                                                  );
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark FinderConnectionMultiplexOutgoing => IMessageMonitorResultDelegate<ChannelMapResult>
+        #pragma mark
+
+        virtual bool handleMessageMonitorResultReceived(
+                                                        IMessageMonitorPtr monitor,
+                                                        ChannelMapResultPtr result
+                                                        );
+
+        virtual bool handleMessageMonitorErrorResultReceived(
+                                                             IMessageMonitorPtr monitor,
+                                                             ChannelMapResultPtr ignore, // will always be NULL
+                                                             message::MessageResultPtr result
+                                                             );
+
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -336,7 +362,12 @@ namespace openpeer
 
           void notifyReceivedWireWriteReady();
 
+          // (duplicate) virtual SessionStates getState(
+          //                                            WORD *outLastErrorCode = NULL,
+          //                                            String *outLastErrorReason = NULL
+          //                                            ) const;
           // (duplicate) void setError(WORD errorCode, const char *inReason = NULL);
+
           void notifyDataReceived(SecureByteBlockPtr buffer);
 
           void getStreams(
@@ -415,6 +446,9 @@ namespace openpeer
         ChannelMap mPendingMapRequest;
         ChannelMap mIncomingChannels;
         ChannelMap mRemoveChannels;
+
+        IMessageMonitorPtr mMapRequestChannelMonitor;
+        AutoChannelNumber mMapRequestChannelNumber;
       };
 
       //-----------------------------------------------------------------------

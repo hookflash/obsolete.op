@@ -68,7 +68,7 @@ namespace openpeer
   {
     using zsLib::PTRNUMBER;
     using zsLib::CSTR;
-    using zsLib::Stringize;
+    using zsLib::string;
     using zsLib::IPv6Address;
 
     namespace internal
@@ -2254,19 +2254,19 @@ namespace openpeer
       {
         String message;
 
-        message = String(mLogObject) + " [" + Stringize<PUID>(mLogObjectID).string() + "] "
+        message = String(mLogObject) + " [" + string(mLogObjectID) + "] "
                   + (logMessage ? logMessage : "<unspecified>")
                   + ", RFC=" + toString(guessRFC(RFC_AllowAll))
                   + ", class=" + classAsString()
                   + ", method=" + methodAsString()
-                  + ", cookie=" + Stringize<DWORD>(mMagicCookie, 16).string()
+                  + ", cookie=" + string(mMagicCookie, 16)
                   + ", ID=" + internal::convertToHex(&(mTransactionID[0]), sizeof(mTransactionID));
 
         if (0 != mTotalRetries)
-          message += ", retries=" + Stringize<ULONG>(mTotalRetries).string();
+          message += ", retries=" + string(mTotalRetries);
 
         if (hasAttribute(STUNPacket::Attribute_ErrorCode)) {
-          message += ", error code=" + Stringize<WORD>(mErrorCode).string() + " (" + toString((ErrorCodes)mErrorCode) + ")";
+          message += ", error code=" + string(mErrorCode) + " (" + toString((ErrorCodes)mErrorCode) + ")";
           message += ", reason=" + mReason;
         }
 
@@ -2274,7 +2274,7 @@ namespace openpeer
           message += ", unknown=";
           UnknownAttributeList::const_iterator iter = mUnknownAttributes.begin();
           for (bool first = true; iter != mUnknownAttributes.end(); ++iter, first = false) {
-            message += (first ? "" : ";") + Stringize<WORD>(*iter).string();
+            message += (first ? "" : ";") + string(*iter);
           }
         }
         if (hasAttribute(STUNPacket::Attribute_MappedAddress)) {
@@ -2303,17 +2303,17 @@ namespace openpeer
         }
         if ((hasAttribute(STUNPacket::Attribute_MessageIntegrity)) &&
              (0 != mMessageIntegrityMessageLengthInBytes)) {
-          message += ", message integrity length=" + Stringize<ULONG>(mMessageIntegrityMessageLengthInBytes).string();
+          message += ", message integrity length=" + string(mMessageIntegrityMessageLengthInBytes);
           message += ", message integrity data=" + internal::convertToHex(&(mMessageIntegrity[0]), sizeof(mMessageIntegrity));
         }
         if (hasAttribute(STUNPacket::Attribute_FingerPrint)) {
           message += ", fingerprint=true";
         }
         if (hasAttribute(STUNPacket::Attribute_ChannelNumber)) {
-          message += ", channel=" + Stringize<WORD>(mChannelNumber).string();
+          message += ", channel=" + string(mChannelNumber);
         }
         if (hasAttribute(STUNPacket::Attribute_Lifetime)) {
-          message += ", lifetime=" + Stringize<DWORD>(mLifetime).string();
+          message += ", lifetime=" + string(mLifetime);
         }
         if (hasAttribute(STUNPacket::Attribute_XORPeerAddress)) {
           message += ", peer address=";
@@ -2326,14 +2326,14 @@ namespace openpeer
           message += ", relayed address=" + mRelayedAddress.string();
         }
         if (hasAttribute(STUNPacket::Attribute_Data)) {
-          message += ", data length=" + Stringize<ULONG>(mDataLength).string();
+          message += ", data length=" + string(mDataLength);
           message += String(", data=") + (mData ? "true" : "false");
         }
         if (hasAttribute(STUNPacket::Attribute_EvenPort)) {
           message += String(", even port=") + (mEvenPort ? "true" : "false");
         }
         if (hasAttribute(STUNPacket::Attribute_RequestedTransport)) {
-          message += ", data length=" + Stringize<UINT>(((UINT)mRequestedTransport)).string();
+          message += ", data length=" + string(((UINT)mRequestedTransport));
         }
         if (hasAttribute(STUNPacket::Attribute_DontFragment)) {
           message += ", don't fragment=true";
@@ -2342,34 +2342,34 @@ namespace openpeer
           message += ", reservation token=" + internal::convertToHex(&(mReservationToken[0]), sizeof(mReservationToken));
         }
         if (hasAttribute(STUNPacket::Attribute_Priority)) {
-          message += ", data length=" + Stringize<DWORD>(mPriority).string();
+          message += ", data length=" + string(mPriority);
         }
         if (hasAttribute(STUNPacket::Attribute_UseCandidate)) {
           message += ", use candidate=true";
         }
         if (hasAttribute(STUNPacket::Attribute_ICEControlled)) {
-          message += ", ice controlled=" + Stringize<QWORD>(mIceControlled).string();
+          message += ", ice controlled=" + string(mIceControlled);
         }
         if (hasAttribute(STUNPacket::Attribute_ICEControlling)) {
-          message += ", ice controlling=" + Stringize<QWORD>(mIceControlling).string();
+          message += ", ice controlling=" + string(mIceControlling);
         }
         if (hasAttribute(STUNPacket::Attribute_NextSequenceNumber)) {
-          message += ", next sequence number=" + Stringize<QWORD>(mNextSequenceNumber).string() + " (" +  + Stringize<QWORD>(mNextSequenceNumber & 0xFFFFFF).string() + ")";
+          message += ", next sequence number=" + string(mNextSequenceNumber) + " (" +  + string(mNextSequenceNumber & 0xFFFFFF) + ")";
         }
         if (hasAttribute(STUNPacket::Attribute_NextSequenceNumber)) {
-          message += ", minimum RTT=" + Stringize<DWORD>(mMinimumRTT).string();
+          message += ", minimum RTT=" + string(mMinimumRTT);
         }
         if (hasAttribute(STUNPacket::Attribute_ConnectionInfo)) {
           message += ", connection info=" + mConnectionInfo;
         }
         if (hasAttribute(STUNPacket::Attribute_GSNR)) {
-          message += ", gsnr=" + Stringize<QWORD>(mGSNR).string() + " (" +  + Stringize<QWORD>(mGSNR & 0xFFFFFF).string() + ")";
+          message += ", gsnr=" + string(mGSNR) + " (" +  + string(mGSNR & 0xFFFFFF) + ")";
         }
         if (hasAttribute(STUNPacket::Attribute_GSNFR)) {
-          message += ", gsnfr=" + Stringize<QWORD>(mGSNFR).string() + " (" +  + Stringize<QWORD>(mGSNFR & 0xFFFFFF).string() + ")";
+          message += ", gsnfr=" + string(mGSNFR) + " (" +  + string(mGSNFR & 0xFFFFFF) + ")";
         }
         if (hasAttribute(STUNPacket::Attribute_RUDPFlags)) {
-          message += ", flags=" + Stringize<UINT>(((UINT)mReliabilityFlags)).string();
+          message += ", flags=" + string(((UINT)mReliabilityFlags));
           message += ", flag details=";
           message += "(--)";  // (ps)
           if (0 != (RUDPPacket::Flag_PG_ParityGSNR & mReliabilityFlags)) {
@@ -2401,7 +2401,7 @@ namespace openpeer
           }
         }
         if (hasAttribute(STUNPacket::Attribute_ACKVector)) {
-          message += ", vector length=" + Stringize<ULONG>(mACKVectorLength).string();
+          message += ", vector length=" + string(mACKVectorLength);
           if (0 != mACKVectorLength) {
             message += ", vector=" + internal::convertToHex(mACKVector.get(), mACKVectorLength);
           }
@@ -2412,7 +2412,7 @@ namespace openpeer
             message += ", congestion local=";
             CongestionControlList::const_iterator iter = mLocalCongestionControl.begin();
             for (bool first = true; iter != mLocalCongestionControl.end(); ++iter, first = false) {
-              message += (first ? "" : ";") + Stringize<UINT>(((UINT)*iter)).string();
+              message += (first ? "" : ";") + string(((UINT)*iter));
             }
           }
           if (mRemoteCongestionControl.size() > 0)
@@ -2420,7 +2420,7 @@ namespace openpeer
             message += ", congestion remote=";
             CongestionControlList::const_iterator iter = mRemoteCongestionControl.begin();
             for (bool first = true; iter != mRemoteCongestionControl.end(); ++iter, first = false) {
-              message += (first ? "" : ";") + Stringize<UINT>(((UINT)*iter)).string();
+              message += (first ? "" : ";") + string(((UINT)*iter));
             }
           }
         }

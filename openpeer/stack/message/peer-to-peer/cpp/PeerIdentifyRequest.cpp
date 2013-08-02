@@ -58,7 +58,6 @@ namespace openpeer
 
       namespace peer_to_peer
       {
-        using zsLib::Stringize;
         using zsLib::Seconds;
         using namespace stack::internal;
         using namespace message::internal;

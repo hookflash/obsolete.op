@@ -66,7 +66,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
       using CryptoPP::StringSink;
       using CryptoPP::Weak::MD5;
 
@@ -532,7 +531,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String RUDPListener::log(const char *message) const
       {
-        return String("RUDPListener [") + Stringize<PUID>(mID).string() + "] " + message;
+        return String("RUDPListener [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -643,10 +642,10 @@ namespace openpeer
         try {
           bool wouldBlock = false;
           ULONG bytesSent = mUDPSocket->sendTo(destination, buffer, bufferLengthInBytes, &wouldBlock);
-          ZS_LOG_TRACE(log("sendTo called") + ", destination=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + Stringize<ULONG>(bufferLengthInBytes).string() + ", bytes sent=" + Stringize<ULONG>(bytesSent).string() + ", would block=" + (wouldBlock? "true" : "false"))
+          ZS_LOG_TRACE(log("sendTo called") + ", destination=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + string(bufferLengthInBytes) + ", bytes sent=" + string(bytesSent) + ", would block=" + (wouldBlock? "true" : "false"))
           return (bytesSent == bufferLengthInBytes);
         } catch(ISocket::Exceptions::Unspecified &) {
-          ZS_LOG_ERROR(Detail, log("sendTo exception") + ", destination=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + Stringize<ULONG>(bufferLengthInBytes).string())
+          ZS_LOG_ERROR(Detail, log("sendTo exception") + ", destination=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + string(bufferLengthInBytes))
           return false;
         }
         return false;

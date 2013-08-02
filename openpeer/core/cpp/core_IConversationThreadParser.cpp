@@ -61,7 +61,6 @@ namespace openpeer
     namespace internal
     {
       using zsLib::Numeric;
-      using zsLib::Stringize;
       using zsLib::IPAddress;
 
       typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
@@ -286,10 +285,10 @@ namespace openpeer
         MessagePtr pThis = MessagePtr(new Message);
         pThis->mID = zsLib::createPUID();
         pThis->mThisWeak = pThis;
-        pThis->mMessageID = Stringize<CSTR>(messageID);
-        pThis->mFromPeerURI = Stringize<CSTR>(fromPeerURI);
-        pThis->mMimeType = Stringize<CSTR>(mimeType);
-        pThis->mBody = Stringize<CSTR>(body);
+        pThis->mMessageID = string(messageID);
+        pThis->mFromPeerURI = string(fromPeerURI);
+        pThis->mMimeType = string(mimeType);
+        pThis->mBody = string(body);
         pThis->mSent = sent;
 
         // now its time to generate the XML
@@ -362,7 +361,7 @@ namespace openpeer
       String IConversationThreadParser::Message::getDebugValueString(bool includeCommaPrefix) const
       {
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("message id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("message id", string(mID), firstTime) +
                Helper::getDebugValue("message id (s)", mMessageID, firstTime) +
                Helper::getDebugValue("from peer URI", mFromPeerURI, firstTime) +
                Helper::getDebugValue("mime type", mMimeType, firstTime) +
@@ -431,7 +430,7 @@ namespace openpeer
         pThis->mReceipts = messageReceipts;
 
         ElementPtr receiptsEl = Element::create("receipts");
-        receiptsEl->setAttribute("version", Stringize<UINT>(version).string());
+        receiptsEl->setAttribute("version", string(version));
 
         for (MessageReceiptMap::const_iterator iter = messageReceipts.begin(); iter != messageReceipts.end(); ++iter)
         {
@@ -470,7 +469,7 @@ namespace openpeer
             }
 
             pThis->mReceipts[id] = time;
-            ZS_LOG_TRACE(String("Found receipt") + ", receipt ID=" + id + ", acknowledged at=" + Stringize<Time>(time).string())
+            ZS_LOG_TRACE(String("Found receipt") + ", receipt ID=" + id + ", acknowledged at=" + string(time))
 
             receiptEl = receiptEl->findNextSiblingElement("receipt");
           }
@@ -487,10 +486,10 @@ namespace openpeer
       String IConversationThreadParser::MessageReceipts::getDebugValueString(bool includeCommaPrefix) const
       {
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("receipts id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("receipts id", string(mID), firstTime) +
                Helper::getDebugValue("receipts element", mReceiptsEl ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("version", 0 != mVersion ? Stringize<typeof(mVersion)>(mVersion).string() : String(), firstTime) +
-               Helper::getDebugValue("receipts", mReceipts.size() > 0 ? Stringize<size_t>(mReceipts.size()).string() : String(), firstTime);
+               Helper::getDebugValue("version", 0 != mVersion ? string(mVersion) : String(), firstTime) +
+               Helper::getDebugValue("receipts", mReceipts.size() > 0 ? string(mReceipts.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -527,7 +526,7 @@ namespace openpeer
       String IConversationThreadParser::ThreadContact::getDebugValueString(bool includeCommaPrefix) const
       {
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("contact id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("contact id", string(mID), firstTime) +
                IContact::toDebugString(mContact) +
                Helper::getDebugValue("profile bundle", mProfileBundleEl ? String("true") : String(), firstTime);
       }
@@ -587,7 +586,7 @@ namespace openpeer
 
         ElementPtr contactsEl = Element::create("contacts");
         if (0 != version) {
-          contactsEl->setAttribute("version", Stringize<UINT>(version).string());
+          contactsEl->setAttribute("version", string(version));
         }
 
         for (ThreadContactMap::const_iterator iter = pThis->mContacts.begin(); iter != pThis->mContacts.end(); ++iter)
@@ -723,11 +722,11 @@ namespace openpeer
       String IConversationThreadParser::ThreadContacts::getDebugValueString(bool includeCommaPrefix) const
       {
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("contact id", Stringize<typeof(mID)>(mID).string(), firstTime) +
-               Helper::getDebugValue("version", 0 != mVersion ? Stringize<typeof(mVersion)>(mVersion).string() : String(), firstTime) +
-               Helper::getDebugValue("contacts", mContacts.size() > 0 ? Stringize<size_t>(mContacts.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("add contacts", mAddContacts.size() > 0 ? Stringize<size_t>(mAddContacts.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("remove contacts", mRemoveContacts.size() > 0 ? Stringize<size_t>(mRemoveContacts.size()).string() : String(), firstTime);
+        return Helper::getDebugValue("contact id", string(mID), firstTime) +
+               Helper::getDebugValue("version", 0 != mVersion ? string(mVersion) : String(), firstTime) +
+               Helper::getDebugValue("contacts", mContacts.size() > 0 ? string(mContacts.size()) : String(), firstTime) +
+               Helper::getDebugValue("add contacts", mAddContacts.size() > 0 ? string(mAddContacts.size()) : String(), firstTime) +
+               Helper::getDebugValue("remove contacts", mRemoveContacts.size() > 0 ? string(mRemoveContacts.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -852,7 +851,7 @@ namespace openpeer
         for (int loop = (int)DialogState_First; loop <= DialogState_Last; ++loop)
         {
           const char *name = toString((DialogStates)loop);
-          if (Stringize<CSTR>(name).string() == state) return (DialogStates)loop;
+          if (string(name) == state) return (DialogStates)loop;
         }
         return DialogState_None;
       }
@@ -977,28 +976,28 @@ namespace openpeer
         pThis->mThisWeak = pThis;
 
         pThis->mVersion = version;
-        pThis->mDialogID = Stringize<CSTR>(dialogID);
+        pThis->mDialogID = dialogID;
         pThis->mState = state;
         pThis->mClosedReason = closedReason;
         pThis->mClosedReasonMessage = toString(closedReason);
-        pThis->mCallerContactURI = Stringize<CSTR>(callerContactURI);
-        pThis->mCallerLocationID = Stringize<CSTR>(callerLocationID);
-        pThis->mCalleeContactURI = Stringize<CSTR>(calleeContactURI);
-        pThis->mCalleeLocationID = Stringize<CSTR>(calleeLocationID);
-        pThis->mReplacesDialogID = Stringize<CSTR>(replacesDialogID);
+        pThis->mCallerContactURI = string(callerContactURI);
+        pThis->mCallerLocationID = string(callerLocationID);
+        pThis->mCalleeContactURI = string(calleeContactURI);
+        pThis->mCalleeLocationID = string(calleeLocationID);
+        pThis->mReplacesDialogID = string(replacesDialogID);
         pThis->mDescriptions = descriptions;
 
         ElementPtr dialogBundleEl = createElement("dialogBundle", ("bundle_" + dialogID).c_str());
         ElementPtr dialogEl = createElement("dialog", dialogID);
         if (0 != version) {
-          dialogEl->setAttribute("version", Stringize<UINT>(version).string());
+          dialogEl->setAttribute("version", string(version));
         }
         dialogBundleEl->adoptAsLastChild(dialogEl);
 
         ElementPtr stateEl = createElementWithText("state", toString(state));
         ElementPtr closedEl;
         if (DialogClosedReason_None != closedReason) {
-          closedEl = createElementWithText("closed", Stringize<DialogClosedReasons>(closedReason).string(), pThis->mClosedReasonMessage);
+          closedEl = createElementWithText("closed", string(closedReason), pThis->mClosedReasonMessage);
         }
         ElementPtr fromContactIDEl = createElement("caller", callerContactURI);
         ElementPtr fromLocationIDEl = createElement("callerLocation", callerLocationID);
@@ -1032,10 +1031,10 @@ namespace openpeer
           ElementPtr descriptionEl = createElement("description", description->mDescriptionID);
           descriptionEl->setAttribute("type", description->mType);
           if (0 != description->mVersion) {
-            descriptionEl->setAttribute("version", Stringize<UINT>(description->mVersion).string());
+            descriptionEl->setAttribute("version", string(description->mVersion));
           }
 
-          ElementPtr ssrcEl = createElementWithText("ssrc", Stringize<ULONG>(description->mSSRC).string());
+          ElementPtr ssrcEl = createElementWithText("ssrc", string(description->mSSRC));
           ElementPtr securityEl = Element::create("security");
           securityEl->setAttribute("cipher", description->mSecurityCipher);
           ElementPtr secretEl = createElementWithText("secret", description->mSecuritySecret);
@@ -1047,12 +1046,12 @@ namespace openpeer
           {
             const Codec &codec = (*codecIter);
 
-            ElementPtr codecEl = createElement("codec", Stringize<UINT>(codec.mCodecID).string());
+            ElementPtr codecEl = createElement("codec", string(codec.mCodecID));
 
             ElementPtr nameEl = createElementWithText("name", codec.mName);
-            ElementPtr pTimeEl = createElementWithText("ptime", Stringize<UINT>(codec.mPTime).string());
-            ElementPtr rateEl = createElementWithText("rate", Stringize<UINT>(codec.mRate).string());
-            ElementPtr channelsEl = createElementWithText("channels", Stringize<UINT>(codec.mChannels).string());
+            ElementPtr pTimeEl = createElementWithText("ptime", string(codec.mPTime));
+            ElementPtr rateEl = createElementWithText("rate", string(codec.mRate));
+            ElementPtr channelsEl = createElementWithText("channels", string(codec.mChannels));
 
             codecEl->adoptAsLastChild(nameEl);
             codecEl->adoptAsLastChild(pTimeEl);
@@ -1087,7 +1086,7 @@ namespace openpeer
               const CandidateList &sourceList = (*listsIter).second;
               const Candidate &found = find(finalCandidate, sourceList);
 
-              ElementPtr portEl = createElementWithText("port", Stringize<WORD>(found.mIPAddress.getPort()).string());
+              ElementPtr portEl = createElementWithText("port", string(found.mIPAddress.getPort()));
               portsEl->adoptAsLastChild(portEl);
             }
 
@@ -1095,7 +1094,7 @@ namespace openpeer
             ElementPtr passwordEl = createElementWithText("password", finalCandidate.mPassword);
             ElementPtr transportEl = createElementWithText("transport", "udp");
             ElementPtr protocolEl = createElementWithText("protocol", (finalCandidate.mProtocol.isEmpty() ? "rtp/avp" : ""));
-            ElementPtr priorityEl = createElementWithText("priority", Stringize<DWORD>(finalCandidate.mPriority).string());
+            ElementPtr priorityEl = createElementWithText("priority", string(finalCandidate.mPriority));
 
             candidateEl->adoptAsLastChild(ipEl);
             candidateEl->adoptAsLastChild(portsEl);
@@ -1283,8 +1282,8 @@ namespace openpeer
       String IConversationThreadParser::Dialog::getDebugValueString(bool includeCommaPrefix) const
       {
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("dialog id", Stringize<typeof(mID)>(mID).string(), firstTime) +
-               Helper::getDebugValue("version", (0 != mVersion ? Stringize<UINT>(mVersion).string() : String()), firstTime) +
+        return Helper::getDebugValue("dialog id", string(mID), firstTime) +
+               Helper::getDebugValue("version", (0 != mVersion ? string(mVersion) : String()), firstTime) +
                Helper::getDebugValue("dialog ID", mDialogID, firstTime) +
                Helper::getDebugValue("state", toString(mState), firstTime) +
                Helper::getDebugValue("closed reason", toString(mClosedReason), firstTime) +
@@ -1306,11 +1305,11 @@ namespace openpeer
       String IConversationThreadParser::Dialog::Codec::getDebugValueString(bool includeCommaPrefix) const
       {
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("codec id", Stringize<typeof(mCodecID)>(mCodecID).string(), firstTime) +
+        return Helper::getDebugValue("codec id", string(mCodecID), firstTime) +
                Helper::getDebugValue("name", mName, firstTime) +
-               Helper::getDebugValue("ptime", 0 != mPTime ? Stringize<typeof(mPTime)>(mPTime).string() : String(), firstTime) +
-               Helper::getDebugValue("rate", 0 != mRate ? Stringize<typeof(mRate)>(mRate).string() : String(), firstTime) +
-               Helper::getDebugValue("channels", 0 != mChannels ? Stringize<typeof(mChannels)>(mChannels).string() : String(), firstTime);
+               Helper::getDebugValue("ptime", 0 != mPTime ? string(mPTime) : String(), firstTime) +
+               Helper::getDebugValue("rate", 0 != mRate ? string(mRate) : String(), firstTime) +
+               Helper::getDebugValue("channels", 0 != mChannels ? string(mChannels) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -1326,14 +1325,14 @@ namespace openpeer
       {
         bool firstTime = !includeCommaPrefix;
         return Helper::getDebugValue("description id", mDescriptionID, firstTime) +
-               Helper::getDebugValue("version", 0 != mVersion ? Stringize<typeof(mVersion)>(mVersion).string() : String(), firstTime) +
+               Helper::getDebugValue("version", 0 != mVersion ? string(mVersion) : String(), firstTime) +
                Helper::getDebugValue("type", mType, firstTime) +
-               Helper::getDebugValue("ssrc", 0 != mSSRC ? Stringize<typeof(mSSRC)>(mSSRC).string() : String(), firstTime) +
+               Helper::getDebugValue("ssrc", 0 != mSSRC ? string(mSSRC) : String(), firstTime) +
                Helper::getDebugValue("cipher", mSecurityCipher, firstTime) +
                Helper::getDebugValue("secret", mSecuritySecret, firstTime) +
                Helper::getDebugValue("salt", mSecuritySalt, firstTime) +
-               Helper::getDebugValue("codecs", mCodecs.size() > 0 ? Stringize<size_t>(mCodecs.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("codecs", mCandidateLists.size() > 0 ? Stringize<size_t>(mCandidateLists.size()).string() : String(), firstTime);
+               Helper::getDebugValue("codecs", mCodecs.size() > 0 ? string(mCodecs.size()) : String(), firstTime) +
+               Helper::getDebugValue("codecs", mCandidateLists.size() > 0 ? string(mCandidateLists.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -1400,16 +1399,16 @@ namespace openpeer
         pThis->mID = zsLib::createPUID();
         pThis->mThisWeak = pThis;
         pThis->mVersion = version;
-        pThis->mBaseThreadID = Stringize<CSTR>(baseThreadID);
-        pThis->mHostThreadID = Stringize<CSTR>(hostThreadID);
-        pThis->mReplacesThreadID = Stringize<CSTR>(replaces);
+        pThis->mBaseThreadID = string(baseThreadID);
+        pThis->mHostThreadID = string(hostThreadID);
+        pThis->mReplacesThreadID = string(replaces);
         pThis->mState = state;
-        pThis->mTopic = Stringize<CSTR>(topic);
+        pThis->mTopic = string(topic);
         pThis->mCreated = zsLib::now();
 
         ElementPtr detailsEl = Element::create("details");
         if (0 != version) {
-          detailsEl->setAttribute("version", Stringize<UINT>(version).string());
+          detailsEl->setAttribute("version", string(version));
         }
 
         ElementPtr threadBaseEl = createElement("threadBase", baseThreadID);
@@ -1472,8 +1471,8 @@ namespace openpeer
       String IConversationThreadParser::Details::getDebugValueString(bool includeCommaPrefix) const
       {
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("details id", Stringize<typeof(mID)>(mID).string(), firstTime) +
-               Helper::getDebugValue("version", 0 != mVersion ? Stringize<typeof(mVersion)>(mVersion).string() : String(), firstTime) +
+        return Helper::getDebugValue("details id", string(mID), firstTime) +
+               Helper::getDebugValue("version", 0 != mVersion ? string(mVersion) : String(), firstTime) +
                Helper::getDebugValue("base thread id (s)", mBaseThreadID, firstTime) +
                Helper::getDebugValue("host thread id (s)", mHostThreadID, firstTime) +
                Helper::getDebugValue("replaces thread id (s)", mReplacesThreadID, firstTime) +
@@ -1528,7 +1527,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       IConversationThreadParser::Thread::ThreadTypes IConversationThreadParser::Thread::toThreadTypes(const char *inType) throw (InvalidArgument)
       {
-        String type = Stringize<CSTR>(inType);
+        String type = string(inType);
         if (type == "host") return ThreadType_Host;
         if (type == "slave") return ThreadType_Slave;
         return ThreadType_Host;
@@ -2074,11 +2073,11 @@ namespace openpeer
         ElementPtr threadEl = Element::create("thread");
         ElementPtr messagesEl = Element::create("messages");
         if (0 != pThis->mMessagesVersion) {
-          messagesEl->setAttribute("version", Stringize<UINT>(pThis->mMessagesVersion));
+          messagesEl->setAttribute("version", string(pThis->mMessagesVersion));
         }
         ElementPtr dialogsEl = Element::create("dialogs");
         if (0 != pThis->mDialogsVersion) {
-          dialogsEl->setAttribute("version", Stringize<UINT>(pThis->mDialogsVersion));
+          dialogsEl->setAttribute("version", string(pThis->mDialogsVersion));
         }
 
         doc->adoptAsLastChild(threadEl);
@@ -2252,7 +2251,7 @@ namespace openpeer
             ++mMessagesVersion;
 
             ElementPtr setEl = Element::create();
-            setEl->setAttribute("version", Stringize<UINT>(mMessagesVersion).string());
+            setEl->setAttribute("version", string(mMessagesVersion));
 
             // put the corrected version on the messages element...
             IDiff::createDiffsForAttributes(mChangesDoc, messagesEl, false, setEl);
@@ -2285,7 +2284,7 @@ namespace openpeer
             ++mDialogsVersion;
 
             ElementPtr setEl = Element::create();
-            setEl->setAttribute("version", Stringize<UINT>(mDialogsVersion).string());
+            setEl->setAttribute("version", string(mDialogsVersion));
 
             IDiff::createDiffsForAttributes(mChangesDoc, dialogsEl, false, setEl);
 
@@ -2641,7 +2640,7 @@ namespace openpeer
       String IConversationThreadParser::Thread::getDebugValueString(bool includeCommaPrefix) const
       {
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("parser thread id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("parser thread id", string(mID), firstTime) +
                Helper::getDebugValue("type", toString(mType), firstTime) +
                Helper::getDebugValue("can modify", mCanModify ? String("true") : String(), firstTime) +
                Helper::getDebugValue("modifying", mModifying ? String("true") : String(), firstTime) +
@@ -2649,27 +2648,27 @@ namespace openpeer
                IPublication::toDebugString(mPermissionPublication) +
                Details::toDebugString(mDetails) +
                ThreadContacts::toDebugString(mContacts) +
-               Helper::getDebugValue("message version", 0 != mMessagesVersion ? Stringize<typeof(mMessagesVersion)>(mMessagesVersion).string() : String(), firstTime) +
-               Helper::getDebugValue("message list", mMessageList.size() > 0 ? Stringize<size_t>(mMessageList.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("message map", mMessageMap.size() > 0 ? Stringize<size_t>(mMessageMap.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("message version", 0 != mMessagesVersion ? string(mMessagesVersion) : String(), firstTime) +
+               Helper::getDebugValue("message list", mMessageList.size() > 0 ? string(mMessageList.size()) : String(), firstTime) +
+               Helper::getDebugValue("message map", mMessageMap.size() > 0 ? string(mMessageMap.size()) : String(), firstTime) +
                MessageReceipts::toDebugString(mMessageReceipts) +
-               Helper::getDebugValue("dialog version", 0 != mDialogsVersion ? Stringize<typeof(mDialogsVersion)>(mDialogsVersion).string() : String(), firstTime) +
-               Helper::getDebugValue("dialogs", mDialogs.size() > 0 ? Stringize<size_t>(mDialogs.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("dialog version", 0 != mDialogsVersion ? string(mDialogsVersion) : String(), firstTime) +
+               Helper::getDebugValue("dialogs", mDialogs.size() > 0 ? string(mDialogs.size()) : String(), firstTime) +
                Helper::getDebugValue("changes", mChangesDoc ? String("true") : String(), firstTime) +
                Helper::getDebugValue("details changed", mDetailsChanged ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("contacts changed", mContactsChanged.size() > 0 ? Stringize<size_t>(mContactsChanged.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("contacts removed", mContactsRemoved.size() > 0 ? Stringize<size_t>(mContactsRemoved.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("contacts to add changed", mContactsToAddChanged.size() > 0 ? Stringize<size_t>(mContactsToAddChanged.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("contacts to add removed", mContactsToAddRemoved.size() > 0 ? Stringize<size_t>(mContactsToAddRemoved.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("contacts to remove changed", mContactsToRemoveChanged.size() > 0 ? Stringize<size_t>(mContactsToRemoveChanged.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("contacts to remove removed", mContactsToRemoveRemoved.size() > 0 ? Stringize<size_t>(mContactsToRemoveRemoved.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("messages changed", mMessagesChanged.size() > 0 ? Stringize<size_t>(mMessagesChanged.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("contacts changed", mContactsChanged.size() > 0 ? string(mContactsChanged.size()) : String(), firstTime) +
+               Helper::getDebugValue("contacts removed", mContactsRemoved.size() > 0 ? string(mContactsRemoved.size()) : String(), firstTime) +
+               Helper::getDebugValue("contacts to add changed", mContactsToAddChanged.size() > 0 ? string(mContactsToAddChanged.size()) : String(), firstTime) +
+               Helper::getDebugValue("contacts to add removed", mContactsToAddRemoved.size() > 0 ? string(mContactsToAddRemoved.size()) : String(), firstTime) +
+               Helper::getDebugValue("contacts to remove changed", mContactsToRemoveChanged.size() > 0 ? string(mContactsToRemoveChanged.size()) : String(), firstTime) +
+               Helper::getDebugValue("contacts to remove removed", mContactsToRemoveRemoved.size() > 0 ? string(mContactsToRemoveRemoved.size()) : String(), firstTime) +
+               Helper::getDebugValue("messages changed", mMessagesChanged.size() > 0 ? string(mMessagesChanged.size()) : String(), firstTime) +
                Helper::getDebugValue("messages changed time", Time() != mMessagesChangedTime ? services::IHelper::timeToString(mMessagesChangedTime) : String(), firstTime) +
-               Helper::getDebugValue("messages receipts changed", mMessageReceiptsChanged.size() > 0 ? Stringize<size_t>(mMessageReceiptsChanged.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("dialogs changed", mDialogsChanged.size() > 0 ? Stringize<size_t>(mDialogsChanged.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("dialogs removed", mDialogsRemoved.size() > 0 ? Stringize<size_t>(mDialogsRemoved.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("descriptions changed", mDescriptionsChanged.size() > 0 ? Stringize<size_t>(mDescriptionsChanged.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("descriptions removed", mDescriptionsRemoved.size() > 0 ? Stringize<size_t>(mDescriptionsRemoved.size()).string() : String(), firstTime);
+               Helper::getDebugValue("messages receipts changed", mMessageReceiptsChanged.size() > 0 ? string(mMessageReceiptsChanged.size()) : String(), firstTime) +
+               Helper::getDebugValue("dialogs changed", mDialogsChanged.size() > 0 ? string(mDialogsChanged.size()) : String(), firstTime) +
+               Helper::getDebugValue("dialogs removed", mDialogsRemoved.size() > 0 ? string(mDialogsRemoved.size()) : String(), firstTime) +
+               Helper::getDebugValue("descriptions changed", mDescriptionsChanged.size() > 0 ? string(mDescriptionsChanged.size()) : String(), firstTime) +
+               Helper::getDebugValue("descriptions removed", mDescriptionsRemoved.size() > 0 ? string(mDescriptionsRemoved.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -2693,7 +2692,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String IConversationThreadParser::Thread::log(const char *message) const
       {
-        return String("IConversationThreadParser::Thread [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("IConversationThreadParser::Thread [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------

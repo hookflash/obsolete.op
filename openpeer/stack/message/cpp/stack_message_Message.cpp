@@ -50,7 +50,6 @@ namespace openpeer
   {
     namespace message
     {
-      using zsLib::Stringize;
       using services::IHelper;
 
       using stack::internal::IStackForInternal;
@@ -120,7 +119,7 @@ namespace openpeer
 
         if (message->isResult()) {
           MessageResultPtr result = MessageResult::convert(message);
-          errorCode = 0 != result->errorCode() ? Stringize<WORD>(result->errorCode()).string() : String();
+          errorCode = 0 != result->errorCode() ? string(result->errorCode()) : String();
           errorReason = result->errorReason();
         }
 

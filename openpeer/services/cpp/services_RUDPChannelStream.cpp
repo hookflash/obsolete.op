@@ -74,8 +74,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
-
       using services::internal::IRUDPChannelStreamPtr;
 
       //-----------------------------------------------------------------------
@@ -94,7 +92,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       static String sequenceToString(QWORD value)
       {
-        return Stringize<QWORD>(value).string() + " (" + Stringize<QWORD>(value & 0xFFFFFF).string() + ")";
+        return string(value) + " (" + string(value & 0xFFFFFF) + ")";
       }
       
       //-----------------------------------------------------------------------
@@ -360,7 +358,7 @@ namespace openpeer
       {
         AutoRecursiveLock lock(mLock);
 
-        ZS_LOG_DETAIL(log("shutdown direction called") + ", state=" + Stringize<int>(state).string() + ", existing=" + Stringize<int>(mShutdownState).string())
+        ZS_LOG_DETAIL(log("shutdown direction called") + ", state=" + string(state) + ", existing=" + string(mShutdownState))
         mShutdownState = static_cast<Shutdown>(mShutdownState | state);  // you cannot stop shutting down what has already been shutting down
         if (0 != (IRUDPChannel::Shutdown_Receive & mShutdownState)) {
           // clear out the read data entirely - effectively acts as an ignore filter on the received data
@@ -391,7 +389,7 @@ namespace openpeer
                                        ULONG bufferSizeAvailableInBytes
                                        )
       {
-        ZS_LOG_DEBUG(log("receive called") + ", buffer size=" + Stringize<ULONG>(bufferSizeAvailableInBytes).string())
+        ZS_LOG_DEBUG(log("receive called") + ", buffer size=" + string(bufferSizeAvailableInBytes))
 
         AutoRecursiveLock lock(mLock);
         mInformedReadReady = false; // if this method was called in response to a read-ready event then clear the read-ready flag so the event can fire again
@@ -464,7 +462,7 @@ namespace openpeer
           totalAvailable += available;
         }
 
-        ZS_LOG_DEBUG(log("receive get size called") + ", result size=" + Stringize<ULONG>(totalAvailable).string())
+        ZS_LOG_DEBUG(log("receive get size called") + ", result size=" + string(totalAvailable))
         return totalAvailable;
       }
 
@@ -474,7 +472,7 @@ namespace openpeer
                                    ULONG bufferLengthInBytes
                                    )
       {
-        ZS_LOG_DEBUG(log("send called") + ", size=" + Stringize<ULONG>(bufferLengthInBytes).string())
+        ZS_LOG_DEBUG(log("send called") + ", size=" + string(bufferLengthInBytes))
 
         ZS_THROW_INVALID_USAGE_IF(!buffer)
 
@@ -496,7 +494,7 @@ namespace openpeer
           ULONG available = last->mAllocSizeInBytes - last->mBufferLengthInBytes;
           available = (available > bufferLengthInBytes ? bufferLengthInBytes : available);
           if (0 != available) {
-            ZS_LOG_DEBUG(log("adding to existing buffer") + ", available=" + Stringize<ULONG>(available).string())
+            ZS_LOG_DEBUG(log("adding to existing buffer") + ", available=" + string(available))
             memcpy(&((last->mBuffer.get())[last->mBufferLengthInBytes]), buffer, available);
 
             last->mBufferLengthInBytes += available;
@@ -511,7 +509,7 @@ namespace openpeer
           }
         }
 
-        ZS_LOG_DEBUG(log("adding to new buffer") + ", size=" + Stringize<ULONG>(bufferLengthInBytes).string())
+        ZS_LOG_DEBUG(log("adding to new buffer") + ", size=" + string(bufferLengthInBytes))
 
         // we have data that cannot fit into the last buffer, create a new data buffer
         BufferedDataPtr data = BufferedData::create();
@@ -542,7 +540,7 @@ namespace openpeer
           totalSending += sending;
         }
 
-        ZS_LOG_DEBUG(log("get send size called") + ", result=" + Stringize<ULONG>(totalSending).string())
+        ZS_LOG_DEBUG(log("get send size called") + ", result=" + string(totalSending))
         return totalSending;
       }
 
@@ -554,7 +552,7 @@ namespace openpeer
                                            bool ecnMarked
                                            )
       {
-        ZS_LOG_TRACE(log("handle packet called") + ", size=" + Stringize<ULONG>(originalBufferLengthInBytes).string() + ", ecn=" + (ecnMarked ? "true" : "false"))
+        ZS_LOG_TRACE(log("handle packet called") + ", size=" + string(originalBufferLengthInBytes) + ", ecn=" + (ecnMarked ? "true" : "false"))
 
         bool fireExternalACKIfNotSent = false;
 
@@ -564,7 +562,7 @@ namespace openpeer
           if (!mDelegate) return false;
 
           if (packet->mChannelNumber != mReceivingChannelNumber) {
-            ZS_LOG_WARNING(Debug, log("incoming channel mismatch") + ", channel=" + Stringize<WORD>(mReceivingChannelNumber).string() + ", packet channel=" + Stringize<WORD>(packet->mChannelNumber).string())
+            ZS_LOG_WARNING(Debug, log("incoming channel mismatch") + ", channel=" + string(mReceivingChannelNumber) + ", packet channel=" + string(packet->mChannelNumber))
             return false;
           }
 
@@ -716,8 +714,8 @@ namespace openpeer
                                                 )
       {
         ZS_LOG_TRACE(log("handle external ACK called") +
-                              ", forced ACK ID=" + Stringize<PUID>(mForceACKOfSentPacketsRequestID).string() +
-                              ", guarenteed delivery request ID=" + Stringize<PUID>(guarenteedDeliveryRequestID).string() +
+                              ", forced ACK ID=" + string(mForceACKOfSentPacketsRequestID) +
+                              ", guarenteed delivery request ID=" + string(guarenteedDeliveryRequestID) +
                               ", sequence number=" + sequenceToString(nextSequenceNumber) +
                               ", GSNR=" + sequenceToString(greatestSequenceNumberReceived) +
                               ", GSNFR=" + sequenceToString(greatestSequenceNumberFullyReceived))
@@ -783,7 +781,7 @@ namespace openpeer
               ZS_LOG_TRACE(log("force ACK starting to process")  +
                                   ", starting at ACK sequence number=" + sequenceToString(sequenceNumber) +
                                   ", forced ACK to sequence number=" + sequenceToString(mForceACKOfSentPacketsAtSendingSequnceNumber) +
-                                  ", batons available=" + Stringize<ULONG>(mAvailableBurstBatons).string())
+                                  ", batons available=" + string(mAvailableBurstBatons))
             }
 
             packet->flagForResending(mTotalPacketsToResend);  // if this packet was not ACKed but should be resent because it never arrived after the current forced ACK replied
@@ -793,12 +791,12 @@ namespace openpeer
           ZS_LOG_TRACE(log("forced ACK cannot ACK beyond the forced ACK point") +
                                   ", stopped at ACK sequence number=" + sequenceToString(sequenceNumber) +
                                   ", forced ACK to sequence number=" + sequenceToString(mForceACKOfSentPacketsAtSendingSequnceNumber) +
-                                  ", batons available=" + Stringize<ULONG>(mAvailableBurstBatons).string())
+                                  ", batons available=" + string(mAvailableBurstBatons))
         }
 
         if (mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer) {
           // since an ACK did arrive, we can cancel this timer which ensures an ACK will arrive
-          ZS_LOG_TRACE(log("cancelling ensure data arrived timer because we did receive an ACK") + ", old timer ID=" + Stringize<PUID>(mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer->getID()).string())
+          ZS_LOG_TRACE(log("cancelling ensure data arrived timer because we did receive an ACK") + ", old timer ID=" + string(mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer->getID()))
           mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer->cancel();
           mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer.reset();
         }
@@ -880,7 +878,7 @@ namespace openpeer
                      + ", GSNR=" + sequenceToString(outGreatestSequenceNumberReceived)
                      + ", GSNFR=" + sequenceToString(outGreatestSequenceNumberFullyReceived)
                      + ", vector=" + vectorParityField
-                     + ", vector size=" + Stringize<ULONG>(outVectorSizeInBytes).string()
+                     + ", vector size=" + string(outVectorSizeInBytes)
                      + ", vp=" + (outVPFlag ? "true" : "false")
                      + ", pg=" + (outPGFlag ? "true" : "false")
                      + ", xp=" + (outXPFlag ? "true" : "false")
@@ -909,7 +907,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void RUDPChannelStream::onTimer(TimerPtr timer)
       {
-        ZS_LOG_TRACE(log("tick") + ", timer ID=" + Stringize<PUID>(timer->getID()).string())
+        ZS_LOG_TRACE(log("tick") + ", timer ID=" + string(timer->getID()))
 
         {
           AutoRecursiveLock lock(mLock);
@@ -918,18 +916,18 @@ namespace openpeer
           PUID ensureID = (mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer ? mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer->getID() : 0);
           PUID addID = (mAddToAvailableBurstBatonsTimer ? mAddToAvailableBurstBatonsTimer->getID() : 0);
 
-          ZS_LOG_TRACE(log("tick") + ", comparing timer ID=" + Stringize<PUID>(timer->getID()).string() +
-                       ", burst ID=" + Stringize<PUID>(burstID).string() +
-                       ", ensure ID=" + Stringize<PUID>(ensureID).string() +
-                       ", addID ID=" + Stringize<PUID>(addID).string())
+          ZS_LOG_TRACE(log("tick") + ", comparing timer ID=" + string(timer->getID()) +
+                       ", burst ID=" + string(burstID) +
+                       ", ensure ID=" + string(ensureID) +
+                       ", addID ID=" + string(addID))
 
           if (timer == mBurstTimer) {
-            ZS_LOG_TRACE(log("burst timer is firing") + ", timer ID=" + Stringize<PUID>(timer->getID()).string())
+            ZS_LOG_TRACE(log("burst timer is firing") + ", timer ID=" + string(timer->getID()))
             goto quickExitToSendNow;
           }
 
           if (timer == mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer) {
-            ZS_LOG_TRACE(log("ensuring data has arrived by causing an external ACK") + ", timer ID=" + Stringize<PUID>(timer->getID()).string())
+            ZS_LOG_TRACE(log("ensuring data has arrived by causing an external ACK") + ", timer ID=" + string(timer->getID()))
             // this is only fired once if there is data that we want to force an ACK from the remote party
             mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer->cancel();
             mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer.reset();
@@ -940,19 +938,19 @@ namespace openpeer
           }
 
           if (timer == mAddToAvailableBurstBatonsTimer) {
-            ZS_LOG_TRACE(log("available burst batons timer fired") + ", timer ID=" + Stringize<PUID>(timer->getID()).string())
+            ZS_LOG_TRACE(log("available burst batons timer fired") + ", timer ID=" + string(timer->getID()))
 
             if (0 == (rand()%2)) {
               ++mAvailableBurstBatons;
-              ZS_LOG_TRACE(log("creating a new sending burst baton now") + ", batons available=" + Stringize<ULONG>(mAvailableBurstBatons).string())
+              ZS_LOG_TRACE(log("creating a new sending burst baton now") + ", batons available=" + string(mAvailableBurstBatons))
             } else {
               ++mPacketsPerBurst;
-              ZS_LOG_TRACE(log("increasing the packets per burst") + ", packets per burst=" + Stringize<ULONG>(mPacketsPerBurst).string())
+              ZS_LOG_TRACE(log("increasing the packets per burst") + ", packets per burst=" + string(mPacketsPerBurst))
             }
             goto quickExitToSendNow;
           }
 
-          ZS_LOG_TRACE(log("unknown time has fired") + ", timer ID=" + Stringize<PUID>(timer->getID()).string())
+          ZS_LOG_TRACE(log("unknown time has fired") + ", timer ID=" + string(timer->getID()))
         }
 
       quickExitToSendNow:
@@ -986,7 +984,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String RUDPChannelStream::log(const char *message) const
       {
-        return String("RUDPChannelStream [") + Stringize<PUID>(mID).string() + "] " + message;
+        return String("RUDPChannelStream [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -1116,11 +1114,11 @@ namespace openpeer
           AutoRecursiveLock lock(mLock);
 
           ZS_LOG_TRACE(log("send now called") +
-                            ", available burst batons=" + Stringize<ULONG>(mAvailableBurstBatons).string() +
-                            ", packets per burst=" + Stringize<ULONG>(mPacketsPerBurst).string() +
-                            ", resend=" + Stringize<ULONG>(mTotalPacketsToResend).string() +
-                            ", send size=" + Stringize<size_t>(mSendingPackets.size()).string() +
-                            ", write data=" + Stringize<size_t>(mWriteData.size()).string())
+                            ", available burst batons=" + string(mAvailableBurstBatons) +
+                            ", packets per burst=" + string(mPacketsPerBurst) +
+                            ", resend=" + string(mTotalPacketsToResend) +
+                            ", send size=" + string(mSendingPackets.size()) +
+                            ", write data=" + string(mWriteData.size()))
 
           if (isShutdown()) {
             ZS_LOG_TRACE(log("already shutdown thus aborting send now"))
@@ -1263,7 +1261,7 @@ namespace openpeer
                              + ", GSNR=" + sequenceToString(mGSNR)
                              + ", GSNFR=" + sequenceToString(mGSNFR)
                              + ", vector=" + vectorParityField
-                             + ", vector size=" + Stringize<ULONG>(newPacket->mVectorLengthInBytes).string()
+                             + ", vector size=" + string(newPacket->mVectorLengthInBytes)
                              + ", ps=" + (newPacket->isFlagSet(RUDPPacket::Flag_PS_ParitySending) ? "true" : "false")
                              + ", pg=" + (newPacket->isFlagSet(RUDPPacket::Flag_PG_ParityGSNR) ? "true" : "false")
                              + ", xp=" + (newPacket->isFlagSet(RUDPPacket::Flag_XP_XORedParityToGSNFR) ? "true" : "false")
@@ -1290,7 +1288,7 @@ namespace openpeer
                   (1 == packetsToSend)) {
                 newPacket->setFlag(RUDPPacket::Flag_AR_ACKRequired);
                 if (mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer) {
-                  ZS_LOG_TRACE(log("since a newly created packet has an ACK we will cancel the current ensure timer") + ", timer ID=" + Stringize<PUID>(mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer->getID()).string())
+                  ZS_LOG_TRACE(log("since a newly created packet has an ACK we will cancel the current ensure timer") + ", timer ID=" + string(mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer->getID()))
                   // since this packet requires an ACK this packet will act as a implicit method to hopefully get an ACK from the remote party...
                   mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer->cancel();
                   mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer.reset();
@@ -1312,10 +1310,10 @@ namespace openpeer
               ZS_LOG_TRACE(
                            log("adding buffer to pending list")
                            + ", sequence number=" + sequenceToString(mNextSequenceNumber)
-                           + ", packet size=" + Stringize<ULONG>(packetizedLength).string()
+                           + ", packet size=" + string(packetizedLength)
                            + ", GSNR=" + sequenceToString(mGSNR)
                            + ", GSNFR=" + sequenceToString(mGSNFR)
-                           + ", vector size=" + Stringize<ULONG>(newPacket->mVectorLengthInBytes).string()
+                           + ", vector size=" + string(newPacket->mVectorLengthInBytes)
                            + ", ps=" + (newPacket->isFlagSet(RUDPPacket::Flag_PS_ParitySending) ? "true" : "false")
                            + ", pg=" + (newPacket->isFlagSet(RUDPPacket::Flag_PG_ParityGSNR) ? "true" : "false")
                            + ", xp=" + (newPacket->isFlagSet(RUDPPacket::Flag_XP_XORedParityToGSNFR) ? "true" : "false")
@@ -1348,7 +1346,7 @@ namespace openpeer
               goto sendNowQuickExit;
             }
 
-            ZS_LOG_TRACE(log("attempting to (re)send packet") + ", sequence number=" + sequenceToString(attemptToDeliver->mSequenceNumber) + ", packets to send=" + Stringize<ULONG>(packetsToSend).string())
+            ZS_LOG_TRACE(log("attempting to (re)send packet") + ", sequence number=" + sequenceToString(attemptToDeliver->mSequenceNumber) + ", packets to send=" + string(packetsToSend))
             bool sent = sendNowHelper(delegate, attemptToDeliverBuffer.get(), attemptToDeliverBufferSizeInBytes);
             if (!sent) {
               ZS_LOG_WARNING(Trace, log("unable to send data onto wire as data failed to send") + ", sequence number=" + sequenceToString(attemptToDeliver->mSequenceNumber))
@@ -1401,13 +1399,13 @@ namespace openpeer
       void RUDPChannelStream::sendNowCleanup()
       {
         ZS_LOG_TRACE(log("starting send now cleaup routine") +
-                            ", packets to resend=" + Stringize<ULONG>(mTotalPacketsToResend).string() +
-                            ", available batons=" + Stringize<ULONG>(mAvailableBurstBatons).string() +
-                            ", packets per burst=" + Stringize<ULONG>(mPacketsPerBurst).string() +
-                            ", write size=" + Stringize<size_t>(mWriteData.size()).string() +
-                            ", sending size=" + Stringize<size_t>(mSendingPackets.size()).string() +
+                            ", packets to resend=" + string(mTotalPacketsToResend) +
+                            ", available batons=" + string(mAvailableBurstBatons) +
+                            ", packets per burst=" + string(mPacketsPerBurst) +
+                            ", write size=" + string(mWriteData.size()) +
+                            ", sending size=" + string(mSendingPackets.size()) +
                             ", force ACK next time possible=" + (mForceACKNextTimePossible ? "true" : "false") +
-                            ", force ACK ID=" + Stringize<PUID>(mForceACKOfSentPacketsRequestID).string() +
+                            ", force ACK ID=" + string(mForceACKOfSentPacketsRequestID) +
                             ", forced sequence number=" + sequenceToString(mForceACKOfSentPacketsAtSendingSequnceNumber))
 
         if (isShutdown()) {
@@ -1506,11 +1504,11 @@ namespace openpeer
               burstDuration = Milliseconds(OPENPEER_SERVICES_RUDP_MINIMUM_BURST_TIMER_IN_MILLISECONDS);
             }
 
-            ZS_LOG_TRACE(log("creating a burst timer since there is data to send and available batons to send it") + ", timer ID=" + Stringize<PUID>(mBurstTimer->getID()).string() + ", available batons=" + Stringize<ULONG>(mAvailableBurstBatons).string() + ", write size=" + Stringize<size_t>(mWriteData.size()).string() + ", sending size=" + Stringize<size_t>(mSendingPackets.size()).string() + ", burst duration=" + Stringize<Duration::tick_type>(burstDuration.total_milliseconds()).string() + ", calculated RTT=" + Stringize<Duration::tick_type>(mCalculatedRTT.total_milliseconds()).string())
+            ZS_LOG_TRACE(log("creating a burst timer since there is data to send and available batons to send it") + ", timer ID=" + string(mBurstTimer->getID()) + ", available batons=" + string(mAvailableBurstBatons) + ", write size=" + string(mWriteData.size()) + ", sending size=" + string(mSendingPackets.size()) + ", burst duration=" + string(burstDuration.total_milliseconds()) + ", calculated RTT=" + string(mCalculatedRTT.total_milliseconds()))
           }
         } else {
           if (mBurstTimer) {
-            ZS_LOG_TRACE(log("cancelling the burst timer since there are no batons available or there is no more data to send") + ", timer ID=" + Stringize<PUID>(mBurstTimer->getID()).string() + ", available batons=" + Stringize<ULONG>(mAvailableBurstBatons).string() + ", write size=" + Stringize<size_t>(mWriteData.size()).string() + ", sending size=" + Stringize<size_t>(mSendingPackets.size()).string())
+            ZS_LOG_TRACE(log("cancelling the burst timer since there are no batons available or there is no more data to send") + ", timer ID=" + string(mBurstTimer->getID()) + ", available batons=" + string(mAvailableBurstBatons) + ", write size=" + string(mWriteData.size()) + ", sending size=" + string(mSendingPackets.size()))
 
             mBurstTimer->cancel();
             mBurstTimer.reset();
@@ -1524,11 +1522,11 @@ namespace openpeer
             // The timer is set to fire at 1.5 x calculated RTT
             mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer = Timer::create(mThisWeak.lock(), ensureDuration, false);
 
-            ZS_LOG_TRACE(log("starting ensure timer to make sure packets get acked") + ", timer ID=" + Stringize<PUID>(mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer->getID()).string() + ", available batons=" + Stringize<ULONG>(mAvailableBurstBatons).string() + ", write size=" + Stringize<size_t>(mWriteData.size()).string() + ", sending size=" + Stringize<size_t>(mSendingPackets.size()).string() + ", ensure duration=" + Stringize<Duration::tick_type>(ensureDuration.total_milliseconds()).string() + ", calculated RTT=" + Stringize<Duration::tick_type>(mCalculatedRTT.total_milliseconds()).string())
+            ZS_LOG_TRACE(log("starting ensure timer to make sure packets get acked") + ", timer ID=" + string(mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer->getID()) + ", available batons=" + string(mAvailableBurstBatons) + ", write size=" + string(mWriteData.size()) + ", sending size=" + string(mSendingPackets.size()) + ", ensure duration=" + string(ensureDuration.total_milliseconds()) + ", calculated RTT=" + string(mCalculatedRTT.total_milliseconds()))
           }
         } else {
           if (mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer) {
-            ZS_LOG_TRACE(log("stopping ensure timer as batons available for sending still and there is outstanding unacked send data in the buffer") + ", timer ID=" + Stringize<PUID>(mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer->getID()).string() + ", available batons=" + Stringize<ULONG>(mAvailableBurstBatons).string() + ", write size=" + Stringize<size_t>(mWriteData.size()).string() + ", sending size=" + Stringize<size_t>(mSendingPackets.size()).string())
+            ZS_LOG_TRACE(log("stopping ensure timer as batons available for sending still and there is outstanding unacked send data in the buffer") + ", timer ID=" + string(mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer->getID()) + ", available batons=" + string(mAvailableBurstBatons) + ", write size=" + string(mWriteData.size()) + ", sending size=" + string(mSendingPackets.size()))
             mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer->cancel();
             mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer.reset();
           }
@@ -1539,7 +1537,7 @@ namespace openpeer
           mForceACKOfSentPacketsAtSendingSequnceNumber = mNextSequenceNumber - 1;
           mForceACKNextTimePossible = false;
 
-          ZS_LOG_TRACE(log("forcing an ACK immediately") + ", ack ID=" + Stringize<PUID>(mForceACKOfSentPacketsRequestID).string() + ", forced sequence number=" + sequenceToString(mForceACKOfSentPacketsAtSendingSequnceNumber) + ", available batons=" + Stringize<ULONG>(mAvailableBurstBatons).string() + ", write size=" + Stringize<size_t>(mWriteData.size()).string() + ", sending size=" + Stringize<size_t>(mSendingPackets.size()).string())
+          ZS_LOG_TRACE(log("forcing an ACK immediately") + ", ack ID=" + string(mForceACKOfSentPacketsRequestID) + ", forced sequence number=" + sequenceToString(mForceACKOfSentPacketsAtSendingSequnceNumber) + ", available batons=" + string(mAvailableBurstBatons) + ", write size=" + string(mWriteData.size()) + ", sending size=" + string(mSendingPackets.size()))
 
           try {
             mDelegate->onRUDPChannelStreamSendExternalACKNow(mThisWeak.lock(), true, mForceACKOfSentPacketsRequestID);
@@ -1553,11 +1551,11 @@ namespace openpeer
         if (addBatonsTimer) {
           if (!mAddToAvailableBurstBatonsTimer) {
             mAddToAvailableBurstBatonsTimer = Timer::create(mThisWeak.lock(), mAddToAvailableBurstBatonsDuation);
-            ZS_LOG_TRACE(log("creating a new add to available batons timer") + ", timer ID=" + Stringize<PUID>(mAddToAvailableBurstBatonsTimer->getID()).string() + ", frozen=" + (mBandwidthIncreaseFrozen ? "true" : "false") + ", available batons=" + Stringize<ULONG>(mAvailableBurstBatons).string() + ", write size=" + Stringize<size_t>(mWriteData.size()).string() + ", sending size=" + Stringize<size_t>(mSendingPackets.size()).string())
+            ZS_LOG_TRACE(log("creating a new add to available batons timer") + ", timer ID=" + string(mAddToAvailableBurstBatonsTimer->getID()) + ", frozen=" + (mBandwidthIncreaseFrozen ? "true" : "false") + ", available batons=" + string(mAvailableBurstBatons) + ", write size=" + string(mWriteData.size()) + ", sending size=" + string(mSendingPackets.size()))
           }
         } else {
           if (mAddToAvailableBurstBatonsTimer) {
-            ZS_LOG_TRACE(log("cancelling add to available batons timer") + ", timer ID=" + Stringize<PUID>(mAddToAvailableBurstBatonsTimer->getID()).string() + ", frozen=" + (mBandwidthIncreaseFrozen ? "true" : "false") + ", available batons=" + Stringize<ULONG>(mAvailableBurstBatons).string() + ", write size=" + Stringize<size_t>(mWriteData.size()).string() + ", sending size=" + Stringize<size_t>(mSendingPackets.size()).string())
+            ZS_LOG_TRACE(log("cancelling add to available batons timer") + ", timer ID=" + string(mAddToAvailableBurstBatonsTimer->getID()) + ", frozen=" + (mBandwidthIncreaseFrozen ? "true" : "false") + ", available batons=" + string(mAvailableBurstBatons) + ", write size=" + string(mWriteData.size()) + ", sending size=" + string(mSendingPackets.size()))
             mAddToAvailableBurstBatonsTimer->cancel();
             mAddToAvailableBurstBatonsTimer.reset();
           }
@@ -1572,7 +1570,7 @@ namespace openpeer
                             ", force=" + (forceACKOfSentPacketsRequired ? "true" : "false") +
                             ", add timer=" + (addBatonsTimer ? "true" : "false") +
                             ", force ACK next time possible=" + (mForceACKNextTimePossible ? "true" : "false") +
-                            ", force ACK ID=" + Stringize<PUID>(mForceACKOfSentPacketsRequestID).string() +
+                            ", force ACK ID=" + string(mForceACKOfSentPacketsRequestID) +
                             ", forced sequence number=" + sequenceToString(mForceACKOfSentPacketsAtSendingSequnceNumber))
       }
 
@@ -1656,7 +1654,7 @@ namespace openpeer
                 if (mCalculatedRTT < mMinimumRTT)
                   mCalculatedRTT = mMinimumRTT;
 
-                ZS_LOG_TRACE(log("calculating RTT") + ", RTT milliseconds=" + Stringize<Duration::tick_type>(mCalculatedRTT.total_milliseconds()).string())
+                ZS_LOG_TRACE(log("calculating RTT") + ", RTT milliseconds=" + string(mCalculatedRTT.total_milliseconds()))
 
                 if (mCalculatedRTT > mAddToAvailableBurstBatonsDuation) {
                   mAddToAvailableBurstBatonsDuation = (mCalculatedRTT * 2);
@@ -1668,7 +1666,7 @@ namespace openpeer
                     mAddToAvailableBurstBatonsTimer.reset();
 
                     mAddToAvailableBurstBatonsTimer = Timer::create(mThisWeak.lock(), mAddToAvailableBurstBatonsDuation);
-                    ZS_LOG_TRACE(log("add to available batons timer is set too small based on calculated RTT") + ", old timer ID=" + Stringize<PUID>(oldTimerID).string() + ", new timer ID=" + Stringize<PUID>(mAddToAvailableBurstBatonsTimer->getID()).string() + ", duration milliseconds=" + Stringize<Duration::tick_type>(mAddToAvailableBurstBatonsDuation.total_milliseconds()).string())
+                    ZS_LOG_TRACE(log("add to available batons timer is set too small based on calculated RTT") + ", old timer ID=" + string(oldTimerID) + ", new timer ID=" + string(mAddToAvailableBurstBatonsTimer->getID()) + ", duration milliseconds=" + string(mAddToAvailableBurstBatonsDuation.total_milliseconds()))
                   }
                 }
               }
@@ -1805,7 +1803,7 @@ namespace openpeer
                        + ", GSNR=" + sequenceToString(gsnr)
                        + ", GSNFR=" + sequenceToString(gsnfr)
                        + ", vector=" + vectorParityField
-                       + ", vector size=" + Stringize<ULONG>(externalVectorLengthInBytes).string()
+                       + ", vector size=" + string(externalVectorLengthInBytes)
                        + ", vp=" + (vpFlag ? "true" : "false")
                        + ", pg=" + (pgFlag ? "true" : "false")
                        + ", xp=" + (xpFlag ? "true" : "false")
@@ -1856,7 +1854,7 @@ namespace openpeer
         mTotalSendingPeriodWithoutIssues = Milliseconds(0);
 
         if (mAddToAvailableBurstBatonsTimer) {
-          ZS_LOG_TRACE(log("cancelling add to available burst batons due to loss") + ", timer ID=" + Stringize<PUID>(mAddToAvailableBurstBatonsTimer->getID()).string())
+          ZS_LOG_TRACE(log("cancelling add to available burst batons due to loss") + ", timer ID=" + string(mAddToAvailableBurstBatonsTimer->getID()))
           mAddToAvailableBurstBatonsTimer->cancel();
           mAddToAvailableBurstBatonsTimer.reset();
         }
@@ -1864,7 +1862,7 @@ namespace openpeer
         // double the time until more batons get added
         if (!wasFrozen) {
           mAddToAvailableBurstBatonsDuation = mAddToAvailableBurstBatonsDuation * 2;
-          ZS_LOG_TRACE(log("increasing add to available burst batons duration") + ", duration milliseconds=" + Stringize<Duration::tick_type>(mAddToAvailableBurstBatonsDuation.total_milliseconds()).string())
+          ZS_LOG_TRACE(log("increasing add to available burst batons duration") + ", duration milliseconds=" + string(mAddToAvailableBurstBatonsDuation.total_milliseconds()))
         }
 
         if (mPacketsPerBurst > 1) {
@@ -1873,14 +1871,14 @@ namespace openpeer
           mPacketsPerBurst = mPacketsPerBurst / 2;
           if (mPacketsPerBurst < 1)
             mPacketsPerBurst = 1;
-          ZS_LOG_TRACE(log("decreasing packets per burst") + ", old value=" + Stringize<ULONG>(wasPacketsPerBurst).string() + ", new packets per burst=" + Stringize<ULONG>(mPacketsPerBurst).string())
+          ZS_LOG_TRACE(log("decreasing packets per burst") + ", old value=" + string(wasPacketsPerBurst) + ", new packets per burst=" + string(mPacketsPerBurst))
           return;
         }
 
         if (mAvailableBurstBatons > 1) {
           // decrease the available batons by one (to slow sending of more bursts)
           --mAvailableBurstBatons;
-          ZS_LOG_TRACE(log("decreasing batons available") + ", available batons=" + Stringize<ULONG>(mAvailableBurstBatons).string())
+          ZS_LOG_TRACE(log("decreasing batons available") + ", available batons=" + string(mAvailableBurstBatons))
           return;
         }
 
@@ -1894,7 +1892,7 @@ namespace openpeer
             if (0 == whichBatonToDestroy) {
               packet->releaseBaton(mAvailableBurstBatons);  // release the baton from being held by the packet
               --mAvailableBurstBatons;                      // destroy the baton
-              ZS_LOG_TRACE(log("destroying a baton that was being held") + ", available batons=" + Stringize<ULONG>(mAvailableBurstBatons).string())
+              ZS_LOG_TRACE(log("destroying a baton that was being held") + ", available batons=" + string(mAvailableBurstBatons))
               return;
             }
 
@@ -1927,7 +1925,7 @@ namespace openpeer
             mAddToAvailableBurstBatonsTimer.reset();
           }
 
-          ZS_LOG_TRACE(log("good period of transmission without issue thus unfreezing/increasing baton adding frequency") + ", old add to batons timer ID=" + Stringize<PUID>(oldTimerID).string() + ", duration milliseconds=" + Stringize<Duration::tick_type>(mAddToAvailableBurstBatonsDuation.total_milliseconds()).string())
+          ZS_LOG_TRACE(log("good period of transmission without issue thus unfreezing/increasing baton adding frequency") + ", old add to batons timer ID=" + string(oldTimerID) + ", duration milliseconds=" + string(mAddToAvailableBurstBatonsDuation.total_milliseconds()))
         }
       }
 
@@ -1999,7 +1997,7 @@ namespace openpeer
         }
 
         if (delivered) {
-          ZS_LOG_TRACE(log("delivering notify read ready") + ", size=" + Stringize<ULONG>(mReadData.size()).string())
+          ZS_LOG_TRACE(log("delivering notify read ready") + ", size=" + string(mReadData.size()))
           notifyReadReadyAgainIfData();
         }
       }
@@ -2010,7 +2008,7 @@ namespace openpeer
                                                   ULONG maxFillSize
                                                   )
       {
-        ZS_LOG_TRACE(log("get from write buffer") + ", max size=" + Stringize<ULONG>(maxFillSize).string())
+        ZS_LOG_TRACE(log("get from write buffer") + ", max size=" + string(maxFillSize))
         ULONG readBytes = 0;
 
         while ((maxFillSize > 0) &&
@@ -2032,7 +2030,7 @@ namespace openpeer
           }
         }
 
-        ZS_LOG_TRACE(log("get from write buffer") + ", max size=" + Stringize<ULONG>(maxFillSize).string() + ", read size=" + Stringize<ULONG>(readBytes).string())
+        ZS_LOG_TRACE(log("get from write buffer") + ", max size=" + string(maxFillSize) + ", read size=" + string(readBytes))
         return readBytes;
       }
 

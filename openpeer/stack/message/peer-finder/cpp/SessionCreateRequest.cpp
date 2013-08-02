@@ -58,7 +58,6 @@ namespace openpeer
 
       namespace peer_finder
       {
-        using zsLib::Stringize;
         using namespace stack::internal;
         using internal::MessageHelper;
 

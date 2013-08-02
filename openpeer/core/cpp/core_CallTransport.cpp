@@ -49,8 +49,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
-
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -285,7 +283,7 @@ namespace openpeer
 
               oldFocus = mFocus.lock();
 
-              ZS_LOG_DEBUG(log("focused call ID changed") + ", was=" + Stringize<PUID>(mFocusCallID).string() + ", now=" + Stringize<PUID>(call->forCallTransport().getID()).string() + ", block count=" + Stringize<ULONG>(mBlockUntilStartStopCompleted).string())
+              ZS_LOG_DEBUG(log("focused call ID changed") + ", was=" + string(mFocusCallID) + ", now=" + string(call->forCallTransport().getID()) + ", block count=" + string(mBlockUntilStartStopCompleted))
 
               mFocus = call;
               mFocusCallID = call->forCallTransport().getID();
@@ -296,7 +294,7 @@ namespace openpeer
               ICallTransportAsyncProxy::create(mThisWeak.lock())->onStart();
             } else {
               if (locationID != mFocusLocationID) {
-                ZS_LOG_DEBUG(log("focused location ID changed") + ", was=" + Stringize<PUID>(mFocusLocationID).string() + ", now=" + Stringize<PUID>(locationID).string() + ", block count=" + Stringize<ULONG>(mBlockUntilStartStopCompleted).string())
+                ZS_LOG_DEBUG(log("focused location ID changed") + ", was=" + string(mFocusLocationID) + ", now=" + string(locationID) + ", block count=" + string(mBlockUntilStartStopCompleted))
 
                 // must restart the media
                 ++mBlockUntilStartStopCompleted;
@@ -305,7 +303,7 @@ namespace openpeer
               }
             }
           } else {
-            ZS_LOG_DEBUG(log("no focus at all") + ", was=" + Stringize<PUID>(mFocusLocationID).string() + ", now=" + Stringize<PUID>(locationID).string() + ", block count=" + Stringize<ULONG>(mBlockUntilStartStopCompleted).string())
+            ZS_LOG_DEBUG(log("no focus at all") + ", was=" + string(mFocusLocationID) + ", now=" + string(locationID) + ", block count=" + string(mBlockUntilStartStopCompleted))
             mFocusCallID = 0;
             mFocusLocationID = 0;
             ++mBlockUntilStartStopCompleted;
@@ -325,12 +323,12 @@ namespace openpeer
         AutoRecursiveLock lock(getLock());
 
         if (0 == mFocusCallID) {
-          ZS_LOG_DEBUG(log("no call has focus (ignoring request to lose focus)") + ", lose focus ID=" + Stringize<PUID>(callID).string())
+          ZS_LOG_DEBUG(log("no call has focus (ignoring request to lose focus)") + ", lose focus ID=" + string(callID))
           return;
         }
 
         if (callID != mFocusCallID) {
-          ZS_LOG_WARNING(Detail, log("did not have focus on current call to lose") + ", focusing on ID=" + Stringize<PUID>(mFocusCallID).string() + ", lose focus ID=" + Stringize<PUID>(callID).string())
+          ZS_LOG_WARNING(Detail, log("did not have focus on current call to lose") + ", focusing on ID=" + string(mFocusCallID) + ", lose focus ID=" + string(callID))
           return;
         }
 
@@ -370,14 +368,14 @@ namespace openpeer
 
         BYTE payloadType = buffer[1];
 
-        ZS_LOG_TRACE(log("notified of RTP packet") + ", from call ID=" + Stringize<PUID>(callID).string() + ", from location ID=" + Stringize<PUID>(locationID).string() + ", type=" + ICallTransportForCall::toString(type) + ", payload type=" + Stringize<BYTE>(payloadType).string() + ", length=" + Stringize<ULONG>(bufferLengthInBytes).string())
+        ZS_LOG_TRACE(log("notified of RTP packet") + ", from call ID=" + string(callID) + ", from location ID=" + string(locationID) + ", type=" + ICallTransportForCall::toString(type) + ", payload type=" + string(payloadType) + ", length=" + string(bufferLengthInBytes))
 
         // scope - get locked variable
         {
           AutoRecursiveLock lock(getLock());
 
           if (0 != mBlockUntilStartStopCompleted) {
-            ZS_LOG_WARNING(Debug, log("ignoring RTP packet as media is blocked until the start/stop routine complete") + ", blocked count=" + Stringize<ULONG>(mBlockUntilStartStopCompleted).string())
+            ZS_LOG_WARNING(Debug, log("ignoring RTP packet as media is blocked until the start/stop routine complete") + ", blocked count=" + string(mBlockUntilStartStopCompleted))
             return;
           }
 
@@ -388,7 +386,7 @@ namespace openpeer
 
           if ((callID != mFocusCallID) ||
               (locationID != mFocusLocationID)) {
-            ZS_LOG_TRACE(log("ignoring RTP packet as not from call/location ID in focus") + ", focus call ID=" + Stringize<PUID>(mFocusCallID).string() + ", focus location ID=" + Stringize<PUID>(mFocusLocationID).string())
+            ZS_LOG_TRACE(log("ignoring RTP packet as not from call/location ID in focus") + ", focus call ID=" + string(mFocusCallID) + ", focus location ID=" + string(mFocusLocationID))
             return;
           }
 
@@ -429,14 +427,14 @@ namespace openpeer
 
         BYTE payloadType = buffer[1];
 
-        ZS_LOG_TRACE(log("notified of RTCP packet") + ", from call ID=" + Stringize<PUID>(callID).string() + ", from location ID=" + Stringize<PUID>(locationID).string() + ", type=" + ICallTransportForCall::toString(type) + ", payload type=" + Stringize<BYTE>(payloadType).string() + ", length=" + Stringize<ULONG>(bufferLengthInBytes).string())
+        ZS_LOG_TRACE(log("notified of RTCP packet") + ", from call ID=" + string(callID) + ", from location ID=" + string(locationID) + ", type=" + ICallTransportForCall::toString(type) + ", payload type=" + string(payloadType) + ", length=" + string(bufferLengthInBytes))
 
         // scope - get locked variable
         {
           AutoRecursiveLock lock(getLock());
 
           if (0 != mBlockUntilStartStopCompleted) {
-            ZS_LOG_WARNING(Debug, log("ignoring RTCP packet as media is blocked until the start/stop routine complete") + ", blocked count=" + Stringize<ULONG>(mBlockUntilStartStopCompleted).string())
+            ZS_LOG_WARNING(Debug, log("ignoring RTCP packet as media is blocked until the start/stop routine complete") + ", blocked count=" + string(mBlockUntilStartStopCompleted))
             return;
           }
 
@@ -447,7 +445,7 @@ namespace openpeer
 
           if ((callID != mFocusCallID) ||
               (locationID != mFocusLocationID)) {
-            ZS_LOG_TRACE(log("ignoring RTCP packet as not from call/location ID in focus") + ", focus call ID=" + Stringize<PUID>(mFocusCallID).string() + ", focus location ID=" + Stringize<PUID>(mFocusLocationID).string())
+            ZS_LOG_TRACE(log("ignoring RTCP packet as not from call/location ID in focus") + ", focus call ID=" + string(mFocusCallID) + ", focus location ID=" + string(mFocusLocationID))
             return;
           }
 
@@ -482,7 +480,7 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         if (timer != mSocketCleanupTimer) {
-          ZS_LOG_WARNING(Detail, log("notification from obsolete timer") + Stringize<PUID>(timer->getID()).string())
+          ZS_LOG_WARNING(Detail, log("notification from obsolete timer") + string(timer->getID()))
           return;
         }
 
@@ -513,13 +511,13 @@ namespace openpeer
           AutoRecursiveLock lock(getLock());
 
           if (0 != mBlockUntilStartStopCompleted) {
-            ZS_LOG_WARNING(Debug, log("ignoring request to send RTP packet as media is blocked until the start/stop routine complete") + ", blocked count=" + Stringize<ULONG>(mBlockUntilStartStopCompleted).string())
+            ZS_LOG_WARNING(Debug, log("ignoring request to send RTP packet as media is blocked until the start/stop routine complete") + ", blocked count=" + string(mBlockUntilStartStopCompleted))
             return 0;
           }
 
           if ((0 == mFocusCallID) ||
               (!mStarted)) {
-            ZS_LOG_WARNING(Trace, log("unable to send RTP packet media isn't start or there is no focus object") + ", started=" + (mStarted ? "true" : "false") + ", focus ID=" + Stringize<PUID>(mFocusCallID).string())
+            ZS_LOG_WARNING(Trace, log("unable to send RTP packet media isn't start or there is no focus object") + ", started=" + (mStarted ? "true" : "false") + ", focus ID=" + string(mFocusCallID))
             return 0;
           }
 
@@ -552,13 +550,13 @@ namespace openpeer
         {
           AutoRecursiveLock lock(getLock());
           if (0 != mBlockUntilStartStopCompleted) {
-            ZS_LOG_WARNING(Debug, log("ignoring request to send RTCP packet as media is blocked until the start/stop routine complete") + ", blocked count=" + Stringize<ULONG>(mBlockUntilStartStopCompleted).string())
+            ZS_LOG_WARNING(Debug, log("ignoring request to send RTCP packet as media is blocked until the start/stop routine complete") + ", blocked count=" + string(mBlockUntilStartStopCompleted))
             return 0;
           }
 
           if ((0 == mFocusCallID) ||
               (!mStarted)) {
-            ZS_LOG_WARNING(Trace, log("unable to send RTCP packet media isn't start or there is no focus object") + ", started=" + (mStarted ? "true" : "false") + ", focus ID=" + Stringize<PUID>(mFocusCallID).string())
+            ZS_LOG_WARNING(Trace, log("unable to send RTCP packet media isn't start or there is no focus object") + ", started=" + (mStarted ? "true" : "false") + ", focus ID=" + string(mFocusCallID))
             return 0;
           }
 
@@ -590,7 +588,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String CallTransport::log(const char *message) const
       {
-        return String("CallTransport [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("CallTransport [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -598,26 +596,26 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("call transport id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("call transport id", string(mID), firstTime) +
                Helper::getDebugValue("state", ICallTransport::toString(mCurrentState), firstTime) +
                Helper::getDebugValue("turn", mTURNServer, firstTime) +
                Helper::getDebugValue("turn username", mTURNServerUsername, firstTime) +
                Helper::getDebugValue("turn password", mTURNServerPassword, firstTime) +
                Helper::getDebugValue("stun", mSTUNServer, firstTime) +
-               Helper::getDebugValue("total calls", 0 != mTotalCalls ? Stringize<typeof(mTotalCalls)>(mTotalCalls).string() : String(), firstTime) +
+               Helper::getDebugValue("total calls", 0 != mTotalCalls ? string(mTotalCalls) : String(), firstTime) +
                Helper::getDebugValue("socket cleanup timer", mSocketCleanupTimer ? String("true") : String(), firstTime) +
                Helper::getDebugValue("started", mStarted ? String("true") : String(), firstTime) +
                ICall::toDebugString(mFocus.lock()) +
-               Helper::getDebugValue("focus call id", 0 != mFocusCallID ? Stringize<typeof(mFocusCallID)>(mFocusCallID).string() : String(), firstTime) +
-               Helper::getDebugValue("focus location id", 0 != mFocusLocationID ? Stringize<typeof(mFocusLocationID)>(mFocusLocationID).string() : String(), firstTime) +
+               Helper::getDebugValue("focus call id", 0 != mFocusCallID ? string(mFocusCallID) : String(), firstTime) +
+               Helper::getDebugValue("focus location id", 0 != mFocusLocationID ? string(mFocusLocationID) : String(), firstTime) +
                Helper::getDebugValue("has audio", mHasAudio ? String("true") : String(), firstTime) +
                Helper::getDebugValue("has video", mHasAudio ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("blocked until", 0 != mBlockUntilStartStopCompleted ? Stringize<typeof(mBlockUntilStartStopCompleted)>(mBlockUntilStartStopCompleted).string() : String(), firstTime) +
+               Helper::getDebugValue("blocked until", 0 != mBlockUntilStartStopCompleted ? string(mBlockUntilStartStopCompleted) : String(), firstTime) +
                ", audio: " + TransportSocket::toDebugString(mAudioSocket, false) +
                ", video: " + TransportSocket::toDebugString(mVideoSocket, false) +
-               Helper::getDebugValue("audio socket id", 0 != mAudioSocketID ? Stringize<typeof(mAudioSocketID)>(mAudioSocketID).string() : String(), firstTime) +
-               Helper::getDebugValue("video socket id", 0 != mVideoSocketID ? Stringize<typeof(mAudioSocketID)>(mVideoSocketID).string() : String(), firstTime) +
-               Helper::getDebugValue("obsolete sockets", mObsoleteSockets.size() > 0 ? Stringize<size_t>(mObsoleteSockets.size()).string() : String(), firstTime);
+               Helper::getDebugValue("audio socket id", 0 != mAudioSocketID ? string(mAudioSocketID) : String(), firstTime) +
+               Helper::getDebugValue("video socket id", 0 != mVideoSocketID ? string(mVideoSocketID) : String(), firstTime) +
+               Helper::getDebugValue("obsolete sockets", mObsoleteSockets.size() > 0 ? string(mObsoleteSockets.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -662,7 +660,7 @@ namespace openpeer
           AutoRecursiveLock lock(mLock);
 
           if (mStarted) {
-            ZS_LOG_DEBUG(log("must stop existing media before starting a new focus") + ", block count=" + Stringize<ULONG>(mBlockUntilStartStopCompleted).string())
+            ZS_LOG_DEBUG(log("must stop existing media before starting a new focus") + ", block count=" + string(mBlockUntilStartStopCompleted))
             ++mBlockUntilStartStopCompleted;  // extra count required because we are calling manually
             stop();
           }
@@ -911,12 +909,12 @@ namespace openpeer
           socket->shutdown();
 
           if (socket->isShutdown()) {
-            ZS_LOG_DEBUG(log("transport socket is now shutdown") + ", transport socket ID=" + Stringize<PUID>(socket->getID()).string())
+            ZS_LOG_DEBUG(log("transport socket is now shutdown") + ", transport socket ID=" + string(socket->getID()))
             mObsoleteSockets.erase(current);
             continue;
           }
 
-          ZS_LOG_DEBUG(log("transport socket is still shutting down") + ", transport socket ID=" + Stringize<PUID>(socket->getID()).string())
+          ZS_LOG_DEBUG(log("transport socket is still shutting down") + ", transport socket ID=" + string(socket->getID()))
         }
 
         return mObsoleteSockets.size() < 1;
@@ -1075,7 +1073,7 @@ namespace openpeer
         if (len < (sizeof(BYTE)*2)) return 0;
 
         BYTE payloadType = ((const BYTE *)data)[1];
-        ZS_LOG_TRACE(log("request to send RTP packet") + ", payload type=" + Stringize<BYTE>(payloadType).string() + ", length=" + Stringize<int>(len).string())
+        ZS_LOG_TRACE(log("request to send RTP packet") + ", payload type=" + string(payloadType) + ", length=" + string(len))
 
         CallTransportPtr outer = mOuter.lock();
         if (!outer) {
@@ -1092,7 +1090,7 @@ namespace openpeer
         if (len < (sizeof(BYTE)*2)) return 0;
 
         BYTE payloadType = ((const BYTE *)data)[1];
-        ZS_LOG_TRACE(log("request to send RTCP packet") + ", payload type=" + Stringize<BYTE>(payloadType).string() + ", length=" + Stringize<int>(len).string())
+        ZS_LOG_TRACE(log("request to send RTCP packet") + ", payload type=" + string(payloadType) + ", length=" + string(len))
 
         CallTransportPtr outer = mOuter.lock();
         if (!outer) {
@@ -1114,16 +1112,16 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String CallTransport::TransportSocket::log(const char *message) const
       {
-        return String("CallTransport::TransportSocket [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("CallTransport::TransportSocket [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
       String CallTransport::TransportSocket::getDebugValueString(bool includeCommaPrefix) const
       {
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("transport socket id", Stringize<typeof(mID)>(mID).string(), firstTime) +
-               Helper::getDebugValue("rtp socket id", mRTPSocket ? Stringize<PUID>(mRTPSocket->getID()).string() : String(), firstTime) +
-               Helper::getDebugValue("rtcp socket id", mRTCPSocket ? Stringize<PUID>(mRTCPSocket->getID()).string() : String(), firstTime);
+        return Helper::getDebugValue("transport socket id", string(mID), firstTime) +
+               Helper::getDebugValue("rtp socket id", mRTPSocket ? string(mRTPSocket->getID()) : String(), firstTime) +
+               Helper::getDebugValue("rtcp socket id", mRTCPSocket ? string(mRTCPSocket->getID()) : String(), firstTime);
       }
     }
   }

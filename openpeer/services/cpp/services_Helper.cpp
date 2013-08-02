@@ -68,7 +68,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
       using zsLib::Numeric;
       using zsLib::QWORD;
 
@@ -257,7 +256,7 @@ namespace openpeer
         if (Time() == value) return String();
 
         time_t epoch = zsLib::toEpoch(value);
-        return Stringize<time_t>(epoch).string();
+        return string(epoch);
       }
 
       //---------------------------------------------------------------------
@@ -272,7 +271,7 @@ namespace openpeer
           ZS_LOG_WARNING(Detail, "unable to convert value to time_t, value=" + str)
           try {
             QWORD timestamp = Numeric<QWORD>(str);
-            ZS_LOG_WARNING(Debug, "date exceeds maximum time_t, value=" + Stringize<typeof(timestamp)>(timestamp).string())
+            ZS_LOG_WARNING(Debug, "date exceeds maximum time_t, value=" + string(timestamp))
             return Time(boost::date_time::max_date_time);
           } catch (Numeric<QWORD>::ValueOutOfRange &) {
             ZS_LOG_WARNING(Detail, "even QWORD failed to convert value to max_date_time, value=" + str)
@@ -813,11 +812,11 @@ namespace openpeer
         SecureByteBlockPtr extracted = IHelper::hash("empty");
 
         if (part1->SizeInBytes() != part2->SizeInBytes()) {
-          ZS_LOG_WARNING(Detail, String("illegal size") + ", part1 size=" + Stringize<SecureByteBlock::size_type>(part1->SizeInBytes()).string() + ", part2 size=" + Stringize<SecureByteBlock::size_type>(part2->SizeInBytes()).string())
+          ZS_LOG_WARNING(Detail, String("illegal size") + ", part1 size=" + string(part1->SizeInBytes()) + ", part2 size=" + string(part2->SizeInBytes()))
           return SecureByteBlockPtr();
         }
         if (part1->SizeInBytes() <= extracted->SizeInBytes()) {
-          ZS_LOG_WARNING(Detail, String("illegal hash size") + ", part size=" + Stringize<SecureByteBlock::size_type>(part1->SizeInBytes()).string() + ", hash size=" + Stringize<SecureByteBlock::size_type>(extracted->SizeInBytes()).string())
+          ZS_LOG_WARNING(Detail, String("illegal hash size") + ", part size=" + string(part1->SizeInBytes()) + ", hash size=" + string(extracted->SizeInBytes()))
           return SecureByteBlockPtr();
         }
 

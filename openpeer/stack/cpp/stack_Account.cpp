@@ -86,7 +86,6 @@ namespace openpeer
     namespace internal
     {
       using services::IHelper;
-      using zsLib::Stringize;
 
       using services::IWakeDelegateProxy;
 
@@ -1519,7 +1518,7 @@ namespace openpeer
         AutoRecursiveLock lock(getLock());
 
         if (timer != mTimer) {
-          ZS_LOG_WARNING(Detail, log("received timer notification on obsolete timer (probably okay)") + ", timer ID=" + Stringize<PUID>(timer->getID()).string())
+          ZS_LOG_WARNING(Detail, log("received timer notification on obsolete timer (probably okay)") + ", timer ID=" + string(timer->getID()))
           return;
         }
 
@@ -1546,7 +1545,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String Account::log(const char *message) const
       {
-        return String("stack::Account [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("stack::Account [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -1561,10 +1560,10 @@ namespace openpeer
         getNATServers(turn, username, password, stun);
 
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("stack account id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("stack account id", string(mID), firstTime) +
                Helper::getDebugValue("state", IAccount::toString(mCurrentState), firstTime) +
                Helper::getDebugValue("location ID", mLocationID, firstTime) +
-               Helper::getDebugValue("error code", 0 != mLastError ? Stringize<typeof(mLastError)>(mLastError).string() : String(), firstTime) +
+               Helper::getDebugValue("error code", 0 != mLastError ? string(mLastError) : String(), firstTime) +
                Helper::getDebugValue("error reason", mLastErrorReason, firstTime) +
                Helper::getDebugValue("timer last fired", Time() != mLastTimerFired ? IHelper::timeToString(mLastTimerFired) : String(), firstTime) +
                Helper::getDebugValue("block until", Time() != mBlockLocationShutdownsUntil ? IHelper::timeToString(mBlockLocationShutdownsUntil) : String(), firstTime) +
@@ -1575,10 +1574,10 @@ namespace openpeer
                //mSelfLocation->forAccount().getDebugValueString() +
                Helper::getDebugValue("finder", mFinder ? String("true") : String(), firstTime) +
                Helper::getDebugValue("finder retry after", Time() != mFinderRetryAfter ? IHelper::timeToString(mFinderRetryAfter) : String(), firstTime) +
-               Helper::getDebugValue("peer infos", mPeers.size() > 0 ? Stringize<size_t>(mPeers.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("peer infos", mPeerInfos.size() > 0 ? Stringize<size_t>(mPeerInfos.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("subscribers", mPeerSubscriptions.size() > 0 ? Stringize<size_t>(mPeerSubscriptions.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("locations", mLocations.size() > 0 ? Stringize<size_t>(mLocations.size()).string() : String(), firstTime);
+               Helper::getDebugValue("peer infos", mPeers.size() > 0 ? string(mPeers.size()) : String(), firstTime) +
+               Helper::getDebugValue("peer infos", mPeerInfos.size() > 0 ? string(mPeerInfos.size()) : String(), firstTime) +
+               Helper::getDebugValue("subscribers", mPeerSubscriptions.size() > 0 ? string(mPeerSubscriptions.size()) : String(), firstTime) +
+               Helper::getDebugValue("locations", mLocations.size() > 0 ? string(mLocations.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -2050,7 +2049,7 @@ namespace openpeer
         }
 
         if (0 != mLastError) {
-          ZS_LOG_WARNING(Detail, log("error already set") + ", new error=" + Stringize<typeof(errorCode)>(errorCode).string() + ", new reason=" + reason + getDebugValueString())
+          ZS_LOG_WARNING(Detail, log("error already set") + ", new error=" + string(errorCode) + ", new reason=" + reason + getDebugValueString())
           return;
         }
 
@@ -2132,7 +2131,7 @@ namespace openpeer
                                                     ) const
       {
         if (peerInfo->mPeerFindMonitor) {
-          ZS_LOG_DEBUG(log("peer has peer active find in progress thus its location should not be shutdown") + ", peer=" + Stringize<PUID>(peerInfo->mID).string() + ", peer URI=" + peerURI)
+          ZS_LOG_DEBUG(log("peer has peer active find in progress thus its location should not be shutdown") + ", peer=" + string(peerInfo->mID) + ", peer URI=" + peerURI)
           return false;
         }
 
@@ -2342,7 +2341,7 @@ namespace openpeer
           PUID subscriptionID = (*current).first;
           PeerSubscriptionPtr subscription = (*current).second.lock();
           if (!subscription) {
-            ZS_LOG_WARNING(Detail, log("peer subscription is gone") + ", subscription ID=" = Stringize<PUID>(subscriptionID).string())
+            ZS_LOG_WARNING(Detail, log("peer subscription is gone") + ", subscription ID=" = string(subscriptionID))
             mPeerSubscriptions.erase(current);
             continue;
           }
@@ -2366,7 +2365,7 @@ namespace openpeer
           PUID subscriptionID = (*current).first;
           PeerSubscriptionPtr subscription = (*current).second.lock();
           if (!subscription) {
-            ZS_LOG_WARNING(Detail, log("peer subscription is gone") + ", subscription ID=" = Stringize<PUID>(subscriptionID).string())
+            ZS_LOG_WARNING(Detail, log("peer subscription is gone") + ", subscription ID=" = string(subscriptionID))
             mPeerSubscriptions.erase(current);
             continue;
           }
@@ -2387,7 +2386,7 @@ namespace openpeer
           PUID subscriptionID = (*current).first;
           PeerSubscriptionPtr subscription = (*current).second.lock();
           if (!subscription) {
-            ZS_LOG_WARNING(Detail, log("peer subscription is gone") + ", subscription ID=" = Stringize<PUID>(subscriptionID).string())
+            ZS_LOG_WARNING(Detail, log("peer subscription is gone") + ", subscription ID=" = string(subscriptionID))
             mPeerSubscriptions.erase(current);
             continue;
           }
@@ -2445,17 +2444,17 @@ namespace openpeer
       String Account::PeerInfo::getDebugValueString(bool includeCommaPrefix) const
       {
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("peer info id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("peer info id", string(mID), firstTime) +
                Helper::getDebugValue("find next moment", mFindAtNextPossibleMoment ? String("true") : String(), firstTime) +
                IPeer::toDebugString(mPeer) +
-               Helper::getDebugValue("locations", mLocations.size() > 0 ? Stringize<size_t>(mLocations.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("locations", mLocations.size() > 0 ? string(mLocations.size()) : String(), firstTime) +
                Helper::getDebugValue("find monitor", mPeerFindMonitor ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("find because", mPeerFindBecauseOfLocations.size() > 0 ? Stringize<size_t>(mPeerFindBecauseOfLocations.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("find redo because", mPeerFindNeedsRedoingBecauseOfLocations.size() > 0 ? Stringize<size_t>(mPeerFindNeedsRedoingBecauseOfLocations.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("find because", mPeerFindBecauseOfLocations.size() > 0 ? string(mPeerFindBecauseOfLocations.size()) : String(), firstTime) +
+               Helper::getDebugValue("find redo because", mPeerFindNeedsRedoingBecauseOfLocations.size() > 0 ? string(mPeerFindNeedsRedoingBecauseOfLocations.size()) : String(), firstTime) +
                Helper::getDebugValue("find state", IPeer::toString(mCurrentFindState), firstTime) +
-               Helper::getDebugValue("subscribers", 0 != mTotalSubscribers ? Stringize<typeof(mTotalSubscribers)>(mTotalSubscribers).string() : String(), firstTime) +
+               Helper::getDebugValue("subscribers", 0 != mTotalSubscribers ? string(mTotalSubscribers) : String(), firstTime) +
                Helper::getDebugValue("next find", Time() != mNextScheduledFind ? IHelper::timeToString(mNextScheduledFind) : String(), firstTime) +
-               Helper::getDebugValue("last duration", 0 != mLastScheduleFindDuration.total_milliseconds() ? Stringize<Duration::tick_type>(mLastScheduleFindDuration.total_milliseconds()).string() : String(), firstTime) +
+               Helper::getDebugValue("last duration", 0 != mLastScheduleFindDuration.total_milliseconds() ? string(mLastScheduleFindDuration.total_milliseconds()) : String(), firstTime) +
                Helper::getDebugValue("prevent crazy refind", mPreventCrazyRefindNextTime ? String("true") : String(), firstTime);
       }
     }

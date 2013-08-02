@@ -41,6 +41,7 @@ namespace openpeer
   {
     namespace internal
     {
+      using zsLib::string;
       using zsLib::Noop;
       using zsLib::BYTE;
       using zsLib::CSTR;

@@ -46,8 +46,6 @@ namespace openpeer
   {
     namespace message
     {
-      using zsLib::Stringize;
-
       using services::IHelper;
       using stack::internal::Helper;
 
@@ -75,7 +73,7 @@ namespace openpeer
         return Helper::getDebugValue("service id", mID, firstTime) +
                Helper::getDebugValue("type", mType, firstTime) +
                Helper::getDebugValue("version", mVersion, firstTime) +
-               Helper::getDebugValue("methods", mMethods.size() > 0 ? Stringize<size_t>(mMethods.size()).string() : String(), firstTime);
+               Helper::getDebugValue("methods", mMethods.size() > 0 ? string(mMethods.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -152,8 +150,8 @@ namespace openpeer
         for (Finder::ProtocolList::const_iterator iter = protocols.begin(); iter != protocols.end(); ++iter)
         {
           const Finder::Protocol &protocol = (*iter);
-          result += Helper::getDebugValue((String("transport") + Stringize<typeof(index)>(index).string()).c_str(), protocol.mTransport, ioFirstTime);
-          result += Helper::getDebugValue((String("host") + Stringize<typeof(index)>(index).string()).c_str(), protocol.mHost, ioFirstTime);
+          result += Helper::getDebugValue((String("transport") + string(index)).c_str(), protocol.mTransport, ioFirstTime);
+          result += Helper::getDebugValue((String("host") + string(index)).c_str(), protocol.mHost, ioFirstTime);
         }
         return result;
       }
@@ -165,8 +163,8 @@ namespace openpeer
         return Helper::getDebugValue("finder id", mID, firstTime) +
                getProtocolsDebugValueString(mProtocols, firstTime) +
                Helper::getDebugValue("public key", mPublicKey ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("priority", 0 != mPriority ? Stringize<typeof(mPriority)>(mPriority).string() : String(), firstTime) +
-               Helper::getDebugValue("weight", 0 != mWeight ? Stringize<typeof(mWeight)>(mWeight).string() : String(), firstTime) +
+               Helper::getDebugValue("priority", 0 != mPriority ? string(mPriority) : String(), firstTime) +
+               Helper::getDebugValue("weight", 0 != mWeight ? string(mWeight) : String(), firstTime) +
                Helper::getDebugValue("region", mRegion, firstTime) +
                Helper::getDebugValue("created", Time() != mCreated ? IHelper::timeToString(mCreated) : String(), firstTime) +
                Helper::getDebugValue("expires", Time() != mExpires ? IHelper::timeToString(mExpires) : String(), firstTime);
@@ -195,8 +193,8 @@ namespace openpeer
         bool firstTime = !includeCommaPrefix;
         return Helper::getDebugValue("avatar name", mName, firstTime) +
                Helper::getDebugValue("url", mURL, firstTime) +
-               Helper::getDebugValue("width", 0 != mWidth ? Stringize<typeof(mWidth)>(mWidth).string() : String(), firstTime) +
-               Helper::getDebugValue("height", 0 != mHeight ? Stringize<typeof(mHeight)>(mHeight).string() : String(), firstTime);
+               Helper::getDebugValue("width", 0 != mWidth ? string(mWidth) : String(), firstTime) +
+               Helper::getDebugValue("height", 0 != mHeight ? string(mHeight) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -282,15 +280,15 @@ namespace openpeer
                Helper::getDebugValue("identity provider", mProvider, firstTime) +
                Helper::getDebugValue("identity stable ID", mStableID, firstTime) +
                IPeerFilePublic::toDebugString(mPeerFilePublic, !firstTime) +
-               Helper::getDebugValue("priority", 0 != mPriority ? Stringize<typeof(mPriority)>(mPriority).string() : String(), firstTime) +
-               Helper::getDebugValue("weight", 0 != mWeight ? Stringize<typeof(mWeight)>(mPriority).string() : String(), firstTime) +
+               Helper::getDebugValue("priority", 0 != mPriority ? string(mPriority) : String(), firstTime) +
+               Helper::getDebugValue("weight", 0 != mWeight ? string(mPriority) : String(), firstTime) +
                Helper::getDebugValue("created", Time() != mCreated ? IHelper::timeToString(mCreated) : String(), firstTime) +
                Helper::getDebugValue("updated", Time() != mUpdated ? IHelper::timeToString(mUpdated) : String(), firstTime) +
                Helper::getDebugValue("expires", Time() != mExpires ? IHelper::timeToString(mExpires) : String(), firstTime) +
                Helper::getDebugValue("name", mName, firstTime) +
                Helper::getDebugValue("profile", mProfile, firstTime) +
                Helper::getDebugValue("vprofile", mVProfile, firstTime) +
-               Helper::getDebugValue("avatars", mAvatars.size() > 0 ? Stringize<AvatarList::size_type>(mAvatars.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("avatars", mAvatars.size() > 0 ? string(mAvatars.size()) : String(), firstTime) +
                Helper::getDebugValue("identity contact proof", mContactProofBundle ? String("true") : String(), firstTime) +
                Helper::getDebugValue("identity proof", mIdentityProofBundle ? String("true") : String(), firstTime);
       }

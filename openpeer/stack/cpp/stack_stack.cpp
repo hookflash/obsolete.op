@@ -56,7 +56,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
       using message::bootstrapped_finder::MessageFactoryBootstrappedFinder;
       using message::bootstrapper::MessageFactoryBootstrapper;
       using message::certificates::MessageFactoryCertificates;
@@ -330,7 +329,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String Stack::log(const char *message) const
       {
-        return String("Stack [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("Stack [") + string(mID) + "] " + message;
       }
     }
 

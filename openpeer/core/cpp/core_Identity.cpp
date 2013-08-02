@@ -51,8 +51,6 @@ namespace openpeer
 
     namespace internal
     {
-      using zsLib::Stringize;
-
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -513,7 +511,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String Identity::log(const char *message) const
       {
-        return String("core::Identity [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("core::Identity [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------

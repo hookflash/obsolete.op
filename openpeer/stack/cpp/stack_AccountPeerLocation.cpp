@@ -77,8 +77,6 @@ namespace openpeer
     {
       using services::IHelper;
 
-      using zsLib::Stringize;
-
       using message::peer_to_peer::PeerIdentifyRequest;
       using message::peer_to_peer::PeerIdentifyRequestPtr;
       using message::peer_to_peer::PeerKeepAliveRequest;
@@ -250,7 +248,7 @@ namespace openpeer
           return;
         }
 
-        ZS_LOG_DETAIL(log("creating session from remote candidates") + ", total candidates=" + Stringize<size_t>(candidates.size()).string())
+        ZS_LOG_DETAIL(log("creating session from remote candidates") + ", total candidates=" + string(candidates.size()))
 
         mSocketSession = socket->createSessionFromRemoteCandidates(mThisWeak.lock(), candidates, control);
 
@@ -437,12 +435,12 @@ namespace openpeer
         AutoRecursiveLock lock(getLock());
 
         if (isShutdown()) {
-          ZS_LOG_WARNING(Detail, log("received socket session state after already shutdown") + ", session ID=" + Stringize<PUID>(session->getID()).string())
+          ZS_LOG_WARNING(Detail, log("received socket session state after already shutdown") + ", session ID=" + string(session->getID()))
           return;
         }
 
         if (session != mSocketSession) {
-          ZS_LOG_WARNING(Detail, log("received socket session state changed from an obsolete session") + ", session ID=" + Stringize<PUID>(session->getID()).string())
+          ZS_LOG_WARNING(Detail, log("received socket session state changed from an obsolete session") + ", session ID=" + string(session->getID()))
           return;
         }
 
@@ -467,7 +465,7 @@ namespace openpeer
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!session)
 
-        ZS_LOG_DEBUG(log("received RUDP channel waiting") + ", sessionID=" + Stringize<PUID>(session->getID()).string())
+        ZS_LOG_DEBUG(log("received RUDP channel waiting") + ", sessionID=" + string(session->getID()))
 
         AutoRecursiveLock lock(getLock());
 
@@ -554,7 +552,7 @@ namespace openpeer
         if (isShutdown()) return;
 
         if (messaging != mMessaging) {
-          ZS_LOG_WARNING(Detail, log("received messaging state changed from an obsolete RUDP messaging") + ", messaging ID=" + Stringize<PUID>(messaging->getID()).string())
+          ZS_LOG_WARNING(Detail, log("received messaging state changed from an obsolete RUDP messaging") + ", messaging ID=" + string(messaging->getID()))
           return;
         }
 
@@ -854,7 +852,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String AccountPeerLocation::log(const char *message) const
       {
-        return String("AccountPeerLocation [") + Stringize<PUID>(mID).string() + "] " + message;
+        return String("AccountPeerLocation [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -862,17 +860,17 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("account peer location id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("account peer location id", string(mID), firstTime) +
                Helper::getDebugValue("state", IAccount::toString(mCurrentState), firstTime) +
                Helper::getDebugValue("refind", mShouldRefindNow ? String("true") : String(), firstTime) +
                Helper::getDebugValue("last activity", Time() != mLastActivity ? IHelper::timeToString(mLastActivity) : String(), firstTime) +
-               Helper::getDebugValue("pending requests", mPendingRequests.size() > 0 ? Stringize<size_t>(mPendingRequests.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("pending requests", mPendingRequests.size() > 0 ? string(mPendingRequests.size()) : String(), firstTime) +
                mLocationInfo.getDebugValueString() +
                (mLocation != mLocationInfo.mLocation ? ILocation::toDebugString(mLocation) : String()) +
                IPeer::toDebugString(mPeer) +
-               Helper::getDebugValue("rudp ice socket subscription id", mSocketSubscription ? Stringize<PUID>(mSocketSubscription->getID()).string() : String(), firstTime) +
-               Helper::getDebugValue("rudp ice socket session id", mSocketSession ? Stringize<PUID>(mSocketSession->getID()).string() : String(), firstTime) +
-               Helper::getDebugValue("rudp messagine id", mMessaging ? Stringize<PUID>(mMessaging->getID()).string() : String(), firstTime) +
+               Helper::getDebugValue("rudp ice socket subscription id", mSocketSubscription ? string(mSocketSubscription->getID()) : String(), firstTime) +
+               Helper::getDebugValue("rudp ice socket session id", mSocketSession ? string(mSocketSession->getID()) : String(), firstTime) +
+               Helper::getDebugValue("rudp messagine id", mMessaging ? string(mMessaging->getID()) : String(), firstTime) +
                Helper::getDebugValue("incoming", mIncoming ? String("true") : String(), firstTime) +
                Helper::getDebugValue("identify time", Time() != mIdentifyTime ? IHelper::timeToString(mIdentifyTime) : String(), firstTime) +
                Helper::getDebugValue("identity monitor", mIdentifyMonitor ? String("true") : String(), firstTime) +

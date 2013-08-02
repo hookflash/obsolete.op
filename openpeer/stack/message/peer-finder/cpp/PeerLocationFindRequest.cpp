@@ -60,7 +60,6 @@ namespace openpeer
 
       namespace peer_finder
       {
-        using zsLib::Stringize;
         using zsLib::Seconds;
         typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
         using namespace stack::internal;

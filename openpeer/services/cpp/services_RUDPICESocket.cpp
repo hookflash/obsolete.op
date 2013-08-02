@@ -47,8 +47,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
-
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -337,7 +335,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String RUDPICESocket::log(const char *message) const
       {
-        return String("RUDPICESocket [") + Stringize<PUID>(mID).string() + "] " + message;
+        return String("RUDPICESocket [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------

@@ -48,8 +48,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
-
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -310,14 +308,14 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String Contact::log(const char *message) const
       {
-        return String("Contact [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("Contact [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
       String Contact::getDebugValueString(bool includeCommaPrefix) const
       {
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("contact id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("contact id", string(mID), firstTime) +
                IPeer::toDebugString(mPeer, false) + (isSelf() ? String(" (self)") : String());
       }
 

@@ -43,6 +43,8 @@ namespace openpeer
   {
     namespace message
     {
+      using zsLib::string;
+      using zsLib::DWORD;
       using zsLib::XML::Document;
       using zsLib::XML::Element;
       using zsLib::XML::Text;
@@ -721,6 +723,14 @@ namespace openpeer
         class MessageFactoryPeerFinder;
         typedef boost::shared_ptr<MessageFactoryPeerFinder> MessageFactoryPeerFinderPtr;
         typedef boost::weak_ptr<MessageFactoryPeerFinder> MessageFactoryPeerFinderWeakPtr;
+
+        class ChannelMapRequest;
+        typedef boost::shared_ptr<ChannelMapRequest> ChannelMapRequestPtr;
+        typedef boost::weak_ptr<ChannelMapRequest> ChannelMapRequestWeakPtr;
+
+        class ChannelMapResult;
+        typedef boost::shared_ptr<ChannelMapResult> ChannelMapResultPtr;
+        typedef boost::weak_ptr<ChannelMapResult> ChannelMapResultWeakPtr;
 
         class PeerLocationFindRequest;
         typedef boost::shared_ptr<PeerLocationFindRequest> PeerLocationFindRequestPtr;

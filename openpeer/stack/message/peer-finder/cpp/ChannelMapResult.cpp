@@ -29,11 +29,8 @@
 
  */
 
-#include <openpeer/stack/message/bootstrapped-finder/FindersGetRequest.h>
+#include <openpeer/stack/message/peer-finder/ChannelMapResult.h>
 #include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
-
-#include <zsLib/Stringize.h>
-#include <zsLib/XML.h>
 
 namespace openpeer
 {
@@ -41,49 +38,40 @@ namespace openpeer
   {
     namespace message
     {
-      namespace bootstrapped_finder
+      namespace peer_finder
       {
         //---------------------------------------------------------------------
-        FindersGetRequestPtr FindersGetRequest::convert(MessagePtr message)
+        ChannelMapResultPtr ChannelMapResult::convert(MessagePtr message)
         {
-          return boost::dynamic_pointer_cast<FindersGetRequest>(message);
+          return boost::dynamic_pointer_cast<ChannelMapResult>(message);
         }
 
         //---------------------------------------------------------------------
-        FindersGetRequest::FindersGetRequest() :
-          mTotalFinders(0)
+        ChannelMapResult::ChannelMapResult()
         {
         }
 
         //---------------------------------------------------------------------
-        FindersGetRequestPtr FindersGetRequest::create()
+        ChannelMapResultPtr ChannelMapResult::create(
+                                                     ElementPtr root,
+                                                     IMessageSourcePtr messageSource
+                                                     )
         {
-          FindersGetRequestPtr ret(new FindersGetRequest);
+          ChannelMapResultPtr ret(new ChannelMapResult);
+          IMessageHelper::fill(*ret, root, messageSource);
           return ret;
         }
 
         //---------------------------------------------------------------------
-        bool FindersGetRequest::hasAttribute(AttributeTypes type) const
+        bool ChannelMapResult::hasAttribute(AttributeTypes type) const
         {
           switch (type)
           {
-            case AttributeType_TotalServers:  return (mTotalFinders > 0);
-            default:                          break;
+            default:                        break;
           }
-          return false;
+          return MessageResult::hasAttribute((MessageResult::AttributeTypes)type);
         }
 
-        //---------------------------------------------------------------------
-        DocumentPtr FindersGetRequest::encode()
-        {
-          DocumentPtr ret = IMessageHelper::createDocumentWithRoot(*this);
-          ElementPtr root = ret->getFirstChildElement();
-
-          if (hasAttribute(AttributeType_TotalServers)) {
-            root->adoptAsLastChild(IMessageHelper::createElementWithNumber("servers", string(mTotalFinders)));
-          }
-          return ret;
-        }
 
       }
     }

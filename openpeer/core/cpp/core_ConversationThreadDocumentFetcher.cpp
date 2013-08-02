@@ -48,8 +48,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
-      
       using stack::IPublicationFetcher;
 
       //-----------------------------------------------------------------------
@@ -351,7 +349,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String ConversationThreadDocumentFetcher::log(const char *message) const
       {
-        return String("ConversationThreadDocumentFetcher [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("ConversationThreadDocumentFetcher [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -359,10 +357,10 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("conversation thread document fetcher id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("conversation thread document fetcher id", string(mID), firstTime) +
                ILocation::toDebugString(mFetcherPeerLocation) +
                IPublicationFetcher::toDebugString(mFetcher) +
-               Helper::getDebugValue("pending publications", mPendingPublications.size() > 0 ? Stringize<size_t>(mPendingPublications.size()).string() : String(), firstTime);
+               Helper::getDebugValue("pending publications", mPendingPublications.size() > 0 ? string(mPendingPublications.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------

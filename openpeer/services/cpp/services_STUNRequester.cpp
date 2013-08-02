@@ -49,8 +49,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
-
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -289,7 +287,7 @@ namespace openpeer
       timed_out:
         {
           AutoRecursiveLock lock(mLock);
-          ZS_LOG_WARNING(Detail, log("request timed out") + ", on try number=" + Stringize<ULONG>(mTryNumber).string() + ", timeout duration=" + Stringize<Duration::tick_type>(totalTime.total_milliseconds()).string())
+          ZS_LOG_WARNING(Detail, log("request timed out") + ", on try number=" + string(mTryNumber) + ", timeout duration=" + string(totalTime.total_milliseconds()))
           if (mSTUNRequest) {
             mSTUNRequest->log(Log::Trace, log("timed-out"));
           }
@@ -315,7 +313,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String STUNRequester::log(const char *message) const
       {
-        return String("STUNRequester [") + Stringize<PUID>(mID).string() + "] " + message;
+        return String("STUNRequester [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -360,7 +358,7 @@ namespace openpeer
           // we have a stun request but not a timer, setup the timer now...
           mTimer = Timer::create(mThisWeak.lock(), mCurrentTimeout, false);
 
-          ZS_LOG_TRACE(log("sending packet now") + ", try number=" + Stringize<ULONG>(mTryNumber).string() + ", timeout duration=" + Stringize<Duration::tick_type>(mCurrentTimeout.total_milliseconds()).string())
+          ZS_LOG_TRACE(log("sending packet now") + ", try number=" + string(mTryNumber) + ", timeout duration=" + string(mCurrentTimeout.total_milliseconds()))
 
           // send off the packet NOW
           boost::shared_array<BYTE> packet;

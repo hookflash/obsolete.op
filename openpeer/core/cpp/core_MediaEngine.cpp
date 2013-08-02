@@ -59,8 +59,6 @@ namespace openpeer
 {
   namespace core
   {
-    using zsLib::Stringize;
-
     namespace internal
     {
       typedef zsLib::ThreadPtr ThreadPtr;
@@ -304,14 +302,14 @@ namespace openpeer
 
         mError = mVoiceBase->Init();
         if (mError < 0) {
-          ZS_LOG_ERROR(Detail, log("failed to initialize voice base (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to initialize voice base (error: ") + string(mVideoBase->LastError()) + ")")
           return;
         } else if (mVoiceBase->LastError() > 0) {
-          ZS_LOG_WARNING(Detail, log("an error has occured during voice base init (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          ZS_LOG_WARNING(Detail, log("an error has occured during voice base init (error: ") + string(mVoiceBase->LastError()) + ")")
         }
         mError = mVoiceBase->RegisterVoiceEngineObserver(*this);
         if (mError < 0) {
-          ZS_LOG_ERROR(Detail, log("failed to register voice engine observer (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to register voice engine observer (error: ") + string(mVoiceBase->LastError()) + ")")
           return;
         }
 
@@ -359,15 +357,15 @@ namespace openpeer
 
         mError = mVideoBase->Init();
         if (mError < 0) {
-          ZS_LOG_ERROR(Detail, log("failed to initialize video base (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to initialize video base (error: ") + string(mVideoBase->LastError()) + ")")
           return;
         } else if (mVideoBase->LastError() > 0) {
-          ZS_LOG_WARNING(Detail, log("an error has occured during video base init (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          ZS_LOG_WARNING(Detail, log("an error has occured during video base init (error: ") + string(mVideoBase->LastError()) + ")")
         }
 
         mError = mVideoBase->SetVoiceEngine(mVoiceEngine);
         if (mError < 0) {
-          ZS_LOG_ERROR(Detail, log("failed to set voice engine for video base (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to set voice engine for video base (error: ") + string(mVideoBase->LastError()) + ")")
           return;
         }
         
@@ -400,22 +398,22 @@ namespace openpeer
         if (logLevel != Log::None) {
           mError = mVoiceEngine->SetTraceFilter(traceFilter);
           if (mError < 0) {
-            ZS_LOG_ERROR(Detail, log("failed to set trace filter for voice (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to set trace filter for voice (error: ") + string(mVoiceBase->LastError()) + ")")
             return;
           }
           mError = mVoiceEngine->SetTraceCallback(this);
           if (mError < 0) {
-            ZS_LOG_ERROR(Detail, log("failed to set trace callback for voice (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to set trace callback for voice (error: ") + string(mVoiceBase->LastError()) + ")")
             return;
           }
           mError = mVideoEngine->SetTraceFilter(traceFilter);
           if (mError < 0) {
-            ZS_LOG_ERROR(Detail, log("failed to set trace filter for video (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to set trace filter for video (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
           mError = mVideoEngine->SetTraceCallback(this);
           if (mError < 0) {
-            ZS_LOG_ERROR(Detail, log("failed to set trace callback for video (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to set trace callback for video (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
         }
@@ -429,12 +427,12 @@ namespace openpeer
           if (mVoiceBase) {
             mError = mVoiceBase->DeRegisterVoiceEngineObserver();
             if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to deregister voice engine observer (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+              ZS_LOG_ERROR(Detail, log("failed to deregister voice engine observer (error: ") + string(mVoiceBase->LastError()) + ")")
               return;
             }
             mError = mVoiceBase->Release();
             if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release voice base (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+              ZS_LOG_ERROR(Detail, log("failed to release voice base (error: ") + string(mVoiceBase->LastError()) + ")")
               return;
             }
           }
@@ -442,7 +440,7 @@ namespace openpeer
           if (mVoiceCodec) {
             mError = mVoiceCodec->Release();
             if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release voice codec (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+              ZS_LOG_ERROR(Detail, log("failed to release voice codec (error: ") + string(mVoiceBase->LastError()) + ")")
               return;
             }
           }
@@ -450,7 +448,7 @@ namespace openpeer
           if (mVoiceNetwork) {
             mError = mVoiceNetwork->Release();
             if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release voice network (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+              ZS_LOG_ERROR(Detail, log("failed to release voice network (error: ") + string(mVoiceBase->LastError()) + ")")
               return;
             }
           }
@@ -458,7 +456,7 @@ namespace openpeer
           if (mVoiceRtpRtcp) {
             mError = mVoiceRtpRtcp->Release();
             if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release voice RTP/RTCP (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+              ZS_LOG_ERROR(Detail, log("failed to release voice RTP/RTCP (error: ") + string(mVoiceBase->LastError()) + ")")
               return;
             }
           }
@@ -466,7 +464,7 @@ namespace openpeer
           if (mVoiceAudioProcessing) {
             mError = mVoiceAudioProcessing->Release();
             if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release audio processing (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+              ZS_LOG_ERROR(Detail, log("failed to release audio processing (error: ") + string(mVoiceBase->LastError()) + ")")
               return;
             }
           }
@@ -474,7 +472,7 @@ namespace openpeer
           if (mVoiceVolumeControl) {
             mError = mVoiceVolumeControl->Release();
             if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release volume control (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+              ZS_LOG_ERROR(Detail, log("failed to release volume control (error: ") + string(mVoiceBase->LastError()) + ")")
               return;
             }
           }
@@ -482,7 +480,7 @@ namespace openpeer
           if (mVoiceHardware) {
             mError = mVoiceHardware->Release();
             if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release audio hardware (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+              ZS_LOG_ERROR(Detail, log("failed to release audio hardware (error: ") + string(mVoiceBase->LastError()) + ")")
               return;
             }
           }
@@ -490,7 +488,7 @@ namespace openpeer
           if (mVoiceFile) {
             mError = mVoiceFile->Release();
             if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release voice file (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+              ZS_LOG_ERROR(Detail, log("failed to release voice file (error: ") + string(mVoiceBase->LastError()) + ")")
               return;
             }
           }
@@ -506,7 +504,7 @@ namespace openpeer
           if (mVideoBase) {
             mError = mVideoBase->Release();
             if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release video base (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+              ZS_LOG_ERROR(Detail, log("failed to release video base (error: ") + string(mVideoBase->LastError()) + ")")
               return;
             }
           }
@@ -514,7 +512,7 @@ namespace openpeer
           if (mVideoNetwork) {
             mError = mVideoNetwork->Release();
             if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release video network (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+              ZS_LOG_ERROR(Detail, log("failed to release video network (error: ") + string(mVideoBase->LastError()) + ")")
               return;
             }
           }
@@ -522,7 +520,7 @@ namespace openpeer
           if (mVideoRender) {
             mError = mVideoRender->Release();
             if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release video render (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+              ZS_LOG_ERROR(Detail, log("failed to release video render (error: ") + string(mVideoBase->LastError()) + ")")
               return;
             }
           }
@@ -530,7 +528,7 @@ namespace openpeer
           if (mVideoCapture) {
             mError = mVideoCapture->Release();
             if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+              ZS_LOG_ERROR(Detail, log("failed to release video capture (error: ") + string(mVideoBase->LastError()) + ")")
               return;
             }
           }
@@ -538,7 +536,7 @@ namespace openpeer
           if (mVideoRtpRtcp) {
             mError = mVideoRtpRtcp->Release();
             if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release video RTP/RTCP (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+              ZS_LOG_ERROR(Detail, log("failed to release video RTP/RTCP (error: ") + string(mVideoBase->LastError()) + ")")
               return;
             }
           }
@@ -546,7 +544,7 @@ namespace openpeer
           if (mVideoCodec) {
             mError = mVideoCodec->Release();
             if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release video codec (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+              ZS_LOG_ERROR(Detail, log("failed to release video codec (error: ") + string(mVideoBase->LastError()) + ")")
               return;
             }
           }
@@ -554,7 +552,7 @@ namespace openpeer
           if (mVideoFile) {
             mError = mVideoFile->Release();
             if (mError < 0) {
-              ZS_LOG_ERROR(Detail, log("failed to release video file (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+              ZS_LOG_ERROR(Detail, log("failed to release video file (error: ") + string(mVideoBase->LastError()) + ")")
               return;
             }
           }
@@ -683,13 +681,13 @@ namespace openpeer
         }
         mError = mVoiceAudioProcessing->SetEcStatus(enabled, ecMode);
         if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to set acoustic echo canceller status (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to set acoustic echo canceller status (error: ") + string(mVoiceBase->LastError()) + ")")
           return;
         }
         if (ecMode == webrtc::kEcAecm && enabled) {
           mError = mVoiceAudioProcessing->SetAecmMode(webrtc::kAecmSpeakerphone);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to set acoustic echo canceller mobile mode (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to set acoustic echo canceller mobile mode (error: ") + string(mVoiceBase->LastError()) + ")")
             return;
           }
         }
@@ -706,7 +704,7 @@ namespace openpeer
 
         mError = mVoiceAudioProcessing->SetAgcStatus(enabled, webrtc::kAgcAdaptiveDigital);
         if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to set automatic gain control status (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to set automatic gain control status (error: ") + string(mVoiceBase->LastError()) + ")")
           return;
         }
         mAgcEnabled = enabled;
@@ -721,7 +719,7 @@ namespace openpeer
 
         mError = mVoiceAudioProcessing->SetNsStatus(enabled, webrtc::kNsLowSuppression);
         if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to set noise suppression status (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to set noise suppression status (error: ") + string(mVoiceBase->LastError()) + ")")
           return;
         }
         mNsEnabled = enabled;
@@ -756,7 +754,7 @@ namespace openpeer
 
         mError = mVoiceVolumeControl->SetInputMute(-1, enabled);
         if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to set microphone mute (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to set microphone mute (error: ") + string(mVoiceBase->LastError()) + ")")
           return;
         }
       }
@@ -771,7 +769,7 @@ namespace openpeer
         bool enabled;
         mError = mVoiceVolumeControl->GetInputMute(-1, enabled);
         if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to set microphone mute (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to set microphone mute (error: ") + string(mVoiceBase->LastError()) + ")")
           return false;
         }
 
@@ -787,7 +785,7 @@ namespace openpeer
 
         mError = mVoiceHardware->SetLoudspeakerStatus(enabled);
         if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to set loudspeaker (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to set loudspeaker (error: ") + string(mVoiceBase->LastError()) + ")")
           return;
         }
       }
@@ -802,7 +800,7 @@ namespace openpeer
         bool enabled;
         mError = mVoiceHardware->GetLoudspeakerStatus(enabled);
         if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to get loudspeaker (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to get loudspeaker (error: ") + string(mVoiceBase->LastError()) + ")")
           return false;
         }
 
@@ -819,7 +817,7 @@ namespace openpeer
         OutputAudioRoute route;
         mError = mVoiceHardware->GetOutputAudioRoute(route);
         if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to get output audio route (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to get output audio route (error: ") + string(mVoiceBase->LastError()) + ")")
           return OutputAudioRoute_BuiltInSpeaker;
         }
 
@@ -952,7 +950,7 @@ namespace openpeer
 
         mError = mVideoRtpRtcp->GetReceivedRTCPStatistics(mVideoChannel, fractionLost, cumulativeLost, extendedMax, jitter, rttMs);
         if (0 != mError) {
-          ZS_LOG_ERROR(Detail, log("failed to get received RTCP statistics for video (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to get received RTCP statistics for video (error: ") + string(mVideoBase->LastError()) + ")")
           return mError;
         }
 
@@ -963,7 +961,7 @@ namespace openpeer
 
         mError = mVideoRtpRtcp->GetRTPStatistics(mVideoChannel, bytesSent, packetsSent, bytesReceived, packetsReceived);
         if (0 != mError) {
-          ZS_LOG_ERROR(Detail, log("failed to get RTP statistics for video (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to get RTP statistics for video (error: ") + string(mVideoBase->LastError()) + ")")
           return mError;
         }
 
@@ -989,7 +987,7 @@ namespace openpeer
 
         mError = mVoiceRtpRtcp->GetRTCPStatistics(mVoiceChannel, callStat);
         if (0 != mError) {
-          ZS_LOG_ERROR(Detail, log("failed to get RTCP statistics for voice (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to get RTCP statistics for voice (error: ") + string(mVoiceBase->LastError()) + ")")
           return mError;
         }
 
@@ -1113,7 +1111,7 @@ namespace openpeer
 
         mError = mVoiceNetwork->ReceivedRTPPacket(channel, data, length);
         if (0 != mError) {
-          ZS_LOG_ERROR(Detail, log("received voice RTP packet failed (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("received voice RTP packet failed (error: ") + string(mVoiceBase->LastError()) + ")")
           return mError;
         }
 
@@ -1137,7 +1135,7 @@ namespace openpeer
 
         mError = mVoiceNetwork->ReceivedRTCPPacket(channel, data, length);
         if (0 != mError) {
-          ZS_LOG_ERROR(Detail, log("received voice RTCP packet failed (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("received voice RTCP packet failed (error: ") + string(mVoiceBase->LastError()) + ")")
           return mError;
         }
 
@@ -1185,7 +1183,7 @@ namespace openpeer
 
         mError = mVideoNetwork->ReceivedRTPPacket(channel, data, length);
         if (0 != mError) {
-          ZS_LOG_ERROR(Detail, log("received video RTP packet failed (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("received video RTP packet failed (error: ") + string(mVideoBase->LastError()) + ")")
           return mError;
         }
 
@@ -1209,7 +1207,7 @@ namespace openpeer
 
         mError = mVideoNetwork->ReceivedRTCPPacket(channel, data, length);
         if (0 != mError) {
-          ZS_LOG_ERROR(Detail, log("received video RTCP packet failed (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("received video RTCP packet failed (error: ") + string(mVideoBase->LastError()) + ")")
           return mError;
         }
 
@@ -1266,7 +1264,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void MediaEngine::CallbackOnError(const int errCode, const int channel)
       {
-        ZS_LOG_ERROR(Detail, log("Voice engine error: ") + Stringize<INT>(errCode).string() + ")")
+        ZS_LOG_ERROR(Detail, log("Voice engine error: ") + string(errCode) + ")")
       }
 
       //-----------------------------------------------------------------------
@@ -1284,7 +1282,7 @@ namespace openpeer
           case webrtc::kOutputAudioRouteBuiltInReceiver:  route = IMediaEngine::OutputAudioRoute_BuiltInReceiver; break;
           case webrtc::kOutputAudioRouteBuiltInSpeaker:   route = IMediaEngine::OutputAudioRoute_BuiltInSpeaker; break;
           default: {
-            ZS_LOG_WARNING(Basic, log("media route changed to unknown type") + ", value=" + Stringize<typeof(inRoute)>(inRoute).string())
+            ZS_LOG_WARNING(Basic, log("media route changed to unknown type") + ", value=" + string(inRoute))
             break;
           }
         }
@@ -1500,7 +1498,7 @@ namespace openpeer
 
           mVoiceChannel = mVoiceBase->CreateChannel();
           if (mVoiceChannel < 0) {
-            ZS_LOG_ERROR(Detail, log("could not create voice channel (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("could not create voice channel (error: ") + string(mVoiceBase->LastError()) + ")")
             mVoiceChannel = OPENPEER_MEDIA_ENGINE_INVALID_CHANNEL;
             return;
           }
@@ -1515,36 +1513,36 @@ namespace openpeer
           }
           mError = mVoiceAudioProcessing->SetEcStatus(mEcEnabled, ecMode);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to set acoustic echo canceller status (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to set acoustic echo canceller status (error: ") + string(mVoiceBase->LastError()) + ")")
             return;
           }
           if (ecMode == webrtc::kEcAecm && mEcEnabled) {
             mError = mVoiceAudioProcessing->SetAecmMode(webrtc::kAecmSpeakerphone);
             if (mError != 0) {
-              ZS_LOG_ERROR(Detail, log("failed to set acoustic echo canceller mobile mode (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+              ZS_LOG_ERROR(Detail, log("failed to set acoustic echo canceller mobile mode (error: ") + string(mVoiceBase->LastError()) + ")")
               return;
             }
           }
           mError = mVoiceAudioProcessing->SetAgcStatus(mAgcEnabled, webrtc::kAgcAdaptiveDigital);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to set automatic gain control status (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to set automatic gain control status (error: ") + string(mVoiceBase->LastError()) + ")")
             return;
           }
           mError = mVoiceAudioProcessing->SetNsStatus(mNsEnabled, webrtc::kNsLowSuppression);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to set noise suppression status (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to set noise suppression status (error: ") + string(mVoiceBase->LastError()) + ")")
             return;
           }
 
           mError = mVoiceVolumeControl->SetInputMute(-1, false);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to set microphone mute (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to set microphone mute (error: ") + string(mVoiceBase->LastError()) + ")")
             return;
           }
 #ifdef TARGET_OS_IPHONE
           mError = mVoiceHardware->SetLoudspeakerStatus(false);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to set loudspeaker (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to set loudspeaker (error: ") + string(mVoiceBase->LastError()) + ")")
             return;
           }
 #endif
@@ -1553,7 +1551,7 @@ namespace openpeer
           for (int idx = 0; idx < mVoiceCodec->NumOfCodecs(); idx++) {
             mError = mVoiceCodec->GetCodec(idx, cinst);
             if (mError != 0) {
-              ZS_LOG_ERROR(Detail, log("failed to get voice codec (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+              ZS_LOG_ERROR(Detail, log("failed to get voice codec (error: ") + string(mVoiceBase->LastError()) + ")")
               return;
             }
 #ifdef OPENPEER_MEDIA_ENGINE_VOICE_CODEC_ISAC
@@ -1566,7 +1564,7 @@ namespace openpeer
               cinst.channels = 1;
               mError = mVoiceCodec->SetSendCodec(mVoiceChannel, cinst);
               if (mError != 0) {
-                ZS_LOG_ERROR(Detail, log("failed to set send voice codec (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+                ZS_LOG_ERROR(Detail, log("failed to set send voice codec (error: ") + string(mVoiceBase->LastError()) + ")")
                 return;
               }
               break;
@@ -1581,7 +1579,7 @@ namespace openpeer
               cinst.channels = 1;
               mError = mVoiceCodec->SetSendCodec(mVoiceChannel, cinst);
               if (mError != 0) {
-                ZS_LOG_ERROR(Detail, log("failed to set send voice codec (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+                ZS_LOG_ERROR(Detail, log("failed to set send voice codec (error: ") + string(mVoiceBase->LastError()) + ")")
                 return;
               }
               break;
@@ -1594,7 +1592,7 @@ namespace openpeer
           for (int idx = 0; idx < mVoiceCodec->NumOfCodecs(); idx++) {
             mError = mVoiceCodec->GetCodec(idx, cfinst);
             if (mError != 0) {
-              ZS_LOG_ERROR(Detail, log("failed to get voice codec (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+              ZS_LOG_ERROR(Detail, log("failed to get voice codec (error: ") + string(mVoiceBase->LastError()) + ")")
               return;
             }
             if (strcmp(cfinst.plname, "VORBIS") == 0) {
@@ -1614,24 +1612,24 @@ namespace openpeer
           
           mError = mVoiceBase->StartSend(mVoiceChannel);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to start sending voice (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to start sending voice (error: ") + string(mVoiceBase->LastError()) + ")")
             return;
           }
 
           mError = mVoiceBase->StartReceive(mVoiceChannel);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to start receiving voice (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to start receiving voice (error: ") + string(mVoiceBase->LastError()) + ")")
             return;
           }
           mError = mVoiceBase->StartPlayout(mVoiceChannel);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to start playout (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to start playout (error: ") + string(mVoiceBase->LastError()) + ")")
             return;
           }
           if (!mVoiceRecordFile.empty()) {
             mError = mVoiceFile->StartRecordingCall(mVoiceRecordFile, &cfinst);
             if (mError != 0) {
-              ZS_LOG_ERROR(Detail, log("failed to start call recording (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+              ZS_LOG_ERROR(Detail, log("failed to start call recording (error: ") + string(mVoiceBase->LastError()) + ")")
             }
           }
         }
@@ -1657,34 +1655,34 @@ namespace openpeer
 
           mError = mVoiceBase->StopSend(mVoiceChannel);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to stop sending voice (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to stop sending voice (error: ") + string(mVoiceBase->LastError()) + ")")
             return;
           }
           mError = mVoiceBase->StopPlayout(mVoiceChannel);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to stop playout (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to stop playout (error: ") + string(mVoiceBase->LastError()) + ")")
             return;
           }
           mError = mVoiceBase->StopReceive(mVoiceChannel);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to stop receiving voice (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to stop receiving voice (error: ") + string(mVoiceBase->LastError()) + ")")
             return;
           }
           if (!mVoiceRecordFile.empty()) {
             mError = mVoiceFile->StopRecordingCall();
             if (mError != 0) {
-              ZS_LOG_ERROR(Detail, log("failed to stop call recording (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+              ZS_LOG_ERROR(Detail, log("failed to stop call recording (error: ") + string(mVoiceBase->LastError()) + ")")
             }
             mVoiceRecordFile.erase();
           }
           mError = mVoiceNetwork->DeRegisterExternalTransport(mVoiceChannel);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to deregister voice external transport (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to deregister voice external transport (error: ") + string(mVoiceBase->LastError()) + ")")
             return;
           }
           mError = mVoiceBase->DeleteChannel(mVoiceChannel);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to delete voice channel (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to delete voice channel (error: ") + string(mVoiceBase->LastError()) + ")")
             return;
           }
           mVoiceChannel = OPENPEER_MEDIA_ENGINE_INVALID_CHANNEL;
@@ -1697,7 +1695,7 @@ namespace openpeer
         if (NULL != mVoiceTransport) {
           mError = mVoiceNetwork->RegisterExternalTransport(mVoiceChannel, *mVoiceTransport);
           if (0 != mError) {
-            ZS_LOG_ERROR(Detail, log("failed to register voice external transport (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to register voice external transport (error: ") + string(mVoiceBase->LastError()) + ")")
             return mError;
           }
         } else {
@@ -1781,7 +1779,7 @@ namespace openpeer
           
           mError = mVideoCapture->AllocateCaptureDevice(*mVcpm, mCaptureId);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to allocate video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to allocate video capture device (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
           mVcpm->AddRef();
@@ -1789,7 +1787,7 @@ namespace openpeer
           
           mError = mVideoCapture->RegisterObserver(mCaptureId, *this);
           if (mError < 0) {
-            ZS_LOG_ERROR(Detail, log("failed to register video capture observer (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to register video capture observer (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
           
@@ -1814,7 +1812,7 @@ namespace openpeer
           }
           mError = mVideoCapture->SetDefaultCapturedFrameOrientation(mCaptureId, defaultOrientation);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to set default orientation on video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to set default orientation on video capture device (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
           
@@ -1823,7 +1821,7 @@ namespace openpeer
           webrtc::RotateCapturedFrame orientation;
           mError = mVideoCapture->GetOrientation(mDeviceUniqueId, orientation);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to get orientation from video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to get orientation from video capture device (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
 #else
@@ -1843,7 +1841,7 @@ namespace openpeer
           capability.faceDetection = mFaceDetection;
           mError = mVideoCapture->StartCapture(mCaptureId, capability);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to start capturing (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to start capturing (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
 
@@ -1851,13 +1849,13 @@ namespace openpeer
           mError = mVideoRender->AddRenderer(mCaptureId, captureView, 0, 0.0F, 0.0F, 1.0F,
                                              1.0F);
           if (0 != mError) {
-            ZS_LOG_ERROR(Detail, log("failed to add renderer for video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to add renderer for video capture (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
           
           mError = mVideoRender->StartRender(mCaptureId);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to start rendering video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to start rendering video capture (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
 #endif
@@ -1875,23 +1873,23 @@ namespace openpeer
 #ifndef __QNX__
           mError = mVideoRender->StopRender(mCaptureId);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to stop rendering video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to stop rendering video capture (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
           mError = mVideoRender->RemoveRenderer(mCaptureId);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to remove renderer for video capture (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to remove renderer for video capture (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
 #endif
           mError = mVideoCapture->StopCapture(mCaptureId);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to stop video capturing (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to stop video capturing (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
           mError = mVideoCapture->ReleaseCaptureDevice(mCaptureId);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to release video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to release video capture device (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
           
@@ -1922,7 +1920,7 @@ namespace openpeer
 
           mError = mVideoBase->CreateChannel(mVideoChannel);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("could not create video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("could not create video channel (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
 
@@ -1932,32 +1930,32 @@ namespace openpeer
           
           mError = mVideoNetwork->SetMTU(mVideoChannel, mMtu);
           if (0 != mError) {
-            ZS_LOG_ERROR(Detail, log("failed to set MTU for video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to set MTU for video channel (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
 
           mError = mVideoCapture->ConnectCaptureDevice(mCaptureId, mVideoChannel);
           if (0 != mError) {
-            ZS_LOG_ERROR(Detail, log("failed to connect capture device to video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to connect capture device to video channel (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
 
           mError = mVideoRtpRtcp->SetRTCPStatus(mVideoChannel, webrtc::kRtcpCompound_RFC4585);
           if (0 != mError) {
-            ZS_LOG_ERROR(Detail, log("failed to set video RTCP status (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to set video RTCP status (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
 
           mError = mVideoRtpRtcp->SetKeyFrameRequestMethod(mVideoChannel,
                                                            webrtc::kViEKeyFrameRequestPliRtcp);
           if (0 != mError) {
-            ZS_LOG_ERROR(Detail, log("failed to set key frame request method (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to set key frame request method (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
 
           mError = mVideoRtpRtcp->SetTMMBRStatus(mVideoChannel, true);
           if (0 != mError) {
-            ZS_LOG_ERROR(Detail, log("failed to set temporary max media bit rate status (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to set temporary max media bit rate status (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
 
@@ -1965,14 +1963,14 @@ namespace openpeer
           OutputAudioRoute route;
           mError = mVoiceHardware->GetOutputAudioRoute(route);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to get output audio route (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to get output audio route (error: ") + string(mVoiceBase->LastError()) + ")")
             return;
           }
           if (route != webrtc::kOutputAudioRouteHeadphone)
           {
             mError = mVoiceHardware->SetLoudspeakerStatus(true);
             if (mError != 0) {
-              ZS_LOG_ERROR(Detail, log("failed to set loudspeaker (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+              ZS_LOG_ERROR(Detail, log("failed to set loudspeaker (error: ") + string(mVoiceBase->LastError()) + ")")
               return;
             }
           }
@@ -1981,7 +1979,7 @@ namespace openpeer
           mError = mVideoRender->AddRenderer(mVideoChannel, channelView, 0, 0.0F, 0.0F, 1.0F,
                                              1.0F);
           if (0 != mError) {
-            ZS_LOG_ERROR(Detail, log("failed to add renderer for video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to add renderer for video channel (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
 
@@ -1990,13 +1988,13 @@ namespace openpeer
           for (int idx = 0; idx < mVideoCodec->NumberOfCodecs(); idx++) {
             mError = mVideoCodec->GetCodec(idx, videoCodec);
             if (mError != 0) {
-              ZS_LOG_ERROR(Detail, log("failed to get video codec (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+              ZS_LOG_ERROR(Detail, log("failed to get video codec (error: ") + string(mVideoBase->LastError()) + ")")
               return;
             }
             if (videoCodec.codecType == webrtc::kVideoCodecVP8) {
               mError = mVideoCodec->SetSendCodec(mVideoChannel, videoCodec);
               if (mError != 0) {
-                ZS_LOG_ERROR(Detail, log("failed to set send video codec (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+                ZS_LOG_ERROR(Detail, log("failed to set send video codec (error: ") + string(mVideoBase->LastError()) + ")")
                 return;
               }
               break;
@@ -2014,18 +2012,18 @@ namespace openpeer
           
           mError = mVideoBase->StartSend(mVideoChannel);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to start sending video (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to start sending video (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
 
           mError = mVideoBase->StartReceive(mVideoChannel);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to start receiving video (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to start receiving video (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
           mError = mVideoRender->StartRender(mVideoChannel);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to start rendering video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to start rendering video channel (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
         }
@@ -2051,27 +2049,27 @@ namespace openpeer
           
           mError = mVideoRender->StopRender(mVideoChannel);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to stop rendering video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to stop rendering video channel (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
           mError = mVideoRender->RemoveRenderer(mVideoChannel);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to remove renderer for video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to remove renderer for video channel (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
           mError = mVideoBase->StopSend(mVideoChannel);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to stop sending video (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to stop sending video (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
           mError = mVideoBase->StopReceive(mVideoChannel);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to stop receiving video (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to stop receiving video (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
           mError = mVideoCapture->DisconnectCaptureDevice(mVideoChannel);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to disconnect capture device from video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to disconnect capture device from video channel (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
           mError = deregisterVideoTransport();
@@ -2079,7 +2077,7 @@ namespace openpeer
             return;
           mError = mVideoBase->DeleteChannel(mVideoChannel);
           if (mError != 0) {
-            ZS_LOG_ERROR(Detail, log("failed to delete video channel (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to delete video channel (error: ") + string(mVideoBase->LastError()) + ")")
             return;
           }
 
@@ -2114,19 +2112,19 @@ namespace openpeer
         }
         mError = mVideoCapture->SetCapturedFrameLockedOrientation(mCaptureId, recordOrientation);
         if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to set record orientation on video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to set record orientation on video capture device (error: ") + string(mVideoBase->LastError()) + ")")
           return;
         }
         mError = mVideoCapture->EnableCapturedFrameOrientationLock(mCaptureId, true);
         if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to enable orientation lock on video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to enable orientation lock on video capture device (error: ") + string(mVideoBase->LastError()) + ")")
           return;
         }
         
         webrtc::RotateCapturedFrame orientation;
         mError = mVideoCapture->GetOrientation(mDeviceUniqueId, orientation);
         if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to get orientation from video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to get orientation from video capture device (error: ") + string(mVideoBase->LastError()) + ")")
           return;
         }
         
@@ -2157,7 +2155,7 @@ namespace openpeer
         
         mError = mVideoFile->StartRecordCaptureVideo(mCaptureId, videoRecordFile, webrtc::MICROPHONE, audioCodec, videoCodec, webrtc::kFileFormatMP4File, saveVideoToLibrary);
         if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to start video capture recording (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to start video capture recording (error: ") + string(mVoiceBase->LastError()) + ")")
           return;
         }
       }
@@ -2171,13 +2169,13 @@ namespace openpeer
         
         mError = mVideoFile->StopRecordCaptureVideo(mCaptureId);
         if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to stop video capture recording (error: ") + Stringize<INT>(mVoiceBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to stop video capture recording (error: ") + string(mVoiceBase->LastError()) + ")")
           return;
         }
         
         mError = mVideoCapture->EnableCapturedFrameOrientationLock(mCaptureId, false);
         if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to disable orientation lock on video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to disable orientation lock on video capture device (error: ") + string(mVideoBase->LastError()) + ")")
           return;
         }
         
@@ -2195,7 +2193,7 @@ namespace openpeer
         if (NULL != mVideoTransport) {
           mError = mVideoNetwork->RegisterSendTransport(mVideoChannel, *mVideoTransport);
           if (0 != mError) {
-            ZS_LOG_ERROR(Detail, log("failed to register video external transport (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+            ZS_LOG_ERROR(Detail, log("failed to register video external transport (error: ") + string(mVideoBase->LastError()) + ")")
             return mError;
           }
         } else {
@@ -2210,7 +2208,7 @@ namespace openpeer
       {
         mError = mVideoNetwork->DeregisterSendTransport(mVideoChannel);
         if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to deregister video external transport (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to deregister video external transport (error: ") + string(mVideoBase->LastError()) + ")")
           return mError;
         }
         return 0;
@@ -2440,12 +2438,12 @@ namespace openpeer
         webrtc::RotateCapturedFrame orientation;
         mError = mVideoCapture->GetOrientation(mDeviceUniqueId, orientation);
         if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to get orientation from video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to get orientation from video capture device (error: ") + string(mVideoBase->LastError()) + ")")
           return mError;
         }
         mError = mVideoCapture->SetRotateCapturedFrames(mCaptureId, orientation);
         if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to set rotation for video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to set rotation for video capture device (error: ") + string(mVideoBase->LastError()) + ")")
           return mError;
         }
         
@@ -2481,7 +2479,7 @@ namespace openpeer
         webrtc::RotateCapturedFrame orientation;
         mError = mVideoCapture->GetOrientation(mDeviceUniqueId, orientation);
         if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to get orientation from video capture device (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to get orientation from video capture device (error: ") + string(mVideoBase->LastError()) + ")")
           return mError;
         }
 #else
@@ -2497,7 +2495,7 @@ namespace openpeer
         memset(&videoCodec, 0, sizeof(VideoCodec));
         mError = mVideoCodec->GetSendCodec(mVideoChannel, videoCodec);
         if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to get video codec (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to get video codec (error: ") + string(mVideoBase->LastError()) + ")")
           return mError;
         }
         videoCodec.width = width;
@@ -2506,11 +2504,11 @@ namespace openpeer
         videoCodec.maxBitrate = maxBitrate;
         mError = mVideoCodec->SetSendCodec(mVideoChannel, videoCodec);
         if (mError != 0) {
-          ZS_LOG_ERROR(Detail, log("failed to set send video codec (error: ") + Stringize<INT>(mVideoBase->LastError()).string() + ")")
+          ZS_LOG_ERROR(Detail, log("failed to set send video codec (error: ") + string(mVideoBase->LastError()) + ")")
           return mError;
         }
         
-        ZS_LOG_DEBUG(log("video codec size - width: ") + Stringize<INT>(width).string() + ", height: " + Stringize<INT>(height).string())
+        ZS_LOG_DEBUG(log("video codec size - width: ") + string(width) + ", height: " + string(height))
         
         return 0;
       }
@@ -2558,7 +2556,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String MediaEngine::log(const char *message) const
       {
-        return String("MediaEngine [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("MediaEngine [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -2594,7 +2592,7 @@ namespace openpeer
           transport = mTransport;
         }
         if (!transport) {
-          ZS_LOG_WARNING(Debug, log("RTP packet cannot be sent as no transport is not registered") + ", channel=" + Stringize<typeof(channel)>(channel).string() + ", length=" + Stringize<typeof(len)>(len).string())
+          ZS_LOG_WARNING(Debug, log("RTP packet cannot be sent as no transport is not registered") + ", channel=" + string(channel) + ", length=" + string(len))
           return 0;
         }
 
@@ -2610,7 +2608,7 @@ namespace openpeer
           transport = mTransport;
         }
         if (!transport) {
-          ZS_LOG_WARNING(Debug, log("RTCP packet cannot be sent as no transport is not registered") + ", channel=" + Stringize<typeof(channel)>(channel).string() + ", length=" + Stringize<typeof(len)>(len).string())
+          ZS_LOG_WARNING(Debug, log("RTCP packet cannot be sent as no transport is not registered") + ", channel=" + string(channel) + ", length=" + string(len))
           return 0;
         }
 
@@ -2643,7 +2641,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String MediaEngine::RedirectTransport::log(const char *message)
       {
-        return String("MediaEngine::RedirectTransport (") + mTransportType + ") [" + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("MediaEngine::RedirectTransport (") + mTransportType + ") [" + string(mID) + "] " + message;
       }
     }
 
