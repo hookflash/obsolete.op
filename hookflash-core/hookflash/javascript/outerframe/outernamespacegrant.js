@@ -56,7 +56,7 @@ var innerFrameParentId = "innerFrame";   // inner iframe id
 var inner;
 var innerFrameDomain;
 var innerFrameURL;                       // inner iframe url
-
+var initData;
 
 /** 
  * Init method.
@@ -64,18 +64,7 @@ var innerFrameURL;                       // inner iframe url
  */ 
 function init() {
     var url = window.location.href;
-    if (url.indexOf(localStorage.outerFrameURL) == 0){
-        // after OAuth redirect
-        // load inner frame with parameters
-        var params = url.split("?").pop();
-        initInnerFrame(localStorage.innerFrameURL + "?reload=true&" + params);
-        logMe('init - reload=true');
-    } else {
-        // fresh scenario
-        localStorage.clear();
-        logMe('init - fresh start');
-        //localStorage.outerFrameURL = window.location.href;
-    }
+    initData = {outerURL: url};
 }
 
 /**
@@ -86,15 +75,8 @@ function init() {
  * @param identityLoginURL - url of the inner frame
  */
 function initInnerFrame(identityLoginURL) {
-    var  locationProtocol;
-	  if (location.protocol === 'https:'){
-		  locationProtocol = "https://";
-	  } else {
-		  locationProtocol = "http://";
-	  }
-    logMe('initInnerFrame ' + locationProtocol + identityLoginURL);
-    
-    innerFrameURL = locationProtocol + identityLoginURL;
+    logMe('initInnerFrame' + identityLoginURL);
+    innerFrameURL = identityLoginURL;
     localStorage.innerFrameURL = innerFrameURL;
     // load inner frame
     var innerFrame = document.createElement('iframe');
@@ -128,12 +110,12 @@ function handleOnMessage(message) {
             //localStorage.outerFrameURL = dataJSON.notify.browser.outerFrameURL;
             notifyClient(JSON.stringify(dataJSON));
         }else if (dataJSON.request) {
-            if (dataJSON.request.$method === 'identity-access-window'){
+            if (dataJSON.request.$method === 'namespace-grant-window'){
                 notifyClient(JSON.stringify(dataJSON));
             }else if (dataJSON.request.$method === 'identity-access-lockbox-update'){
                 notifyClient(JSON.stringify(dataJSON));
             }
-        }else if (dataJSON.result){
+        }else {
             notifyClient(JSON.stringify(dataJSON));
         }
     } catch (e) {
@@ -154,13 +136,16 @@ function sendBundleToJS(bundle){
     logMe('sendBundleToJS -' + bundle);
     try {
         var dataJSON = JSON.parse(bundle);
-        if (dataJSON.notify && dataJSON.notify && dataJSON.notify.browser && dataJSON.notify.browser.outerFrameURL){
-            localStorage.outerFrameURL = dataJSON.notify.browser.outerFrameURL;
-        }
         inner = document.getElementById(innerFrameId).contentWindow;
         var innerFrameDomainData = innerFrameURL.split("/");
         innerFrameDomain = innerFrameDomainData[2];
-        inner.postMessage(bundle, "https://" + innerFrameDomain);
+        //TODO
+        if (location.protocol === 'https:'){
+		      locationProtocol = "https:";
+	      } else {
+		      locationProtocol = "http:";
+	      }
+        inner.postMessage(bundle, locationProtocol + innerFrameDomain);
     } catch(e){
         logMe('sendBundleToJS - error');
     }
@@ -188,8 +173,5 @@ function notifyClient(message) {
 
 // logger
 function logMe(msg){
-    //alert(msg);
     console.log(msg);
-    var divlog = document.getElementById('divlog');
-    divlog.innerHTML += (msg + "\n");
 }
