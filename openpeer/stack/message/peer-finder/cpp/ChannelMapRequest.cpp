@@ -73,7 +73,8 @@ namespace openpeer
           switch (type)
           {
             case AttributeType_ChannelNumber:           return (0 != mChannelNumber);
-            case AttributeType_ContextID:               return mContextID.hasData();
+            case AttributeType_LocalContextID:          return mLocalContextID.hasData();
+            case AttributeType_RemoteContextID:         return mLocalContextID.hasData();
             case AttributeType_RelayAccessToken:        return mRelayAccessToken.hasData();
             case AttributeType_RelayAccessSecretProof:  return mRelayAccessSecretProof.hasData();
             default:                                    break;
@@ -99,19 +100,24 @@ namespace openpeer
 
           rootEl->adoptAsLastChild(IMessageHelper::createElementWithText("nonce", clientNonce));
 
-          if (hasAttribute(AttributeType_ContextID)) {
-            relayEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("context", mContextID));
+          if (hasAttribute(AttributeType_LocalContextID)) {
+            relayEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("localContext", mLocalContextID));
+          }
+          if (hasAttribute(AttributeType_RemoteContextID)) {
+            relayEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("remoteContext", mRemoteContextID));
           }
           if (hasAttribute(AttributeType_RelayAccessToken)) {
             relayEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("accessToken", mRelayAccessToken));
           }
-          if (hasAttribute(AttributeType_RelayAccessSecretProof)) {
-            relayEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("accessSecretProof", mRelayAccessSecretProof));
+          if ((hasAttribute(AttributeType_RelayAccessSecretProof)) &&
+              (hasAttribute(AttributeType_LocalContextID)) &&
+              (hasAttribute(AttributeType_ChannelNumber))) {
+            String proof = IHelper::convertToHex(*IHelper::hash("proof:" + clientNonce + ":" + mLocalContextID + ":" + string(mChannelNumber) + ":" + IHelper::timeToString(expires) + ":" + mRelayAccessSecretProof));
+            relayEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("accessSecretProof", proof));
+            relayEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("accessSecretProofExpires", IHelper::timeToString(expires)));
           }
 
           if (relayEl->hasChildren()) {
-            relayEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("accessSecretProofExpires", IHelper::timeToString(expires)));
-
             rootEl->adoptAsLastChild(relayEl);
           }
 

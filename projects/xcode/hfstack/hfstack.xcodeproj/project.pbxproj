@@ -129,7 +129,7 @@
 		00AF4DDF171DFACB00DCA0A8 /* LockboxContentGetResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DDD171DFACA00DCA0A8 /* LockboxContentGetResult.cpp */; };
 		00AF4DE4171E2EE500DCA0A8 /* LockboxContentSetRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DE2171E2EE200DCA0A8 /* LockboxContentSetRequest.cpp */; };
 		00AF4DE5171E2EE500DCA0A8 /* LockboxContentSetResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00AF4DE3171E2EE400DCA0A8 /* LockboxContentSetResult.cpp */; };
-		00FF147717A9DC1D00F5DEB8 /* stack_FinderConnectionMultiplexOutgoing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FF147617A9DC1D00F5DEB8 /* stack_FinderConnectionMultiplexOutgoing.cpp */; };
+		00FF147717A9DC1D00F5DEB8 /* stack_FinderConnection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00FF147617A9DC1D00F5DEB8 /* stack_FinderConnection.cpp */; };
 		00FF147B17AAD3EE00F5DEB8 /* stack_IFinderConnection.h in Headers */ = {isa = PBXBuildFile; fileRef = 00FF147A17AAD3ED00F5DEB8 /* stack_IFinderConnection.h */; };
 /* End PBXBuildFile section */
 
@@ -413,8 +413,8 @@
 		00AF4DE3171E2EE400DCA0A8 /* LockboxContentSetResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LockboxContentSetResult.cpp; sourceTree = "<group>"; };
 		00AF4DE6171E2EFD00DCA0A8 /* LockboxContentSetRequest.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LockboxContentSetRequest.h; sourceTree = "<group>"; };
 		00AF4DE7171E2EFF00DCA0A8 /* LockboxContentSetResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = LockboxContentSetResult.h; sourceTree = "<group>"; };
-		00FF147517A9DB6400F5DEB8 /* stack_FinderConnectionMultiplexOutgoing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack_FinderConnectionMultiplexOutgoing.h; sourceTree = "<group>"; };
-		00FF147617A9DC1D00F5DEB8 /* stack_FinderConnectionMultiplexOutgoing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_FinderConnectionMultiplexOutgoing.cpp; sourceTree = "<group>"; };
+		00FF147517A9DB6400F5DEB8 /* stack_FinderConnection.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack_FinderConnection.h; sourceTree = "<group>"; };
+		00FF147617A9DC1D00F5DEB8 /* stack_FinderConnection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_FinderConnection.cpp; sourceTree = "<group>"; };
 		00FF147A17AAD3ED00F5DEB8 /* stack_IFinderConnection.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = stack_IFinderConnection.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -539,7 +539,7 @@
 				005F60AD17557D5100BC3DD6 /* stack_Cache.cpp */,
 				0063B6A516CA8E8A00E6DB4D /* stack_Diff.cpp */,
 				0063B6A616CA8E8A00E6DB4D /* stack_Factory.cpp */,
-				00FF147617A9DC1D00F5DEB8 /* stack_FinderConnectionMultiplexOutgoing.cpp */,
+				00FF147617A9DC1D00F5DEB8 /* stack_FinderConnection.cpp */,
 				000CC03D17A4825A0075E86C /* stack_FinderRelayChannel.cpp */,
 				0063B6A716CA8E8A00E6DB4D /* stack_Helper.cpp */,
 				0063B6A816CA8E8A00E6DB4D /* stack_Location.cpp */,
@@ -579,7 +579,7 @@
 				0063B6CB16CA8E8A00E6DB4D /* stack_Factory.h */,
 				00FF147A17AAD3ED00F5DEB8 /* stack_IFinderConnection.h */,
 				000CC03B17A482390075E86C /* stack_IFinderConnectionRelayChannel.h */,
-				00FF147517A9DB6400F5DEB8 /* stack_FinderConnectionMultiplexOutgoing.h */,
+				00FF147517A9DB6400F5DEB8 /* stack_FinderConnection.h */,
 				000CC03A17A482390075E86C /* stack_IFinderRelayChannel.h */,
 				000CC03917A482390075E86C /* stack_FinderRelayChannel.h */,
 				0063B6CC16CA8E8A00E6DB4D /* stack_Helper.h */,
@@ -1171,7 +1171,7 @@
 				006FB4CB175D23E1000C53A8 /* RolodexNamespaceGrantChallengeValidateRequest.cpp in Sources */,
 				006FB4CC175D23E1000C53A8 /* RolodexNamespaceGrantChallengeValidateResult.cpp in Sources */,
 				000CC03F17A4825A0075E86C /* stack_FinderRelayChannel.cpp in Sources */,
-				00FF147717A9DC1D00F5DEB8 /* stack_FinderConnectionMultiplexOutgoing.cpp in Sources */,
+				00FF147717A9DC1D00F5DEB8 /* stack_FinderConnection.cpp in Sources */,
 				0030229617ABD9CB00DFB1C8 /* ChannelMapRequest.cpp in Sources */,
 				0030229717ABD9CB00DFB1C8 /* ChannelMapResult.cpp in Sources */,
 				005E6C1917AD5F4D002D8335 /* ChannelMapNotify.cpp in Sources */,

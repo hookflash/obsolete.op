@@ -220,12 +220,14 @@ namespace openpeer
                                                                 ITransportStreamPtr sendStream,
                                                                 IPAddress remoteFinderIP,
                                                                 const char *localContextID,
+                                                                const char *remoteContextID,
+                                                                const char *relayDomain,
                                                                 const char *relayAccessToken,
                                                                 const char *relayAccessSecretProof,
                                                                 const char *encryptDataUsingEncodingPassphrase
                                                                 )
       {
-        return FinderRelayChannel::connect(delegate, account, receiveStream, sendStream, remoteFinderIP, localContextID, relayAccessToken, relayAccessSecretProof, encryptDataUsingEncodingPassphrase);
+        return FinderRelayChannel::connect(delegate, account, receiveStream, sendStream, remoteFinderIP, localContextID, remoteContextID, relayDomain, relayAccessToken, relayAccessSecretProof, encryptDataUsingEncodingPassphrase);
       }
 
       //-----------------------------------------------------------------------
@@ -263,21 +265,23 @@ namespace openpeer
                                                                          ITransportStreamPtr sendStream
                                                                          )
       {
-        return FinderConnectionMultiplexOutgoing::connect(delegate, remoteFinderIP, receiveStream, sendStream);
+        return FinderConnection::connect(delegate, remoteFinderIP, receiveStream, sendStream);
       }
 
       //-----------------------------------------------------------------------
       IFinderConnectionRelayChannelPtr IFinderConnectionRelayChannelFactory::connect(
-                                                                                 IFinderConnectionRelayChannelDelegatePtr delegate,
-                                                                                 const IPAddress &remoteFinderIP,
-                                                                                 const char *localContextID,
-                                                                                 const char *relayAccessToken,
-                                                                                 const char *relayAccessSecretProof,
-                                                                                 ITransportStreamPtr receiveStream,
-                                                                                 ITransportStreamPtr sendStream
-                                                                                 )
+                                                                                     IFinderConnectionRelayChannelDelegatePtr delegate,
+                                                                                     const IPAddress &remoteFinderIP,
+                                                                                     const char *localContextID,
+                                                                                     const char *remoteContextID,
+                                                                                     const char *relayDomain,
+                                                                                     const char *relayAccessToken,
+                                                                                     const char *relayAccessSecretProof,
+                                                                                     ITransportStreamPtr receiveStream,
+                                                                                     ITransportStreamPtr sendStream
+                                                                                     )
       {
-        return FinderConnectionMultiplexOutgoing::connect(delegate, remoteFinderIP, localContextID, relayAccessToken, relayAccessSecretProof, receiveStream, sendStream);
+        return FinderConnection::connect(delegate, remoteFinderIP, localContextID, remoteContextID, relayDomain, relayAccessToken, relayAccessSecretProof, receiveStream, sendStream);
       }
 
       //-----------------------------------------------------------------------

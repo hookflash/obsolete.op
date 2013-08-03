@@ -70,9 +70,9 @@ namespace openpeer
 
         //---------------------------------------------------------------------
         PeerLocationFindNotifyPtr PeerLocationFindNotify::create(
-                                                               ElementPtr root,
-                                                               IMessageSourcePtr messageSource
-                                                               )
+                                                                 ElementPtr root,
+                                                                 IMessageSourcePtr messageSource
+                                                                 )
         {
           PeerLocationFindNotifyPtr ret(new PeerLocationFindNotify);
           IMessageHelper::fill(*ret, root, messageSource);

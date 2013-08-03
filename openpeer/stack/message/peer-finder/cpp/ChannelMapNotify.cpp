@@ -89,7 +89,8 @@ namespace openpeer
 
             ElementPtr relayEl = root->findFirstChildElementChecked("relay");
 
-            ret->mContext = IMessageHelper::getElementTextAndDecode(relayEl->findFirstChildElementChecked("context"));
+            ret->mLocalContext = IMessageHelper::getElementTextAndDecode(relayEl->findFirstChildElementChecked("localContext"));
+            ret->mRemoteContext = IMessageHelper::getElementTextAndDecode(relayEl->findFirstChildElementChecked("remoteContext"));
             ret->mRelayAccessToken = IMessageHelper::getElementTextAndDecode(relayEl->findFirstChildElementChecked("accessToken"));
             ret->mRelayAccessSecretProof = IMessageHelper::getElementTextAndDecode(relayEl->findFirstChildElementChecked("accessSecretProof"));
             ret->mRelayAccessSecretProofExpires = IHelper::stringToTime(IMessageHelper::getElementTextAndDecode(relayEl->findFirstChildElementChecked("accessSecretProofExpires")));
@@ -109,7 +110,8 @@ namespace openpeer
           {
             case AttributeType_ChannelNumber:             return (0 != mChannelNumber);
             case AttributeType_Nonce:                     return mNonce.hasData();
-            case AttributeType_Context:                   return mContext.hasData();
+            case AttributeType_LocalContext:              return mLocalContext.hasData();
+            case AttributeType_RemoteContext:             return mRemoteContext.hasData();
             case AttributeType_AccessToken:               return mRelayAccessToken.hasData();
             case AttributeType_AccessSecretProof:         return mRelayAccessSecretProof.hasData();
             case AttributeType_AccessSecretProofExpires:  return Time() != mRelayAccessSecretProofExpires;

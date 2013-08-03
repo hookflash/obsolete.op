@@ -82,6 +82,8 @@ namespace openpeer
                                               ITransportStreamPtr sendStream,
                                               IPAddress remoteFinderIP,
                                               const char *localContextID,
+                                              const char *remoteContextID,
+                                              const char *relayDomain,
                                               const char *relayAccessToken,
                                               const char *relayAccessSecretProof,
                                               const char *encryptDataUsingEncodingPassphrase

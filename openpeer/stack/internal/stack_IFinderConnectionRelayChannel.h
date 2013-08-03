@@ -67,6 +67,8 @@ namespace openpeer
                                                         IFinderConnectionRelayChannelDelegatePtr delegate,
                                                         const IPAddress &remoteFinderIP,
                                                         const char *localContextID,
+                                                        const char *remoteContextID,
+                                                        const char *relayDomain,
                                                         const char *relayAccessToken,
                                                         const char *relayAccessSecretProof,
                                                         ITransportStreamPtr receiveStream,

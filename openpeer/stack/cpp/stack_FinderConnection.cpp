@@ -29,10 +29,12 @@
 
  */
 
-#include <openpeer/stack/internal/stack_FinderConnectionMultiplexOutgoing.h>
+#include <openpeer/stack/internal/stack_FinderConnection.h>
 #include <openpeer/stack/internal/stack_Helper.h>
 #include <openpeer/stack/internal/stack_Stack.h>
 #include <openpeer/stack/internal/stack_FinderRelayChannel.h>
+
+#include <openpeer/stack/message/peer-finder/ChannelMapRequest.h>
 
 #include <openpeer/stack/IMessageMonitor.h>
 
@@ -41,10 +43,12 @@
 
 #include <zsLib/Log.h>
 #include <zsLib/helpers.h>
-
 #include <zsLib/Stringize.h>
+#include <zsLib/XML.h>
 
 #define OPENPEER_STACK_FINDER_RELAY_MULTIPLEX_OUTGOING_RECEIVE_INACTIVITY_TIMEOUT_IN_SECONDS (60*20)
+
+#define OPENPEER_STACK_CHANNEL_MAP_REQUEST_TIMEOUT_SECONDS (60*2)
 
 namespace openpeer { namespace stack { ZS_DECLARE_SUBSYSTEM(openpeer_stack) } }
 
@@ -58,6 +62,9 @@ namespace openpeer
 
       typedef ITCPMessaging::ChannelHeader ChannelHeader;
       typedef ITCPMessaging::ChannelHeaderPtr ChannelHeaderPtr;
+
+      using peer_finder::ChannelMapRequest;
+      using peer_finder::ChannelMapRequestPtr;
 
 //      typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
 
@@ -74,20 +81,20 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark FinderConnectionMultiplexOutgoingManager
+      #pragma mark FinderConnectionManager
       #pragma mark
 
-      class FinderConnectionMultiplexOutgoingManager
+      class FinderConnectionManager
       {
       public:
-        friend class FinderConnectionMultiplexOutgoing;
+        friend class FinderConnection;
 
         typedef String RemoteIPString;
-        typedef std::map<RemoteIPString, FinderConnectionMultiplexOutgoingPtr> FinderConnectionMultiplexOutgoingMap;
+        typedef std::map<RemoteIPString, FinderConnectionPtr> FinderConnectionMap;
 
       protected:
         //---------------------------------------------------------------------
-        FinderConnectionMultiplexOutgoingManager()
+        FinderConnectionManager()
         {
         }
 
@@ -97,34 +104,34 @@ namespace openpeer
         }
 
         //---------------------------------------------------------------------
-        static FinderConnectionMultiplexOutgoingManagerPtr create()
+        static FinderConnectionManagerPtr create()
         {
-          FinderConnectionMultiplexOutgoingManagerPtr pThis(new FinderConnectionMultiplexOutgoingManager);
+          FinderConnectionManagerPtr pThis(new FinderConnectionManager);
           return pThis;
         }
 
       public:
         //---------------------------------------------------------------------
-        static FinderConnectionMultiplexOutgoingManagerPtr singleton()
+        static FinderConnectionManagerPtr singleton()
         {
           AutoRecursiveLock lock(IHelper::getGlobalLock());
-          static FinderConnectionMultiplexOutgoingManagerPtr singleton = create();
+          static FinderConnectionManagerPtr singleton = create();
           return singleton;
         }
 
       protected:
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark FinderConnectionMultiplexOutgoingManager => friend FinderConnectionMultiplexOutgoing
+        #pragma mark FinderConnectionManager => friend FinderConnection
         #pragma mark
 
         // (duplicate) virtual RecursiveLock &getLock() const;
 
         //---------------------------------------------------------------------
-        FinderConnectionMultiplexOutgoingPtr find(const IPAddress &remoteIP)
+        FinderConnectionPtr find(const IPAddress &remoteIP)
         {
-          FinderConnectionMultiplexOutgoingMap::iterator found = mRelays.find(remoteIP.string());
-          if (found == mRelays.end()) return FinderConnectionMultiplexOutgoingPtr();
+          FinderConnectionMap::iterator found = mRelays.find(remoteIP.string());
+          if (found == mRelays.end()) return FinderConnectionPtr();
 
           return (*found).second;
         }
@@ -132,7 +139,7 @@ namespace openpeer
         //---------------------------------------------------------------------
         void add(
                  const IPAddress &remoteIP,
-                 FinderConnectionMultiplexOutgoingPtr relay
+                 FinderConnectionPtr relay
                  )
         {
           mRelays[remoteIP.string()] = relay;
@@ -141,7 +148,7 @@ namespace openpeer
         //---------------------------------------------------------------------
         void remove(const IPAddress &remoteIP)
         {
-          FinderConnectionMultiplexOutgoingMap::iterator found = mRelays.find(remoteIP.string());
+          FinderConnectionMap::iterator found = mRelays.find(remoteIP.string());
           if (found == mRelays.end()) return;
 
           mRelays.erase(found);
@@ -150,7 +157,7 @@ namespace openpeer
       protected:
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark FinderConnectionMultiplexOutgoingManager => (internal)
+        #pragma mark FinderConnectionManager => (internal)
         #pragma mark
 
         //---------------------------------------------------------------------
@@ -159,13 +166,13 @@ namespace openpeer
       protected:
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark FinderConnectionMultiplexOutgoingManager => (data)
+        #pragma mark FinderConnectionManager => (data)
         #pragma mark
 
         mutable RecursiveLock mLock;
-        FinderConnectionMultiplexOutgoingManagerWeakPtr mThisWeak;
+        FinderConnectionManagerWeakPtr mThisWeak;
 
-        FinderConnectionMultiplexOutgoingMap mRelays;
+        FinderConnectionMap mRelays;
       };
 
       //-----------------------------------------------------------------------
@@ -173,14 +180,14 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark FinderConnectionMultiplexOutgoing
+      #pragma mark FinderConnection
       #pragma mark
 
       //-----------------------------------------------------------------------
-      FinderConnectionMultiplexOutgoing::FinderConnectionMultiplexOutgoing(
-                                                                           IMessageQueuePtr queue,
-                                                                           IPAddress remoteFinderIP
-                                                                           ) :
+      FinderConnection::FinderConnection(
+                                         IMessageQueuePtr queue,
+                                         IPAddress remoteFinderIP
+                                         ) :
         zsLib::MessageQueueAssociator(queue),
         mCurrentState(SessionState_Pending),
         mRemoteIP(remoteFinderIP),
@@ -191,7 +198,7 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      void FinderConnectionMultiplexOutgoing::init()
+      void FinderConnection::init()
       {
         AutoRecursiveLock lock(getLock());
 
@@ -206,7 +213,7 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      FinderConnectionMultiplexOutgoing::~FinderConnectionMultiplexOutgoing()
+      FinderConnection::~FinderConnection()
       {
         ZS_LOG_DEBUG(log("destroyed"))
         mThisWeak.reset();
@@ -214,9 +221,9 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      FinderConnectionMultiplexOutgoingPtr FinderConnectionMultiplexOutgoing::convert(IFinderConnectionPtr connection)
+      FinderConnectionPtr FinderConnection::convert(IFinderConnectionPtr connection)
       {
-        return boost::dynamic_pointer_cast<FinderConnectionMultiplexOutgoing>(connection);
+        return boost::dynamic_pointer_cast<FinderConnection>(connection);
       }
 
       //-----------------------------------------------------------------------
@@ -224,48 +231,52 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark FinderConnectionMultiplexOutgoing => friend FinderConnectionMultiplexOutgoingManager
+      #pragma mark FinderConnection => friend FinderConnectionManager
       #pragma mark
 
       //-----------------------------------------------------------------------
-      IFinderConnectionRelayChannelPtr FinderConnectionMultiplexOutgoing::connect(
-                                                                                  IFinderConnectionRelayChannelDelegatePtr delegate,
-                                                                                  const IPAddress &remoteFinderIP,
-                                                                                  const char *localContextID,
-                                                                                  const char *relayAccessToken,
-                                                                                  const char *relayAccessSecretProof,
-                                                                                  ITransportStreamPtr receiveStream,
-                                                                                  ITransportStreamPtr sendStream
-                                                                                  )
+      IFinderConnectionRelayChannelPtr FinderConnection::connect(
+                                                                 IFinderConnectionRelayChannelDelegatePtr delegate,
+                                                                 const IPAddress &remoteFinderIP,
+                                                                 const char *localContextID,
+                                                                 const char *remoteContextID,
+                                                                 const char *relayDomain,
+                                                                 const char *relayAccessToken,
+                                                                 const char *relayAccessSecretProof,
+                                                                 ITransportStreamPtr receiveStream,
+                                                                 ITransportStreamPtr sendStream
+                                                                 )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
         ZS_THROW_INVALID_ARGUMENT_IF(remoteFinderIP.isAddressEmpty())
         ZS_THROW_INVALID_ARGUMENT_IF(remoteFinderIP.isPortEmpty())
         ZS_THROW_INVALID_ARGUMENT_IF(!localContextID)
+        ZS_THROW_INVALID_ARGUMENT_IF(!remoteContextID)
+        ZS_THROW_INVALID_ARGUMENT_IF(!relayDomain)
         ZS_THROW_INVALID_ARGUMENT_IF(!relayAccessToken)
         ZS_THROW_INVALID_ARGUMENT_IF(!relayAccessSecretProof)
         ZS_THROW_INVALID_ARGUMENT_IF(!receiveStream)
         ZS_THROW_INVALID_ARGUMENT_IF(!sendStream)
 
-        FinderConnectionMultiplexOutgoingManagerPtr manager = FinderConnectionMultiplexOutgoingManager::singleton();
+        FinderConnectionManagerPtr manager = FinderConnectionManager::singleton();
 
         AutoRecursiveLock lock(manager->getLock());
 
-        FinderConnectionMultiplexOutgoingPtr existing = manager->find(remoteFinderIP);
+        FinderConnectionPtr existing = manager->find(remoteFinderIP);
 
         if (existing) {
           ZS_LOG_DEBUG(existing->log("reusing existing connection"))
-          return existing->connect(delegate, localContextID, relayAccessToken, relayAccessSecretProof, receiveStream, sendStream);
+          return existing->connect(delegate, localContextID, remoteContextID, relayDomain, relayAccessToken, relayAccessSecretProof, receiveStream, sendStream);
         }
 
-        FinderConnectionMultiplexOutgoingPtr pThis = FinderConnectionMultiplexOutgoing::create(remoteFinderIP);
+        FinderConnectionPtr pThis = FinderConnection::create(remoteFinderIP);
         pThis->mThisWeak = pThis;
         pThis->mOuter = manager;
         pThis->init();
 
         manager->add(remoteFinderIP, pThis);
 
-        return pThis->connect(delegate, localContextID, relayAccessToken, relayAccessSecretProof, receiveStream, sendStream);
+        return pThis->connect(delegate, localContextID, remoteContextID, relayDomain, relayAccessToken, relayAccessSecretProof, receiveStream, sendStream);
       }
 
       //-----------------------------------------------------------------------
@@ -273,30 +284,30 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark FinderConnectionMultiplexOutgoing => IFinderConnection
+      #pragma mark FinderConnection => IFinderConnection
       #pragma mark
 
       //-----------------------------------------------------------------------
-      String FinderConnectionMultiplexOutgoing::toDebugString(IFinderConnectionPtr connection, bool includeCommaPrefix)
+      String FinderConnection::toDebugString(IFinderConnectionPtr connection, bool includeCommaPrefix)
       {
         if (!connection) return String(includeCommaPrefix ? ", finder connection multiplex outgoing=(null)" : "finder connection multiplex outgoing=(null)");
 
-        FinderConnectionMultiplexOutgoingPtr pThis = FinderConnectionMultiplexOutgoing::convert(connection);
+        FinderConnectionPtr pThis = FinderConnection::convert(connection);
         return pThis->getDebugValueString(includeCommaPrefix);
       }
 
       //-----------------------------------------------------------------------
-      IFinderConnectionPtr FinderConnectionMultiplexOutgoing::connect(
-                                                                      IFinderConnectionDelegatePtr delegate,
-                                                                      const IPAddress &remoteFinderIP,
-                                                                      ITransportStreamPtr receiveStream,
-                                                                      ITransportStreamPtr sendStream
-                                                                      )
+      IFinderConnectionPtr FinderConnection::connect(
+                                                     IFinderConnectionDelegatePtr delegate,
+                                                     const IPAddress &remoteFinderIP,
+                                                     ITransportStreamPtr receiveStream,
+                                                     ITransportStreamPtr sendStream
+                                                     )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!receiveStream)
         ZS_THROW_INVALID_ARGUMENT_IF(!sendStream)
 
-        FinderConnectionMultiplexOutgoingPtr pThis = FinderConnectionMultiplexOutgoing::create(remoteFinderIP);
+        FinderConnectionPtr pThis = FinderConnection::create(remoteFinderIP);
         pThis->mThisWeak = pThis;
 
         if (delegate) {
@@ -312,7 +323,7 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      IFinderConnectionSubscriptionPtr FinderConnectionMultiplexOutgoing::subscribe(IFinderConnectionDelegatePtr originalDelegate)
+      IFinderConnectionSubscriptionPtr FinderConnection::subscribe(IFinderConnectionDelegatePtr originalDelegate)
       {
         ZS_LOG_TRACE(log("subscribe called"))
 
@@ -325,7 +336,7 @@ namespace openpeer
         IFinderConnectionDelegatePtr delegate = mSubscriptions.delegate(subscription);
 
         if (delegate) {
-          FinderConnectionMultiplexOutgoingPtr pThis(mThisWeak.lock());
+          FinderConnectionPtr pThis(mThisWeak.lock());
 
           if (SessionState_Pending != mCurrentState) {
             delegate->onFinderConnectionStateChanged(pThis, mCurrentState);
@@ -346,7 +357,7 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      void FinderConnectionMultiplexOutgoing::cancel()
+      void FinderConnection::cancel()
       {
         ZS_LOG_DEBUG(log("cancel called"))
 
@@ -364,7 +375,7 @@ namespace openpeer
         mSubscriptions.clear();
         mDefaultSubscription->cancel();
 
-        FinderConnectionMultiplexOutgoingManagerPtr outer = mOuter.lock();
+        FinderConnectionManagerPtr outer = mOuter.lock();
         if (outer) {
           outer->remove(mRemoteIP);
         }
@@ -403,10 +414,10 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      FinderConnectionMultiplexOutgoing::SessionStates FinderConnectionMultiplexOutgoing::getState(
-                                                                                                   WORD *outLastErrorCode,
-                                                                                                   String *outLastErrorReason
-                                                                                                   ) const
+      FinderConnection::SessionStates FinderConnection::getState(
+                                                                 WORD *outLastErrorCode,
+                                                                 String *outLastErrorReason
+                                                                 ) const
       {
         AutoRecursiveLock lock(getLock());
         if (outLastErrorCode) *outLastErrorCode = mLastError;
@@ -415,12 +426,12 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      IFinderRelayChannelPtr FinderConnectionMultiplexOutgoing::accept(
-                                                                       IFinderRelayChannelDelegatePtr delegate,        // can pass in IFinderRelayChannelDelegatePtr() if not interested in the events
-                                                                       AccountPtr account,
-                                                                       ITransportStreamPtr receiveStream,
-                                                                       ITransportStreamPtr sendStream
-                                                                       )
+      IFinderRelayChannelPtr FinderConnection::accept(
+                                                      IFinderRelayChannelDelegatePtr delegate,
+                                                      AccountPtr account,
+                                                      ITransportStreamPtr receiveStream,
+                                                      ITransportStreamPtr sendStream
+                                                      )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!account)
         ZS_THROW_INVALID_ARGUMENT_IF(!receiveStream)
@@ -454,7 +465,7 @@ namespace openpeer
 
         channel->getStreams(wireReceiveStream, wireSendStream);
 
-        FinderRelayChannelPtr relay = IFinderRelayChannelForFinderConnectionMultiplexOutgoing::createIncoming(delegate, account, receiveStream, sendStream, wireReceiveStream, wireSendStream);
+        FinderRelayChannelPtr relay = IFinderRelayChannelForFinderConnection::createIncoming(delegate, account, receiveStream, sendStream, wireReceiveStream, wireSendStream);
 
         mIncomingChannels.erase(found);
 
@@ -471,11 +482,11 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark FinderConnectionMultiplexOutgoing => ITimerDelegate
+      #pragma mark FinderConnection => ITimerDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void FinderConnectionMultiplexOutgoing::onTimer(TimerPtr timer)
+      void FinderConnection::onTimer(TimerPtr timer)
       {
         AutoRecursiveLock lock(getLock());
 
@@ -505,7 +516,7 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      void FinderConnectionMultiplexOutgoing::onWake()
+      void FinderConnection::onWake()
       {
         AutoRecursiveLock lock(getLock());
         ZS_LOG_DEBUG(log("on wake"))
@@ -517,14 +528,14 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark FinderConnectionMultiplexOutgoing => ITCPMessagingDelegate
+      #pragma mark FinderConnection => ITCPMessagingDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void FinderConnectionMultiplexOutgoing::onTCPMessagingStateChanged(
-                                                                         ITCPMessagingPtr messaging,
-                                                                         ITCPMessaging::SessionStates state
-                                                                         )
+      void FinderConnection::onTCPMessagingStateChanged(
+                                                        ITCPMessagingPtr messaging,
+                                                        ITCPMessaging::SessionStates state
+                                                        )
       {
         AutoRecursiveLock lock(getLock());
         step();
@@ -535,11 +546,11 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark FinderConnectionMultiplexOutgoing => ITransportStreamWriterDelegate
+      #pragma mark FinderConnection => ITransportStreamWriterDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void FinderConnectionMultiplexOutgoing::onTransportStreamWriterReady(ITransportStreamWriterPtr writer)
+      void FinderConnection::onTransportStreamWriterReady(ITransportStreamWriterPtr writer)
       {
         AutoRecursiveLock lock(getLock());
 
@@ -570,10 +581,10 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark FinderConnectionMultiplexOutgoing => ITransportStreamReaderDelegate
+      #pragma mark FinderConnection => ITransportStreamReaderDelegate
       #pragma mark
 
-      void FinderConnectionMultiplexOutgoing::onTransportStreamReaderReady(ITransportStreamReaderPtr reader)
+      void FinderConnection::onTransportStreamReaderReady(ITransportStreamReaderPtr reader)
       {
         AutoRecursiveLock lock(getLock());
         ZS_LOG_DEBUG(log("on transport stream read ready"))
@@ -585,14 +596,14 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark FinderConnectionMultiplexOutgoing => IFinderConnectionRelayChannelDelegate
+      #pragma mark FinderConnection => IFinderConnectionRelayChannelDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void FinderConnectionMultiplexOutgoing::onFinderRelayChannelTCPOutgoingStateChanged(
-                                                                                          IFinderConnectionRelayChannelPtr channel,
-                                                                                          IFinderConnectionRelayChannel::SessionStates state
-                                                                                          )
+      void FinderConnection::onFinderRelayChannelTCPOutgoingStateChanged(
+                                                                         IFinderConnectionRelayChannelPtr channel,
+                                                                         IFinderConnectionRelayChannel::SessionStates state
+                                                                         )
       {
         AutoRecursiveLock lock(getLock());
         step();
@@ -603,14 +614,14 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark FinderConnectionMultiplexOutgoing => IMessageMonitorResultDelegate<ChannelMapResult>
+      #pragma mark FinderConnection => IMessageMonitorResultDelegate<ChannelMapResult>
       #pragma mark
 
       //-----------------------------------------------------------------------
-      bool FinderConnectionMultiplexOutgoing::handleMessageMonitorResultReceived(
-                                                                                 IMessageMonitorPtr monitor,
-                                                                                 ChannelMapResultPtr result
-                                                                                 )
+      bool FinderConnection::handleMessageMonitorResultReceived(
+                                                                IMessageMonitorPtr monitor,
+                                                                ChannelMapResultPtr result
+                                                                )
       {
         AutoRecursiveLock lock(getLock());
         if (monitor != mMapRequestChannelMonitor) {
@@ -639,11 +650,11 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      bool FinderConnectionMultiplexOutgoing::handleMessageMonitorErrorResultReceived(
-                                                                                      IMessageMonitorPtr monitor,
-                                                                                      ChannelMapResultPtr ignore, // will always be NULL
-                                                                                      message::MessageResultPtr result
-                                                                                      )
+      bool FinderConnection::handleMessageMonitorErrorResultReceived(
+                                                                     IMessageMonitorPtr monitor,
+                                                                     ChannelMapResultPtr ignore, // will always be NULL
+                                                                     message::MessageResultPtr result
+                                                                     )
       {
         AutoRecursiveLock lock(getLock());
         if (monitor != mMapRequestChannelMonitor) {
@@ -688,18 +699,23 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark FinderConnectionMultiplexOutgoing => friend ChannelOutgoing
+      #pragma mark FinderConnection => friend ChannelOutgoing
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void FinderConnectionMultiplexOutgoing::sendBuffer(
-                                                         ChannelNumber channelNumber,
-                                                         SecureByteBlockPtr buffer
-                                                         )
+      void FinderConnection::sendBuffer(
+                                        ChannelNumber channelNumber,
+                                        SecureByteBlockPtr buffer
+                                        )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!buffer)
 
         AutoRecursiveLock lock(getLock());
+
+        if (isShutdown()) {
+          ZS_LOG_WARNING(Detail, log("cannot send data while shutdown"))
+          return;
+        }
 
         ZS_LOG_DEBUG(log("send buffer called") + ", channel number=" + string(channelNumber) + ", buffer size=" + string(buffer->SizeInBytes()))
 
@@ -710,7 +726,7 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      void FinderConnectionMultiplexOutgoing::notifyDestroyed(ChannelNumber channelNumber)
+      void FinderConnection::notifyDestroyed(ChannelNumber channelNumber)
       {
         AutoRecursiveLock lock(getLock());
 
@@ -722,7 +738,7 @@ namespace openpeer
         }
 
         mRemoveChannels[channelNumber] = ChannelPtr();
-
+        
         IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
 
@@ -732,26 +748,26 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark FinderConnectionMultiplexOutgoing => (internal)
+      #pragma mark FinderConnection => (internal)
       #pragma mark
 
 
       //-----------------------------------------------------------------------
-      RecursiveLock &FinderConnectionMultiplexOutgoing::getLock() const
+      RecursiveLock &FinderConnection::getLock() const
       {
-        FinderConnectionMultiplexOutgoingManagerPtr outer = mOuter.lock();
+        FinderConnectionManagerPtr outer = mOuter.lock();
         if (!outer) return mLocalLock;
         return outer->getLock();
       }
 
       //-----------------------------------------------------------------------
-      String FinderConnectionMultiplexOutgoing::log(const char *message) const
+      String FinderConnection::log(const char *message) const
       {
-        return String("FinderConnectionMultiplexOutgoing [" + string(mID) + "] " + message);
+        return String("FinderConnection [" + string(mID) + "] " + message);
       }
 
       //-----------------------------------------------------------------------
-      String FinderConnectionMultiplexOutgoing::getDebugValueString(bool includeCommaPrefix) const
+      String FinderConnection::getDebugValueString(bool includeCommaPrefix) const
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
@@ -775,17 +791,19 @@ namespace openpeer
         Helper::getDebugValue("channels", mChannels.size() > 0 ? string(mChannels.size()) : String(), firstTime) +
         Helper::getDebugValue("pending map request channels", mPendingMapRequest.size() > 0 ? string(mPendingMapRequest.size()) : String(), firstTime) +
         Helper::getDebugValue("incoming channels", mIncomingChannels.size() > 0 ? string(mIncomingChannels.size()) : String(), firstTime) +
-        Helper::getDebugValue("remove channels", mRemoveChannels.size() > 0 ? string(mRemoveChannels.size()) : String(), firstTime);
+        Helper::getDebugValue("remove channels", mRemoveChannels.size() > 0 ? string(mRemoveChannels.size()) : String(), firstTime) +
+        Helper::getDebugValue("map request monitor", mMapRequestChannelMonitor ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("map request channel number", mMapRequestChannelNumber != 0 ? string(mMapRequestChannelNumber) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
-      void FinderConnectionMultiplexOutgoing::setState(SessionStates state)
+      void FinderConnection::setState(SessionStates state)
       {
         if (state == mCurrentState) return;
 
         ZS_LOG_DEBUG(log("state changed") + ", state=" + toString(state) + ", old state=" + toString(mCurrentState))
         mCurrentState = state;
-        FinderConnectionMultiplexOutgoingPtr pThis = mThisWeak.lock();
+        FinderConnectionPtr pThis = mThisWeak.lock();
 
         if (pThis) {
           mSubscriptions.delegate()->onFinderConnectionStateChanged(pThis, mCurrentState);
@@ -793,7 +811,7 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      void FinderConnectionMultiplexOutgoing::setError(WORD errorCode, const char *inReason)
+      void FinderConnection::setError(WORD errorCode, const char *inReason)
       {
         String reason(inReason ? String(inReason) : String());
         if (reason.isEmpty()) {
@@ -812,7 +830,7 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      void FinderConnectionMultiplexOutgoing::step()
+      void FinderConnection::step()
       {
         if (isShutdown()) {
           ZS_LOG_DEBUG(log("step continue to shutdown"))
@@ -823,12 +841,13 @@ namespace openpeer
         ZS_LOG_DEBUG(log("step") + getDebugValueString())
 
         if (!stepCleanRemoval()) return;
+        if (!stepChannelMapRequest()) return;
 
         setState(SessionState_Connected);
       }
 
       //-----------------------------------------------------------------------
-      bool FinderConnectionMultiplexOutgoing::stepCleanRemoval()
+      bool FinderConnection::stepCleanRemoval()
       {
         if (mRemoveChannels.size() < 1) {
           ZS_LOG_DEBUG(log("no channels to remove"))
@@ -917,21 +936,108 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      FinderConnectionMultiplexOutgoingPtr FinderConnectionMultiplexOutgoing::create(IPAddress remoteFinderIP)
+      bool FinderConnection::stepConnectWire()
       {
-        //TODO
-        return FinderConnectionMultiplexOutgoingPtr();
+        WORD error = 0;
+        String reason;
+        switch (mTCPMessaging->getState(&error, &reason))
+        {
+          case ITCPMessaging::SessionState_Pending:
+          {
+            ZS_LOG_DEBUG(log("waiting for TCP messaging to connect"))
+            return false;
+          }
+          case ITCPMessaging::SessionState_Connected:
+          {
+            ZS_LOG_DEBUG(log("TCP messaging connected"))
+            break;
+          }
+          case ITCPMessaging::SessionState_ShuttingDown:
+          case ITCPMessaging::SessionState_Shutdown:      {
+            ZS_LOG_WARNING(Detail, log("TCP messaging is shutting down") + ", error=" + string(error) + ", reason=" + reason)
+            if (0 != error) {
+              setError(error, reason);
+            }
+            cancel();
+            return false;
+          }
+        }
+
+        if (!mSendStreamNotifiedReady) {
+          ZS_LOG_DEBUG(log("waiting for TCP messaging send stream to be notified as ready"))
+          return false;
+        }
+
+        return true;
       }
 
       //-----------------------------------------------------------------------
-      IFinderConnectionRelayChannelPtr FinderConnectionMultiplexOutgoing::connect(
-                                                                                  IFinderConnectionRelayChannelDelegatePtr delegate,
-                                                                                  const char *localContextID,
-                                                                                  const char *relayAccessToken,
-                                                                                  const char *relayAccessSecretProof,
-                                                                                  ITransportStreamPtr receiveStream,
-                                                                                  ITransportStreamPtr sendStream
-                                                                                  )
+      bool FinderConnection::stepChannelMapRequest()
+      {
+        if (mMapRequestChannelMonitor) {
+          ZS_LOG_DEBUG(log("pending channel map request is already outstanding"))
+          return true;
+        }
+        if (mPendingMapRequest.size() < 1) {
+          ZS_LOG_DEBUG(log("no pending channels needing to be notified"))
+          return true;
+        }
+
+        ChannelMap::iterator found = mPendingMapRequest.begin();
+        ZS_THROW_BAD_STATE_IF(found == mPendingMapRequest.end())
+
+        ChannelNumber channelNumber = (*found).first;
+        ChannelPtr channel = (*found).second;
+
+        ZS_LOG_DEBUG(log("sending channel map request") + ", channel=" + string(channelNumber))
+
+        const Channel::ConnectionInfo &info = channel->getConnectionInfo();
+
+        ChannelMapRequestPtr request = ChannelMapRequest::create();
+        request->domain(info.mRelayDomain);
+        request->channelNumber(channelNumber);
+        request->localContextID(info.mLocalContextID);
+        request->remoteContextID(info.mRemoteContextID);
+        request->relayAccessToken(info.mRelayAccessToken);
+        request->relayAccessSecretProof(info.mRelayAccessSecretProof);
+
+        mMapRequestChannelMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<ChannelMapResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_CHANNEL_MAP_REQUEST_TIMEOUT_SECONDS));
+        get(mMapRequestChannelNumber) = channelNumber;
+
+        DocumentPtr doc = request->encode();
+
+        ULONG outputLength = 0;
+        GeneratorPtr generator = Generator::createJSONGenerator();
+        boost::shared_array<char> output = generator->write(doc, &outputLength);
+
+        ChannelHeaderPtr header(new ChannelHeader);
+        header->mChannelID = channelNumber;
+
+        mWireSendStream->write((const BYTE *) (output.get()), outputLength, header);
+
+        mPendingMapRequest.erase(found);
+
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      FinderConnectionPtr FinderConnection::create(IPAddress remoteFinderIP)
+      {
+        //TODO
+        return FinderConnectionPtr();
+      }
+
+      //-----------------------------------------------------------------------
+      IFinderConnectionRelayChannelPtr FinderConnection::connect(
+                                                                 IFinderConnectionRelayChannelDelegatePtr delegate,
+                                                                 const char *localContextID,
+                                                                 const char *remoteContextID,
+                                                                 const char *relayDomain,
+                                                                 const char *relayAccessToken,
+                                                                 const char *relayAccessSecretProof,
+                                                                 ITransportStreamPtr receiveStream,
+                                                                 ITransportStreamPtr sendStream
+                                                                 )
       {
         //TODO
         return IFinderConnectionRelayChannelPtr();
@@ -949,43 +1055,43 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark FinderConnectionMultiplexOutgoing::Channel
+      #pragma mark FinderConnection::Channel
       #pragma mark
 
-      FinderConnectionMultiplexOutgoing::Channel::Channel(
-                                                          IMessageQueuePtr queue,
-                                                          IFinderConnectionRelayChannelDelegatePtr delegate,
-                                                          ITransportStreamPtr receiveStream,
-                                                          ITransportStreamPtr sendStream,
-                                                          ChannelNumber channelNumber
-                                                          ) :
+      FinderConnection::Channel::Channel(
+                                         IMessageQueuePtr queue,
+                                         IFinderConnectionRelayChannelDelegatePtr delegate,
+                                         ITransportStreamPtr receiveStream,
+                                         ITransportStreamPtr sendStream,
+                                         ChannelNumber channelNumber
+                                         ) :
         MessageQueueAssociator(queue)
       {
         //TODO
       }
 
       //-----------------------------------------------------------------------
-      void FinderConnectionMultiplexOutgoing::Channel::init()
+      void FinderConnection::Channel::init()
       {
         AutoRecursiveLock lock(getLock());
         //TODO
       }
 
       //-----------------------------------------------------------------------
-      FinderConnectionMultiplexOutgoing::Channel::~Channel()
+      FinderConnection::Channel::~Channel()
       {
         //TODO
       }
 
       //-----------------------------------------------------------------------
-      FinderConnectionMultiplexOutgoing::ChannelPtr FinderConnectionMultiplexOutgoing::Channel::convert(IFinderConnectionRelayChannelPtr channel)
+      FinderConnection::ChannelPtr FinderConnection::Channel::convert(IFinderConnectionRelayChannelPtr channel)
       {
         //TODO
         return ChannelPtr();
       }
 
       //-----------------------------------------------------------------------
-      String FinderConnectionMultiplexOutgoing::Channel::toDebugString(IFinderRelayChannelPtr channel, bool includeCommaPrefix)
+      String FinderConnection::Channel::toDebugString(IFinderRelayChannelPtr channel, bool includeCommaPrefix)
       {
         //TOOD
         return String();
@@ -997,34 +1103,36 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark FinderConnectionMultiplexOutgoing::Channel => IFinderConnectionRelayChannel
+      #pragma mark FinderConnection::Channel => IFinderConnectionRelayChannel
       #pragma mark
 
       //-----------------------------------------------------------------------
-      FinderConnectionMultiplexOutgoing::ChannelPtr FinderConnectionMultiplexOutgoing::Channel::connect(
-                                                                                                        FinderConnectionMultiplexOutgoingPtr outer,
-                                                                                                        IFinderConnectionRelayChannelDelegatePtr delegate,
-                                                                                                        const char *localContextID,
-                                                                                                        const char *relayAccessToken,
-                                                                                                        const char *relayAccessSecretProof,
-                                                                                                        ITransportStreamPtr receiveStream,
-                                                                                                        ITransportStreamPtr sendStream,
-                                                                                                        ULONG channelNumber
-                                                                                                        )
+      FinderConnection::ChannelPtr FinderConnection::Channel::connect(
+                                                                      FinderConnectionPtr outer,
+                                                                      IFinderConnectionRelayChannelDelegatePtr delegate,
+                                                                      const char *localContextID,
+                                                                      const char *remoteContextID,
+                                                                      const char *relayDomain,
+                                                                      const char *relayAccessToken,
+                                                                      const char *relayAccessSecretProof,
+                                                                      ITransportStreamPtr receiveStream,
+                                                                      ITransportStreamPtr sendStream,
+                                                                      ULONG channelNumber
+                                                                      )
       {
         //TODO
         return ChannelPtr();
       }
 
       //-----------------------------------------------------------------------
-      void FinderConnectionMultiplexOutgoing::Channel::cancel()
+      void FinderConnection::Channel::cancel()
       {
         AutoRecursiveLock lock(getLock());
         //TODO
       }
 
       //-----------------------------------------------------------------------
-      IFinderConnectionRelayChannel::SessionStates FinderConnectionMultiplexOutgoing::Channel::getState(
+      IFinderConnectionRelayChannel::SessionStates FinderConnection::Channel::getState(
                                                                                                         WORD *outLastErrorCode,
                                                                                                         String *outLastErrorReason
                                                                                                         ) const
@@ -1039,11 +1147,11 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark FinderConnectionMultiplexOutgoing::Channel => ITransportStreamWriterDelegate
+      #pragma mark FinderConnection::Channel => ITransportStreamWriterDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void FinderConnectionMultiplexOutgoing::Channel::onTransportStreamWriterReady(ITransportStreamWriterPtr writer)
+      void FinderConnection::Channel::onTransportStreamWriterReady(ITransportStreamWriterPtr writer)
       {
         AutoRecursiveLock lock(getLock());
         //TODO
@@ -1054,11 +1162,11 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark FinderConnectionMultiplexOutgoing::Channel => ITransportStreamReaderDelegate
+      #pragma mark FinderConnection::Channel => ITransportStreamReaderDelegate
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void FinderConnectionMultiplexOutgoing::Channel::onTransportStreamReaderReady(ITransportStreamReaderPtr reader)
+      void FinderConnection::Channel::onTransportStreamReaderReady(ITransportStreamReaderPtr reader)
       {
         AutoRecursiveLock lock(getLock());
         //TODO
@@ -1066,11 +1174,11 @@ namespace openpeer
 
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark FinderConnectionMultiplexOutgoing::Channel => friend FinderConnectionMultiplexOutgoing
+      #pragma mark FinderConnection::Channel => friend FinderConnection
       #pragma mark
 
-      FinderConnectionMultiplexOutgoing::ChannelPtr FinderConnectionMultiplexOutgoing::Channel::incoming(
-                                                                                                         FinderConnectionMultiplexOutgoingPtr outer,
+      FinderConnection::ChannelPtr FinderConnection::Channel::incoming(
+                                                                                                         FinderConnectionPtr outer,
                                                                                                          IFinderConnectionRelayChannelDelegatePtr delegate,
                                                                                                          ITransportStreamPtr receiveStream,
                                                                                                          ITransportStreamPtr sendStream,
@@ -1082,19 +1190,19 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      void FinderConnectionMultiplexOutgoing::Channel::notifyReceivedWireWriteReady()
+      void FinderConnection::Channel::notifyReceivedWireWriteReady()
       {
         //TODO
       }
 
       //-----------------------------------------------------------------------
-      void FinderConnectionMultiplexOutgoing::Channel::notifyDataReceived(SecureByteBlockPtr buffer)
+      void FinderConnection::Channel::notifyDataReceived(SecureByteBlockPtr buffer)
       {
         //TODO
       }
 
       //-----------------------------------------------------------------------
-      void FinderConnectionMultiplexOutgoing::Channel::getStreams(
+      void FinderConnection::Channel::getStreams(
                                                                   ITransportStreamPtr &outReceiveStream,
                                                                   ITransportStreamPtr &outSendStream
                                                                   )
@@ -1107,39 +1215,39 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark FinderConnectionMultiplexOutgoing::Channel => (internal)
+      #pragma mark FinderConnection::Channel => (internal)
       #pragma mark
 
       //-----------------------------------------------------------------------
-      RecursiveLock &FinderConnectionMultiplexOutgoing::Channel::getLock() const
+      RecursiveLock &FinderConnection::Channel::getLock() const
       {
-        FinderConnectionMultiplexOutgoingPtr outer = mOuter.lock();
+        FinderConnectionPtr outer = mOuter.lock();
         if (!outer) return mBogusLock;
         return outer->getLock();
       }
       
       //-----------------------------------------------------------------------
-      String FinderConnectionMultiplexOutgoing::Channel::log(const char *message) const
+      String FinderConnection::Channel::log(const char *message) const
       {
         //TODO
         return String();
       }
 
       //-----------------------------------------------------------------------
-      String FinderConnectionMultiplexOutgoing::Channel::getDebugValueString(bool includeCommaPrefix) const
+      String FinderConnection::Channel::getDebugValueString(bool includeCommaPrefix) const
       {
         //TODO
         return String();
       }
 
       //-----------------------------------------------------------------------
-      void FinderConnectionMultiplexOutgoing::Channel::setState(SessionStates state)
+      void FinderConnection::Channel::setState(SessionStates state)
       {
         //TODO
       }
       
       //-----------------------------------------------------------------------
-      void FinderConnectionMultiplexOutgoing::Channel::setError(WORD errorCode, const char *inReason)
+      void FinderConnection::Channel::setError(WORD errorCode, const char *inReason)
       {
         //TODO
       }
@@ -1188,13 +1296,15 @@ namespace openpeer
                                                                               IFinderConnectionRelayChannelDelegatePtr delegate,
                                                                               const IPAddress &remoteFinderIP,
                                                                               const char *localContextID,
+                                                                              const char *remoteContextID,
+                                                                              const char *relayDomain,
                                                                               const char *relayAccessToken,
                                                                               const char *relayAccessSecretProof,
                                                                               ITransportStreamPtr receiveStream,
                                                                               ITransportStreamPtr sendStream
                                                                               )
       {
-        return internal::IFinderConnectionRelayChannelFactory::singleton().connect(delegate, remoteFinderIP, localContextID, relayAccessToken, relayAccessSecretProof, receiveStream, sendStream);
+        return internal::IFinderConnectionRelayChannelFactory::singleton().connect(delegate, remoteFinderIP, localContextID, remoteContextID, relayDomain, relayAccessToken, relayAccessSecretProof, receiveStream, sendStream);
       }
     }
   }

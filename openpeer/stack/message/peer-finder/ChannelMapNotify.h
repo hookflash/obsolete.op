@@ -49,7 +49,8 @@ namespace openpeer
           {
             AttributeType_ChannelNumber,
             AttributeType_Nonce,
-            AttributeType_Context,
+            AttributeType_LocalContext,
+            AttributeType_RemoteContext,
             AttributeType_AccessToken,
             AttributeType_AccessSecretProof,
             AttributeType_AccessSecretProofExpires,
@@ -76,8 +77,8 @@ namespace openpeer
           const String &nonce() const                                   {return mNonce;}
           void nonce(const String &value)                               {mNonce = value;}
 
-          const String &context() const                                 {return mContext;}
-          void context(const String &value)                             {mContext = value;}
+          const String &localContext() const                            {return mLocalContext;}
+          void localContext(const String &value)                        {mLocalContext = value;}
 
           const String &relayAccessToken() const                        {return mRelayAccessToken;}
           void relayAccessToken(const String &value)                    {mRelayAccessToken = value;}
@@ -94,7 +95,8 @@ namespace openpeer
           ChannelNumber mChannelNumber;
 
           String mNonce;
-          String mContext;
+          String mLocalContext;
+          String mRemoteContext;
           String mRelayAccessToken;
           String mRelayAccessSecretProof;
           Time mRelayAccessSecretProofExpires;

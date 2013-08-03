@@ -75,18 +75,18 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IFinderRelayChannelForFinderConnectionMultiplexOutgoing
+      #pragma mark IFinderRelayChannelForFinderConnection
       #pragma mark
 
       //-----------------------------------------------------------------------
-      FinderRelayChannelPtr IFinderRelayChannelForFinderConnectionMultiplexOutgoing::createIncoming(
-                                                                                                    IFinderRelayChannelDelegatePtr delegate, // can pass in IFinderRelayChannelDelegatePtr() if not interested in the events
-                                                                                                    AccountPtr account,
-                                                                                                    ITransportStreamPtr outerReceiveStream,
-                                                                                                    ITransportStreamPtr outerSendStream,
-                                                                                                    ITransportStreamPtr wireReceiveStream,
-                                                                                                    ITransportStreamPtr wireSendStream
-                                                                                                    )
+      FinderRelayChannelPtr IFinderRelayChannelForFinderConnection::createIncoming(
+                                                                                   IFinderRelayChannelDelegatePtr delegate, // can pass in IFinderRelayChannelDelegatePtr() if not interested in the events
+                                                                                   AccountPtr account,
+                                                                                   ITransportStreamPtr outerReceiveStream,
+                                                                                   ITransportStreamPtr outerSendStream,
+                                                                                   ITransportStreamPtr wireReceiveStream,
+                                                                                   ITransportStreamPtr wireSendStream
+                                                                                   )
       {
         return IFinderRelayChannelFactory::singleton().createIncoming(delegate, account, outerReceiveStream, outerSendStream, wireReceiveStream, wireSendStream);
       }
@@ -129,7 +129,7 @@ namespace openpeer
         }
 
         if (!mIncoming) {
-          mConnectionRelayChannel = IFinderConnectionRelayChannel::connect(mThisWeak.lock(), mConnectInfo.mFinderIP, mConnectInfo.mLocalContextID, mConnectInfo.mRelayAccessToken, mConnectInfo.mRelayAccessSecretProof, mWireReceiveStream, mWireSendStream);
+          mConnectionRelayChannel = IFinderConnectionRelayChannel::connect(mThisWeak.lock(), mConnectInfo.mFinderIP, mConnectInfo.mLocalContextID, mConnectInfo.mRemoteContextID, mConnectInfo.mRelayDomain, mConnectInfo.mRelayAccessToken, mConnectInfo.mRelayAccessSecretProof, mWireReceiveStream, mWireSendStream);
         }
 
         mMLSChannel = mMLSChannel->create(mThisWeak.lock(), mWireReceiveStream, mOuterReceiveStream, mOuterSendStream, mWireSendStream);
@@ -176,6 +176,8 @@ namespace openpeer
                                                         ITransportStreamPtr sendStream,
                                                         IPAddress remoteFinderIP,
                                                         const char *localContextID,
+                                                        const char *remoteContextID,
+                                                        const char *relayDomain,
                                                         const char *relayAccessToken,
                                                         const char *relayAccessSecretProof,
                                                         const char *encryptDataUsingEncodingPassphrase
@@ -184,6 +186,9 @@ namespace openpeer
         ZS_THROW_INVALID_ARGUMENT_IF(!account)
         ZS_THROW_INVALID_ARGUMENT_IF(!receiveStream)
         ZS_THROW_INVALID_ARGUMENT_IF(!sendStream)
+        ZS_THROW_INVALID_ARGUMENT_IF(!localContextID)
+        ZS_THROW_INVALID_ARGUMENT_IF(!remoteContextID)
+        ZS_THROW_INVALID_ARGUMENT_IF(!relayDomain)
         ZS_THROW_INVALID_ARGUMENT_IF(!relayAccessToken)
         ZS_THROW_INVALID_ARGUMENT_IF(!relayAccessSecretProof)
         ZS_THROW_INVALID_ARGUMENT_IF(!encryptDataUsingEncodingPassphrase)
@@ -193,6 +198,8 @@ namespace openpeer
 
         pThis->mConnectInfo.mFinderIP = remoteFinderIP;
         pThis->mConnectInfo.mLocalContextID = String(localContextID);
+        pThis->mConnectInfo.mRemoteContextID = String(remoteContextID);
+        pThis->mConnectInfo.mRelayDomain = String(relayDomain);
         pThis->mConnectInfo.mRelayAccessToken = String(relayAccessToken);
         pThis->mConnectInfo.mRelayAccessSecretProof = String(relayAccessSecretProof);
         pThis->mConnectInfo.mEncryptionPassphrase = String(encryptDataUsingEncodingPassphrase);
@@ -346,7 +353,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark FinderRelayChannel => IFinderRelayChannelForFinderConnectionMultiplexOutgoing
+      #pragma mark FinderRelayChannel => IFinderRelayChannelForFinderConnection
       #pragma mark
 
       //-----------------------------------------------------------------------
@@ -593,12 +600,14 @@ namespace openpeer
                                                           ITransportStreamPtr sendStream,
                                                           IPAddress remoteFinderIP,
                                                           const char *localContextID,
+                                                          const char *remoteContextID,
+                                                          const char *relayDomain,
                                                           const char *relayAccessToken,
                                                           const char *relayAccessSecretProof,
                                                           const char *encryptDataUsingEncodingPassphrase
                                                           )
       {
-        return internal::IFinderRelayChannelFactory::singleton().connect(delegate, account, receiveStream, sendStream, remoteFinderIP, localContextID, relayAccessToken, relayAccessSecretProof, encryptDataUsingEncodingPassphrase);
+        return internal::IFinderRelayChannelFactory::singleton().connect(delegate, account, receiveStream, sendStream, remoteFinderIP, localContextID, remoteContextID, relayDomain, relayAccessToken, relayAccessSecretProof, encryptDataUsingEncodingPassphrase);
       }
     }
   }

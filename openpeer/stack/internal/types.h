@@ -194,13 +194,13 @@ namespace openpeer
       typedef boost::weak_ptr<IFinderConnectionRelayChannelDelegate> IFinderConnectionRelayChannelDelegateWeakPtr;
       typedef zsLib::Proxy<IFinderConnectionRelayChannelDelegate> IFinderConnectionRelayChannelDelegateProxy;
 
-      class FinderConnectionMultiplexOutgoing;
-      typedef boost::shared_ptr<FinderConnectionMultiplexOutgoing> FinderConnectionMultiplexOutgoingPtr;
-      typedef boost::weak_ptr<FinderConnectionMultiplexOutgoing> FinderConnectionMultiplexOutgoingWeakPtr;
+      class FinderConnection;
+      typedef boost::shared_ptr<FinderConnection> FinderConnectionPtr;
+      typedef boost::weak_ptr<FinderConnection> FinderConnectionWeakPtr;
 
-      class FinderConnectionMultiplexOutgoingManager;
-      typedef boost::shared_ptr<FinderConnectionMultiplexOutgoingManager> FinderConnectionMultiplexOutgoingManagerPtr;
-      typedef boost::weak_ptr<FinderConnectionMultiplexOutgoingManager> FinderConnectionMultiplexOutgoingManagerWeakPtr;
+      class FinderConnectionManager;
+      typedef boost::shared_ptr<FinderConnectionManager> FinderConnectionManagerPtr;
+      typedef boost::weak_ptr<FinderConnectionManager> FinderConnectionManagerWeakPtr;
 
       class Helper;
       typedef boost::shared_ptr<Helper> HelperPtr;

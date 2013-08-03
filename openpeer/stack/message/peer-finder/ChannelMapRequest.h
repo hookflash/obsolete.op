@@ -54,7 +54,8 @@ namespace openpeer
           enum AttributeTypes
           {
             AttributeType_ChannelNumber,
-            AttributeType_ContextID,
+            AttributeType_LocalContextID,
+            AttributeType_RemoteContextID,
             AttributeType_RelayAccessToken,
             AttributeType_RelayAccessSecretProof,
           };
@@ -73,9 +74,13 @@ namespace openpeer
           bool hasAttribute(AttributeTypes type) const;
 
           ChannelNumber channelNumber() const                             {return mChannelNumber;}
+          void channelNumber(const ChannelNumber &val)                    {get(mChannelNumber) = val;}
 
-          const String &contextID() const                                 {return mContextID;}
-          void contextID(const String &val)                               {mContextID = val;}
+          const String &localContextID() const                            {return mLocalContextID;}
+          void localContextID(const String &val)                          {mLocalContextID = val;}
+
+          const String &remoteContextID() const                           {return mRemoteContextID;}
+          void remoteContextID(const String &val)                         {mRemoteContextID = val;}
 
           const String &relayAccessToken() const                          {return mRelayAccessToken;}
           void relayAccessToken(const String &val)                        {mRelayAccessToken = val;}
@@ -88,7 +93,8 @@ namespace openpeer
 
           AutoChannelNumber mChannelNumber;
 
-          String mContextID;
+          String mLocalContextID;
+          String mRemoteContextID;
           String mRelayAccessToken;
           String mRelayAccessSecretProof;
         };

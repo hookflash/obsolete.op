@@ -63,26 +63,26 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark FinderConnectionMultiplexOutgoing
+      #pragma mark FinderConnection
       #pragma mark
 
-      class FinderConnectionMultiplexOutgoing : public Noop,
-                                                public zsLib::MessageQueueAssociator,
-                                                public IFinderConnection,
-                                                public ITimerDelegate,
-                                                public IWakeDelegate,
-                                                public ITCPMessagingDelegate,
-                                                public ITransportStreamWriterDelegate,
-                                                public ITransportStreamReaderDelegate,
-                                                public IFinderConnectionRelayChannelDelegate,
-                                                public IMessageMonitorResultDelegate<ChannelMapResult>
+      class FinderConnection : public Noop,
+                               public zsLib::MessageQueueAssociator,
+                               public IFinderConnection,
+                               public ITimerDelegate,
+                               public IWakeDelegate,
+                               public ITCPMessagingDelegate,
+                               public ITransportStreamWriterDelegate,
+                               public ITransportStreamReaderDelegate,
+                               public IFinderConnectionRelayChannelDelegate,
+                               public IMessageMonitorResultDelegate<ChannelMapResult>
       {
       public:
         typedef IFinderConnection::SessionStates SessionStates;
 
         friend interaction IFinderConnectionRelayChannelFactory;
 
-        friend class FinderConnectionMultiplexOutgoingManager;
+        friend class FinderConnectionManager;
         friend class Channel;
 
         class Channel;
@@ -95,32 +95,34 @@ namespace openpeer
         typedef boost::value_initialized<ChannelNumber> AutoChannelNumber;
 
       protected:
-        FinderConnectionMultiplexOutgoing(
+        FinderConnection(
                                           IMessageQueuePtr queue,
                                           IPAddress remoteFinderIP
                                           );
 
-        FinderConnectionMultiplexOutgoing(Noop) :
+        FinderConnection(Noop) :
           Noop(true),
           zsLib::MessageQueueAssociator(IMessageQueuePtr()) {}
 
         void init();
 
       public:
-        virtual ~FinderConnectionMultiplexOutgoing();
+        virtual ~FinderConnection();
 
-        static FinderConnectionMultiplexOutgoingPtr convert(IFinderConnectionPtr connection);
+        static FinderConnectionPtr convert(IFinderConnectionPtr connection);
 
       protected:
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark FinderConnectionMultiplexOutgoing => friend IFinderConnectionRelayChannelFactory
+        #pragma mark FinderConnection => friend IFinderConnectionRelayChannelFactory
         #pragma mark
 
         static IFinderConnectionRelayChannelPtr connect(
                                                         IFinderConnectionRelayChannelDelegatePtr delegate,
                                                         const IPAddress &remoteFinderIP,
                                                         const char *localContextID,
+                                                        const char *remoteContextID,
+                                                        const char *relayDomain,
                                                         const char *relayAccessToken,
                                                         const char *relayAccessSecretProof,
                                                         ITransportStreamPtr receiveStream,
@@ -129,7 +131,7 @@ namespace openpeer
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark FinderConnectionMultiplexOutgoing => IFinderConnection
+        #pragma mark FinderConnection => IFinderConnection
         #pragma mark
 
         static String toDebugString(IFinderConnectionPtr connection, bool includeCommaPrefix = true);
@@ -161,21 +163,21 @@ namespace openpeer
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark FinderConnectionMultiplexOutgoing => ITimerDelegate
+        #pragma mark FinderConnection => ITimerDelegate
         #pragma mark
 
         virtual void onTimer(TimerPtr timer);
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark FinderConnectionMultiplexOutgoing => IWakeDelegate
+        #pragma mark FinderConnection => IWakeDelegate
         #pragma mark
 
         virtual void onWake();
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark FinderConnectionMultiplexOutgoing => ITCPMessagingDelegate
+        #pragma mark FinderConnection => ITCPMessagingDelegate
         #pragma mark
 
         virtual void onTCPMessagingStateChanged(
@@ -185,21 +187,21 @@ namespace openpeer
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark FinderConnectionMultiplexOutgoing => ITransportStreamWriterDelegate
+        #pragma mark FinderConnection => ITransportStreamWriterDelegate
         #pragma mark
 
         virtual void onTransportStreamWriterReady(ITransportStreamWriterPtr writer);
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark FinderConnectionMultiplexOutgoing => ITransportStreamReaderDelegate
+        #pragma mark FinderConnection => ITransportStreamReaderDelegate
         #pragma mark
 
         virtual void onTransportStreamReaderReady(ITransportStreamReaderPtr reader);
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark FinderConnectionMultiplexOutgoing => IFinderConnectionRelayChannelDelegate
+        #pragma mark FinderConnection => IFinderConnectionRelayChannelDelegate
         #pragma mark
 
         virtual void onFinderRelayChannelTCPOutgoingStateChanged(
@@ -208,7 +210,7 @@ namespace openpeer
                                                                  );
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark FinderConnectionMultiplexOutgoing => IMessageMonitorResultDelegate<ChannelMapResult>
+        #pragma mark FinderConnection => IMessageMonitorResultDelegate<ChannelMapResult>
         #pragma mark
 
         virtual bool handleMessageMonitorResultReceived(
@@ -225,7 +227,7 @@ namespace openpeer
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark FinderConnectionMultiplexOutgoing => friend Channel
+        #pragma mark FinderConnection => friend Channel
         #pragma mark
 
         // RecursiveLock &getLock() const;
@@ -239,7 +241,7 @@ namespace openpeer
       protected:
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark FinderConnectionMultiplexOutgoing => (internal)
+        #pragma mark FinderConnection => (internal)
         #pragma mark
 
         bool isShutdown() const {return SessionState_Shutdown == mCurrentState;}
@@ -254,12 +256,16 @@ namespace openpeer
 
         void step();
         bool stepCleanRemoval();
+        bool stepConnectWire();
+        bool stepChannelMapRequest();
 
-        static FinderConnectionMultiplexOutgoingPtr create(IPAddress remoteFinderIP);
+        static FinderConnectionPtr create(IPAddress remoteFinderIP);
 
         IFinderConnectionRelayChannelPtr connect(
                                                  IFinderConnectionRelayChannelDelegatePtr delegate,
                                                  const char *localContextID,
+                                                 const char *remoteContextID,
+                                                 const char *relayDomain,
                                                  const char *relayAccessToken,
                                                  const char *relayAccessSecretProof,
                                                  ITransportStreamPtr receiveStream,
@@ -272,7 +278,7 @@ namespace openpeer
         //---------------------------------------------------------------------
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark FinderConnectionMultiplexOutgoing::Channel
+        #pragma mark FinderConnection::Channel
         #pragma mark
 
         class Channel : public Noop,
@@ -282,7 +288,7 @@ namespace openpeer
                         public ITransportStreamReaderDelegate
         {
         public:
-          friend class FinderConnectionMultiplexOutgoing;
+          friend class FinderConnection;
           typedef IFinderConnectionRelayChannel::SessionStates SessionStates;
 
         protected:
@@ -293,6 +299,15 @@ namespace openpeer
                   ITransportStreamPtr sendStream,
                   ChannelNumber channelNumber
                   );
+
+          struct ConnectionInfo
+          {
+            String mLocalContextID;
+            String mRemoteContextID;
+            String mRelayDomain;
+            String mRelayAccessToken;
+            String mRelayAccessSecretProof;
+          };
 
           Channel(Noop) :
             Noop(true),
@@ -310,13 +325,15 @@ namespace openpeer
 
           //-------------------------------------------------------------------
           #pragma mark
-          #pragma mark FinderConnectionMultiplexOutgoing::Channel => IFinderConnectionRelayChannel
+          #pragma mark FinderConnection::Channel => IFinderConnectionRelayChannel
           #pragma mark
 
           static ChannelPtr connect(
-                                    FinderConnectionMultiplexOutgoingPtr outer,
+                                    FinderConnectionPtr outer,
                                     IFinderConnectionRelayChannelDelegatePtr delegate,
                                     const char *localContextID,
+                                    const char *remoteContextID,
+                                    const char *relayDomain,
                                     const char *relayAccessToken,
                                     const char *relayAccessSecretProof,
                                     ITransportStreamPtr receiveStream,
@@ -335,25 +352,25 @@ namespace openpeer
 
           //-------------------------------------------------------------------
           #pragma mark
-          #pragma mark FinderConnectionMultiplexOutgoing::Channel => ITransportStreamWriterDelegate
+          #pragma mark FinderConnection::Channel => ITransportStreamWriterDelegate
           #pragma mark
 
           virtual void onTransportStreamWriterReady(ITransportStreamWriterPtr writer);
 
           //-------------------------------------------------------------------
           #pragma mark
-          #pragma mark FinderConnectionMultiplexOutgoing::Channel => ITransportStreamReaderDelegate
+          #pragma mark FinderConnection::Channel => ITransportStreamReaderDelegate
           #pragma mark
 
           virtual void onTransportStreamReaderReady(ITransportStreamReaderPtr reader);
 
           //-------------------------------------------------------------------
           #pragma mark
-          #pragma mark FinderConnectionMultiplexOutgoing::Channel => friend FinderConnectionMultiplexOutgoing
+          #pragma mark FinderConnection::Channel => friend FinderConnection
           #pragma mark
 
           static ChannelPtr incoming(
-                                     FinderConnectionMultiplexOutgoingPtr outer,
+                                     FinderConnectionPtr outer,
                                      IFinderConnectionRelayChannelDelegatePtr delegate,
                                      ITransportStreamPtr receiveStream,
                                      ITransportStreamPtr sendStream,
@@ -375,10 +392,12 @@ namespace openpeer
                           ITransportStreamPtr &outSendStream
                           );
 
+          const ConnectionInfo &getConnectionInfo() {return mConnectionInfo;}
+
         protected:
           //-------------------------------------------------------------------
           #pragma mark
-          #pragma mark FinderConnectionMultiplexOutgoing::Channel => (internal)
+          #pragma mark FinderConnection::Channel => (internal)
           #pragma mark
 
           RecursiveLock &getLock() const;
@@ -394,7 +413,7 @@ namespace openpeer
           mutable RecursiveLock mBogusLock;
           ChannelPtr mThisWeak;
 
-          FinderConnectionMultiplexOutgoingWeakPtr mOuter;
+          FinderConnectionWeakPtr mOuter;
 
           IFinderConnectionRelayChannelDelegatePtr mDelegate;
 
@@ -407,19 +426,23 @@ namespace openpeer
 
           ITransportStreamWriterPtr mOuterReceiveStream;
           ITransportStreamReaderPtr mOuterSendStream;
+
+          AutoBool mWireStreamNotifiedReady;
+
+          ConnectionInfo mConnectionInfo;
         };
 
       protected:
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark FinderConnectionMultiplexOutgoing => (data)
+        #pragma mark FinderConnection => (data)
         #pragma mark
 
         AutoPUID mID;
         mutable RecursiveLock mLocalLock;
-        FinderConnectionMultiplexOutgoingWeakPtr mThisWeak;
+        FinderConnectionWeakPtr mThisWeak;
 
-        FinderConnectionMultiplexOutgoingManagerWeakPtr mOuter;
+        FinderConnectionManagerWeakPtr mOuter;
 
         IFinderConnectionDelegateSubscriptions mSubscriptions;
         IFinderConnectionSubscriptionPtr mDefaultSubscription;
@@ -474,6 +497,8 @@ namespace openpeer
                                                          IFinderConnectionRelayChannelDelegatePtr delegate,
                                                          const IPAddress &remoteFinderIP,
                                                          const char *localContextID,
+                                                         const char *remoteContextID,
+                                                         const char *relayDomain,
                                                          const char *relayAccessToken,
                                                          const char *relayAccessSecretProof,
                                                          ITransportStreamPtr receiveStream,
