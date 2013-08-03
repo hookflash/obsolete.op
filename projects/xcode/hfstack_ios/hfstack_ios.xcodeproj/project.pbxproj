@@ -21,6 +21,7 @@
 		00384C78175BFFDE00113845 /* NamespaceGrantWindowResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384C62175BFFDE00113845 /* NamespaceGrantWindowResult.cpp */; };
 		0051C4691745D1110095FD98 /* IdentityAccessWindowRequest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0051C4671745D1110095FD98 /* IdentityAccessWindowRequest.cpp */; };
 		0051C46A1745D1110095FD98 /* IdentityAccessWindowResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0051C4681745D1110095FD98 /* IdentityAccessWindowResult.cpp */; };
+		005E6C1C17AD66C1002D8335 /* ChannelMapNotify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 005E6C1B17AD66C1002D8335 /* ChannelMapNotify.cpp */; };
 		005F60B31756B07700BC3DD6 /* stack_Cache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 005F60B21756B07700BC3DD6 /* stack_Cache.cpp */; };
 		0063BB6A16CA92D000E6DB4D /* stack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BA0D16CA92CF00E6DB4D /* stack.cpp */; };
 		0063BB6B16CA92D000E6DB4D /* stack_Account.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063BA0E16CA92CF00E6DB4D /* stack_Account.cpp */; };
@@ -173,6 +174,8 @@
 		0051C4661745D0F40095FD98 /* IdentityAccessWindowResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IdentityAccessWindowResult.h; sourceTree = "<group>"; };
 		0051C4671745D1110095FD98 /* IdentityAccessWindowRequest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IdentityAccessWindowRequest.cpp; sourceTree = "<group>"; };
 		0051C4681745D1110095FD98 /* IdentityAccessWindowResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IdentityAccessWindowResult.cpp; sourceTree = "<group>"; };
+		005E6C1B17AD66C1002D8335 /* ChannelMapNotify.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChannelMapNotify.cpp; sourceTree = "<group>"; };
+		005E6C1D17AD66D1002D8335 /* ChannelMapNotify.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChannelMapNotify.h; sourceTree = "<group>"; };
 		005F60AF1756B03200BC3DD6 /* ICache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICache.h; sourceTree = "<group>"; };
 		005F60B01756B04F00BC3DD6 /* stack_Cache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack_Cache.h; sourceTree = "<group>"; };
 		005F60B11756B04F00BC3DD6 /* stack_ServiceLockboxSession.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack_ServiceLockboxSession.h; sourceTree = "<group>"; };
@@ -858,6 +861,7 @@
 				0063BAF416CA92D000E6DB4D /* MessageFactoryPeerFinder.h */,
 				0077F3B917AC1FEC009399FD /* ChannelMapRequest.h */,
 				0077F3BA17AC1FEC009399FD /* ChannelMapResult.h */,
+				005E6C1D17AD66D1002D8335 /* ChannelMapNotify.h */,
 				0063BAF616CA92D000E6DB4D /* PeerLocationFindRequest.h */,
 				0063BAF716CA92D000E6DB4D /* PeerLocationFindResult.h */,
 				0077F47117AD4CBB009399FD /* PeerLocationFindNotify.h */,
@@ -877,6 +881,7 @@
 				0063BAEA16CA92D000E6DB4D /* MessageFactoryPeerFinder.cpp */,
 				0077F3B517AC1FDD009399FD /* ChannelMapRequest.cpp */,
 				0077F3B617AC1FDD009399FD /* ChannelMapResult.cpp */,
+				005E6C1B17AD66C1002D8335 /* ChannelMapNotify.cpp */,
 				0063BAEC16CA92D000E6DB4D /* PeerLocationFindRequest.cpp */,
 				0063BAED16CA92D000E6DB4D /* PeerLocationFindResult.cpp */,
 				0077F46F17AD4CAB009399FD /* PeerLocationFindNotify.cpp */,
@@ -1167,6 +1172,7 @@
 				0077F3B717AC1FDD009399FD /* ChannelMapRequest.cpp in Sources */,
 				0077F3B817AC1FDD009399FD /* ChannelMapResult.cpp in Sources */,
 				0077F47017AD4CAB009399FD /* PeerLocationFindNotify.cpp in Sources */,
+				005E6C1C17AD66C1002D8335 /* ChannelMapNotify.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

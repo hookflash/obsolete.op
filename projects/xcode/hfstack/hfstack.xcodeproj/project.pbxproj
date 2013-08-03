@@ -24,6 +24,7 @@
 		00384C39175A79D100113845 /* RolodexContactsGetResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384C2F175A79D100113845 /* RolodexContactsGetResult.cpp */; };
 		00384C40175A8B3C00113845 /* stack_ServiceNamespaceGrantSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 00384C3F175A8B3C00113845 /* stack_ServiceNamespaceGrantSession.cpp */; };
 		0051C45B1745B9970095FD98 /* IdentityAccessWindowResult.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0051C45A1745B9970095FD98 /* IdentityAccessWindowResult.cpp */; };
+		005E6C1917AD5F4D002D8335 /* ChannelMapNotify.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 005E6C1817AD5F4D002D8335 /* ChannelMapNotify.cpp */; };
 		005F60AE17557D5100BC3DD6 /* stack_Cache.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 005F60AD17557D5100BC3DD6 /* stack_Cache.cpp */; };
 		0063B84A16CA8E8B00E6DB4D /* stack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063B69F16CA8E8A00E6DB4D /* stack.cpp */; };
 		0063B84B16CA8E8B00E6DB4D /* stack_Account.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 0063B6A016CA8E8A00E6DB4D /* stack_Account.cpp */; };
@@ -170,6 +171,8 @@
 		00384C41175A8B4E00113845 /* stack_ServiceNamespaceGrantSession.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack_ServiceNamespaceGrantSession.h; sourceTree = "<group>"; };
 		0051C45A1745B9970095FD98 /* IdentityAccessWindowResult.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = IdentityAccessWindowResult.cpp; sourceTree = "<group>"; };
 		0051C45C1745B9A80095FD98 /* IdentityAccessWindowResult.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IdentityAccessWindowResult.h; sourceTree = "<group>"; };
+		005E6C1817AD5F4D002D8335 /* ChannelMapNotify.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ChannelMapNotify.cpp; sourceTree = "<group>"; };
+		005E6C1A17AD5F5E002D8335 /* ChannelMapNotify.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChannelMapNotify.h; sourceTree = "<group>"; };
 		005F60AB17557D2100BC3DD6 /* ICache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ICache.h; sourceTree = "<group>"; };
 		005F60AC17557D4200BC3DD6 /* stack_Cache.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = stack_Cache.h; sourceTree = "<group>"; };
 		005F60AD17557D5100BC3DD6 /* stack_Cache.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = stack_Cache.cpp; sourceTree = "<group>"; };
@@ -833,6 +836,7 @@
 				0063B78616CA8E8B00E6DB4D /* MessageFactoryPeerFinder.h */,
 				0030229817ABD9DA00DFB1C8 /* ChannelMapRequest.h */,
 				0030229917ABD9DA00DFB1C8 /* ChannelMapResult.h */,
+				005E6C1A17AD5F5E002D8335 /* ChannelMapNotify.h */,
 				0063B78816CA8E8B00E6DB4D /* PeerLocationFindRequest.h */,
 				0063B78916CA8E8B00E6DB4D /* PeerLocationFindResult.h */,
 				0063B78716CA8E8B00E6DB4D /* PeerLocationFindNotify.h */,
@@ -852,6 +856,7 @@
 				0063B77C16CA8E8B00E6DB4D /* MessageFactoryPeerFinder.cpp */,
 				0030229417ABD9CB00DFB1C8 /* ChannelMapRequest.cpp */,
 				0030229517ABD9CB00DFB1C8 /* ChannelMapResult.cpp */,
+				005E6C1817AD5F4D002D8335 /* ChannelMapNotify.cpp */,
 				0063B77E16CA8E8B00E6DB4D /* PeerLocationFindRequest.cpp */,
 				0063B77F16CA8E8B00E6DB4D /* PeerLocationFindResult.cpp */,
 				0063B77D16CA8E8B00E6DB4D /* PeerLocationFindNotify.cpp */,
@@ -1169,6 +1174,7 @@
 				00FF147717A9DC1D00F5DEB8 /* stack_FinderConnectionMultiplexOutgoing.cpp in Sources */,
 				0030229617ABD9CB00DFB1C8 /* ChannelMapRequest.cpp in Sources */,
 				0030229717ABD9CB00DFB1C8 /* ChannelMapResult.cpp in Sources */,
+				005E6C1917AD5F4D002D8335 /* ChannelMapNotify.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

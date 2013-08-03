@@ -36,6 +36,7 @@
 #include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
 
 #include <openpeer/stack/message/peer-finder/ChannelMapResult.h>
+#include <openpeer/stack/message/peer-finder/ChannelMapNotify.h>
 
 #include <openpeer/stack/message/peer-finder/SessionCreateResult.h>
 #include <openpeer/stack/message/peer-finder/SessionDeleteResult.h>
@@ -174,7 +175,7 @@ namespace openpeer
               switch (msgMethod) {
                 case Method_Invalid:                          return MessagePtr();
 
-                case Method_ChannelMap:                       return MessagePtr();
+                case Method_ChannelMap:                       return ChannelMapNotify::create(root, messageSource);
 
                 case Method_SessionKeepAlive:                 return MessagePtr();
                 case Method_SessionCreate:                    return MessagePtr();

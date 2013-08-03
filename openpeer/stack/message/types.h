@@ -575,29 +575,6 @@ namespace openpeer
         typedef boost::weak_ptr<LockboxContentSetResult> LockboxContentSetResultWeakPtr;
       }
 
-      namespace namespace_grant
-      {
-        class MessageFactoryNamespaceGrant;
-        typedef boost::shared_ptr<MessageFactoryNamespaceGrant> MessageFactoryNamespaceGrantPtr;
-        typedef boost::weak_ptr<MessageFactoryNamespaceGrant> MessageFactoryNamespaceGrantWeakPtr;
-
-        class NamespaceGrantWindowRequest;
-        typedef boost::shared_ptr<NamespaceGrantWindowRequest> NamespaceGrantWindowRequestPtr;
-        typedef boost::weak_ptr<NamespaceGrantWindowRequest> NamespaceGrantWindowRequestWeakPtr;
-
-        class NamespaceGrantWindowResult;
-        typedef boost::shared_ptr<NamespaceGrantWindowResult> NamespaceGrantWindowResultPtr;
-        typedef boost::weak_ptr<NamespaceGrantWindowResult> NamespaceGrantWindowResultWeakPtr;
-
-        class NamespaceGrantStartNotify;
-        typedef boost::shared_ptr<NamespaceGrantStartNotify> NamespaceGrantStartNotifyPtr;
-        typedef boost::weak_ptr<NamespaceGrantStartNotify> NamespaceGrantStartNotifyWeakPtr;
-
-        class NamespaceGrantCompleteNotify;
-        typedef boost::shared_ptr<NamespaceGrantCompleteNotify> NamespaceGrantCompleteNotifyPtr;
-        typedef boost::weak_ptr<NamespaceGrantCompleteNotify> NamespaceGrantCompleteNotifyWeakPtr;
-      }
-      
       namespace identity_lookup
       {
         class MessageFactoryIdentityLookup;
@@ -621,6 +598,29 @@ namespace openpeer
         typedef boost::weak_ptr<IdentityLookupResult> IdentityLookupResultWeakPtr;
       }
 
+      namespace namespace_grant
+      {
+        class MessageFactoryNamespaceGrant;
+        typedef boost::shared_ptr<MessageFactoryNamespaceGrant> MessageFactoryNamespaceGrantPtr;
+        typedef boost::weak_ptr<MessageFactoryNamespaceGrant> MessageFactoryNamespaceGrantWeakPtr;
+
+        class NamespaceGrantWindowRequest;
+        typedef boost::shared_ptr<NamespaceGrantWindowRequest> NamespaceGrantWindowRequestPtr;
+        typedef boost::weak_ptr<NamespaceGrantWindowRequest> NamespaceGrantWindowRequestWeakPtr;
+
+        class NamespaceGrantWindowResult;
+        typedef boost::shared_ptr<NamespaceGrantWindowResult> NamespaceGrantWindowResultPtr;
+        typedef boost::weak_ptr<NamespaceGrantWindowResult> NamespaceGrantWindowResultWeakPtr;
+
+        class NamespaceGrantStartNotify;
+        typedef boost::shared_ptr<NamespaceGrantStartNotify> NamespaceGrantStartNotifyPtr;
+        typedef boost::weak_ptr<NamespaceGrantStartNotify> NamespaceGrantStartNotifyWeakPtr;
+
+        class NamespaceGrantCompleteNotify;
+        typedef boost::shared_ptr<NamespaceGrantCompleteNotify> NamespaceGrantCompleteNotifyPtr;
+        typedef boost::weak_ptr<NamespaceGrantCompleteNotify> NamespaceGrantCompleteNotifyWeakPtr;
+      }
+      
       namespace rolodex
       {
         class MessageFactoryRolodex;
@@ -727,6 +727,10 @@ namespace openpeer
         class ChannelMapResult;
         typedef boost::shared_ptr<ChannelMapResult> ChannelMapResultPtr;
         typedef boost::weak_ptr<ChannelMapResult> ChannelMapResultWeakPtr;
+
+        class ChannelMapNotify;
+        typedef boost::shared_ptr<ChannelMapNotify> ChannelMapNotifyPtr;
+        typedef boost::weak_ptr<ChannelMapNotify> ChannelMapNotifyWeakPtr;
 
         class PeerLocationFindRequest;
         typedef boost::shared_ptr<PeerLocationFindRequest> PeerLocationFindRequestPtr;
