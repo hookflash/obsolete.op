@@ -14,17 +14,17 @@ MediaEngineDelegateWrapperPtr MediaEngineDelegateWrapper::create()
   return MediaEngineDelegateWrapperPtr (new MediaEngineDelegateWrapper());
 }
 
-void MediaEngineDelegateWrapper::onMediaEngineAudioRouteChanged(IMediaEngine::OutputAudioRoutes audioRoute)
+void MediaEngineDelegateWrapper::onMediaEngineAudioRouteChanged(IMediaEngineObsolete::OutputAudioRoutes audioRoute)
 {
   switch (audioRoute)
   {
-    case openpeer::core::IMediaEngine::OutputAudioRoute_Headphone:
+    case openpeer::core::IMediaEngineObsolete::OutputAudioRoute_Headphone:
       printf("Audio route changed -- Headphone\n");
       break;
-    case openpeer::core::IMediaEngine::OutputAudioRoute_BuiltInReceiver:
+    case openpeer::core::IMediaEngineObsolete::OutputAudioRoute_BuiltInReceiver:
       printf("Audio route changed -- Built in speaker\n");
       break;
-    case openpeer::core::IMediaEngine::OutputAudioRoute_BuiltInSpeaker:
+    case openpeer::core::IMediaEngineObsolete::OutputAudioRoute_BuiltInSpeaker:
       printf("Audio route changed -- Built in receiver\n");
       break;
     default:

@@ -1,17 +1,17 @@
 /*
- 
+
  Copyright (c) 2013, SMB Phone Inc.
  All rights reserved.
- 
+
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
- 
+
  1. Redistributions of source code must retain the above copyright notice, this
  list of conditions and the following disclaimer.
  2. Redistributions in binary form must reproduce the above copyright notice,
  this list of conditions and the following disclaimer in the documentation
  and/or other materials provided with the distribution.
- 
+
  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
@@ -22,11 +22,11 @@
  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
- 
+
  The views and conclusions contained in the software and documentation are those
  of the authors and should not be interpreted as representing official policies,
  either expressed or implied, of the FreeBSD Project.
- 
+
  */
 
 #pragma once
@@ -37,8 +37,17 @@ namespace openpeer
 {
   namespace core
   {
-    interaction IMediaEngine
+    interaction IMediaEngineObsolete
     {
+      enum CameraTypes
+      {
+        CameraType_None,
+        CameraType_Front,
+        CameraType_Back
+      };
+
+      static const char *toString(CameraTypes type);
+      
       enum VideoOrientations
       {
         VideoOrientation_LandscapeLeft,
@@ -48,44 +57,85 @@ namespace openpeer
       };
       
       static const char *toString(VideoOrientations orientation);
-      
+
       enum OutputAudioRoutes
       {
         OutputAudioRoute_Headphone,
         OutputAudioRoute_BuiltInReceiver,
         OutputAudioRoute_BuiltInSpeaker
       };
-      
+
       static const char *toString(OutputAudioRoutes route);
-      
-      static IMediaEnginePtr singleton();
-      
+
+      struct RtpRtcpStatistics
+      {
+        unsigned short fractionLost;
+        unsigned int cumulativeLost;
+        unsigned int extendedMax;
+        unsigned int jitter;
+        int rttMs;
+        int bytesSent;
+        int packetsSent;
+        int bytesReceived;
+        int packetsReceived;
+      };
+
+      static IMediaEngineObsoletePtr singleton();
+
       virtual void setDefaultVideoOrientation(VideoOrientations orientation) = 0;
       virtual VideoOrientations getDefaultVideoOrientation() = 0;
       virtual void setRecordVideoOrientation(VideoOrientations orientation) = 0;
       virtual VideoOrientations getRecordVideoOrientation() = 0;
       virtual void setVideoOrientation() = 0;
-      
+
+      virtual void setCaptureRenderView(void *renderView) = 0;
+      virtual void setChannelRenderView(void *renderView) = 0;
+
+      virtual void setEcEnabled(bool enabled) = 0;
+      virtual void setAgcEnabled(bool enabled) = 0;
+      virtual void setNsEnabled(bool enabled) = 0;
+      virtual void setVoiceRecordFile(String fileName) = 0;
+      virtual String getVoiceRecordFile() const = 0;
+
       virtual void setMuteEnabled(bool enabled) = 0;
       virtual bool getMuteEnabled() = 0;
       virtual void setLoudspeakerEnabled(bool enabled) = 0;
       virtual bool getLoudspeakerEnabled() = 0;
       virtual OutputAudioRoutes getOutputAudioRoute() = 0;
       
-      virtual ILocalMediaStreamPtr getLocalStreamForParticipant(String participantID) = 0;
-      virtual IRemoteMediaStreamPtr getRemoteStreamForParticipant(String participantID) = 0;
-    };
-    
-    interaction IMediaEngineDelegate
-    {
-      typedef IMediaEngine::OutputAudioRoutes OutputAudioRoutes;
+      virtual void setContinuousVideoCapture(bool continuousVideoCapture) = 0;
+      virtual bool getContinuousVideoCapture() = 0;
       
+      virtual void setFaceDetection(bool faceDetection) = 0;
+      virtual bool getFaceDetection() = 0;
+
+      virtual CameraTypes getCameraType() const = 0;
+      virtual void setCameraType(CameraTypes type) = 0;
+      
+      virtual void startVideoCapture() = 0;
+      virtual void stopVideoCapture() = 0;
+      
+      virtual void startRecordVideoCapture(String fileName, bool saveToLibrary = false) = 0;
+      virtual void stopRecordVideoCapture() = 0;
+
+      virtual int getVideoTransportStatistics(RtpRtcpStatistics &stat) = 0;
+      virtual int getVoiceTransportStatistics(RtpRtcpStatistics &stat) = 0;
+    };
+
+    interaction IMediaEngineDelegateObsolete
+    {
+      typedef IMediaEngineObsolete::OutputAudioRoutes OutputAudioRoutes;
+
       virtual void onMediaEngineAudioRouteChanged(OutputAudioRoutes audioRoute) = 0;
+      virtual void onMediaEngineFaceDetected() = 0;
+      virtual void onMediaEngineVideoCaptureRecordStopped() = 0;
     };
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(openpeer::core::IMediaEngineDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(openpeer::core::IMediaEngine::OutputAudioRoutes, OutputAudioRoutes)
+ZS_DECLARE_PROXY_BEGIN(openpeer::core::IMediaEngineDelegateObsolete)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::core::IMediaEngineObsolete::OutputAudioRoutes, OutputAudioRoutes)
 ZS_DECLARE_PROXY_METHOD_1(onMediaEngineAudioRouteChanged, OutputAudioRoutes)
+ZS_DECLARE_PROXY_METHOD_0(onMediaEngineFaceDetected)
+ZS_DECLARE_PROXY_METHOD_0(onMediaEngineVideoCaptureRecordStopped)
 ZS_DECLARE_PROXY_END()

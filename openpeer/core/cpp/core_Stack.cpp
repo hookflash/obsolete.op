@@ -30,7 +30,7 @@
  */
 
 #include <openpeer/core/internal/core_Stack.h>
-#include <openpeer/core/internal/core_MediaEngine.h>
+#include <openpeer/core/internal/core_MediaEngineObsolete.h>
 #include <openpeer/core/IConversationThread.h>
 #include <openpeer/core/ICall.h>
 
@@ -344,7 +344,7 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      IMediaEngineDelegatePtr IStackForInternal::mediaEngineDelegate()
+      IMediaEngineDelegateObsoletePtr IStackForInternal::mediaEngineDelegate()
       {
         return (Stack::singleton())->getMediaEngineDelegate();
       }
@@ -401,7 +401,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void Stack::setup(
                         IStackDelegatePtr stackDelegate,
-                        IMediaEngineDelegatePtr mediaEngineDelegate,
+                        IMediaEngineDelegateObsoletePtr mediaEngineDelegate,
                         const char *appID,
                         const char *appName,
                         const char *appImageURL,
@@ -421,8 +421,8 @@ namespace openpeer
         }
 
         if (mediaEngineDelegate) {
-          mMediaEngineDelegate = IMediaEngineDelegateProxy::create(getQueueApplication(), mediaEngineDelegate);
-          IMediaEngineForStack::setup(mMediaEngineDelegate);
+          mMediaEngineDelegate = IMediaEngineDelegateObsoleteProxy::create(getQueueApplication(), mediaEngineDelegate);
+          IMediaEngineForStackObsolete::setup(mMediaEngineDelegate);
         }
         
         if (appID) {
@@ -635,7 +635,7 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      IMediaEngineDelegatePtr Stack::getMediaEngineDelegate() const
+      IMediaEngineDelegateObsoletePtr Stack::getMediaEngineDelegate() const
       {
         AutoRecursiveLock lock(mLock);
         return mMediaEngineDelegate;

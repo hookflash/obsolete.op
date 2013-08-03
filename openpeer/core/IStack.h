@@ -55,7 +55,7 @@ namespace openpeer
       //          will funciton. Must be called from the GUI thread.
       virtual void setup(
                          IStackDelegatePtr stackDelegate,
-                         IMediaEngineDelegatePtr mediaEngineDelegate,
+                         IMediaEngineDelegateObsoletePtr mediaEngineDelegate,
                          const char *authorizedAppID, // organization assigned ID for the application e.g. "com.xyz123.app1-random-expires-validation"
                          const char *appName,         // a branded human readable application name, e.g. "Hookflash"
                          const char *appImageURL,     // an HTTPS downloadable branded image for the application

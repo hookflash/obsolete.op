@@ -64,7 +64,7 @@ namespace openpeer
 
 	  //-----------------------------------------------------------------------
 	  TestMediaEngine::TestMediaEngine() :
-        MediaEngine(zsLib::Noop()),
+        MediaEngineObsolete(zsLib::Noop()),
         mReceiverAddress("")
 	  {
 #ifdef __QNX__
@@ -95,7 +95,7 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      internal::MediaEnginePtr TestMediaEngine::create(IMediaEngineDelegatePtr delegate)
+      internal::MediaEngineObsoletePtr TestMediaEngine::create(IMediaEngineDelegateObsoletePtr delegate)
       {
         TestMediaEnginePtr pThis(new TestMediaEngine());
         pThis->mThisWeak = pThis;
@@ -194,7 +194,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark MediaEngine => ITimerDelegate
+      #pragma mark MediaEngineObsolete => ITimerDelegate
       #pragma mark
       
       //-----------------------------------------------------------------------
@@ -223,7 +223,7 @@ namespace openpeer
       //---------------------------------------------------------------------
       //---------------------------------------------------------------------
       #pragma mark
-      #pragma mark MediaEngine => TraceCallback
+      #pragma mark MediaEngineObsolete => TraceCallback
       #pragma mark
       //-----------------------------------------------------------------------
       void TestMediaEngine::Print(const webrtc::TraceLevel level, const char *traceString, const int length)
@@ -234,7 +234,7 @@ namespace openpeer
 		slog2f(mBufferHandle, 0, SLOG2_INFO, "%s", traceString);
 #endif
 
-        MediaEngine::Print(level, traceString, length);
+        MediaEngineObsolete::Print(level, traceString, length);
       }
       
       //-----------------------------------------------------------------------
@@ -248,7 +248,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void TestMediaEngine::internalStartVoice()
       {
-        MediaEngine::internalStartVoice();
+        MediaEngineObsolete::internalStartVoice();
         
 #ifdef OPENPEER_MEDIA_ENGINE_ENABLE_TIMER
         mVoiceStatisticsTimer = zsLib::Timer::create(mThisWeak.lock(), zsLib::Seconds(1));
@@ -264,7 +264,7 @@ namespace openpeer
           mVoiceStatisticsTimer.reset();
         }
 #endif
-        MediaEngine::internalStopVoice();
+        MediaEngineObsolete::internalStopVoice();
       }
 
       //-----------------------------------------------------------------------
@@ -286,25 +286,25 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void TestMediaEngine::internalStartVideoCapture()
       {
-        MediaEngine::internalStartVideoCapture();
+        MediaEngineObsolete::internalStartVideoCapture();
       }
       
       //-----------------------------------------------------------------------
       void TestMediaEngine::internalStopVideoCapture()
       {
-        MediaEngine::internalStopVideoCapture();
+        MediaEngineObsolete::internalStopVideoCapture();
       }
       
       //-----------------------------------------------------------------------
       void TestMediaEngine::internalStartVideoChannel()
       {
-        MediaEngine::internalStartVideoChannel();
+        MediaEngineObsolete::internalStartVideoChannel();
       }
       
       //-----------------------------------------------------------------------
       void TestMediaEngine::internalStopVideoChannel()
       {
-        MediaEngine::internalStopVideoChannel();
+        MediaEngineObsolete::internalStopVideoChannel();
       }
 
       //-----------------------------------------------------------------------
@@ -339,7 +339,7 @@ namespace openpeer
       #pragma mark
       
       //-----------------------------------------------------------------------
-      internal::MediaEnginePtr TestMediaEngineFactory::createMediaEngine(IMediaEngineDelegatePtr delegate)
+      internal::MediaEngineObsoletePtr TestMediaEngineFactory::createMediaEngine(IMediaEngineDelegateObsoletePtr delegate)
       {
         return TestMediaEngine::create(delegate);
       }

@@ -33,7 +33,7 @@
 #include <openpeer/core/internal/core_CallTransport.h>
 #include <openpeer/core/internal/core_Stack.h>
 #include <openpeer/core/internal/core_Call.h>
-#include <openpeer/core/internal/core_MediaEngine.h>
+#include <openpeer/core/internal/core_MediaEngineObsolete.h>
 #include <openpeer/core/internal/core_Helper.h>
 
 #include <zsLib/Stringize.h>
@@ -405,7 +405,7 @@ namespace openpeer
           }
         }
 
-        MediaEnginePtr engine = IMediaEngineForCallTransport::singleton();
+        MediaEngineObsoletePtr engine = IMediaEngineForCallTransportObsolete::singleton();
 
         if (SocketType_Audio == type) {
           engine->forCallTransport().receivedVoiceRTPPacket(buffer, bufferLengthInBytes);
@@ -463,7 +463,7 @@ namespace openpeer
           }
         }
 
-        MediaEnginePtr engine = IMediaEngineForCallTransport::singleton();
+        MediaEngineObsoletePtr engine = IMediaEngineForCallTransportObsolete::singleton();
 
         if (SocketType_Audio == type) {
           engine->forCallTransport().receivedVoiceRTCPPacket(buffer, bufferLengthInBytes);
@@ -688,7 +688,7 @@ namespace openpeer
           ZS_LOG_DETAIL(log("starting media engine") + ", audio=" + (mHasAudio ? "true" : "false") + ", video=" + (mHasVideo ? "true" : "false"))
         }
 
-        MediaEnginePtr engine = IMediaEngineForCallTransport::singleton();
+        MediaEngineObsoletePtr engine = IMediaEngineForCallTransportObsolete::singleton();
 
         if (hasAudio) {
           ZS_LOG_DETAIL(log("registering audio media engine transports"))
@@ -734,7 +734,7 @@ namespace openpeer
           mHasVideo = false;
         }
 
-        MediaEnginePtr engine = boost::dynamic_pointer_cast<MediaEngine>(IMediaEngine::singleton());
+        MediaEngineObsoletePtr engine = boost::dynamic_pointer_cast<MediaEngineObsolete>(IMediaEngineObsolete::singleton());
 
         if (hasVideo) {
           ZS_LOG_DETAIL(log("stopping media engine video"))

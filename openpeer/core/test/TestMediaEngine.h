@@ -38,7 +38,7 @@
 #include "webrtc/test/channel_transport/include/channel_transport.h"
 #include "webrtc/system_wrappers/interface/scoped_ptr.h"
 
-#include <openpeer/core/internal/core_MediaEngine.h>
+#include <openpeer/core/internal/core_MediaEngineObsolete.h>
 #include <openpeer/core/internal/core_Factory.h>
 
 #include <zsLib/Timer.h>
@@ -69,7 +69,7 @@ namespace openpeer
       #pragma mark TestMediaEngine
       #pragma mark
       
-      class TestMediaEngine : public internal::MediaEngine, public zsLib::ITimerDelegate
+      class TestMediaEngine : public internal::MediaEngineObsolete, public zsLib::ITimerDelegate
       {
       public:
         friend interaction TestMediaEngineFactory;
@@ -90,7 +90,7 @@ namespace openpeer
         String log(const char *message) const;
 
       protected:
-        static internal::MediaEnginePtr create(IMediaEngineDelegatePtr delegate);
+        static internal::MediaEngineObsoletePtr create(IMediaEngineDelegateObsoletePtr delegate);
         
         virtual void setLogLevel();
         
@@ -116,14 +116,14 @@ namespace openpeer
         
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark MediaEngine => ITimerDelegate
+        #pragma mark MediaEngineObsolete => ITimerDelegate
         #pragma mark
       protected:
         void onTimer(zsLib::TimerPtr timer);
         
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark MediaEngine => TraceCallback
+        #pragma mark MediaEngineObsolete => TraceCallback
         #pragma mark
       protected:
         virtual void Print(const TraceLevel level, const char *traceString, const int length);
@@ -174,7 +174,7 @@ namespace openpeer
       public:
         TestMediaEngineFactory() {}
         
-        virtual internal::MediaEnginePtr createMediaEngine(IMediaEngineDelegatePtr delegate);
+        virtual internal::MediaEngineObsoletePtr createMediaEngine(IMediaEngineDelegateObsoletePtr delegate);
       };
     }
   }

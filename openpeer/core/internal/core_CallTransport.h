@@ -32,7 +32,7 @@
 #pragma once
 
 #include <openpeer/core/internal/types.h>
-#include <openpeer/core/internal/core_MediaEngine.h>
+#include <openpeer/core/internal/core_MediaEngineObsolete.h>
 
 #include <openpeer/services/IWakeDelegate.h>
 

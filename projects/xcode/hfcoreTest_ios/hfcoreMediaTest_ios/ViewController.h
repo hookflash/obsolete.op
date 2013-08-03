@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#include <openpeer/core/internal/core_MediaEngine.h>
+#include <openpeer/core/internal/core_MediaEngineObsolete.h>
 
 @interface ViewController : UIViewController
 {
@@ -20,7 +20,7 @@
   
     IBOutlet UITextField* receiverIPAddressTextField;
   
-    openpeer::core::IMediaEngineDelegatePtr mediaEngineDelegatePtr;
+    openpeer::core::IMediaEngineDelegateObsoletePtr mediaEngineDelegatePtr;
 }
 
 -(IBAction)startTest1;

@@ -83,7 +83,7 @@ namespace openpeer
         static IMessageQueuePtr queueMedia();
         static IMessageQueuePtr queueServices();
 
-        static IMediaEngineDelegatePtr        mediaEngineDelegate();
+        static IMediaEngineDelegateObsoletePtr        mediaEngineDelegate();
         static IConversationThreadDelegatePtr conversationThreadDelegate();
         static ICallDelegatePtr               callDelegate();
 
@@ -125,7 +125,7 @@ namespace openpeer
 
         virtual void setup(
                            IStackDelegatePtr stackDelegate,
-                           IMediaEngineDelegatePtr mediaEngineDelegate,
+                           IMediaEngineDelegateObsoletePtr mediaEngineDelegate,
                            const char *appID,
                            const char *appName,
                            const char *appImageURL,
@@ -181,7 +181,7 @@ namespace openpeer
         virtual IMessageQueuePtr getQueueMedia() const;
         virtual IMessageQueuePtr getQueueServices() const;
 
-        virtual IMediaEngineDelegatePtr        getMediaEngineDelegate() const;
+        virtual IMediaEngineDelegateObsoletePtr        getMediaEngineDelegate() const;
 
         virtual void finalShutdown();
 
@@ -211,7 +211,7 @@ namespace openpeer
         MessageQueueThreadPtr  mServicesThreadQueue;
 
         IStackDelegatePtr              mStackDelegate;
-        IMediaEngineDelegatePtr        mMediaEngineDelegate;
+        IMediaEngineDelegateObsoletePtr        mMediaEngineDelegate;
 
         IStackMessageQueueDelegatePtr  mStackMessageQueueDelegate;
 

@@ -414,9 +414,9 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      MediaEnginePtr IMediaEngineFactory::createMediaEngine(IMediaEngineDelegatePtr delegate)
+      MediaEngineObsoletePtr IMediaEngineFactory::createMediaEngine(IMediaEngineDelegateObsoletePtr delegate)
       {
-        return MediaEngine::create(delegate);
+        return MediaEngineObsolete::create(delegate);
       }
     }
   }

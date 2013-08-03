@@ -240,6 +240,81 @@ namespace openpeer
     typedef boost::shared_ptr<IMediaEngineDelegate> IMediaEngineDelegatePtr;
     typedef boost::weak_ptr<IMediaEngineDelegate> IMediaEngineDelegateWeakPtr;
     typedef zsLib::Proxy<IMediaEngineDelegate> IMediaEngineDelegateProxy;
+    
+    interaction IMediaEngineObsolete;
+    typedef boost::shared_ptr<IMediaEngineObsolete> IMediaEngineObsoletePtr;
+    typedef boost::weak_ptr<IMediaEngineObsolete> IMediaEngineObsoleteWeakPtr;
+    
+    interaction IMediaEngineDelegateObsolete;
+    typedef boost::shared_ptr<IMediaEngineDelegateObsolete> IMediaEngineDelegateObsoletePtr;
+    typedef boost::weak_ptr<IMediaEngineDelegateObsolete> IMediaEngineDelegateObsoleteWeakPtr;
+    typedef zsLib::Proxy<IMediaEngineDelegateObsolete> IMediaEngineDelegateObsoleteProxy;
+    
+    interaction IMediaStream;
+    typedef boost::shared_ptr<IMediaStream> IMediaStreamPtr;
+    typedef boost::weak_ptr<IMediaStream> IMediaStreamWeakPtr;
+    
+    interaction ILocalMediaStream;
+    typedef boost::shared_ptr<ILocalMediaStream> ILocalMediaStreamPtr;
+    typedef boost::weak_ptr<ILocalMediaStream> ILocalMediaStreamWeakPtr;
+    
+    interaction IRemoteMediaStream;
+    typedef boost::shared_ptr<IRemoteMediaStream> IRemoteMediaStreamPtr;
+    typedef boost::weak_ptr<IRemoteMediaStream> IRemoteMediaStreamWeakPtr;
+    
+    interaction IMediaStreamDelegate;
+    typedef boost::shared_ptr<IMediaStreamDelegate> IMediaStreamDelegatePtr;
+    typedef boost::weak_ptr<IMediaStreamDelegate> IMediaStreamDelegateWeakPtr;
+    typedef zsLib::Proxy<IMediaStreamDelegate> IMediaStreamDelegateProxy;
+    
+    interaction IMediaTrack;
+    typedef boost::shared_ptr<IMediaTrack> IMediaTrackPtr;
+    typedef boost::weak_ptr<IMediaTrack> IMediaTrackWeakPtr;
+    
+    interaction IAudioTrack;
+    typedef boost::shared_ptr<IAudioTrack> IAudioTrackPtr;
+    typedef boost::weak_ptr<IAudioTrack> IAudioTrackWeakPtr;
+    
+    interaction IVideoTrack;
+    typedef boost::shared_ptr<IVideoTrack> IVideoTrackPtr;
+    typedef boost::weak_ptr<IVideoTrack> IVideoTrackWeakPtr;
+    
+    interaction ILocalAudioTrack;
+    typedef boost::shared_ptr<ILocalAudioTrack> ILocalAudioTrackPtr;
+    typedef boost::weak_ptr<ILocalAudioTrack> ILocalAudioTrackWeakPtr;
+    
+    interaction IRemoteAudioTrack;
+    typedef boost::shared_ptr<IRemoteAudioTrack> IRemoteAudioTrackPtr;
+    typedef boost::weak_ptr<IRemoteAudioTrack> IRemoteAudioTrackWeakPtr;
+    
+    interaction ILocalVideoTrack;
+    typedef boost::shared_ptr<ILocalVideoTrack> ILocalVideoTrackPtr;
+    typedef boost::weak_ptr<ILocalVideoTrack> ILocalVideoTrackWeakPtr;
+    
+    interaction IRemoteVideoTrack;
+    typedef boost::shared_ptr<IRemoteVideoTrack> IRemoteVideoTrackPtr;
+    typedef boost::weak_ptr<IRemoteVideoTrack> IRemoteVideoTrackWeakPtr;
+
+    interaction IMediaTrackDelegate;
+    typedef boost::shared_ptr<IMediaTrackDelegate> IMediaTrackDelegatePtr;
+    typedef boost::weak_ptr<IMediaTrackDelegate> IMediaTrackDelegateWeakPtr;
+    typedef zsLib::Proxy<IMediaTrackDelegate> IMediaTrackDelegateProxy;
+    
+    typedef std::list<ILocalAudioTrackPtr> LocalAudioTrackList;
+    typedef boost::shared_ptr<LocalAudioTrackList> LocalAudioTrackListPtr;
+    typedef boost::weak_ptr<LocalAudioTrackList> LocalAudioTrackListWeakPtr;
+    
+    typedef std::list<IRemoteAudioTrackPtr> RemoteAudioTrackList;
+    typedef boost::shared_ptr<RemoteAudioTrackList> RemoteAudioTrackListPtr;
+    typedef boost::weak_ptr<RemoteAudioTrackList> RemoteAudioTrackListWeakPtr;
+    
+    typedef std::list<ILocalVideoTrackPtr> LocalVideoTrackList;
+    typedef boost::shared_ptr<LocalVideoTrackList> LocalVideoTrackListPtr;
+    typedef boost::weak_ptr<LocalVideoTrackList> LocalVideoTrackListWeakPtr;
+    
+    typedef std::list<IRemoteVideoTrackPtr> RemoteVideoTrackList;
+    typedef boost::shared_ptr<RemoteVideoTrackList> RemoteVideoTrackListPtr;
+    typedef boost::weak_ptr<RemoteVideoTrackList> RemoteVideoTrackListWeakPtr;
 
     interaction IStack;
     typedef boost::shared_ptr<IStack> IStackPtr;

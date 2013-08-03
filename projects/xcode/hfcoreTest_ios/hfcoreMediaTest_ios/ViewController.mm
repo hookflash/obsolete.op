@@ -15,9 +15,9 @@
 
 -(IBAction)startTest1
 {
-    openpeer::core::internal::MediaEnginePtr mediaEngineInternal = openpeer::core::internal::IMediaEngineForCallTransport::singleton();
+    openpeer::core::internal::MediaEngineObsoletePtr mediaEngineInternal = openpeer::core::internal::IMediaEngineForCallTransportObsolete::singleton();
     openpeer::core::test::TestMediaEnginePtr testMediaEngineInternal = boost::dynamic_pointer_cast<openpeer::core::test::TestMediaEngine>(mediaEngineInternal);
-    openpeer::core::IMediaEnginePtr mediaEngine = openpeer::core::IMediaEngine::singleton();
+    openpeer::core::IMediaEngineObsoletePtr mediaEngine = openpeer::core::IMediaEngineObsolete::singleton();
     
     mediaEngine->setCaptureRenderView((__bridge void*)_imgView1);
     mediaEngine->setChannelRenderView((__bridge void*)_imgView2);
@@ -45,9 +45,9 @@
 
 -(IBAction)startTest2
 {
-    openpeer::core::internal::MediaEnginePtr mediaEngineInternal = openpeer::core::internal::IMediaEngineForCallTransport::singleton();
+    openpeer::core::internal::MediaEngineObsoletePtr mediaEngineInternal = openpeer::core::internal::IMediaEngineForCallTransportObsolete::singleton();
     openpeer::core::test::TestMediaEnginePtr testMediaEngineInternal = boost::dynamic_pointer_cast<openpeer::core::test::TestMediaEngine>(mediaEngineInternal);
-    openpeer::core::IMediaEnginePtr mediaEngine = openpeer::core::IMediaEngine::singleton();
+    openpeer::core::IMediaEngineObsoletePtr mediaEngine = openpeer::core::IMediaEngineObsolete::singleton();
     
     testMediaEngineInternal->setReceiverAddress("127.0.0.1");
     
@@ -57,9 +57,9 @@
 
 -(IBAction)startTest3
 {
-    openpeer::core::internal::MediaEnginePtr mediaEngineInternal = openpeer::core::internal::IMediaEngineForCallTransport::singleton();
+    openpeer::core::internal::MediaEngineObsoletePtr mediaEngineInternal = openpeer::core::internal::IMediaEngineForCallTransportObsolete::singleton();
     openpeer::core::test::TestMediaEnginePtr testMediaEngineInternal = boost::dynamic_pointer_cast<openpeer::core::test::TestMediaEngine>(mediaEngineInternal);
-    openpeer::core::IMediaEnginePtr mediaEngine = openpeer::core::IMediaEngine::singleton();
+    openpeer::core::IMediaEngineObsoletePtr mediaEngine = openpeer::core::IMediaEngineObsolete::singleton();
     
     mediaEngineInternal->forCallTransport().stopVoice();
     mediaEngineInternal->forCallTransport().stopVideoChannel();
@@ -67,9 +67,9 @@
 
 -(IBAction)startTest4
 {
-    openpeer::core::internal::MediaEnginePtr mediaEngineInternal = openpeer::core::internal::IMediaEngineForCallTransport::singleton();
+    openpeer::core::internal::MediaEngineObsoletePtr mediaEngineInternal = openpeer::core::internal::IMediaEngineForCallTransportObsolete::singleton();
     openpeer::core::test::TestMediaEnginePtr testMediaEngineInternal = boost::dynamic_pointer_cast<openpeer::core::test::TestMediaEngine>(mediaEngineInternal);
-    openpeer::core::IMediaEnginePtr mediaEngine = openpeer::core::IMediaEngine::singleton();
+    openpeer::core::IMediaEngineObsoletePtr mediaEngine = openpeer::core::IMediaEngineObsolete::singleton();
     
 //    mediaEngine->stopRecordVideoCapture();
     mediaEngine->stopVideoCapture();
@@ -92,7 +92,7 @@
   
     openpeer::core::internal::Factory::override(overrideFactory);
   
-    openpeer::core::internal::IMediaEngineForStack::setup(mediaEngineDelegatePtr);
+    openpeer::core::internal::IMediaEngineForStackObsolete::setup(mediaEngineDelegatePtr);
   
   
 //    IClient::setLogLevel(IClient::Log::Trace);
@@ -100,7 +100,7 @@
 //    IClient::setLogLevel("openpeer_media", IClient::Log::Debug);         // recommend Debug
 //    IClient::installTelnetLogger(59999, 60, true);
   
-    openpeer::core::IMediaEnginePtr mediaEngine = openpeer::core::IMediaEngine::singleton();
+    openpeer::core::IMediaEngineObsoletePtr mediaEngine = openpeer::core::IMediaEngineObsolete::singleton();
   
     mediaEngine->setEcEnabled(true);
     mediaEngine->setAgcEnabled(true);
@@ -108,8 +108,8 @@
     mediaEngine->setMuteEnabled(false);
     mediaEngine->setLoudspeakerEnabled(false);
     mediaEngine->setContinuousVideoCapture(true);
-    mediaEngine->setDefaultVideoOrientation(IMediaEngine::VideoOrientation_Portrait);
-    mediaEngine->setRecordVideoOrientation(IMediaEngine::VideoOrientation_LandscapeRight);
+    mediaEngine->setDefaultVideoOrientation(IMediaEngineObsolete::VideoOrientation_Portrait);
+    mediaEngine->setRecordVideoOrientation(IMediaEngineObsolete::VideoOrientation_LandscapeRight);
     mediaEngine->setFaceDetection(false);
 
     return self;
@@ -155,7 +155,7 @@
 
 - (void)orientationChanged
 {
-    openpeer::core::IMediaEnginePtr mediaEngine = openpeer::core::IMediaEngine::singleton();
+    openpeer::core::IMediaEngineObsoletePtr mediaEngine = openpeer::core::IMediaEngineObsolete::singleton();
   
     mediaEngine->setVideoOrientation();
 }
