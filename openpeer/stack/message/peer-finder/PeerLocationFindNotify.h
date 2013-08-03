@@ -31,7 +31,7 @@
 
 #pragma once
 
-#include <openpeer/stack/message/MessageReply.h>
+#include <openpeer/stack/message/MessageNotify.h>
 #include <openpeer/stack/message/peer-finder/MessageFactoryPeerFinder.h>
 
 namespace openpeer
@@ -42,7 +42,7 @@ namespace openpeer
     {
       namespace peer_finder
       {
-        class PeerLocationFindReply : public MessageReply
+        class PeerLocationFindNotify : public MessageNotify
         {
         public:
           enum AttributeTypes
@@ -55,10 +55,10 @@ namespace openpeer
           };
 
         public:
-          static PeerLocationFindReplyPtr convert(MessagePtr message);
+          static PeerLocationFindNotifyPtr convert(MessagePtr message);
 
-          static PeerLocationFindReplyPtr create(PeerLocationFindRequestPtr request);
-          static PeerLocationFindReplyPtr create(
+          static PeerLocationFindNotifyPtr create(PeerLocationFindRequestPtr request);
+          static PeerLocationFindNotifyPtr create(
                                                  ElementPtr root,
                                                  IMessageSourcePtr messageSource
                                                  );
@@ -86,7 +86,7 @@ namespace openpeer
           void peerFiles(IPeerFilesPtr peerFiles)                       {mPeerFiles = peerFiles;}
 
         protected:
-          PeerLocationFindReply();
+          PeerLocationFindNotify();
 
           SecureByteBlockPtr mPeerSecret;
 

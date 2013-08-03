@@ -178,7 +178,6 @@ namespace openpeer
               }
               break;
             }
-            case Message::MessageType_Reply:                    return MessagePtr();
           }
 
           return MessagePtr();

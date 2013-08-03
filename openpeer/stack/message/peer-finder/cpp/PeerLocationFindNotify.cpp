@@ -29,7 +29,7 @@
 
  */
 
-#include <openpeer/stack/message/peer-finder/PeerLocationFindReply.h>
+#include <openpeer/stack/message/peer-finder/PeerLocationFindNotify.h>
 #include <openpeer/stack/message/peer-finder/PeerLocationFindRequest.h>
 #include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
 #include <openpeer/stack/internal/stack_Location.h>
@@ -58,23 +58,23 @@ namespace openpeer
         using namespace stack::internal;
 
         //---------------------------------------------------------------------
-        PeerLocationFindReplyPtr PeerLocationFindReply::convert(MessagePtr message)
+        PeerLocationFindNotifyPtr PeerLocationFindNotify::convert(MessagePtr message)
         {
-          return boost::dynamic_pointer_cast<PeerLocationFindReply>(message);
+          return boost::dynamic_pointer_cast<PeerLocationFindNotify>(message);
         }
 
         //---------------------------------------------------------------------
-        PeerLocationFindReply::PeerLocationFindReply()
+        PeerLocationFindNotify::PeerLocationFindNotify()
         {
         }
 
         //---------------------------------------------------------------------
-        PeerLocationFindReplyPtr PeerLocationFindReply::create(
+        PeerLocationFindNotifyPtr PeerLocationFindNotify::create(
                                                                ElementPtr root,
                                                                IMessageSourcePtr messageSource
                                                                )
         {
-          PeerLocationFindReplyPtr ret(new PeerLocationFindReply);
+          PeerLocationFindNotifyPtr ret(new PeerLocationFindNotify);
           IMessageHelper::fill(*ret, root, messageSource);
 
           try {
@@ -87,20 +87,20 @@ namespace openpeer
             }
 
             if (!ret->mLocationInfo.mLocation) {
-              ZS_LOG_ERROR(Detail, "PeerLocationFindReply [] missing location information in find request")
-              return PeerLocationFindReplyPtr();
+              ZS_LOG_ERROR(Detail, "PeerLocationFindNotify [] missing location information in find request")
+              return PeerLocationFindNotifyPtr();
             }
 
             PeerPtr peer = Location::convert(ret->mLocationInfo.mLocation)->forMessages().getPeer();
 
             if (!peer) {
-              ZS_LOG_WARNING(Detail, "PeerLocationFindReply [] expected element is missing")
-              return PeerLocationFindReplyPtr();
+              ZS_LOG_WARNING(Detail, "PeerLocationFindNotify [] expected element is missing")
+              return PeerLocationFindNotifyPtr();
             }
 
             if (!peer->forMessages().verifySignature(findProofEl)) {
-              ZS_LOG_WARNING(Detail, "PeerLocationFindReply [] could not validate signature of find proof request")
-              return PeerLocationFindReplyPtr();
+              ZS_LOG_WARNING(Detail, "PeerLocationFindNotify [] could not validate signature of find proof request")
+              return PeerLocationFindNotifyPtr();
             }
 
             ret->mRequestfindProofBundleDigestValue = findProofEl->findFirstChildElementChecked("requestFindProofBundleDigestValue")->getText();
@@ -122,17 +122,17 @@ namespace openpeer
                 ret->mRoutes = routeLst;
             }
           } catch(CheckFailed &) {
-            ZS_LOG_WARNING(Detail, "PeerLocationFindReply [] expected element is missing")
-            return PeerLocationFindReplyPtr();
+            ZS_LOG_WARNING(Detail, "PeerLocationFindNotify [] expected element is missing")
+            return PeerLocationFindNotifyPtr();
           }
 
           return ret;
         }
 
         //---------------------------------------------------------------------
-        PeerLocationFindReplyPtr PeerLocationFindReply::create(PeerLocationFindRequestPtr request)
+        PeerLocationFindNotifyPtr PeerLocationFindNotify::create(PeerLocationFindRequestPtr request)
         {
-          PeerLocationFindReplyPtr ret(new PeerLocationFindReply);
+          PeerLocationFindNotifyPtr ret(new PeerLocationFindNotify);
 
           ret->mDomain = request->domain();
           ret->mID = request->messageID();
@@ -151,7 +151,7 @@ namespace openpeer
         }
 
         //---------------------------------------------------------------------
-        bool PeerLocationFindReply::hasAttribute(AttributeTypes type) const
+        bool PeerLocationFindNotify::hasAttribute(AttributeTypes type) const
         {
           switch (type)
           {
@@ -163,28 +163,28 @@ namespace openpeer
             default:
               break;
           }
-          return MessageReply::hasAttribute((MessageReply::AttributeTypes)type);
+          return false;
         }
 
         //---------------------------------------------------------------------
-        DocumentPtr PeerLocationFindReply::encode()
+        DocumentPtr PeerLocationFindNotify::encode()
         {
           DocumentPtr ret = IMessageHelper::createDocumentWithRoot(*this);
           ElementPtr root = ret->getFirstChildElement();
 
           if (!mPeerFiles) {
-            ZS_LOG_ERROR(Detail, "PeerLocationFindRequest [] peer files was null")
+            ZS_LOG_ERROR(Detail, "PeerLocationFindNotify [] peer files was null")
             return DocumentPtr();
           }
 
           IPeerFilePrivatePtr peerFilePrivate = mPeerFiles->getPeerFilePrivate();
           if (!peerFilePrivate) {
-            ZS_LOG_ERROR(Detail, "PeerLocationFindRequest [] peer file private was null")
+            ZS_LOG_ERROR(Detail, "PeerLocationFindNotify [] peer file private was null")
             return DocumentPtr();
           }
           IPeerFilePublicPtr peerFilePublic = mPeerFiles->getPeerFilePublic();
           if (!peerFilePublic) {
-            ZS_LOG_ERROR(Detail, "PeerLocationFindRequest [] peer file public was null")
+            ZS_LOG_ERROR(Detail, "PeerLocationFindNotify [] peer file public was null")
             return DocumentPtr();
           }
 

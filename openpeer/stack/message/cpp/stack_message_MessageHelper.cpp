@@ -33,7 +33,6 @@
 #include <openpeer/stack/message/IMessageHelper.h>
 #include <openpeer/stack/message/IMessageFactory.h>
 #include <openpeer/stack/message/MessageResult.h>
-#include <openpeer/stack/message/MessageReply.h>
 
 #include <openpeer/stack/message/peer-common/MessageFactoryPeerCommon.h>
 #include <openpeer/stack/message/peer-common/PeerPublishRequest.h>
@@ -136,12 +135,6 @@ namespace openpeer
             }
 
             rootEl->adoptAsLastChild(errorEl);
-          }
-        }
-        if (message.isReply()) {
-          const message::MessageReply *msgReply = (dynamic_cast<const message::MessageReply *>(&message));
-          if (msgReply->hasAttribute(MessageReply::AttributeType_Time)) {
-            IMessageHelper::setAttributeTimestamp(rootEl, msgReply->time());
           }
         }
 
@@ -339,11 +332,6 @@ namespace openpeer
           Time time = IMessageHelper::getAttributeEpoch(root);
           message::MessageResult *result = (dynamic_cast<message::MessageResult *>(&message));
           result->time(time);
-        }
-        if (message.isReply()) {
-          Time time = IMessageHelper::getAttributeEpoch(root);
-          message::MessageReply *reply = (dynamic_cast<message::MessageReply *>(&message));
-          reply->time(time);
         }
       }
 
@@ -981,8 +969,7 @@ namespace openpeer
               }
               break;
             }
-            case Message::MessageType_Result:
-            case Message::MessageType_Reply:    {
+            case Message::MessageType_Result: {
               switch ((MessageFactoryPeerCommon::Methods)msg.method()) {
                 case MessageFactoryPeerCommon::Method_PeerPublish:       {
                   if (baseVersionEl)
@@ -1345,8 +1332,7 @@ namespace openpeer
                 }
                 break;
               }
-              case Message::MessageType_Result:
-              case Message::MessageType_Reply:    {
+              case Message::MessageType_Result:   {
                 switch ((MessageFactoryPeerCommon::Methods)msg->method()) {
                   case MessageFactoryPeerCommon::Method_PeerPublish:
                   case MessageFactoryPeerCommon::Method_PeerSubscribe: {

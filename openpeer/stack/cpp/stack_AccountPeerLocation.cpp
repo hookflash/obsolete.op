@@ -45,7 +45,7 @@
 #include <openpeer/stack/message/peer-to-peer/PeerKeepAliveRequest.h>
 #include <openpeer/stack/message/peer-finder/PeerLocationFindRequest.h>
 #include <openpeer/stack/message/peer-finder/PeerLocationFindResult.h>
-#include <openpeer/stack/message/peer-finder/PeerLocationFindReply.h>
+#include <openpeer/stack/message/peer-finder/PeerLocationFindNotify.h>
 
 #include <openpeer/services/IHelper.h>
 
@@ -81,8 +81,8 @@ namespace openpeer
       using message::peer_to_peer::PeerIdentifyRequestPtr;
       using message::peer_to_peer::PeerKeepAliveRequest;
       using message::peer_to_peer::PeerKeepAliveRequestPtr;
-      using message::peer_finder::PeerLocationFindReply;
-      using message::peer_finder::PeerLocationFindReplyPtr;
+      using message::peer_finder::PeerLocationFindNotify;
+      using message::peer_finder::PeerLocationFindNotifyPtr;
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -1048,7 +1048,7 @@ namespace openpeer
           remoteCandidates = pendingRequest->locationInfo().mCandidates;
 
           // local candidates are now preparerd, the request can be answered
-          PeerLocationFindReplyPtr reply = PeerLocationFindReply::create(pendingRequest);
+          PeerLocationFindNotifyPtr reply = PeerLocationFindNotify::create(pendingRequest);
 
           reply->locationInfo(*selfLocationInfo);
           reply->peerFiles(outer->forAccountPeerLocation().getPeerFiles());

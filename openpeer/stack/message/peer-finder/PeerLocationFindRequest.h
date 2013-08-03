@@ -47,7 +47,7 @@ namespace openpeer
         class PeerLocationFindRequest : public MessageRequest
         {
         public:
-          friend class PeerLocationFindReply;
+          friend class PeerLocationFindNotify;
 
           typedef Message::Methods Methods;
           typedef std::list<zsLib::String> ExcludedLocationList;

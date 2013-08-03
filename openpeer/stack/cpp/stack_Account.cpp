@@ -45,7 +45,7 @@
 #include <openpeer/stack/message/MessageResult.h>
 #include <openpeer/stack/message/peer-finder/PeerLocationFindRequest.h>
 #include <openpeer/stack/message/peer-finder/PeerLocationFindResult.h>
-#include <openpeer/stack/message/peer-finder/PeerLocationFindReply.h>
+#include <openpeer/stack/message/peer-finder/PeerLocationFindNotify.h>
 #include <openpeer/stack/message/bootstrapped-finder/FindersGetRequest.h>
 #include <openpeer/stack/message/bootstrapped-finder/FindersGetResult.h>
 #include <openpeer/stack/IPeerFilePublic.h>
@@ -93,8 +93,8 @@ namespace openpeer
       using message::peer_finder::PeerLocationFindRequestPtr;
       using message::peer_finder::PeerLocationFindResult;
       using message::peer_finder::PeerLocationFindResultPtr;
-      using message::peer_finder::PeerLocationFindReply;
-      using message::peer_finder::PeerLocationFindReplyPtr;
+      using message::peer_finder::PeerLocationFindNotify;
+      using message::peer_finder::PeerLocationFindNotifyPtr;
 
       using message::bootstrapped_finder::FindersGetRequest;
       using message::bootstrapped_finder::FindersGetRequestPtr;
@@ -1370,8 +1370,8 @@ namespace openpeer
               }
               break;
             }
-            case Message::MessageType_Reply:   {
-              PeerLocationFindReplyPtr findReply = PeerLocationFindReply::convert(message);
+            case Message::MessageType_Notify:   {
+              PeerLocationFindNotifyPtr findReply = PeerLocationFindNotify::convert(message);
               if (!findReply) {
                 ZS_LOG_ERROR(Debug, log("receiced received a find reply but was unable to cast object to a reply object") + PeerInfo::toDebugString(peerInfo))
                 return false;

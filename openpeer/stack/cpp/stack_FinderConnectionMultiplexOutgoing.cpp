@@ -622,7 +622,18 @@ namespace openpeer
 
         mMapRequestChannelMonitor.reset();
 
-        // map request completed successfully...
+        // scope: remove from pending list
+        {
+          ChannelMap::iterator found = mPendingMapRequest.find(mMapRequestChannelNumber);
+          if (found != mPendingMapRequest.end()) {
+            ZS_LOG_TRACE(log("removed from pending map"))
+            mPendingMapRequest.erase(found);
+          }
+        }
+
+        get(mMapRequestChannelNumber) = 0;
+
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
 
         return true;
       }
@@ -640,12 +651,35 @@ namespace openpeer
           return false;
         }
 
+        ZS_LOG_WARNING(Detail, log("channel map request failed") + ", channel number=" + string(mMapRequestChannelNumber))
+
         mMapRequestChannelMonitor.reset();
 
-        // map request failed... clear out this channel
-        notifyDestroyed(mMapRequestChannelNumber);
+        // scope: remove from channels list
+        {
+          ChannelMap::iterator found = mChannels.find(mMapRequestChannelNumber);
+          if (found != mChannels.end()) {
+            ZS_LOG_TRACE(log("removed from channels map"))
+            ChannelPtr channel = (*found).second;
+            ZS_THROW_BAD_STATE_IF(!channel)
+            channel->cancel();
+            mChannels.erase(found);
+          }
+        }
+
+        // scope: remove from pending list
+        {
+          ChannelMap::iterator found = mPendingMapRequest.find(mMapRequestChannelNumber);
+          if (found != mPendingMapRequest.end()) {
+            ZS_LOG_TRACE(log("removed from pending map"))
+            mPendingMapRequest.erase(found);
+          }
+        }
 
         get(mMapRequestChannelNumber) = 0;
+
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
+
         return true;
       }
 

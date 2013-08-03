@@ -420,10 +420,6 @@ namespace openpeer
       typedef boost::shared_ptr<MessageNotify> MessageNotifyPtr;
       typedef boost::weak_ptr<MessageNotify> MessageNotifyWeakPtr;
 
-      class MessageReply;
-      typedef boost::shared_ptr<MessageReply> MessageReplyPtr;
-      typedef boost::weak_ptr<MessageReply> MessageReplyWeakPtr;
-
       namespace bootstrapper
       {
         class MessageFactoryBootstrapper;
@@ -740,9 +736,9 @@ namespace openpeer
         typedef boost::shared_ptr<PeerLocationFindResult> PeerLocationFindResultPtr;
         typedef boost::weak_ptr<PeerLocationFindResult> PeerLocationFindResultWeakPtr;
 
-        class PeerLocationFindReply;
-        typedef boost::shared_ptr<PeerLocationFindReply> PeerLocationFindReplyPtr;
-        typedef boost::weak_ptr<PeerLocationFindReply> PeerLocationFindReplyWeakPtr;
+        class PeerLocationFindNotify;
+        typedef boost::shared_ptr<PeerLocationFindNotify> PeerLocationFindNotifyPtr;
+        typedef boost::weak_ptr<PeerLocationFindNotify> PeerLocationFindNotifyWeakPtr;
 
         class SessionCreateRequest;
         typedef boost::shared_ptr<SessionCreateRequest> SessionCreateRequestPtr;

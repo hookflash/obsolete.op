@@ -66,7 +66,6 @@ namespace openpeer
           case MessageType_Request:     return "request";
           case MessageType_Result:      return "result";
           case MessageType_Notify:      return "notify";
-          case MessageType_Reply:       return "reply";
         }
         return "UNDEFINED";
       }

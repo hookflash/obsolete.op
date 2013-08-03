@@ -34,7 +34,6 @@
 #include <openpeer/stack/message/Message.h>
 #include <openpeer/stack/message/MessageRequest.h>
 #include <openpeer/stack/message/MessageResult.h>
-#include <openpeer/stack/message/MessageReply.h>
 #include <openpeer/stack/message/MessageNotify.h>
 
 #include <openpeer/stack/message/IMessageHelper.h>
@@ -115,7 +114,7 @@
 #include <openpeer/stack/message/peer-finder/MessageFactoryPeerFinder.h>
 #include <openpeer/stack/message/peer-finder/PeerLocationFindRequest.h>
 #include <openpeer/stack/message/peer-finder/PeerLocationFindResult.h>
-#include <openpeer/stack/message/peer-finder/PeerLocationFindReply.h>
+#include <openpeer/stack/message/peer-finder/PeerLocationFindNotify.h>
 #include <openpeer/stack/message/peer-finder/SessionCreateRequest.h>
 #include <openpeer/stack/message/peer-finder/SessionCreateResult.h>
 #include <openpeer/stack/message/peer-finder/SessionDeleteRequest.h>
