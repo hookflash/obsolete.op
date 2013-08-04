@@ -529,6 +529,7 @@ namespace openpeer
                Helper::getDebugValue("incoming", mIncoming ? String("true") : String(), firstTime) +
                Helper::getDebugValue("connection relay channel", mConnectionRelayChannel ? String("true") : String(), firstTime) +
                IMessageLayerSecurityChannel::toDebugString(mMLSChannel) +
+               Helper::getDebugValue("notified needs context", mNotifiedNeedsContext ? String("true") : String(), firstTime) +
                IPeer::toDebugString(mRemotePeer) +
                Helper::getDebugValue("remote public key", mRemotePublicKey ? String("true") : String(), firstTime) +
                ", outer recv stream: " + ITransportStream::toDebugString(mOuterReceiveStream, false) +
