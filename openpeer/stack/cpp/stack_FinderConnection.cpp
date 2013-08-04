@@ -1132,6 +1132,24 @@ namespace openpeer
             continue;
           }
 
+          if (!channel) {
+            if (isFinderRelayConnection()) {
+              ZS_LOG_WARNING(Detail, log("received data on an non-mapped relay channel (thus ignoring)"))
+              continue;
+            }
+
+            ZS_LOG_DEBUG(log("notified of new incoming channel"))
+
+            // this is s a new incoming channel
+            ITransportStreamPtr receiveStream = ITransportStream::create();
+            ITransportStreamPtr sendStream = ITransportStream::create();
+            channel = Channel::incoming(mThisWeak.lock(), IFinderConnectionRelayChannelDelegatePtr(), receiveStream, sendStream, channelHeader->mChannelID);
+
+            mChannels[channelHeader->mChannelID] = channel;
+            mIncomingChannels[channelHeader->mChannelID] = channel;
+            mSubscriptions.delegate()->onFinderConnectionIncomingRelayChannel(mThisWeak.lock());
+          }
+
           channel->notifyDataReceived(buffer);
         }
 

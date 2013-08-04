@@ -218,7 +218,9 @@ namespace openpeer
         void setError(WORD errorCode, const char *inReason = NULL);
 
         void step();
-        
+        bool stepMLS();
+        bool stepConnectionRelayChannel();
+
       protected:
         //---------------------------------------------------------------------
         #pragma mark
@@ -245,6 +247,7 @@ namespace openpeer
 
         IMessageLayerSecurityChannelPtr mMLSChannel;
 
+        AutoBool mNotifiedNeedsContext;
         IPeerPtr mRemotePeer;
         IRSAPublicKeyPtr mRemotePublicKey;
 

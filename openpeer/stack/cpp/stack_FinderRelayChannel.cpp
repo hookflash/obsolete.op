@@ -225,6 +225,10 @@ namespace openpeer
           mMLSChannel.reset();
         }
 
+        if (mConnectionRelayChannel) {
+          mConnectionRelayChannel->cancel();
+        }
+
         mDefaultSubscription->cancel();
         mSubscriptions.clear();
 
@@ -434,6 +438,16 @@ namespace openpeer
         IPeerFilePublicPtr peerFilePublic = peerFiles->getPeerFilePublic();
 
         if (IMessageLayerSecurityChannel::SessionState_WaitingForNeededInformation == state) {
+          if (!mNotifiedNeedsContext) {
+            if (mMLSChannel->getRemoteContextID().hasData()) {
+              // have remote context ID, but have we set local context ID?
+              if (mMLSChannel->getLocalContextID().isEmpty()) {
+                mSubscriptions.delegate()->onFinderRelayChannelNeedsContext(mThisWeak.lock());
+                get(mNotifiedNeedsContext) = true;
+              }
+            }
+          }
+
           if (mMLSChannel->needsReceiveKeyingDecodingPrivateKey()) {
 
             mMLSChannel->setReceiveKeyingDecoding(peerFilePrivate->getPrivateKey(), peerFilePublic->getPublicKey());
@@ -567,9 +581,65 @@ namespace openpeer
 
         ZS_LOG_DEBUG(log("step") + getDebugValueString())
 
-        // TODO
+        if (!stepMLS()) return;
+        if (!stepConnectionRelayChannel()) return;
 
         setState(SessionState_Connected);
+      }
+
+      //-----------------------------------------------------------------------
+      bool FinderRelayChannel::stepMLS()
+      {
+        WORD error = 0;
+        String reason;
+        switch (mMLSChannel->getState(&error, &reason)) {
+          case IMessageLayerSecurityChannel::SessionState_Pending:
+          case IMessageLayerSecurityChannel::SessionState_WaitingForNeededInformation:
+          {
+            ZS_LOG_DEBUG(log("waiting for MLS to connect"))
+            break;
+          }
+          case IMessageLayerSecurityChannel::SessionState_Connected:   break;
+          case IMessageLayerSecurityChannel::SessionState_Shutdown:  {
+            ZS_LOG_WARNING(Detail, log("MLS channel shutdown") + ", error=" + string(error) + ", reason" + reason)
+            setError(error, reason);
+            cancel();
+            return false;
+          }
+        }
+
+        ZS_LOG_DEBUG(log("MLS ready"))
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      bool FinderRelayChannel::stepConnectionRelayChannel()
+      {
+        if (!mConnectionRelayChannel) {
+          ZS_LOG_DEBUG(log("no relay channel preset"))
+          return true;
+        }
+
+        WORD error = 0;
+        String reason;
+        switch (mConnectionRelayChannel->getState(&error, &reason)) {
+          case IFinderConnectionRelayChannel::SessionState_Pending:
+          {
+            ZS_LOG_DEBUG(log("waiting for finder connection to connect"))
+            setState(SessionState_Pending);
+            return false;
+          }
+          case IFinderConnectionRelayChannel::SessionState_Connected:   break;
+          case IFinderConnectionRelayChannel::SessionState_Shutdown:  {
+            ZS_LOG_WARNING(Detail, log("finder connection relay channel shutdown") + ", error=" + string(error) + ", reason" + reason)
+            setError(error, reason);
+            cancel();
+            return false;
+          }
+        }
+
+        ZS_LOG_DEBUG(log("connection relay channel ready"))
+        return true;
       }
 
       //-----------------------------------------------------------------------
@@ -585,9 +655,9 @@ namespace openpeer
       {
         switch (state)
         {
-          case SessionState_Pending:      return "Pending";
-          case SessionState_Connected:    return "Connected";
-          case SessionState_Shutdown:     return "Shutdown";
+          case SessionState_Pending:                      return "Pending";
+          case SessionState_Connected:                    return "Connected";
+          case SessionState_Shutdown:                     return "Shutdown";
         }
         return "UNDEFINED";
       }
