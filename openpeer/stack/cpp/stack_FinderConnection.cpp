@@ -63,6 +63,9 @@ namespace openpeer
       typedef ITCPMessaging::ChannelHeader ChannelHeader;
       typedef ITCPMessaging::ChannelHeaderPtr ChannelHeaderPtr;
 
+      typedef ITransportStream::StreamHeader StreamHeader;
+      typedef ITransportStream::StreamHeaderPtr StreamHeaderPtr;
+
       using peer_finder::ChannelMapRequest;
       using peer_finder::ChannelMapRequestPtr;
 
@@ -1089,6 +1092,54 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      bool FinderConnection::stepReceiveData()
+      {
+        if (mWireReceiveStream->getTotalReadBuffersAvailable() < 1) {
+          ZS_LOG_TRACE(log("no data to read"))
+          return true;
+        }
+
+        while (mWireReceiveStream->getTotalReadBuffersAvailable() > 0) {
+          StreamHeaderPtr header;
+          SecureByteBlockPtr buffer = mWireReceiveStream->read(&header);
+
+          ChannelHeaderPtr channelHeader = ChannelHeader::convert(header);
+
+          if ((!buffer) ||
+              (!channelHeader)) {
+            ZS_LOG_WARNING(Detail, log("failed to read buffer"))
+            setError(IHTTP::HTTPStatusCode_InternalServerError, "failed to read buffer");
+            cancel();
+            return false;
+          }
+
+          ZS_LOG_TRACE(log("received data") + ", channel number=" + string(channelHeader->mChannelID) + ", size=" + string(buffer->SizeInBytes()))
+
+          ChannelMap::iterator found = mChannels.find(channelHeader->mChannelID);
+          ChannelPtr channel;
+          if (found != mChannels.end()) {
+            channel = (*found).second;
+          }
+
+          if (buffer->SizeInBytes() < 1) {
+            // special close request
+            if (found == mChannels.end()) {
+              ZS_LOG_WARNING(Detail, log("channel closed but channel is not known"))
+              continue;
+            }
+            ZS_LOG_DEBUG(log("channel is being shutdown"))
+            channel->cancel();
+            continue;
+          }
+
+          channel->notifyDataReceived(buffer);
+        }
+
+        ZS_LOG_TRACE(log("receive complete"))
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
       IFinderConnectionRelayChannelPtr FinderConnection::connect(
                                                                  IFinderConnectionRelayChannelDelegatePtr delegate,
                                                                  const char *localContextID,
@@ -1229,6 +1280,11 @@ namespace openpeer
         if (isShutdown()) return;
 
         setState(SessionState_Shutdown);
+
+        FinderConnectionPtr connection = mOuter.lock();
+        if (connection) {
+          connection->notifyDestroyed(mChannelNumber);
+        }
 
         mDelegate.reset();
 
@@ -1425,9 +1481,45 @@ namespace openpeer
 
         ZS_LOG_DEBUG(log("step") + getDebugValueString())
 
-        // TODO
+        if (!stepSendData()) return;
 
         setState(SessionState_Connected);
+      }
+
+      //-----------------------------------------------------------------------
+      bool FinderConnection::Channel::stepSendData()
+      {
+        if (!mWireStreamNotifiedReady) {
+          ZS_LOG_DEBUG(log("have not received wire ready to send yet"))
+          return false;
+        }
+
+        if (mOuterSendStream->getTotalReadBuffersAvailable() < 1) {
+          ZS_LOG_DEBUG(log("no data to send"))
+          return false;
+        }
+
+        FinderConnectionPtr connection = mOuter.lock();
+        if (!connection) {
+          ZS_LOG_WARNING(Detail, log("connection is gone, must shutdown"))
+          setError(IHTTP::HTTPStatusCode_NotFound, "connection object gone");
+          cancel();
+          return false;
+        }
+
+        while (mOuterSendStream->getTotalReadBuffersAvailable() > 0) {
+          SecureByteBlockPtr buffer = mOuterSendStream->read();
+          if (buffer->SizeInBytes() < 1) {
+            ZS_LOG_WARNING(Detail, log("no data read"))
+            continue;
+          }
+
+          ZS_LOG_TRACE(log("buffer to send read") + ", size=" + string(buffer->SizeInBytes()))
+          connection->sendBuffer(mChannelNumber, buffer);
+        }
+
+        ZS_LOG_TRACE(log("buffer to send read complete"))
+        return true;
       }
 
       //-----------------------------------------------------------------------

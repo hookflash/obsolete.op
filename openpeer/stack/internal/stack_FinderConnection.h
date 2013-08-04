@@ -262,6 +262,7 @@ namespace openpeer
         bool stepConnectWire();
         bool stepMasterChannel();
         bool stepChannelMapRequest();
+        bool stepReceiveData();
 
         IFinderConnectionRelayChannelPtr connect(
                                                  IFinderConnectionRelayChannelDelegatePtr delegate,
@@ -414,6 +415,7 @@ namespace openpeer
           void setError(WORD errorCode, const char *inReason = NULL);
 
           void step();
+          bool stepSendData();
 
         protected:
           AutoPUID mID;

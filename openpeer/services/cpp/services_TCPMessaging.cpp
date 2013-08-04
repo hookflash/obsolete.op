@@ -626,7 +626,7 @@ namespace openpeer
 
           ZS_LOG_TRACE(log("attempting to send data over TCP") + ", message size=" + string(buffer->SizeInBytes()))
 
-          ChannelHeaderPtr channelHeader = boost::dynamic_pointer_cast<ChannelHeader>(header);
+          ChannelHeaderPtr channelHeader = ChannelHeader::convert(header);
 
           if (mFramesHaveChannelNumber) {
             if (!channelHeader) {
@@ -751,5 +751,19 @@ namespace openpeer
     {
       return internal::ITCPMessagingFactory::singleton().connect(delegate, receiveStream, sendStream, framesHaveChannelNumber, remoteIP, maxMessageSizeInBytes);
     }
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    #pragma mark
+    #pragma mark ITCPMessaging::ChannelHeader
+    #pragma mark
+
+    //-----------------------------------------------------------------------
+    ITCPMessaging::ChannelHeaderPtr ITCPMessaging::ChannelHeader::convert(ITransportStream::StreamHeaderPtr header)
+    {
+      return boost::dynamic_pointer_cast<ChannelHeader>(header);
+    }
+
   }
 }

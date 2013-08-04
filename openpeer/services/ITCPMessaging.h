@@ -66,15 +66,19 @@ namespace openpeer
 
       static const char *toString(SessionStates state);
 
+      struct ChannelHeader;
+      typedef boost::shared_ptr<ChannelHeader> ChannelHeaderPtr;
+      typedef boost::weak_ptr<ChannelHeader> ChannelHeaderWeakPtr;
+
       struct ChannelHeader : public ITransportStream::StreamHeader
       {
         ChannelHeader() : mChannelID(0) {}
         virtual ~ChannelHeader() {}
 
+        static ChannelHeaderPtr convert(ITransportStream::StreamHeaderPtr header);
+
         DWORD mChannelID;
       };
-      typedef boost::shared_ptr<ChannelHeader> ChannelHeaderPtr;
-      typedef boost::weak_ptr<ChannelHeader> ChannelHeaderWeakPtr;
 
       static String toDebugString(ITCPMessagingPtr messaging, bool includeCommaPrefix = true);
 
