@@ -269,7 +269,7 @@ namespace openpeer
           return existing->connect(delegate, localContextID, remoteContextID, relayDomain, relayAccessToken, relayAccessSecretProof, receiveStream, sendStream);
         }
 
-        FinderConnectionPtr pThis = FinderConnection::create(remoteFinderIP);
+        FinderConnectionPtr pThis(new FinderConnection(IStackForInternal::queueStack(), remoteFinderIP));
         pThis->mThisWeak = pThis;
         pThis->mOuter = manager;
         pThis->init();
@@ -290,7 +290,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String FinderConnection::toDebugString(IFinderConnectionPtr connection, bool includeCommaPrefix)
       {
-        if (!connection) return String(includeCommaPrefix ? ", finder connection multiplex outgoing=(null)" : "finder connection multiplex outgoing=(null)");
+        if (!connection) return String(includeCommaPrefix ? ", finder connection=(null)" : "finder connection=(null)");
 
         FinderConnectionPtr pThis = FinderConnection::convert(connection);
         return pThis->getDebugValueString(includeCommaPrefix);
@@ -307,7 +307,7 @@ namespace openpeer
         ZS_THROW_INVALID_ARGUMENT_IF(!receiveStream)
         ZS_THROW_INVALID_ARGUMENT_IF(!sendStream)
 
-        FinderConnectionPtr pThis = FinderConnection::create(remoteFinderIP);
+        FinderConnectionPtr pThis(new FinderConnection(IStackForInternal::queueStack(), remoteFinderIP));
         pThis->mThisWeak = pThis;
 
         if (delegate) {
@@ -556,6 +556,11 @@ namespace openpeer
 
         ZS_LOG_DEBUG(log("on transport stream write ready"))
 
+        if (isShutdown()) {
+          ZS_LOG_WARNING(Detail, log("already shutdown"))
+          return;
+        }
+
         if (writer == mWireSendStream) {
           get(mSendStreamNotifiedReady) = true;
 
@@ -600,12 +605,13 @@ namespace openpeer
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void FinderConnection::onFinderRelayChannelTCPOutgoingStateChanged(
-                                                                         IFinderConnectionRelayChannelPtr channel,
-                                                                         IFinderConnectionRelayChannel::SessionStates state
-                                                                         )
+      void FinderConnection::onFinderConnectionRelayChannelStateChanged(
+                                                                        IFinderConnectionRelayChannelPtr channel,
+                                                                        IFinderConnectionRelayChannel::SessionStates state
+                                                                        )
       {
         AutoRecursiveLock lock(getLock());
+        ZS_LOG_DEBUG(log("notified master relay channel state changed"))
         step();
       }
 
@@ -638,6 +644,13 @@ namespace openpeer
           ChannelMap::iterator found = mPendingMapRequest.find(mMapRequestChannelNumber);
           if (found != mPendingMapRequest.end()) {
             ZS_LOG_TRACE(log("removed from pending map"))
+
+            if (mSendStreamNotifiedReady) {
+              ChannelPtr channel = (*found).second;
+              ZS_THROW_BAD_STATE_IF(!channel)
+              ZS_LOG_DEBUG(log("notifying channel of write ready"))
+              channel->notifyReceivedWireWriteReady();
+            }
             mPendingMapRequest.erase(found);
           }
         }
@@ -753,6 +766,18 @@ namespace openpeer
 
 
       //-----------------------------------------------------------------------
+      bool FinderConnection::isFinderSessionConnection() const
+      {
+        return !(mOuter.lock());  // if points to outer, this is a relay-only channel
+      }
+
+      //-----------------------------------------------------------------------
+      bool FinderConnection::isFinderRelayConnection() const
+      {
+        return !isFinderSessionConnection();
+      }
+
+      //-----------------------------------------------------------------------
       RecursiveLock &FinderConnection::getLock() const
       {
         FinderConnectionManagerPtr outer = mOuter.lock();
@@ -841,6 +866,8 @@ namespace openpeer
         ZS_LOG_DEBUG(log("step") + getDebugValueString())
 
         if (!stepCleanRemoval()) return;
+        if (!stepConnectWire()) return;
+        if (!stepMasterChannel()) return;
         if (!stepChannelMapRequest()) return;
 
         setState(SessionState_Connected);
@@ -972,6 +999,44 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      bool FinderConnection::stepMasterChannel()
+      {
+        if (isFinderRelayConnection()) {
+          ZS_LOG_DEBUG(log("finder relay connections do not have a master channel"))
+          return true;
+        }
+
+        ChannelMap::iterator found = mChannels.find(0);
+        if (found == mChannels.end()) {
+          ZS_LOG_WARNING(Detail, log("could not find master channel thus must shutdown"))
+          setError(IHTTP::HTTPStatusCode_NotFound, "could not find master channel");
+          cancel();
+          return false;
+        }
+
+        const ChannelPtr &channel = (*found).second;
+
+        WORD error = 0;
+        String reason;
+
+        switch (channel->getState(&error, &reason)) {
+          case IFinderConnectionRelayChannel::SessionState_Pending:   {
+            ZS_LOG_DEBUG(log("waiting for master channel to connect"))
+            return false;
+          }
+          case IFinderConnectionRelayChannel::SessionState_Connected: break;
+          case IFinderConnectionRelayChannel::SessionState_Shutdown:  {
+            ZS_LOG_WARNING(Detail, log("finder channel is shutdown thus finder connection must shutdown"))
+            setError(error, reason);
+            return false;
+          }
+        }
+
+        ZS_LOG_DEBUG(log("master channel connected"))
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
       bool FinderConnection::stepChannelMapRequest()
       {
         if (mMapRequestChannelMonitor) {
@@ -1021,13 +1086,6 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      FinderConnectionPtr FinderConnection::create(IPAddress remoteFinderIP)
-      {
-        //TODO
-        return FinderConnectionPtr();
-      }
-
-      //-----------------------------------------------------------------------
       IFinderConnectionRelayChannelPtr FinderConnection::connect(
                                                                  IFinderConnectionRelayChannelDelegatePtr delegate,
                                                                  const char *localContextID,
@@ -1039,16 +1097,24 @@ namespace openpeer
                                                                  ITransportStreamPtr sendStream
                                                                  )
       {
-        //TODO
-        return IFinderConnectionRelayChannelPtr();
+        ZS_THROW_INVALID_USAGE_IF(isFinderSessionConnection())
+
+        if (isShutdown()) {
+          ZS_LOG_WARNING(Detail, log("already shutdown"))
+          return IFinderConnectionRelayChannelPtr();
+        }
+
+        ChannelNumber channelNumber = static_cast<ChannelNumber>(zsLib::createPUID());
+
+        ChannelPtr channel = Channel::connect(mThisWeak.lock(), delegate, localContextID, remoteContextID, relayDomain, relayAccessToken, relayAccessSecretProof, receiveStream, sendStream, channelNumber);
+
+        mChannels[channelNumber] = channel;
+        mPendingMapRequest[channelNumber] = channel;
+
+        IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
+
+        return channel;
       }
-
-
-
-
-
-
-
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -1060,43 +1126,52 @@ namespace openpeer
 
       FinderConnection::Channel::Channel(
                                          IMessageQueuePtr queue,
+                                         FinderConnectionPtr outer,
                                          IFinderConnectionRelayChannelDelegatePtr delegate,
                                          ITransportStreamPtr receiveStream,
                                          ITransportStreamPtr sendStream,
                                          ChannelNumber channelNumber
                                          ) :
-        MessageQueueAssociator(queue)
+        MessageQueueAssociator(queue),
+        mOuter(outer),
+        mOuterReceiveStream(receiveStream->getWriter()),
+        mOuterSendStream(sendStream->getReader()),
+        mChannelNumber(channelNumber)
       {
-        //TODO
+        ZS_LOG_DEBUG(log("created"))
+        if (delegate) {
+          mDelegate = IFinderConnectionRelayChannelDelegateProxy::createWeak(IStackForInternal::queueDelegate(), delegate);
+        }
       }
 
       //-----------------------------------------------------------------------
       void FinderConnection::Channel::init()
       {
         AutoRecursiveLock lock(getLock());
-        //TODO
       }
 
       //-----------------------------------------------------------------------
       FinderConnection::Channel::~Channel()
       {
-        //TODO
+        ZS_LOG_DEBUG(log("destroyed"))
+        mThisWeak.reset();
+        cancel();
       }
 
       //-----------------------------------------------------------------------
       FinderConnection::ChannelPtr FinderConnection::Channel::convert(IFinderConnectionRelayChannelPtr channel)
       {
-        //TODO
-        return ChannelPtr();
+        return boost::dynamic_pointer_cast<Channel>(channel);
       }
 
       //-----------------------------------------------------------------------
-      String FinderConnection::Channel::toDebugString(IFinderRelayChannelPtr channel, bool includeCommaPrefix)
+      String FinderConnection::Channel::toDebugString(IFinderConnectionRelayChannelPtr channel, bool includeCommaPrefix)
       {
-        //TOOD
-        return String();
-      }
+        if (!channel) return String(includeCommaPrefix ? ", finder connection channel=(null)" : "finder connection channel=(null)");
 
+        ChannelPtr pThis = Channel::convert(channel);
+        return pThis->getDebugValueString(includeCommaPrefix);
+      }
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -1120,22 +1195,44 @@ namespace openpeer
                                                                       ULONG channelNumber
                                                                       )
       {
-        //TODO
-        return ChannelPtr();
+        ZS_THROW_INVALID_ARGUMENT_IF(!outer)
+        ZS_THROW_INVALID_ARGUMENT_IF(!localContextID)
+        ZS_THROW_INVALID_ARGUMENT_IF(!remoteContextID)
+        ZS_THROW_INVALID_ARGUMENT_IF(!relayDomain)
+        ZS_THROW_INVALID_ARGUMENT_IF(!relayAccessToken)
+        ZS_THROW_INVALID_ARGUMENT_IF(!relayAccessSecretProof)
+        ZS_THROW_INVALID_ARGUMENT_IF(!receiveStream)
+        ZS_THROW_INVALID_ARGUMENT_IF(!sendStream)
+
+        ChannelPtr pThis(new Channel(IStackForInternal::queueStack(), outer, delegate, receiveStream, sendStream, channelNumber));
+        pThis->mThisWeak = pThis;
+        pThis->mConnectionInfo.mLocalContextID = String(localContextID);
+        pThis->mConnectionInfo.mRemoteContextID = String(remoteContextID);
+        pThis->mConnectionInfo.mRelayDomain = String(relayDomain);
+        pThis->mConnectionInfo.mRelayAccessToken = String(relayAccessToken);
+        pThis->mConnectionInfo.mRelayAccessSecretProof = String(relayAccessSecretProof);
+        pThis->init();
+        return pThis;
       }
 
       //-----------------------------------------------------------------------
       void FinderConnection::Channel::cancel()
       {
         AutoRecursiveLock lock(getLock());
-        //TODO
+
+        setState(SessionState_Shutdown);
+
+        mDelegate.reset();
+
+        mOuterReceiveStream->cancel();
+        mOuterSendStream->cancel();
       }
 
       //-----------------------------------------------------------------------
       IFinderConnectionRelayChannel::SessionStates FinderConnection::Channel::getState(
-                                                                                                        WORD *outLastErrorCode,
-                                                                                                        String *outLastErrorReason
-                                                                                                        ) const
+                                                                                       WORD *outLastErrorCode,
+                                                                                       String *outLastErrorReason
+                                                                                       ) const
       {
         AutoRecursiveLock lock(getLock());
         //TODO
@@ -1178,12 +1275,12 @@ namespace openpeer
       #pragma mark
 
       FinderConnection::ChannelPtr FinderConnection::Channel::incoming(
-                                                                                                         FinderConnectionPtr outer,
-                                                                                                         IFinderConnectionRelayChannelDelegatePtr delegate,
-                                                                                                         ITransportStreamPtr receiveStream,
-                                                                                                         ITransportStreamPtr sendStream,
-                                                                                                         ULONG channelNumber
-                                                                                                         )
+                                                                       FinderConnectionPtr outer,
+                                                                       IFinderConnectionRelayChannelDelegatePtr delegate,
+                                                                       ITransportStreamPtr receiveStream,
+                                                                       ITransportStreamPtr sendStream,
+                                                                       ULONG channelNumber
+                                                                       )
       {
         //TODO
         return ChannelPtr();
@@ -1203,9 +1300,9 @@ namespace openpeer
 
       //-----------------------------------------------------------------------
       void FinderConnection::Channel::getStreams(
-                                                                  ITransportStreamPtr &outReceiveStream,
-                                                                  ITransportStreamPtr &outSendStream
-                                                                  )
+                                                 ITransportStreamPtr &outReceiveStream,
+                                                 ITransportStreamPtr &outSendStream
+                                                 )
       {
         //TODO
       }

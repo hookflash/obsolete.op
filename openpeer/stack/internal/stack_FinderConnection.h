@@ -96,9 +96,9 @@ namespace openpeer
 
       protected:
         FinderConnection(
-                                          IMessageQueuePtr queue,
-                                          IPAddress remoteFinderIP
-                                          );
+                         IMessageQueuePtr queue,
+                         IPAddress remoteFinderIP
+                         );
 
         FinderConnection(Noop) :
           Noop(true),
@@ -145,14 +145,14 @@ namespace openpeer
 
         virtual PUID getID() const {return mID;}
 
-        virtual IFinderConnectionSubscriptionPtr subscribe(IFinderConnectionDelegatePtr delegate) = 0;
+        virtual IFinderConnectionSubscriptionPtr subscribe(IFinderConnectionDelegatePtr delegate);
 
         virtual void cancel();
 
         virtual SessionStates getState(
                                        WORD *outLastErrorCode = NULL,
                                        String *outLastErrorReason = NULL
-                                       ) const = 0;
+                                       ) const;
 
         virtual IFinderRelayChannelPtr accept(
                                               IFinderRelayChannelDelegatePtr delegate,        // can pass in IFinderRelayChannelDelegatePtr() if not interested in the events
@@ -204,10 +204,11 @@ namespace openpeer
         #pragma mark FinderConnection => IFinderConnectionRelayChannelDelegate
         #pragma mark
 
-        virtual void onFinderRelayChannelTCPOutgoingStateChanged(
-                                                                 IFinderConnectionRelayChannelPtr channel,
-                                                                 IFinderConnectionRelayChannel::SessionStates state
-                                                                 );
+        virtual void onFinderConnectionRelayChannelStateChanged(
+                                                                IFinderConnectionRelayChannelPtr channel,
+                                                                IFinderConnectionRelayChannel::SessionStates state
+                                                                );
+
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark FinderConnection => IMessageMonitorResultDelegate<ChannelMapResult>
@@ -245,6 +246,8 @@ namespace openpeer
         #pragma mark
 
         bool isShutdown() const {return SessionState_Shutdown == mCurrentState;}
+        bool isFinderSessionConnection() const;
+        bool isFinderRelayConnection() const;
 
         RecursiveLock &getLock() const;
         String log(const char *message) const;
@@ -257,9 +260,8 @@ namespace openpeer
         void step();
         bool stepCleanRemoval();
         bool stepConnectWire();
+        bool stepMasterChannel();
         bool stepChannelMapRequest();
-
-        static FinderConnectionPtr create(IPAddress remoteFinderIP);
 
         IFinderConnectionRelayChannelPtr connect(
                                                  IFinderConnectionRelayChannelDelegatePtr delegate,
@@ -294,6 +296,7 @@ namespace openpeer
         protected:
           Channel(
                   IMessageQueuePtr queue,
+                  FinderConnectionPtr outer,
                   IFinderConnectionRelayChannelDelegatePtr delegate,
                   ITransportStreamPtr receiveStream,
                   ITransportStreamPtr sendStream,
@@ -321,7 +324,7 @@ namespace openpeer
           static ChannelPtr convert(IFinderConnectionRelayChannelPtr channel);
 
         protected:
-          static String toDebugString(IFinderRelayChannelPtr channel, bool includeCommaPrefix = true);
+          static String toDebugString(IFinderConnectionRelayChannelPtr channel, bool includeCommaPrefix = true);
 
           //-------------------------------------------------------------------
           #pragma mark
