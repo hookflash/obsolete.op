@@ -406,15 +406,19 @@ namespace openpeer
           RecursiveLock &getLock() const;
           String log(const char *message) const;
 
+          bool isShutdown() const {return SessionState_Shutdown == mCurrentState;}
+
           virtual String getDebugValueString(bool includeCommaPrefix = true) const;
 
           void setState(SessionStates state);
           void setError(WORD errorCode, const char *inReason = NULL);
 
+          void step();
+
         protected:
           AutoPUID mID;
           mutable RecursiveLock mBogusLock;
-          ChannelPtr mThisWeak;
+          ChannelWeakPtr mThisWeak;
 
           FinderConnectionWeakPtr mOuter;
 
@@ -431,6 +435,7 @@ namespace openpeer
           ITransportStreamReaderPtr mOuterSendStream;
 
           AutoBool mWireStreamNotifiedReady;
+          AutoBool mOuterStreamNotifiedReady;
 
           ConnectionInfo mConnectionInfo;
         };
