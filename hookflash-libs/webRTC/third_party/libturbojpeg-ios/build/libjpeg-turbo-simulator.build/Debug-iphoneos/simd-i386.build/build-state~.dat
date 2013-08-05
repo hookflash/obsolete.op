@@ -1,40 +1,0 @@
-Tsimd-i386
-v5
-r1
-cCheck dependencies
-cPhaseScriptExecution "Run Script" /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-simulator.build/Debug-iphoneos/simd-i386.build/Script-420375E416469FCE00899EA2.sh
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/Debug-iphoneos/libsimd-i386.a
-t2
-s0
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-simulator.build/Debug-iphoneos/simd-i386.build/Script-420375E416469FCE00899EA2.sh
-c0000000051681A5E00000000000000A5
-t1365776990
-s165
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/simd-i386/build/libsimd-i386.a
-c00000000000000000000000000000000
-t2
-s0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependencies43725ede5118b741^9aec67de5118b741^---0#1#0#--18"Check dependencies36"6A39EC10-FF57-4162-B3A0-EF710C8CB4EC-
-
-CPhaseScriptExecution "Run Script" /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-simulator.build/Debug-iphoneos/simd-i386.build/Script-420375E416469FCE00899EA2.sh
-s387469790.401652
-e387469794.958167
-r0
-xPhaseScriptExecution
-xRun Script
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-simulator.build/Debug-iphoneos/simd-i386.build/Script-420375E416469FCE00899EA2.sh
-orm -rf "build"
-omkdir -p "build"
-oxcrun cpp -I"../../libjpeg" jsimdcfg.inc.h | egrep "^[\;%]|^\ %" | sed 's%_cpp_protection_%%' | sed 's@% define@%define@g' >"build/jsimdcfg.inc"
-o/usr/local/bin/nasm -fmacho -DMACHO -DPIC -I. -I"build/" -o "build/jsimdcpu.o" "jsimdcpu.asm"	
-o/bin/sh: /usr/local/bin/nasm: No such file or directory
-omake: *** [jsimdcpu.o] Error 127
-ocp: /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/simd-i386/build/libsimd-i386.a: No such file or directory
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection36"Run custom shell script 'Run Script'ecfb68de5118b741^b361f5e25118b741^-518"rm -rf "build"mkdir -p "build"xcrun cpp -I"../../libjpeg" jsimdcfg.inc.h | egrep "^[\;%]|^\ %" | sed 's%_cpp_protection_%%' | sed 's@% define@%define@g' >"build/jsimdcfg.inc"/usr/local/bin/nasm -fmacho -DMACHO -DPIC -I. -I"build/" -o "build/jsimdcpu.o" "jsimdcpu.asm"	/bin/sh: /usr/local/bin/nasm: No such file or directorymake: *** [jsimdcpu.o] Error 127cp: /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/simd-i386/build/libsimd-i386.a: No such file or directory7(21%IDEActivityLogMessage2@15"rm -rf "build"-387469790#0#15#-0#-----2@17"mkdir -p "build"-387469790#15#17#-0#-----2@145"xcrun cpp -I"../../libjpeg" jsimdcfg.inc.h | egrep "^[\;%]|^\ %" | sed 's%_cpp_protection_%%' | sed 's@% define@%define@g' >"build/jsimdcfg.inc"-387469790#32#145#-0#-----2@95"/usr/local/bin/nasm -fmacho -DMACHO -DPIC -I. -I"build/" -o "build/jsimdcpu.o" "jsimdcpu.asm"	-387469794#177#95#-0#-----2@55"/bin/sh: /usr/local/bin/nasm: No such file or directory-387469794#272#56#-2#--29"Shell Script Invocation Error--2@33"make: *** [jsimdcpu.o] Error 127-387469794#328#33#-0#-----2@156"Cp: /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/simd-i386/build/libsimd-i386.a: No such file or directory-387469794#361#157#-2#--29"Shell Script Invocation Error--0#0#0#--424"PhaseScriptExecution "Run Script" build/libjpeg-turbo-simulator.build/Debug-iphoneos/simd-i386.build/Script-420375E416469FCE00899EA2.sh    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios    /bin/sh -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-simulator.build/Debug-iphoneos/simd-i386.build/Script-420375E416469FCE00899EA2.sh36"D81CED89-25CB-4F16-9321-8B671FBC420E-
-
