@@ -85,6 +85,8 @@ namespace openpeer
         IPAddress mIPAddress;
         DWORD     mPriority;
         WORD      mLocalPreference;  // fill with "0" if unknown
+        String    mUsernameFrag;
+        String    mPassword;
         String    mProtocol;
 
         IPAddress mRelatedIP;         // if server reflexive, peer reflexive or relayed, the related base IP

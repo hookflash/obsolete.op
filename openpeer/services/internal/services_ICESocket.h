@@ -69,6 +69,7 @@ namespace openpeer
         virtual RecursiveLock &getLock() const = 0;
 
         virtual bool sendTo(
+                            const IPAddress &viaLocalIP,
                             IICESocket::Types viaTransport,
                             const IPAddress &destination,
                             const BYTE *buffer,
@@ -101,6 +102,7 @@ namespace openpeer
       {
       public:
         friend interaction IICESocketFactory;
+        friend interaction IICESocket;
 
         typedef boost::shared_array<BYTE> RecycledPacketBuffer;
         typedef std::list<RecycledPacketBuffer> RecycledPacketBufferList;
@@ -122,7 +124,11 @@ namespace openpeer
           Candidate         mReflexive;
           Candidate         mRelay;
 
-          LocalSocket(ULONG nextLocalPreference);
+          LocalSocket(
+                      ULONG nextLocalPreference,
+                      const String &usernameFrag,
+                      const String &password
+                      );
         };
 
         typedef boost::shared_ptr<LocalSocket> LocalSocketPtr;
@@ -130,6 +136,8 @@ namespace openpeer
 
         typedef IPAddress LocalIP;
         typedef std::map<LocalIP, LocalSocketPtr> SocketLocalIPMap;
+        typedef std::map<ITURNSocketPtr, LocalSocketPtr> SocketTURNMap;
+        typedef std::map<ISTUNDiscoveryPtr, LocalSocketPtr> SocketSTUNMap;
         typedef std::map<ISocketPtr, LocalSocketPtr> SocketMap;
 
       protected:
@@ -161,6 +169,8 @@ namespace openpeer
         #pragma mark
         #pragma mark ICESocket => IICESocket
         #pragma mark
+
+        static String toDebugString(IICESocketPtr socket, bool includeCommaPrefix = true);
 
         static ICESocketPtr create(
                                    IMessageQueuePtr queue,
@@ -204,7 +214,6 @@ namespace openpeer
 
         virtual void wakeup(Duration minimumTimeCandidatesMustRemainValidWhileNotUsed = Seconds(60*10));
 
-        virtual void setFoundation(IICESocketPtr foundationSocket);
         virtual void getLocalCandidates(CandidateList &outCandidates);
 
         virtual IICESocketSessionPtr createSessionFromRemoteCandidates(
@@ -224,6 +233,7 @@ namespace openpeer
         virtual RecursiveLock &getLock() const {return mLock;}
 
         virtual bool sendTo(
+                            const IPAddress &viaLocalIP,
                             IICESocket::Types viaTransport,
                             const IPAddress &destination,
                             const BYTE *buffer,
@@ -306,39 +316,30 @@ namespace openpeer
         virtual String getDebugValueString(bool includeCommaPrefix = true) const;
 
         void cancel();
+        
         void step();
         bool stepBind();
-
-
-        void step2();
-
+        bool stepSTUN();
+        bool stepTURN();
+        bool stepCandidates();
 
         void setState(ICESocketStates state);
         void setError(WORD errorCode, const char *inReason = NULL);
 
-        bool bindUDP();
-
         bool getLocalIPs(IPAddressList &outIPs);
-
-        IPAddress getReflectedIP();
-        IPAddress getRelayedIP();
+        void clearTURN(ITURNSocketPtr turn);
+        void clearSTUN(ISTUNDiscoveryPtr stun);
 
         //---------------------------------------------------------------------
         // NOTE:  Do NOT call this method while in a lock because it must
         //        deliver data to delegates synchronously.
         void internalReceivedData(
+                                  const IPAddress &viaLocalIP,
                                   IICESocket::Types viaTransport,
                                   const IPAddress &source,
                                   const BYTE *buffer,
                                   ULONG bufferLengthInBytes
                                   );
-
-        bool hasReflectedCandidate() {return clearReflectedCandidates(true);}
-        bool hasRelayedCandidate() {return clearRelayedCandidates(true);}
-
-        bool clearReflectedCandidates(bool checkOnly = false);
-        bool clearRelayedCandidates(bool checkOnly = false);
-        void makeCandidates();
 
         void getBuffer(RecycledPacketBuffer &outBuffer);
         void recycleBuffer(RecycledPacketBuffer &buffer);
@@ -365,10 +366,10 @@ namespace openpeer
         #pragma mark ICESocket (internal)
         #pragma mark
 
-        AutoPUID mID;
+        AutoPUID              mID;
         mutable RecursiveLock mLock;
-        ICESocketWeakPtr mThisWeak;
-        ICESocketPtr mGracefulShutdownReference;
+        ICESocketWeakPtr      mThisWeak;
+        ICESocketPtr          mGracefulShutdownReference;
 
         IICESocketDelegateSubscriptions mSubscriptions;
         IICESocketSubscriptionPtr mDefaultSubscription;
@@ -386,6 +387,8 @@ namespace openpeer
         ULONG               mNextLocalPreference;
 
         SocketLocalIPMap    mSocketLocalIPs;
+        SocketTURNMap       mSocketTURNs;
+        SocketSTUNMap       mSocketSTUNs;
         SocketMap           mSockets;
 
         TimerPtr            mRebindTimer;
@@ -411,6 +414,9 @@ namespace openpeer
         QuickRouteMap       mRoutes;
 
         RecycledPacketBufferList mRecycledBuffers;
+
+        AutoBool            mNotifiedCandidateChanged;
+        DWORD               mLastCandidateCRC;
       };
 
       //-----------------------------------------------------------------------
@@ -457,7 +463,7 @@ namespace openpeer
 ZS_DECLARE_PROXY_BEGIN(openpeer::services::internal::IICESocketForICESocketSession)
 ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(getSocket, openpeer::services::IICESocketPtr)
 ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(getLock, RecursiveLock &)
-ZS_DECLARE_PROXY_METHOD_SYNC_RETURN_5(sendTo, bool, openpeer::services::IICESocket::Types, const IPAddress &, const BYTE *, ULONG, bool)
+ZS_DECLARE_PROXY_METHOD_SYNC_RETURN_6(sendTo, bool, const IPAddress &, openpeer::services::IICESocket::Types, const IPAddress &, const BYTE *, ULONG, bool)
 ZS_DECLARE_PROXY_METHOD_1(onICESocketSessionClosed, PUID)
 ZS_DECLARE_PROXY_METHOD_SYNC_2(addRoute, openpeer::services::internal::ICESocketSessionPtr, const IPAddress &)
 ZS_DECLARE_PROXY_METHOD_SYNC_1(removeRoute, openpeer::services::internal::ICESocketSessionPtr)

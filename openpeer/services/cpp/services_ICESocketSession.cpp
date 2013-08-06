@@ -545,6 +545,7 @@ namespace openpeer
 
       //-----------------------------------------------------------------------
       bool ICESocketSession::handleSTUNPacket(
+                                              const IPAddress &viaLocalIP,
                                               IICESocket::Types viaTransport,
                                               const IPAddress &source,
                                               STUNPacketPtr stun,
@@ -858,6 +859,7 @@ namespace openpeer
 
       //-----------------------------------------------------------------------
       bool ICESocketSession::handlePacket(
+                                          const IPAddress &viaLocalIP,
                                           IICESocket::Types viaTransport,
                                           const IPAddress &source,
                                           const BYTE *packet,
@@ -921,7 +923,7 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      void ICESocketSession::notifyLocalWriteReady()
+      void ICESocketSession::notifyLocalWriteReady(const IPAddress &viaLocalIP)
       {
         AutoRecursiveLock lock(getLock());
         if (isShutdown()) return;
@@ -954,7 +956,7 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      void ICESocketSession::notifyRelayWriteReady()
+      void ICESocketSession::notifyRelayWriteReady(const IPAddress &viaLocalIP)
       {
         AutoRecursiveLock lock(getLock());
         if (isShutdown()) return;

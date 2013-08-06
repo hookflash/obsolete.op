@@ -51,6 +51,7 @@ namespace openpeer
       using zsLib::AutoBool;
       using zsLib::AutoPUID;
       using zsLib::AutoWORD;
+      using zsLib::AutoDWORD;
       using zsLib::Noop;
       using zsLib::AutoRecursiveLock;
       using zsLib::CSTR;

@@ -81,6 +81,7 @@ namespace openpeer
         virtual void timeout() = 0;
 
         virtual bool handleSTUNPacket(
+                                      const IPAddress &viaLocalIP,
                                       IICESocket::Types viaTransport,
                                       const IPAddress &source,
                                       STUNPacketPtr stun,
@@ -88,14 +89,15 @@ namespace openpeer
                                       const String &remoteUsernameFrag
                                       ) = 0;
         virtual bool handlePacket(
+                                  const IPAddress &viaLocalIP,
                                   IICESocket::Types viaTransport,
                                   const IPAddress &source,
                                   const BYTE *packet,
                                   ULONG packetLengthInBytes
                                   ) = 0;
 
-        virtual void notifyLocalWriteReady() = 0;
-        virtual void notifyRelayWriteReady() = 0;
+        virtual void notifyLocalWriteReady(const IPAddress &viaLocalIP) = 0;
+        virtual void notifyRelayWriteReady(const IPAddress &viaLocalIP) = 0;
       };
 
       //-----------------------------------------------------------------------
@@ -233,8 +235,8 @@ namespace openpeer
                                   ULONG packetLengthInBytes
                                   );
 
-        virtual void notifyLocalWriteReady();
-        virtual void notifyRelayWriteReady();
+        virtual void notifyLocalWriteReady(const IPAddress &viaLocalIP);
+        virtual void notifyRelayWriteReady(const IPAddress &viaLocalIP);
 
         //---------------------------------------------------------------------
         #pragma mark
