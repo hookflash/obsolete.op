@@ -98,6 +98,7 @@ namespace openpeer
     interaction IICESocketSubscription;
     typedef boost::shared_ptr<IICESocketSubscription> IICESocketSubscriptionPtr;
     typedef boost::weak_ptr<IICESocketSubscription> IICESocketSubscriptionWeakPtr;
+    typedef zsLib::ProxySubscriptions<IICESocketDelegate, IICESocketSubscription> IICESocketDelegateSubscriptions;
 
     interaction IICESocketSession;
     typedef boost::shared_ptr<IICESocketSession> IICESocketSessionPtr;

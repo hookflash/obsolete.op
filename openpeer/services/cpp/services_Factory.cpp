@@ -203,10 +203,11 @@ namespace openpeer
                                              const char *turnServerPassword,
                                              const char *stunServer,
                                              WORD port,
-                                             bool firstWORDInAnyPacketWillNotConflictWithTURNChannels
+                                             bool firstWORDInAnyPacketWillNotConflictWithTURNChannels,
+                                             IICESocketPtr foundationSocket
                                              )
       {
-        return internal::ICESocket::create(queue, delegate, turnServer, turnServerUsername, turnServerPassword, stunServer, port, firstWORDInAnyPacketWillNotConflictWithTURNChannels);
+        return internal::ICESocket::create(queue, delegate, turnServer, turnServerUsername, turnServerPassword, stunServer, port, firstWORDInAnyPacketWillNotConflictWithTURNChannels, foundationSocket);
       }
 
       //-----------------------------------------------------------------------
@@ -219,10 +220,11 @@ namespace openpeer
                                              const char *turnServerPassword,
                                              IDNS::SRVResultPtr srvSTUN,
                                              WORD port,
-                                             bool firstWORDInAnyPacketWillNotConflictWithTURNChannels
+                                             bool firstWORDInAnyPacketWillNotConflictWithTURNChannels,
+                                             IICESocketPtr foundationSocket
                                              )
       {
-        return internal::ICESocket::create(queue, delegate, srvTURNUDP, srvTURNTCP, turnServerUsername, turnServerPassword, srvSTUN, port, firstWORDInAnyPacketWillNotConflictWithTURNChannels);
+        return internal::ICESocket::create(queue, delegate, srvTURNUDP, srvTURNTCP, turnServerUsername, turnServerPassword, srvSTUN, port, firstWORDInAnyPacketWillNotConflictWithTURNChannels, foundationSocket);
       }
 
       //-----------------------------------------------------------------------

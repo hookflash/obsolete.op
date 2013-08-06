@@ -102,22 +102,35 @@ namespace openpeer
       public:
         friend interaction IICESocketFactory;
 
-        class Subscription;
-        typedef boost::shared_ptr<Subscription> SubscriptionPtr;
-        typedef boost::weak_ptr<Subscription> SubscriptionWeakPtr;
-
-        friend class Subscription;
-
         typedef boost::shared_array<BYTE> RecycledPacketBuffer;
         typedef std::list<RecycledPacketBuffer> RecycledPacketBufferList;
 
         typedef std::list<IPAddress> IPAddressList;
 
-        typedef std::map<PUID, IICESocketDelegatePtr> DelegateMap;
-
         typedef std::map<PUID, ICESocketSessionPtr> ICESocketSessionMap;
 
         typedef std::map<IPAddress, ICESocketSessionPtr> QuickRouteMap;
+
+        struct LocalSocket
+        {
+          AutoPUID          mID;
+          SocketPtr         mSocket;
+          ISTUNDiscoveryPtr mSTUNDiscovery;
+          ITURNSocketPtr    mTURNSocket;
+
+          Candidate         mLocal;
+          Candidate         mReflexive;
+          Candidate         mRelay;
+
+          LocalSocket(ULONG nextLocalPreference);
+        };
+
+        typedef boost::shared_ptr<LocalSocket> LocalSocketPtr;
+        typedef boost::weak_ptr<LocalSocket> LocalSocketWeakPtr;
+
+        typedef IPAddress LocalIP;
+        typedef std::map<LocalIP, LocalSocketPtr> SocketLocalIPMap;
+        typedef std::map<ISocketPtr, LocalSocketPtr> SocketMap;
 
       protected:
         ICESocket(
@@ -131,7 +144,8 @@ namespace openpeer
                   bool firstWORDInAnyPacketWillNotConflictWithTURNChannels,
                   IDNS::SRVResultPtr srvSTUN,
                   const char *stunServer,
-                  WORD port
+                  WORD port,
+                  IICESocketPtr foundationSocket
                   );
         ICESocket(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {}
 
@@ -156,7 +170,8 @@ namespace openpeer
                                    const char *turnServerPassword,
                                    const char *stunServer,
                                    WORD port = 0,
-                                   bool firstWORDInAnyPacketWillNotConflictWithTURNChannels = false
+                                   bool firstWORDInAnyPacketWillNotConflictWithTURNChannels = false,
+                                   IICESocketPtr foundationSocket = IICESocketPtr()
                                    );
 
         static ICESocketPtr create(
@@ -168,14 +183,22 @@ namespace openpeer
                                    const char *turnServerPassword,
                                    IDNS::SRVResultPtr srvSTUN,
                                    WORD port = 0,
-                                   bool firstWORDInAnyPacketWillNotConflictWithTURNChannels = false
+                                   bool firstWORDInAnyPacketWillNotConflictWithTURNChannels = false,
+                                   IICESocketPtr foundationSocket = IICESocketPtr()
                                    );
 
         virtual PUID getID() const {return mID;}
 
-        virtual ICESocketStates getState() const;
-
         virtual IICESocketSubscriptionPtr subscribe(IICESocketDelegatePtr delegate);
+
+        virtual ICESocketStates getState(
+                                         WORD *outLastErrorCode,
+                                         String *outLastErrorReason
+                                         ) const;
+
+        virtual String getUsernameFrag() const;
+
+        virtual String getPassword() const;
 
         virtual void shutdown();
 
@@ -269,13 +292,6 @@ namespace openpeer
 
         virtual void onTimer(TimerPtr timer);
 
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark ICESocket => friend Subscription
-        #pragma mark
-
-        void cancelSubscription(Subscription &subscription);
-
       protected:
         //---------------------------------------------------------------------
         #pragma mark
@@ -287,16 +303,23 @@ namespace openpeer
         bool isShuttingDown() const {return ICESocketState_ShuttingDown == mCurrentState;}
         bool isShutdown() const {return ICESocketState_Shutdown == mCurrentState;}
 
+        virtual String getDebugValueString(bool includeCommaPrefix = true) const;
+
         void cancel();
         void step();
+        bool stepBind();
+
+
+        void step2();
+
 
         void setState(ICESocketStates state);
+        void setError(WORD errorCode, const char *inReason = NULL);
 
         bool bindUDP();
 
-        bool gatherLocalIPs();
+        bool getLocalIPs(IPAddressList &outIPs);
 
-        void getLocalIPs(IPAddressList &outList);
         IPAddress getReflectedIP();
         IPAddress getRelayedIP();
 
@@ -323,25 +346,8 @@ namespace openpeer
       public:
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark ICESocket::Subscription
+        #pragma mark ICESocket::AutoRecycleBuffer
         #pragma mark
-
-        class Subscription : public IICESocketSubscription
-        {
-          Subscription(ICESocketPtr outer);
-
-        public:
-          ~Subscription();
-
-          static SubscriptionPtr create(ICESocketPtr outer);
-
-          virtual PUID getID() const {return mID;}
-
-          virtual void cancel();
-
-          PUID mID;
-          ICESocketWeakPtr mOuter;
-        };
 
         class AutoRecycleBuffer
         {
@@ -359,27 +365,35 @@ namespace openpeer
         #pragma mark ICESocket (internal)
         #pragma mark
 
+        AutoPUID mID;
         mutable RecursiveLock mLock;
         ICESocketWeakPtr mThisWeak;
         ICESocketPtr mGracefulShutdownReference;
 
-        PUID mID;
-        ICESocketStates mCurrentState;
+        IICESocketDelegateSubscriptions mSubscriptions;
+        IICESocketSubscriptionPtr mDefaultSubscription;
 
-        ICESocketPtr mFoundation;
+        ICESocketStates     mCurrentState;
+        AutoWORD            mLastError;
+        String              mLastErrorReason;
 
-        DelegateMap mDelegates;
+        ICESocketPtr        mFoundation;
 
-        WORD         mBindPort;
-        SocketPtr    mUDPSocket;
+        WORD                mBindPort;
+        String              mUsernameFrag;
+        String              mPassword;
 
-        TimerPtr mRebindTimer;
-        Time mRebindAttemptStartTime;
-        Duration mMaxRebindAttemptDuration;
+        ULONG               mNextLocalPreference;
 
-        bool mMonitoringWriteReady;
+        SocketLocalIPMap    mSocketLocalIPs;
+        SocketMap           mSockets;
 
-        ITURNSocketPtr      mTURNSocket;
+        TimerPtr            mRebindTimer;
+        Time                mRebindAttemptStartTime;
+        AutoBool            mRebindCheckNow;
+
+        bool                mMonitoringWriteReady;
+
         IDNS::SRVResultPtr  mTURNSRVUDPResult;
         IDNS::SRVResultPtr  mTURNSRVTCPResult;
         String              mTURNServer;
@@ -391,17 +405,10 @@ namespace openpeer
 
         IDNS::SRVResultPtr  mSTUNSRVResult;
         String              mSTUNServer;
-        ISTUNDiscoveryPtr   mSTUNDiscovery;
-
-        IPAddressList       mLocalIPs;
-        CandidateList       mLocalCandidates;
-
-        String              mUsernameFrag;
-        String              mPassword;
 
         ICESocketSessionMap mSessions;
 
-        QuickRouteMap mRoutes;
+        QuickRouteMap       mRoutes;
 
         RecycledPacketBufferList mRecycledBuffers;
       };
@@ -426,7 +433,8 @@ namespace openpeer
                                     const char *turnServerPassword,
                                     const char *stunServer,
                                     WORD port = 0,
-                                    bool firstWORDInAnyPacketWillNotConflictWithTURNChannels = false
+                                    bool firstWORDInAnyPacketWillNotConflictWithTURNChannels = false,
+                                    IICESocketPtr foundationSocket = IICESocketPtr()
                                     );
 
         virtual ICESocketPtr create(
@@ -438,7 +446,8 @@ namespace openpeer
                                     const char *turnServerPassword,
                                     IDNS::SRVResultPtr srvSTUN,
                                     WORD port = 0,
-                                    bool firstWORDInAnyPacketWillNotConflictWithTURNChannels = false
+                                    bool firstWORDInAnyPacketWillNotConflictWithTURNChannels = false,
+                                    IICESocketPtr foundationSocket = IICESocketPtr()
                                     );
       };
     }
