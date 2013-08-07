@@ -32,6 +32,7 @@
 #include <openpeer/core/internal/core_Identity.h>
 #include <openpeer/core/internal/core_Stack.h>
 #include <openpeer/core/internal/core_Account.h>
+#include <openpeer/core/internal/core_Helper.h>
 
 #include <openpeer/stack/IBootstrappedNetwork.h>
 #include <openpeer/stack/IHelper.h>
@@ -48,6 +49,7 @@ namespace openpeer
   namespace core
   {
     using stack::IServiceIdentitySession;
+    using stack::message::IdentityInfo;
 
     namespace internal
     {
@@ -314,6 +316,15 @@ namespace openpeer
       String Identity::getIdentityProviderDomain() const
       {
         return mSession->getIdentityProviderDomain();
+      }
+
+      //-----------------------------------------------------------------------
+      void Identity::getIdentityContact(IdentityContact &outIdentityContact) const
+      {
+        IdentityInfo identityInfo;
+        mSession->getIdentityInfo(identityInfo);
+
+        Helper::convert(identityInfo, outIdentityContact);
       }
 
       //-----------------------------------------------------------------------
