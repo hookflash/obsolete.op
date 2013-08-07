@@ -411,13 +411,18 @@ namespace openpeer
       //-----------------------------------------------------------------------
       IICESocketSessionPtr ICESocket::createSessionFromRemoteCandidates(
                                                                         IICESocketSessionDelegatePtr delegate,
+                                                                        const char *remoteUsernameFrag,
+                                                                        const char *remotePassword,
                                                                         const CandidateList &remoteCandidates,
                                                                         ICEControls control
                                                                         )
       {
+        ZS_THROW_INVALID_ARGUMENT_IF(!remoteUsernameFrag)
+        ZS_THROW_INVALID_ARGUMENT_IF(!remotePassword)
+
         AutoRecursiveLock lock(mLock);
 
-        ICESocketSessionPtr session = IICESocketSessionForICESocket::create(getAssociatedMessageQueue(), delegate, mThisWeak.lock(), control);
+        ICESocketSessionPtr session = IICESocketSessionForICESocket::create(getAssociatedMessageQueue(), delegate, mThisWeak.lock(), remoteUsernameFrag, remotePassword, control);
         ZS_THROW_BAD_STATE_IF(!session)
 
         if ((isShuttingDown()) ||

@@ -246,10 +246,12 @@ namespace openpeer
                                                            IMessageQueuePtr queue,
                                                            IICESocketSessionDelegatePtr delegate,
                                                            ICESocketPtr socket,
+                                                           const char *remoteUsernameFrag,
+                                                           const char *remotePassword,
                                                            ICEControls control
                                                            )
       {
-        return internal::ICESocketSession::create(queue, delegate, socket, control);
+        return internal::ICESocketSession::create(queue, delegate, socket, remoteUsernameFrag, remotePassword, control);
       }
       
       //-----------------------------------------------------------------------

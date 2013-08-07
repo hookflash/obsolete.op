@@ -110,6 +110,34 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      static IPAddress getViaLocalIP(const ICESocket::Candidate &candidate)
+      {
+        switch (candidate.mType) {
+          case IICESocket::Type_Unknown:          break;
+          case IICESocket::Type_Local:            return candidate.mIPAddress;
+          case IICESocket::Type_ServerReflexive:
+          case IICESocket::Type_PeerReflexive:
+          case IICESocket::Type_Relayed:          return candidate.mRelatedIP;
+        }
+        return (candidate.mRelatedIP.isEmpty() ? candidate.mIPAddress : candidate.mRelatedIP);
+      }
+
+      //-----------------------------------------------------------------------
+      static bool isCandidateMatch(
+                                   const ICESocketSession::CandidatePairPtr &pair,
+                                   const IPAddress &viaLocalIP,
+                                   IICESocket::Types viaTransport,
+                                   const IPAddress &source
+                                   )
+      {
+        if (!pair) return false;
+        if (pair->mRemote.mIPAddress != source) return false;
+        if (normalize(pair->mLocal.mType) != viaTransport) return false;
+        if (viaLocalIP != getViaLocalIP(pair->mLocal)) return false;
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -122,10 +150,12 @@ namespace openpeer
                                                                 IMessageQueuePtr queue,
                                                                 IICESocketSessionDelegatePtr delegate,
                                                                 ICESocketPtr socket,
+                                                                const char *remoteUsernameFrag,
+                                                                const char *remotePassword,
                                                                 ICEControls control
                                                                 )
       {
-        return IICESocketSessionFactory::singleton().create(queue, delegate, socket, control);
+        return IICESocketSessionFactory::singleton().create(queue, delegate, socket, remoteUsernameFrag, remotePassword, control);
       }
 
       //-----------------------------------------------------------------------
@@ -140,12 +170,6 @@ namespace openpeer
       ICESocketSession::CandidatePairPtr ICESocketSession::CandidatePair::create()
       {
         CandidatePairPtr pThis(new CandidatePair);
-        pThis->mLocal.mType = ICESocket::Type_Unknown;
-        pThis->mLocal.mPriority = 0;
-        pThis->mLocal.mLocalPreference = 0;
-        pThis->mRemote.mType = ICESocket::Type_Unknown;
-        pThis->mRemote.mPriority = 0;
-        pThis->mRemote.mLocalPreference = 0;
         pThis->mReceivedRequest = false;
         pThis->mReceivedResponse = false;
         pThis->mFailed = false;
@@ -177,24 +201,27 @@ namespace openpeer
                                          IMessageQueuePtr queue,
                                          IICESocketSessionDelegatePtr delegate,
                                          ICESocketPtr socket,
+                                         const char *remoteUsernameFrag,
+                                         const char *remotePassword,
                                          ICEControls control
                                          ) :
         MessageQueueAssociator(queue),
-        mID(zsLib::createPUID()),
-        mCurrentState(ICESocketSessionState_Pending),
-        mShutdownReason(ICESocketSessionShutdownReason_None),
-        mDelegate(IICESocketSessionDelegateProxy::createWeak(queue, delegate)),
-        mInformedWriteReady(false),
         mICESocketWeak(socket),
+        mCurrentState(ICESocketSessionState_Pending),
+        mRemoteUsernameFrag(remoteUsernameFrag),
+        mRemotePassword(remotePassword),
+        mDelegate(IICESocketSessionDelegateProxy::createWeak(queue, delegate)),
         mControl(control),
         mConflictResolver(randomQWORD()),
-        mStartedSearchAt(zsLib::now()),
         mLastSentData(zsLib::now()),
         mLastActivity(zsLib::now()),
         mLastReceivedDataOrSTUN(zsLib::now()),
         mKeepAliveDuration(Seconds(OPENPEER_SERVICES_ICESOCKETSESSION_DEFAULT_KEEPALIVE_INDICATION_TIME_IN_SECONDS))
       {
         ZS_LOG_BASIC(log("created"))
+
+        mLocalUsernameFrag = getSocket()->getUsernameFrag();
+        mLocalPassword = getSocket()->getPassword();
       }
 
       //-----------------------------------------------------------------------
@@ -221,10 +248,12 @@ namespace openpeer
                                                    IMessageQueuePtr queue,
                                                    IICESocketSessionDelegatePtr delegate,
                                                    ICESocketPtr socket,
+                                                   const char *remoteUsernameFrag,
+                                                   const char *remotePassword,
                                                    ICEControls control
                                                    )
       {
-        ICESocketSessionPtr pThis(new ICESocketSession(queue, delegate, socket, control));
+        ICESocketSessionPtr pThis(new ICESocketSession(queue, delegate, socket, remoteUsernameFrag, remotePassword, control));
         pThis->mThisWeak = pThis;
         pThis->init();
         return pThis;
@@ -247,17 +276,15 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      ICESocketSession::ICESocketSessionStates ICESocketSession::getState() const
+      ICESocketSession::ICESocketSessionStates ICESocketSession::getState(
+                                                                          WORD *outLastErrorCode,
+                                                                          String *outLastErrorReason
+                                                                          ) const
       {
         AutoRecursiveLock lock(getLock());
+        if (outLastErrorCode) *outLastErrorCode = mLastError;
+        if (outLastErrorReason) *outLastErrorReason = mLastErrorReason;
         return mCurrentState;
-      }
-
-      //-----------------------------------------------------------------------
-      ICESocketSession::ICESocketSessionShutdownReasons ICESocketSession::getShutdownReason() const
-      {
-        AutoRecursiveLock lock(getLock());
-        return mShutdownReason;
       }
 
       //-----------------------------------------------------------------------
@@ -265,8 +292,6 @@ namespace openpeer
       {
         ZS_LOG_DEBUG(log("close requested"))
         AutoRecursiveLock lock(getLock());
-
-        setShutdownReason(ICESocketSessionShutdownReason_Closed);
         cancel();
       }
 
@@ -285,8 +310,13 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void ICESocketSession::updateRemoteCandidates(const CandidateList &remoteCandidates)
       {
-        ZS_LOG_DEBUG(log("updating remote candidates"))
+        ZS_LOG_DEBUG(log("updating remote candidates") + ", size=" + string(remoteCandidates.size()))
         AutoRecursiveLock lock(getLock());
+
+        mUpdatedRemoteCandidates = remoteCandidates;
+        step();
+
+#if 0
 
         // remember the remote candidates for later (as long as not doing a "reset" of the candidates)
         if (&mRemoteCandidates != &remoteCandidates)
@@ -424,6 +454,7 @@ namespace openpeer
         }
 
         step();
+#endif //0
       }
 
       //-----------------------------------------------------------------------
@@ -479,7 +510,7 @@ namespace openpeer
           return false;
         }
 
-        mInformedWriteReady = false;  // if this method was called in response to a write-ready event, be sure to clear the write-ready informed flag so future events will fire
+        get(mInformedWriteReady) = false;  // if this method was called in response to a write-ready event, be sure to clear the write-ready informed flag so future events will fire
 
         if (mNominateRequester) {
           ZS_LOG_WARNING(Detail, log("not allowed to send data during the ICE nomination process"))
@@ -491,7 +522,7 @@ namespace openpeer
         }
 
         mLastSentData = zsLib::now();
-        return sendTo(mNominated->mLocal.mType, mNominated->mRemote.mIPAddress, packet, packetLengthInBytes, true);
+        return sendTo(getViaLocalIP(mNominated->mLocal), mNominated->mLocal.mType, mNominated->mRemote.mIPAddress, packet, packetLengthInBytes, true);
       }
 
       //-----------------------------------------------------------------------
@@ -534,16 +565,6 @@ namespace openpeer
       #pragma mark
 
       //-----------------------------------------------------------------------
-      void ICESocketSession::timeout()
-      {
-        ZS_LOG_DEBUG(log("close requested"))
-        AutoRecursiveLock lock(getLock());
-
-        setShutdownReason(ICESocketSessionShutdownReason_Timeout);
-        cancel();
-      }
-
-      //-----------------------------------------------------------------------
       bool ICESocketSession::handleSTUNPacket(
                                               const IPAddress &viaLocalIP,
                                               IICESocket::Types viaTransport,
@@ -553,11 +574,16 @@ namespace openpeer
                                               const String &remoteUsernameFrag
                                               )
       {
+        ZS_THROW_INVALID_ARGUMENT_IF(!stun)
+
+        ZS_LOG_DEBUG(log("handle stun packet") + ", via local IP=" + string(viaLocalIP) + ", via transport" + IICESocket::toString(viaTransport) + ", source=" + string(source) + ", local username frag=" + localUsernameFrag + ", remote username frag=" + remoteUsernameFrag)
+
         IICESocketSessionDelegatePtr delegate;
         {
           AutoRecursiveLock lock(getLock());
           delegate = mDelegate;
         }
+
         if (!delegate) {
           ZS_LOG_WARNING(Debug, log("unable to handle STUN packet as delegate is gone"))
           return false;
@@ -569,7 +595,7 @@ namespace openpeer
             ZS_LOG_DETAIL(log("received incoming STUN which is not ICE related thus handing via delgate"))
             return delegate->handleICESocketSessionReceivedSTUNPacket(mThisWeak.lock(), stun, localUsernameFrag, remoteUsernameFrag);
           } catch(IICESocketSessionDelegateProxy::Exceptions::DelegateGone &) {
-            setShutdownReason(ICESocketSessionShutdownReason_DelegateGone);
+            setError(ICESocketSessionShutdownReason_DelegateGone, "delegate gone");
             cancel();
             return false;
           }
@@ -577,31 +603,231 @@ namespace openpeer
         }
 
         AutoRecursiveLock lock(getLock());
-        ZS_THROW_INVALID_USAGE_IF(!stun)
 
-        if (!mNominateRequester) {
-          if (mNominated) {
-            ZS_LOG_DEBUG(log("expecting nominated pair is sending a bind request/indication"))
+        if (localUsernameFrag != mLocalUsernameFrag) {
+          ZS_LOG_DEBUG(log("local username frag does not match") + ", expecting=" + mLocalUsernameFrag + ", received=" + localUsernameFrag)
+          return false;
+        }
 
-            if ((mNominated->mLocal.mUsernameFrag != localUsernameFrag) ||
-                (mNominated->mRemote.mUsernameFrag != remoteUsernameFrag) ||
-                (normalize(mNominated->mLocal.mType) != normalize(viaTransport)))
+        if (remoteUsernameFrag != mRemoteUsernameFrag) {
+          ZS_LOG_DEBUG(log("remote username frag does not match") + ", expecting=" + mRemoteUsernameFrag + ", received=" + remoteUsernameFrag)
+          return false;
+        }
+
+
+        CandidatePairPtr found;
+
+        if (isCandidateMatch(mNominated, viaLocalIP, viaTransport, source)) {
+          found = mNominated;
+        }
+
+        for (CandidatePairList::iterator iter = mCandidatePairs.begin(); (!found) && (iter != mCandidatePairs.end()); ++iter)
+        {
+          CandidatePairPtr &pair = (*iter);
+          if (isCandidateMatch(pair, viaLocalIP, viaTransport, source)) {
+            found = pair;
+            break;
+          }
+        }
+
+        bool failedIntegrity = (!stun->isValidMessageIntegrity(mLocalPassword));
+        if (failedIntegrity) goto send_response;
+
+        if (!found) {
+
+          CandidateList::iterator foundLocalCandidate = mLocalCandidates.end();
+
+          for (CandidateList::iterator iter = mLocalCandidates.begin(); iter != mLocalCandidates.end(); ++iter)
+          {
+            Candidate &candidate = (*iter);
+            if (candidate.mType != viaTransport) continue;
+            if (getViaLocalIP(candidate) != viaLocalIP) continue;
+
+            foundLocalCandidate = iter;
+            break;
+          }
+
+          Candidate remote;
+          remote.mIPAddress = source;
+          remote.mType = IICESocket::Type_PeerReflexive;
+          remote.mPriority = ((1 << 24)*(remote.mType)) + ((1 << 8)*(remote.mLocalPreference)) + (256 - 0);
+
+          if (foundLocalCandidate != mLocalCandidates.end()) {
+            CandidatePairPtr newPair = CandidatePair::create();
+            newPair->mLocal = (*foundLocalCandidate);
+            newPair->mRemote = remote;
+            newPair->mReceivedRequest = true;
+
+            ZS_LOG_DEBUG(log("new candidate pair discovered") + ", local: " + newPair->mLocal.toDebugString(false) + ", remote: " + newPair->mRemote.toDebugString())
+
+            if (mCandidatePairs.size() > 100) {
+              ZS_LOG_WARNING(Debug, log("unable to accept new found new peer reflexive candidate since too many canadidates where discovered"))
+              goto send_response;
+            }
+
+            mCandidatePairs.push_back(newPair);
+
+            found = newPair;
+          }
+
+          if (mUpdatedRemoteCandidates.size() < 1) {
+            mUpdatedRemoteCandidates = mRemoteCandidates;
+          }
+          mUpdatedRemoteCandidates.push_back(remote);
+
+          ZS_LOG_DEBUG(log("performing discovery on peer reflexive discovered IP") + ", remote: " + remote.toDebugString(false))
+
+          (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
+
+          goto send_response;
+        }
+
+        // scope: found an existing canddiate
+        {
+          found->mReceivedRequest = true;
+          found->mFailed = false;                   // even if this previously failed, we are now going to try this request to see if it works
+
+          if (found->mRequester) {
+            found->mRequester->retryRequestNow();   // retry the request immediately
+          }
+        }
+
+      send_response:
+
+        //.....................................................................
+        // scope: send response
+        {
+          bool correctRole = true;
+          bool wonConflict = false;
+
+          if (STUNPacket::Class_Indication != stun->mClass) {
+            if (!failedIntegrity) {
+              // check to see if the request is in the correct role...
+              if ((ICESocket::ICEControl_Controlling == mControl) &&
+                  (stun->mIceControllingIncluded)) {
+                correctRole = false;
+                wonConflict = (mConflictResolver >= stun->mIceControlling);
+              }
+
+              if ((ICESocket::ICEControl_Controlled == mControl) &&
+                  (stun->mIceControlledIncluded)) {
+                correctRole = false;
+                wonConflict = (mConflictResolver < stun->mIceControlled);
+              }
+
+              if (!correctRole) { // one of us is in the incorret role?
+                if (!wonConflict) {
+                  // we have to switch roles!
+                  ZS_LOG_WARNING(Detail, log("candidate role conflict detected thus switching roles"))
+                  switchRole(ICESocket::ICEControl_Controlled == mControl ? IICESocket::ICEControl_Controlling : IICESocket::ICEControl_Controlled);
+                  return true;
+                }
+
+                // we one the conflict but the other party needs to get an error message
+              }
+            }
+
+            STUNPacketPtr response;
+
+            if ((correctRole) && (!failedIntegrity)) {
+              // we need to generate a proper response
+              response = STUNPacket::createResponse(stun);
+              fix(response);
+              response->mMappedAddress = source;
+            } else {
+              // we need to generate an error response
+              if (!correctRole) {
+                stun->mErrorCode = STUNPacket::ErrorCode_RoleConflict;
+                ZS_LOG_WARNING(Detail, log("candidate role conflict detected thus telling other party to switch roles via an error"))
+              }
+              if (failedIntegrity) {
+                stun->mErrorCode = STUNPacket::ErrorCode_Unauthorized;
+                ZS_LOG_ERROR(Detail, log("candidate password integrity failed"))
+              }
+              response = STUNPacket::createErrorResponse(stun);
+              fix(response);
+            }
+
+            response->mPassword = mLocalPassword;
+            response->mCredentialMechanism = STUNPacket::CredentialMechanisms_ShortTerm;
+
+            boost::shared_array<BYTE> buffer;
+            ULONG bufferLengthInBytes = 0;
+            response->packetize(buffer, bufferLengthInBytes, STUNPacket::RFC_5245_ICE);
+            sendTo(viaLocalIP, viaTransport, source, buffer.get(), bufferLengthInBytes, false);
+          }
+
+          if ((failedIntegrity) || (!correctRole)) {
+            ZS_LOG_WARNING(Trace, log("do not handle packet any further when integrity fails or when in incorrect role"))
+            return true;
+          }
+        }
+
+        //.....................................................................
+        // scope: handle nomination
+        {
+          if (found) {
+            if ((stun->mUseCandidateIncluded) &&
+                (ICESocket::ICEControl_Controlled == mControl)) {
+
+              if (mNominated != found) {
+                // the remote party is telling this party that this pair is nominated
+                ZS_LOG_DETAIL(log("candidate is nominated by controlling party (i.e. remote party)") + ", local ip=" + found->mLocal.mIPAddress.string() + ", remote ip=" + found->mRemote.mIPAddress.string())
+
+                mNominated = found;
+
+                ICESocketPtr socket = mICESocketWeak.lock();
+                if (socket) {
+                  socket->forICESocketSession().addRoute(mThisWeak.lock(), mNominated->mRemote.mIPAddress);
+                }
+
+                get(mInformedWriteReady) = false;
+
+                notifyLocalWriteReady(viaLocalIP);
+                notifyRelayWriteReady(viaLocalIP);
+
+                (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
+              }
+            }
+          }
+        }
+
+        //.....................................................................
+        // scope: create new requester
+        {
+          if (found) {
+            if (!found->mRequester)
             {
-              ZS_LOG_TRACE(log("nominated username/password/transport do not match incoming request/indication") +
-                              ", local ip=" + mNominated->mLocal.mIPAddress.string() +
-                              ", remote ip=" + mNominated->mRemote.mIPAddress.string() +
-                              ", username=" + mNominated->mLocal.mUsernameFrag + ":" + mNominated->mRemote.mUsernameFrag)
-              return false;
+              if (found->mReceivedResponse) return true; // have we already determined this candidate is valid? if so, then no need to try again
+
+              ZS_LOG_DETAIL(log("candidate search started on reaction to a request") + ", local ip=" + found->mLocal.mIPAddress.string() + ", remote ip=" + found->mRemote.mIPAddress.string())
+
+              STUNPacketPtr request = STUNPacket::createRequest(STUNPacket::Method_Binding);
+              fix(request);
+              request->mUsername = mRemoteUsernameFrag + ":" + mLocalUsernameFrag;
+              request->mPassword = mRemotePassword;
+              request->mPriorityIncluded = true;
+              request->mPriority = found->mLocal.mPriority;
+              request->mCredentialMechanism = STUNPacket::CredentialMechanisms_ShortTerm;
+              if (IICESocket::ICEControl_Controlling == mControl) {
+                request->mIceControllingIncluded = true;
+                request->mIceControlling = mConflictResolver;
+              } else {
+                request->mIceControlledIncluded = true;
+                request->mIceControlled = mConflictResolver;
+              }
+
+              // activate the pair search now...
+              found->mRequester = ISTUNRequester::create(getAssociatedMessageQueue(), mThisWeak.lock(), found->mRemote.mIPAddress, request, STUNPacket::RFC_5245_ICE);
             }
+          }
+        }
 
-            if (!mNominated->mRemote.mIPAddress.isEqualIgnoringIPv4Format(source)) {
-              ZS_LOG_DEBUG(log("requests/indications from inexact source address cannot be considered nominated candidate") + ", source=" + source.string() + ", local=" + mNominated->mLocal.mIPAddress.string() + " remote=" + mNominated->mRemote.mIPAddress.string() + " " + localUsernameFrag + ":" + remoteUsernameFrag)
-              return false;
-            }
-
-            bool passedIntegrity = stun->isValidMessageIntegrity(mNominated->mLocal.mPassword);
-
-            if (passedIntegrity) {
+        //.....................................................................
+        // scope: check to see if should consider this data activity
+        {
+          if (found) {
+            if (found == mNominated) {
               mLastReceivedDataOrSTUN = zsLib::now();
 
               if (mAliveCheckRequester) {
@@ -610,250 +836,9 @@ namespace openpeer
                 mAliveCheckRequester.reset();
               }
             }
-
-            if (STUNPacket::Class_Indication == stun->mClass) {
-              if (!passedIntegrity) {
-                ZS_LOG_WARNING(Detail, log("nominated password integrity failed for indication") + ", local ip=" + mNominated->mLocal.mIPAddress.string() + ", remote ip=" + mNominated->mRemote.mIPAddress.string() + ", username=" + mNominated->mLocal.mUsernameFrag + ":" + mNominated->mRemote.mUsernameFrag)
-                return false;
-              }
-              ZS_LOG_TRACE(log("received keep alive indication"))
-              return true;
-            }
-
-            STUNPacketPtr response;
-            if (!passedIntegrity) {
-              stun->mErrorCode = STUNPacket::ErrorCode_Unauthorized;
-              ZS_LOG_ERROR(Detail, log("nominated password integrity failed") + ", local ip=" + mNominated->mLocal.mIPAddress.string() + ", remote ip=" + mNominated->mRemote.mIPAddress.string() + ", username=" + mNominated->mLocal.mUsernameFrag + ":" + mNominated->mRemote.mUsernameFrag)
-
-              response = STUNPacket::createErrorResponse(stun);
-            } else {
-              ZS_LOG_DEBUG(log("nominated pair is sending a bind request") + ", local ip=" + mNominated->mLocal.mIPAddress.string() + ", remote ip=" + mNominated->mRemote.mIPAddress.string() + ", username=" + mNominated->mLocal.mUsernameFrag + ":" + mNominated->mRemote.mUsernameFrag)
-
-              response = STUNPacket::createResponse(stun);
-              response->mMappedAddress = source;
-            }
-
-            fix(response);
-
-            response->mPassword = mNominated->mLocal.mPassword;
-            response->mCredentialMechanism = STUNPacket::CredentialMechanisms_ShortTerm;
-
-            boost::shared_array<BYTE> buffer;
-            ULONG bufferLengthInBytes = 0;
-            response->packetize(buffer, bufferLengthInBytes, STUNPacket::RFC_5245_ICE);
-            sendTo(normalize(mNominated->mLocal.mType), source, buffer.get(), bufferLengthInBytes, false);
-            return true;
           }
         }
 
-        if (STUNPacket::Class_Request != stun->mClass) {
-          ZS_LOG_WARNING(Detail, log("ignoring ICE binding STUN packet)"))
-          return false;
-        }
-
-        bool failedIntegrity = false;
-
-        bool foundExactMatch = false;
-        CandidatePairPtr inexactMatch;
-        CandidatePairPtr requestNow;
-        for (CandidatePairList::iterator iter = mCandidatePairs.begin(); iter != mCandidatePairs.end(); ++iter)
-        {
-          CandidatePairPtr pairing = (*iter);
-
-          if ((pairing->mLocal.mUsernameFrag == localUsernameFrag) &&
-              (pairing->mRemote.mUsernameFrag == remoteUsernameFrag) &&
-              (normalize(pairing->mLocal.mType) == normalize(viaTransport))) {
-
-            ZS_LOG_TRACE(log("match found on incoming STUN bind request to candidate") + ", incoming local username=" + localUsernameFrag + ", incoming remote username=" + remoteUsernameFrag + ", incoming transport=" + IICESocket::toString(normalize(viaTransport)) + ", candidate local username=" + pairing->mLocal.mUsernameFrag + ", candidate remote username=" + pairing->mRemote.mUsernameFrag + ", candidate transport=" + IICESocket::toString(normalize(viaTransport)))
-
-            // check if it matches a canadidate but does not match the IP address of the remote party we were expecting
-            if (!pairing->mRemote.mIPAddress.isEqualIgnoringIPv4Format(source)) {
-              ZS_LOG_DEBUG(log("requests from inexact candidate match found") + ", source=" + source.string() + ", local=" + pairing->mLocal.mIPAddress.string() + " remote=" + pairing->mRemote.mIPAddress.string() + " " + localUsernameFrag + ":" + remoteUsernameFrag)
-              inexactMatch = pairing;
-              continue;
-            }
-
-            // we found an exact match... that means we received a request from the remote party
-            foundExactMatch = true;
-            inexactMatch.reset();
-            ZS_LOG_DEBUG(log("request from exact match found") + ", local=" + pairing->mLocal.mIPAddress.string() + " remote=" + pairing->mRemote.mIPAddress.string() + " " + localUsernameFrag + ":" + remoteUsernameFrag)
-
-            if (!stun->isValidMessageIntegrity(pairing->mLocal.mPassword)) {
-              ZS_LOG_DEBUG(log("STUN request failed integrity") + ", local=" + pairing->mLocal.mIPAddress.string() + " remote=" + pairing->mRemote.mIPAddress.string() + " " + localUsernameFrag + ":" + remoteUsernameFrag)
-              failedIntegrity = true;
-              break;
-            }
-
-            pairing->mReceivedRequest = true;
-            requestNow = pairing;
-
-            if (pairing->mRequester) {
-              pairing->mRequester->retryRequestNow();   // retry the request immediately
-            } else {
-              if ((!pairing->mReceivedResponse) ||
-                  (pairing->mFailed)) {
-                pairing->mFailed = false;               // even if this previously failed, we are now going to try this request to see if it works
-              }
-            }
-            break;
-          } else {
-            ZS_LOG_TRACE(log("match NOT found on incoming STUN bind request to candidate") + ", incoming local username=" + localUsernameFrag + ", incoming remote username=" + remoteUsernameFrag + ", incoming transport=" + IICESocket::toString(normalize(viaTransport)) + ", candidate local username=" + pairing->mLocal.mUsernameFrag + ", candidate remote username=" + pairing->mRemote.mUsernameFrag + ", candidate transport=" + IICESocket::toString(normalize(viaTransport)))
-          }
-        }
-
-        if (inexactMatch) {
-          CandidatePairPtr pairing = inexactMatch;
-
-          if (stun->isValidMessageIntegrity(pairing->mLocal.mPassword)) {
-
-            // too many candidates created? ignore this request as if we never saw it...
-            if (mCandidatePairs.size() > 100) {
-              ZS_LOG_WARNING(Debug, log("unable to accept new found new peer reflexive candidate since too many canadidates where discovered") + ", found ip=" + source.string() + " , local=" + pairing->mLocal.mIPAddress.string() + " remote=" + pairing->mRemote.mIPAddress.string() + " " + localUsernameFrag + ":" + remoteUsernameFrag)
-              return true;
-            }
-
-            // we have to create a new peer reflexive candidate based on the existing match and activiate it
-            CandidatePairPtr newPair = pairing->clone();
-            newPair->mLocal.mType = ICESocket::Type_PeerReflexive;  // the only difference is the source and the type
-            newPair->mRemote.mIPAddress = source;
-            newPair->mLocal.mPriority = ((1 << 24)*(newPair->mLocal.mType)) + ((1 << 8)*(newPair->mLocal.mLocalPreference)) + (256 - 0);
-            newPair->mReceivedRequest = true;
-            newPair->mReceivedResponse = false;
-            newPair->mFailed = false;
-
-            ZS_LOG_DEBUG(log("found new peer reflexive candidate") + ", found ip=" + source.string() + " , local=" + pairing->mLocal.mIPAddress.string() + " remote=" + pairing->mRemote.mIPAddress.string() + " " + localUsernameFrag + ":" + remoteUsernameFrag)
-
-            mCandidatePairs.push_back(newPair);
-            requestNow = newPair;
-
-            // sort the list based on priority of the pairs
-            if (mControl == IICESocket::ICEControl_Controlling)
-              mCandidatePairs.sort(comparePairControlling);
-            else
-              mCandidatePairs.sort(comparePairControlled);
-          }
-          else {
-            ZS_LOG_WARNING(Debug, log("newly discovered inexact match did not pass integrity check") + ", found ip=" + source.string() + " , local=" + pairing->mLocal.mIPAddress.string() + " remote=" + pairing->mRemote.mIPAddress.string() + " " + localUsernameFrag + ":" + remoteUsernameFrag)
-            failedIntegrity = true;
-          }
-        }
-
-        if (!requestNow) {
-          // no match found at all (exact or inexact)...
-          ZS_LOG_TRACE(log("did not handle this request"))
-          return false;
-        }
-
-        CandidatePairPtr pairing = requestNow;
-
-        bool correctRole = true;
-        bool wonConflict = false;
-
-        // check to see if the request is in the correct role...
-        if ((ICESocket::ICEControl_Controlling == mControl) &&
-            (stun->mIceControllingIncluded)) {
-          correctRole = false;
-          wonConflict = (mConflictResolver >= stun->mIceControlling);
-        }
-
-        if ((ICESocket::ICEControl_Controlled == mControl) &&
-            (stun->mIceControlledIncluded)) {
-          correctRole = false;
-          wonConflict = (mConflictResolver < stun->mIceControlled);
-        }
-
-        if (!correctRole) { // one of us is in the incorret role?
-          if (!wonConflict) {
-            // we have to switch roles!
-            ZS_LOG_WARNING(Detail, log("candidate role conflict detected thus switching roles") + ", local ip=" + pairing->mLocal.mIPAddress.string() + ", remote ip=" + pairing->mRemote.mIPAddress.string() + ", username=" + pairing->mLocal.mUsernameFrag + ":" + pairing->mRemote.mUsernameFrag)
-            switchRole(ICESocket::ICEControl_Controlled == mControl ? IICESocket::ICEControl_Controlling : IICESocket::ICEControl_Controlled);
-            return true;
-          }
-
-          // we one the conflict but the other party needs to get an error message
-        }
-
-        STUNPacketPtr response;
-
-        if ((correctRole) && (!failedIntegrity)) {
-          // we need to generate a proper response
-          response = STUNPacket::createResponse(stun);
-          fix(response);
-          response->mMappedAddress = source;
-        } else {
-          // we need to generate an error response
-          if (!correctRole) {
-            stun->mErrorCode = STUNPacket::ErrorCode_RoleConflict;
-            ZS_LOG_WARNING(Detail, log("candidate role conflict detected thus telling other party to switch roles via an error") + ", local ip=" + pairing->mLocal.mIPAddress.string() + ", remote ip=" + pairing->mRemote.mIPAddress.string() + ", username=" + pairing->mLocal.mUsernameFrag + ":" + pairing->mRemote.mUsernameFrag)
-          }
-          if (failedIntegrity) {
-            stun->mErrorCode = STUNPacket::ErrorCode_Unauthorized;
-            ZS_LOG_ERROR(Detail, log("candidate password integrity failed") + ", local ip=" + pairing->mLocal.mIPAddress.string() + ", remote ip=" + pairing->mRemote.mIPAddress.string() + ", username=" + pairing->mLocal.mUsernameFrag + ":" + pairing->mRemote.mUsernameFrag)
-          }
-          response = STUNPacket::createErrorResponse(stun);
-          fix(response);
-        }
-
-        response->mPassword = pairing->mLocal.mPassword;
-        response->mCredentialMechanism = STUNPacket::CredentialMechanisms_ShortTerm;
-
-        boost::shared_array<BYTE> buffer;
-        ULONG bufferLengthInBytes = 0;
-        response->packetize(buffer, bufferLengthInBytes, STUNPacket::RFC_5245_ICE);
-        sendTo(normalize(pairing->mLocal.mType), source, buffer.get(), bufferLengthInBytes, false);
-
-        if ((stun->mUseCandidateIncluded) &&
-            (ICESocket::ICEControl_Controlled == mControl)) {
-
-          if (mNominated != pairing) {
-            // the remote party is telling this party that this pair is nominated
-            ZS_LOG_DETAIL(log("candidate is nominated by controlling party (i.e. remote party)") + ", local ip=" + pairing->mLocal.mIPAddress.string() + ", remote ip=" + pairing->mRemote.mIPAddress.string() + ", username=" + pairing->mLocal.mUsernameFrag + ":" + pairing->mRemote.mUsernameFrag)
-
-            mNominated = pairing;
-
-            ICESocketPtr socket = mICESocketWeak.lock();
-            if (socket) {
-              socket->forICESocketSession().addRoute(mThisWeak.lock(), mNominated->mRemote.mIPAddress);
-            }
-
-            mInformedWriteReady = false;
-
-            notifyLocalWriteReady();
-            notifyRelayWriteReady();
-
-            // yes, okay, it did in fact succeed - we have nominated our candidate!
-            // inform that the session is now connected
-            ZS_LOG_DETAIL(log("nomination request succeeded") + ", local ip=" + mNominated->mLocal.mIPAddress.string() + ", remote ip=" + mNominated->mRemote.mIPAddress.string() + ", username=" + mNominated->mLocal.mUsernameFrag + ":" + mNominated->mRemote.mUsernameFrag)
-            (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
-          }
-          return true;
-        }
-
-        if (!pairing->mRequester)
-        {
-          if (mNominated) return true;  // no need to activate another search if the nominated candidate is found
-          if (pairing->mReceivedResponse) return true; // have we already determined this candidate is valid? if so, then no need to try again
-
-          ZS_LOG_DETAIL(log("candidate search started on reaction to a request") + ", local ip=" + pairing->mLocal.mIPAddress.string() + ", remote ip=" + pairing->mRemote.mIPAddress.string() + ", username=" + pairing->mLocal.mUsernameFrag + ":" + pairing->mRemote.mUsernameFrag)
-
-          STUNPacketPtr request = STUNPacket::createRequest(STUNPacket::Method_Binding);
-          fix(request);
-          request->mUsername = pairing->mRemote.mUsernameFrag + ":" + pairing->mLocal.mUsernameFrag;
-          request->mPassword = pairing->mRemote.mPassword;
-          request->mPriorityIncluded = true;
-          request->mPriority = pairing->mLocal.mPriority;
-          request->mCredentialMechanism = STUNPacket::CredentialMechanisms_ShortTerm;
-          if (IICESocket::ICEControl_Controlling == mControl) {
-            request->mIceControllingIncluded = true;
-            request->mIceControlling = mConflictResolver;
-          } else {
-            request->mIceControlledIncluded = true;
-            request->mIceControlled = mConflictResolver;
-          }
-
-          // activate the pair search now...
-          pairing->mRequester = ISTUNRequester::create(getAssociatedMessageQueue(), mThisWeak.lock(), pairing->mRemote.mIPAddress, request, STUNPacket::RFC_5245_ICE);
-        }
         return true;
       }
 
@@ -1849,6 +1834,7 @@ namespace openpeer
 
       //-----------------------------------------------------------------------
       bool ICESocketSession::sendTo(
+                                    const IPAddress &viaLocalIP,
                                     IICESocket::Types viaTransport,
                                     const IPAddress &destination,
                                     const BYTE *buffer,
@@ -1866,10 +1852,9 @@ namespace openpeer
           return false;
         }
 
-        ZS_LOG_TRACE(log("sending packet") + ", via=" + IICESocket::toString(viaTransport) + " to ip=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + string(bufferLengthInBytes) + ", user data=" + (isUserData ? "true" : "false"))
-        return socket->forICESocketSession().sendTo(viaTransport, destination, buffer, bufferLengthInBytes, isUserData);
+        ZS_LOG_TRACE(log("sending packet") + ", via IP=" + string(viaLocalIP) + ", via=" + IICESocket::toString(viaTransport) + " to ip=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + string(bufferLengthInBytes) + ", user data=" + (isUserData ? "true" : "false"))
+        return socket->forICESocketSession().sendTo(viaLocalIP, viaTransport, destination, buffer, bufferLengthInBytes, isUserData);
       }
-
     }
 
     //-------------------------------------------------------------------------

@@ -145,8 +145,8 @@ namespace openpeer
       //-----------------------------------------------------------------------
       // PURPOSE: Gets the current state of the object
       virtual ICESocketStates getState(
-                                       WORD *outLastErrorCode,
-                                       String *outLastErrorReason
+                                       WORD *outLastErrorCode = NULL,
+                                       String *outLastErrorReason = NULL
                                        ) const = 0;
 
       //-----------------------------------------------------------------------
@@ -180,6 +180,8 @@ namespace openpeer
       //          candidates are already known.
       virtual IICESocketSessionPtr createSessionFromRemoteCandidates(
                                                                      IICESocketSessionDelegatePtr delegate,
+                                                                     const char *remoteUsernameFrag,
+                                                                     const char *remotePassword,
                                                                      const CandidateList &remoteCandidates,
                                                                      ICEControls control
                                                                      ) = 0;

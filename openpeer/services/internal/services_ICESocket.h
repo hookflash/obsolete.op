@@ -218,6 +218,8 @@ namespace openpeer
 
         virtual IICESocketSessionPtr createSessionFromRemoteCandidates(
                                                                        IICESocketSessionDelegatePtr delegate,
+                                                                       const char *remoteUsernameFrag,
+                                                                       const char *remotePassword,
                                                                        const CandidateList &remoteCandidates,
                                                                        ICEControls control
                                                                        );
