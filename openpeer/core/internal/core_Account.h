@@ -282,6 +282,8 @@ namespace openpeer
 
         virtual ElementPtr getReloginInformation() const;
 
+        virtual String getStableID() const;
+
         virtual String getLocationID() const;
 
         virtual void shutdown();
