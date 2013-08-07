@@ -131,9 +131,9 @@ namespace openpeer
                                    )
       {
         if (!pair) return false;
-        if (pair->mRemote.mIPAddress != source) return false;
+        if (!pair->mRemote.mIPAddress.isEqualIgnoringIPv4Format(source)) return false;
         if (normalize(pair->mLocal.mType) != viaTransport) return false;
-        if (viaLocalIP != getViaLocalIP(pair->mLocal)) return false;
+        if (!viaLocalIP.isEqualIgnoringIPv4Format(getViaLocalIP(pair->mLocal))) return false;
         return true;
       }
 
@@ -901,7 +901,7 @@ namespace openpeer
         try {
           delegate->handleICESocketSessionReceivedPacket(mThisWeak.lock(), packet, packetLengthInBytes);
         } catch(IICESocketSessionDelegateProxy::Exceptions::DelegateGone &) {
-          setShutdownReason(ICESocketSessionShutdownReason_DelegateGone);
+          setError(ICESocketSessionShutdownReason_DelegateGone, "delegate gone");
           cancel();
         }
         return true;
