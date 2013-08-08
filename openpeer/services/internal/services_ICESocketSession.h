@@ -119,6 +119,7 @@ namespace openpeer
       {
       public:
         friend interaction IICESocketSessionFactory;
+        friend interaction IICESocketSession;
 
         typedef IICESocketSession::ICEControls ICEControls;
         typedef IICESocketSession::CandidateList CandidateList;
@@ -162,6 +163,8 @@ namespace openpeer
 
         void init();
 
+        static ICESocketSessionPtr convert(IICESocketSessionPtr session);
+
       public:
         ~ICESocketSession();
 
@@ -170,6 +173,8 @@ namespace openpeer
         #pragma mark
         #pragma mark ICESocketSession => IICESocketSession
         #pragma mark
+
+        static String toDebugString(IICESocketSessionPtr socket, bool includeCommaPrefix = true);
 
         virtual PUID getID() const {return mID;}
 
@@ -308,9 +313,19 @@ namespace openpeer
         bool isShutdown() const {return ICESocketSessionState_Shutdown == mCurrentState;}
 
         void cancel();
-        void step();
         void setState(ICESocketSessionStates state);
-        void setError(WORD error, const char *reason = NULL);
+        void setError(WORD errorCode, const char *inReason = NULL);
+
+        void step();
+        bool stepSocket();
+        bool stepCandidates();
+        bool stepActivateTimer();
+        bool stepTimer();
+        bool stepExpectingDataTimer();
+        bool stepKeepAliveTimer();
+        bool stepCancelLowerPriority();
+        bool stepNominate();
+        void stepNotifyNominated();
 
         void switchRole(ICEControls newRole);
 
@@ -358,10 +373,12 @@ namespace openpeer
         QWORD mConflictResolver;
 
         ISTUNRequesterPtr mNominateRequester;
+        CandidatePairPtr mPendingNominatation;
         CandidatePairPtr mNominated;
+
         Time mLastSentData;
         Time mLastActivity;
-        CandidatePairPtr mLastNotifiedNominated;  // TODO
+        CandidatePairPtr mLastNotifiedNominated;
 
         ISTUNRequesterPtr mAliveCheckRequester;
         Time mLastReceivedDataOrSTUN;
@@ -372,11 +389,12 @@ namespace openpeer
 
         CandidatePairList mCandidatePairs;
 
+        CandidateList mUpdatedLocalCandidates;
         CandidateList mUpdatedRemoteCandidates;
 
         CandidateList mLocalCandidates;
         CandidateList mRemoteCandidates;
-        Time mEndOfRemoteCandidatesTime;
+        Time mEndOfRemoteCandidatesTime;  // TODO
       };
 
       //-----------------------------------------------------------------------

@@ -1989,8 +1989,6 @@ namespace openpeer
              internal::Helper::getDebugValue("ip", mIPAddress.string(), firstTime) +
              internal::Helper::getDebugValue("priority", 0 != mPriority ? string(mPriority) : String(), firstTime) +
              internal::Helper::getDebugValue("preference", 0 != mLocalPreference ? string(mLocalPreference) : String(), firstTime) +
-             internal::Helper::getDebugValue("usernameFrag", mUsernameFrag, firstTime) +
-             internal::Helper::getDebugValue("password", mPassword, firstTime) +
              internal::Helper::getDebugValue("protocol", mProtocol, firstTime);
     }
   }
