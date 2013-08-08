@@ -210,6 +210,19 @@ namespace openpeer
           }
         }
 
+        virtual void onRUDPICESocketCandidatesChanged(IRUDPICESocketPtr socket)
+        {
+          zsLib::AutoRecursiveLock lock(mLock);
+          if (!mRemote) return;
+
+          if (!mRUDPSocket) return;
+
+          IICESocket::CandidateList candidates;
+          socket->getLocalCandidates(candidates);
+
+          mRemote->updateCandidates(candidates);
+        }
+
         virtual void onRUDPICESocketSessionStateChanged(
                                                         IRUDPICESocketSessionPtr session,
                                                         RUDPICESocketSessionStates state
@@ -330,6 +343,9 @@ namespace openpeer
         void shutdown()
         {
           zsLib::AutoRecursiveLock lock(mLock);
+
+          mRemote.reset();
+
           if (!mRUDPSocket) return;
           if (mShutdownCalled) return;
           mShutdownCalled = true;
@@ -411,20 +427,69 @@ namespace openpeer
           mRUDPSocket->getLocalCandidates(outCandidates);
         }
 
-        void createSessionFromRemoteCandidates(
-                                               const IICESocket::CandidateList &remoteCandidates,
-                                               IICESocket::ICEControls control
-                                               )
+        String getLocalUsernameFrag()
         {
           zsLib::AutoRecursiveLock lock(mLock);
-          if (!mRUDPSocket) return;
-          IRUDPICESocketSessionPtr session = mRUDPSocket->createSessionFromRemoteCandidates(mThisWeak.lock(), remoteCandidates, control);
-          mSessions.push_back(session);
+          if (!mRUDPSocket) return String();
+          return mRUDPSocket->getUsernameFrag();
         }
 
+        String getLocalPassword()
+        {
+          zsLib::AutoRecursiveLock lock(mLock);
+          if (!mRUDPSocket) return String();
+          return mRUDPSocket->getPassword();
+        }
+        
+        IRUDPICESocketSessionPtr createSessionFromRemoteCandidates(IICESocket::ICEControls control)
+        {
+          zsLib::AutoRecursiveLock lock(mLock);
+          if (!mRUDPSocket) return IRUDPICESocketSessionPtr();
+
+          if (!mRemote) return IRUDPICESocketSessionPtr();
+
+          String remoteUsernameFrag = mRemote->getLocalUsernameFrag();
+          String remotePassword = mRemote->getLocalPassword();
+          IICESocket::CandidateList remoteCandidates;
+          mRemote->getLocalCandidates(remoteCandidates);
+
+          IRUDPICESocketSessionPtr session = mRUDPSocket->createSessionFromRemoteCandidates(mThisWeak.lock(), mRemote->getLocalUsernameFrag(), mRemote->getLocalPassword(), remoteCandidates, control);
+          mSessions.push_back(session);
+
+          return session;
+        }
+
+        void setRemote(TestRUDPICESocketLoopbackPtr remote)
+        {
+          zsLib::AutoRecursiveLock lock(mLock);
+          mRemote = remote;
+        }
+
+        void updateCandidates(const IICESocket::CandidateList &candidates)
+        {
+          zsLib::AutoRecursiveLock lock(mLock);
+          for (SessionList::iterator iter = mSessions.begin(); iter != mSessions.end(); ++iter)
+          {
+            IRUDPICESocketSessionPtr session = (*iter);
+            session->updateRemoteCandidates(candidates);
+          }
+        }
+
+        void notifyEndOfCandidates()
+        {
+          zsLib::AutoRecursiveLock lock(mLock);
+          for (SessionList::iterator iter = mSessions.begin(); iter != mSessions.end(); ++iter)
+          {
+            IRUDPICESocketSessionPtr session = (*iter);
+            session->endOfRemoteCandidates();
+          }
+        }
+        
       private:
         mutable zsLib::RecursiveLock mLock;
         TestRUDPICESocketLoopbackWeakPtr mThisWeak;
+
+        TestRUDPICESocketLoopbackPtr mRemote;
 
         zsLib::TimerPtr mTimer;
 
@@ -494,12 +559,18 @@ void doTestRUDPICESocketLoopback()
           expecting = 2;
           testObject1 = TestRUDPICESocketLoopback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, true);
           testObject2 = TestRUDPICESocketLoopback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, false);
+
+          testObject1->setRemote(testObject2);
+          testObject2->setRemote(testObject1);
           break;
         }
         case 1: {
           expecting = 2;
           testObject1 = TestRUDPICESocketLoopback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, true, true, false, false, true, false, true, false);
           testObject2 = TestRUDPICESocketLoopback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, false, true, false, false, true, false, true, false);
+
+          testObject1->setRemote(testObject2);
+          testObject2->setRemote(testObject1);
           break;
         }
       }
@@ -520,13 +591,8 @@ void doTestRUDPICESocketLoopback()
         switch (step) {
           case 0: {
             if (10 == totalWait) {
-              testObject1->getLocalCandidates(candidates1);
-              testObject2->getLocalCandidates(candidates2);
-
-              BOOST_CHECK(candidates1.size() > 0);
-              BOOST_CHECK(candidates2.size() > 0);
-              testObject1->createSessionFromRemoteCandidates(candidates2, IICESocket::ICEControl_Controlling);
-              testObject2->createSessionFromRemoteCandidates(candidates1, IICESocket::ICEControl_Controlled);
+              testObject1->createSessionFromRemoteCandidates(IICESocket::ICEControl_Controlling);
+              testObject2->createSessionFromRemoteCandidates(IICESocket::ICEControl_Controlled);
             }
 
             if (30 == totalWait) {
@@ -537,12 +603,8 @@ void doTestRUDPICESocketLoopback()
           }
           case 1: {
             if (10 == totalWait) {
-              testObject1->getLocalCandidates(candidates1);
-              testObject2->getLocalCandidates(candidates2);
-              BOOST_CHECK(candidates1.size() > 0);
-              BOOST_CHECK(candidates2.size() > 0);
-              testObject1->createSessionFromRemoteCandidates(candidates2, IICESocket::ICEControl_Controlling);
-              testObject2->createSessionFromRemoteCandidates(candidates1, IICESocket::ICEControl_Controlling);
+              testObject1->createSessionFromRemoteCandidates(IICESocket::ICEControl_Controlling);
+              testObject2->createSessionFromRemoteCandidates(IICESocket::ICEControl_Controlling);
             }
 
             break;

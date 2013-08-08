@@ -233,6 +233,22 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      String RUDPICESocket::getUsernameFrag() const
+      {
+        AutoRecursiveLock lock(getLock());
+        if (!mICESocket) return String();
+        return mICESocket->getUsernameFrag();
+      }
+
+      //-----------------------------------------------------------------------
+      String RUDPICESocket::getPassword() const
+      {
+        AutoRecursiveLock lock(getLock());
+        if (!mICESocket) return String();
+        return mICESocket->getPassword();
+      }
+
+      //-----------------------------------------------------------------------
       void RUDPICESocket::shutdown()
       {
         AutoRecursiveLock lock(mLock);

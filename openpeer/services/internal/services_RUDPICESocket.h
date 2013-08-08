@@ -164,6 +164,10 @@ namespace openpeer
 
         virtual IRUDPICESocketSubscriptionPtr subscribe(IRUDPICESocketDelegatePtr delegate);
 
+        virtual String getUsernameFrag() const;
+
+        virtual String getPassword() const;
+
         virtual void shutdown();
 
         virtual void wakeup(Duration minimumTimeCandidatesMustRemainValidWhileNotUsed);

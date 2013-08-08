@@ -105,6 +105,14 @@ namespace openpeer
       virtual IRUDPICESocketSubscriptionPtr subscribe(IRUDPICESocketDelegatePtr delegate) = 0;
 
       //-----------------------------------------------------------------------
+      // PURPOSE: Gets the ICE username fragment
+      virtual String getUsernameFrag() const = 0;
+
+      //-----------------------------------------------------------------------
+      // PURPOSE: Gets the ICE password
+      virtual String getPassword() const = 0;
+      
+      //-----------------------------------------------------------------------
       // PURPOSE: Close the socket and cause all sessions to become closed.
       virtual void shutdown() = 0;
 

@@ -239,8 +239,6 @@ namespace openpeer
 
         // (duplicate) virtual void updateRemoteCandidates(const CandidateList &remoteCandidates);
 
-        virtual void timeout();
-
         virtual bool handleSTUNPacket(
                                       const IPAddress &viaLocalIP,
                                       IICESocket::Types viaTransport,
