@@ -68,6 +68,10 @@ namespace openpeer
 
       static const char *toString(RUDPICESocketStates state);
 
+      //-----------------------------------------------------------------------
+      // PURPOSE: returns a debug string containing internal object state
+      static String toDebugString(IRUDPICESocketPtr socket, bool includeCommaPrefix = true);
+
       static IRUDPICESocketPtr create(
                                       IMessageQueuePtr queue,
                                       IRUDPICESocketDelegatePtr delegate,
@@ -91,7 +95,10 @@ namespace openpeer
 
       virtual PUID getID() const = 0;
 
-      virtual RUDPICESocketStates getState() const = 0;
+      virtual RUDPICESocketStates getState(
+                                           WORD *outLastErrorCode = NULL,
+                                           String *outLastErrorReason = NULL
+                                           ) const = 0;
 
       //-----------------------------------------------------------------------
       // PURPOSE: Subscribe to the current socket state.
@@ -114,24 +121,11 @@ namespace openpeer
       //          candidates are already known.
       virtual IRUDPICESocketSessionPtr createSessionFromRemoteCandidates(
                                                                          IRUDPICESocketSessionDelegatePtr delegate,
+                                                                         const char *remoteUsernameFrag,
+                                                                         const char *remotePassword,
                                                                          const CandidateList &remoteCandidates,
                                                                          ICEControls control
                                                                          ) = 0;
-    };
-
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    #pragma mark
-    #pragma mark IRUDPICESocketSubscription
-    #pragma mark
-
-    interaction IRUDPICESocketSubscription
-    {
-      virtual PUID getID() const = 0;
-
-      virtual void cancel() = 0;
     };
 
     //-------------------------------------------------------------------------
@@ -151,6 +145,25 @@ namespace openpeer
                                                IRUDPICESocketPtr socket,
                                                RUDPICESocketStates state
                                                ) = 0;
+
+      virtual void onRUDPICESocketCandidatesChanged(IRUDPICESocketPtr socket) = 0;
+    };
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IRUDPICESocketSubscription
+    #pragma mark
+
+    interaction IRUDPICESocketSubscription
+    {
+      virtual PUID getID() const = 0;
+
+      virtual void cancel() = 0;
+
+      virtual void background() = 0;
     };
   }
 }
@@ -159,4 +172,12 @@ ZS_DECLARE_PROXY_BEGIN(openpeer::services::IRUDPICESocketDelegate)
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::IRUDPICESocketPtr, IRUDPICESocketPtr)
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::IRUDPICESocketDelegate::RUDPICESocketStates, RUDPICESocketStates)
 ZS_DECLARE_PROXY_METHOD_2(onRUDPICESocketStateChanged, IRUDPICESocketPtr, RUDPICESocketStates)
+ZS_DECLARE_PROXY_METHOD_1(onRUDPICESocketCandidatesChanged, IRUDPICESocketPtr)
 ZS_DECLARE_PROXY_END()
+
+ZS_DECLARE_PROXY_SUBSCRIPTIONS_BEGIN(openpeer::services::IRUDPICESocketDelegate, openpeer::services::IRUDPICESocketSubscription)
+ZS_DECLARE_PROXY_SUBSCRIPTIONS_TYPEDEF(openpeer::services::IRUDPICESocketPtr, IRUDPICESocketPtr)
+ZS_DECLARE_PROXY_SUBSCRIPTIONS_TYPEDEF(openpeer::services::IRUDPICESocketDelegate::RUDPICESocketStates, RUDPICESocketStates)
+ZS_DECLARE_PROXY_SUBSCRIPTIONS_METHOD_2(onRUDPICESocketStateChanged, IRUDPICESocketPtr, RUDPICESocketStates)
+ZS_DECLARE_PROXY_SUBSCRIPTIONS_METHOD_1(onRUDPICESocketCandidatesChanged, IRUDPICESocketPtr)
+ZS_DECLARE_PROXY_SUBSCRIPTIONS_END()

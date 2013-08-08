@@ -61,6 +61,8 @@ namespace openpeer
 
         virtual IRUDPICESocketSessionPtr createSessionFromRemoteCandidates(
                                                                            IRUDPICESocketSessionDelegatePtr delegate,
+                                                                           const char *remoteUsernameFrag,
+                                                                           const char *remotePassword,
                                                                            const CandidateList &remoteCandidates,
                                                                            ICEControls control
                                                                            ) = 0;
@@ -89,13 +91,12 @@ namespace openpeer
       {
       public:
         friend interaction IRUDPICESocketFactory;
+        friend interaction IRUDPICESocket;
 
         typedef IICESocket::CandidateList CandidateList;
         typedef IICESocket::ICEControls ICEControls;
 
-        class Subscription;
-        typedef boost::shared_ptr<Subscription> SubscriptionPtr;
-        typedef boost::weak_ptr<Subscription> SubscriptionWeakPtr;
+        typedef std::map<PUID, RUDPICESocketSessionPtr> SessionMap;
 
       protected:
         RUDPICESocket(
@@ -123,11 +124,15 @@ namespace openpeer
       public:
         ~RUDPICESocket();
 
+        static RUDPICESocketPtr convert(IRUDPICESocketPtr socket);
+        
       protected:
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark RUDPICESocket => IRUDPICESocket
         #pragma mark
+
+        static String toDebugString(IRUDPICESocketPtr socket, bool includeCommaPrefix = true);
 
         static RUDPICESocketPtr create(
                                        IMessageQueuePtr queue,
@@ -152,7 +157,10 @@ namespace openpeer
 
         virtual PUID getID() const {return mID;}
 
-        virtual RUDPICESocketStates getState() const;
+        virtual RUDPICESocketStates getState(
+                                             WORD *outLastErrorCode = NULL,
+                                             String *outLastErrorReason = NULL
+                                             ) const;
 
         virtual IRUDPICESocketSubscriptionPtr subscribe(IRUDPICESocketDelegatePtr delegate);
 
@@ -164,6 +172,8 @@ namespace openpeer
 
         virtual IRUDPICESocketSessionPtr createSessionFromRemoteCandidates(
                                                                            IRUDPICESocketSessionDelegatePtr delegate,
+                                                                           const char *remoteUsernameFrag,
+                                                                           const char *remotePassword,
                                                                            const CandidateList &remoteCandidates,
                                                                            ICEControls control
                                                                            );
@@ -190,14 +200,7 @@ namespace openpeer
                                              ICESocketStates state
                                              );
 
-      protected:
-
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark RUDPICESocket => friend Subscription
-        #pragma mark
-
-        void cancelSubscription(Subscription &subscription);
+        virtual void onICESocketCandidatesChanged(IICESocketPtr socket);
 
       protected:
         //---------------------------------------------------------------------
@@ -209,33 +212,10 @@ namespace openpeer
         bool isShuttingDown();
         bool isShutdown();
 
+        virtual String getDebugValueString(bool includeCommaPrefix = true) const;
+
         void cancel();
         void setState(RUDPICESocketStates state);
-
-      public:
-
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark RUDPICESocket::Subscription
-        #pragma mark
-
-        class Subscription : public IRUDPICESocketSubscription
-        {
-        protected:
-          Subscription(RUDPICESocketPtr outer);
-
-        public:
-          ~Subscription();
-
-          static SubscriptionPtr create(RUDPICESocketPtr outer);
-
-          virtual PUID getID() const {return mID;}
-          virtual void cancel();
-
-        public:
-          RUDPICESocketWeakPtr mOuter;
-          PUID mID;
-        };
 
       protected:
         //---------------------------------------------------------------------
@@ -244,18 +224,19 @@ namespace openpeer
         #pragma mark
 
         mutable RecursiveLock mLock;
+        AutoPUID mID;
         RUDPICESocketWeakPtr mThisWeak;
         RUDPICESocketPtr mGracefulShutdownReference;
-        PUID mID;
 
         RUDPICESocketStates mCurrentState;
 
-        typedef std::map<PUID, IRUDPICESocketDelegatePtr> DelegateMap;
-        DelegateMap mDelegates;
+        IRUDPICESocketDelegateSubscriptions mSubscriptions;
+        IRUDPICESocketSubscriptionPtr mDefaultSubscription;
+
+        AutoBool mNotifiedCandidateChanged;
 
         IICESocketPtr mICESocket;
 
-        typedef std::map<PUID, RUDPICESocketSessionPtr> SessionMap;
         SessionMap mSessions;
       };
 
@@ -302,7 +283,7 @@ ZS_DECLARE_PROXY_TYPEDEF(zsLib::RecursiveLock, RecursiveLock)
 ZS_DECLARE_PROXY_TYPEDEF(zsLib::PUID, PUID)
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::IRUDPICESocketSessionPtr, IRUDPICESocketSessionPtr)
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::IRUDPICESocketSessionDelegatePtr, IRUDPICESocketSessionDelegatePtr)
-ZS_DECLARE_PROXY_METHOD_SYNC_RETURN_3(createSessionFromRemoteCandidates, IRUDPICESocketSessionPtr, IRUDPICESocketSessionDelegatePtr, const CandidateList &, ICEControls)
+ZS_DECLARE_PROXY_METHOD_SYNC_RETURN_5(createSessionFromRemoteCandidates, IRUDPICESocketSessionPtr, IRUDPICESocketSessionDelegatePtr, const char *, const char *, const CandidateList &, ICEControls)
 ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(getLock, RecursiveLock &)
 ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(getICESocket, openpeer::services::IICESocketPtr)
 ZS_DECLARE_PROXY_METHOD_SYNC_CONST_RETURN_0(getRUDPICESocket, openpeer::services::IRUDPICESocketPtr)

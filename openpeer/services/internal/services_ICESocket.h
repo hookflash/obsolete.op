@@ -202,8 +202,8 @@ namespace openpeer
         virtual IICESocketSubscriptionPtr subscribe(IICESocketDelegatePtr delegate);
 
         virtual ICESocketStates getState(
-                                         WORD *outLastErrorCode,
-                                         String *outLastErrorReason
+                                         WORD *outLastErrorCode = NULL,
+                                         String *outLastErrorReason = NULL
                                          ) const;
 
         virtual String getUsernameFrag() const;
@@ -221,7 +221,8 @@ namespace openpeer
                                                                        const char *remoteUsernameFrag,
                                                                        const char *remotePassword,
                                                                        const CandidateList &remoteCandidates,
-                                                                       ICEControls control
+                                                                       ICEControls control,
+                                                                       IICESocketSessionPtr foundation = IICESocketSessionPtr()
                                                                        );
 
         virtual void monitorWriteReadyOnAllSessions(bool monitor = true);

@@ -100,13 +100,13 @@ namespace openpeer
                                                                                                 const IPAddress &remoteIP,
                                                                                                 WORD incomingChannelNumber,
                                                                                                 const char *localUserFrag,
-                                                                                                const char *remoteUserFrag,
                                                                                                 const char *localPassword,
+                                                                                                const char *remoteUserFrag,
                                                                                                 const char *remotePassword,
                                                                                                 const char *connectionInfo
                                                                                                 )
       {
-        return IRUDPChannelFactory::singleton().createForRUDPICESocketSessionOutgoing(queue, master, delegate, remoteIP, incomingChannelNumber, localUserFrag, remoteUserFrag, localPassword, remotePassword, connectionInfo);
+        return IRUDPChannelFactory::singleton().createForRUDPICESocketSessionOutgoing(queue, master, delegate, remoteIP, incomingChannelNumber, localUserFrag, localPassword, remoteUserFrag, remotePassword, connectionInfo);
       }
       
       //-----------------------------------------------------------------------
@@ -143,8 +143,8 @@ namespace openpeer
                                IRUDPChannelDelegateForSessionAndListenerPtr master,
                                const IPAddress &remoteIP,
                                const char *localUserFrag,
-                               const char *remoteUserFrag,
                                const char *localPassword,
+                               const char *remoteUserFrag,
                                const char *remotePassword,
                                DWORD minimumRTT,
                                DWORD lifetime,
@@ -167,8 +167,8 @@ namespace openpeer
         mRemoteIP(remoteIP),
         mShutdownDirection(IRUDPChannel::Shutdown_None),
         mLocalUsernameFrag(localUserFrag ? localUserFrag : ""),
-        mRemoteUsernameFrag(remoteUserFrag ? remoteUserFrag : ""),
         mLocalPassword(localPassword ? localPassword : ""),
+        mRemoteUsernameFrag(remoteUserFrag ? remoteUserFrag : ""),
         mRemotePassword(remotePassword ? remotePassword : ""),
         mIncomingChannelNumber(incomingChannelNumber),
         mOutgoingChannelNumber(outgoingChannelNumber),
@@ -371,8 +371,8 @@ namespace openpeer
                                              master,
                                              remoteIP,
                                              localUsernameFrag,
-                                             remoteUsernameFrag,
                                              localPassword,
+                                             remoteUsernameFrag,
                                              remotePassword,
                                              minimumRTT,
                                              lifetime,
@@ -414,9 +414,9 @@ namespace openpeer
                                                                         IRUDPChannelDelegatePtr delegate,
                                                                         const IPAddress &remoteIP,
                                                                         WORD incomingChannelNumber,
-                                                                        const char *localUserFrag,
-                                                                        const char *remoteUserFrag,
+                                                                        const char *localUsernameFrag,
                                                                         const char *localPassword,
+                                                                        const char *remoteUsernameFrag,
                                                                         const char *remotePassword,
                                                                         const char *connectionInfo
                                                                         )
@@ -431,9 +431,9 @@ namespace openpeer
                                              queue,
                                              master,
                                              remoteIP,
-                                             localUserFrag,
-                                             remoteUserFrag,
+                                             localUsernameFrag,
                                              localPassword,
+                                             remoteUsernameFrag,
                                              remotePassword,
                                              minimumRTT,
                                              OPENPEER_SERVICES_RUDPCHANNEL_DEFAULT_LIFETIME_IN_SECONDS,
@@ -446,7 +446,7 @@ namespace openpeer
         pThis->mDelegate = IRUDPChannelDelegateProxy::createWeak(queue, delegate);
         pThis->init();
         // do not allow sending to the remote party until we receive an ACK or data
-        ZS_LOG_DETAIL(pThis->log("created for socket session outgoing") + ", localUserFrag=" + localUserFrag + ", remoteUserFrag=" + remoteUserFrag + ", local password=" + localPassword + ", remote password=" + remotePassword + ", incoming channel=" + string(incomingChannelNumber))
+        ZS_LOG_DETAIL(pThis->log("created for socket session outgoing") + ", localUserFrag=" + localUsernameFrag + ", remoteUsernameFrag=" + remoteUsernameFrag + ", local password=" + localPassword + ", remote password=" + remotePassword + ", incoming channel=" + string(incomingChannelNumber))
         return pThis;
       }
       

@@ -187,6 +187,7 @@ namespace openpeer
     typedef boost::shared_ptr<IRUDPICESocketDelegate> IRUDPICESocketDelegatePtr;
     typedef boost::weak_ptr<IRUDPICESocketDelegate> IRUDPICESocketDelegateWeakPtr;
     typedef zsLib::Proxy<IRUDPICESocketDelegate> IRUDPICESocketDelegateProxy;
+    typedef zsLib::ProxySubscriptions<IRUDPICESocketDelegate, IRUDPICESocketSubscription> IRUDPICESocketDelegateSubscriptions;
 
     interaction IRUDPICESocketSession;
     typedef boost::shared_ptr<IRUDPICESocketSession> IRUDPICESocketSessionPtr;

@@ -83,7 +83,7 @@ namespace openpeer
 
       static const char *toString(ICESocketSessionShutdownReasons reason);
 
-      static String toDebugString(IICESocketSessionPtr socket, bool includeCommaPrefix = true);
+      static String toDebugString(IICESocketSessionPtr session, bool includeCommaPrefix = true);
 
       virtual PUID getID() const = 0;
 
@@ -95,6 +95,11 @@ namespace openpeer
                                               ) const = 0;
 
       virtual void close() = 0;
+
+      virtual String getLocalUsernameFrag() const = 0;
+      virtual String getLocalPassword() const = 0;
+      virtual String getRemoteUsernameFrag() const = 0;
+      virtual String getRemotePassword() const = 0;
 
       virtual void getLocalCandidates(CandidateList &outCandidates) = 0;
       virtual void updateRemoteCandidates(const CandidateList &remoteCandidates) = 0;

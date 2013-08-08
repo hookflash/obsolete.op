@@ -93,12 +93,6 @@ namespace openpeer
         String toDebugString(bool includeCommaPrefix = true) const;
       };
 
-      enum ICEControls
-      {
-        ICEControl_Controlling,
-        ICEControl_Controlled
-      };
-
       typedef std::list<Candidate> CandidateList;
       static void compare(
                           const CandidateList &inOldCandidatesList,
@@ -107,8 +101,20 @@ namespace openpeer
                           CandidateList &outRemovedCandidates
                           );
 
+      enum ICEControls
+      {
+        ICEControl_Controlling,
+        ICEControl_Controlled,
+      };
+
+      static const char *toString(ICEControls control);
+      
+      //-----------------------------------------------------------------------
+      // PURPOSE: returns a debug string containing internal object state
       static String toDebugString(IICESocketPtr socket, bool includeCommaPrefix = true);
 
+      //-----------------------------------------------------------------------
+      // PURPOSE: creates a socket and resolves STUN/TURN servers
       static IICESocketPtr create(
                                   IMessageQueuePtr queue,
                                   IICESocketDelegatePtr delegate,
@@ -121,6 +127,9 @@ namespace openpeer
                                   IICESocketPtr foundationSocket = IICESocketPtr()
                                   );
 
+      //-----------------------------------------------------------------------
+      // PURPOSE: creates a socket using existing resolved STUN/TURN SRV
+      //          results.
       static IICESocketPtr create(
                                   IMessageQueuePtr queue,
                                   IICESocketDelegatePtr delegate,
@@ -134,6 +143,8 @@ namespace openpeer
                                   IICESocketPtr foundationSocket = IICESocketPtr()
                                   );
 
+      //-----------------------------------------------------------------------
+      // PURPOSE: returns the unique object ID
       virtual PUID getID() const = 0;
 
       //-----------------------------------------------------------------------
@@ -181,29 +192,13 @@ namespace openpeer
                                                                      const char *remoteUsernameFrag,
                                                                      const char *remotePassword,
                                                                      const CandidateList &remoteCandidates,
-                                                                     ICEControls control
+                                                                     ICEControls control,
+                                                                     IICESocketSessionPtr foundation = IICESocketSessionPtr()
                                                                      ) = 0;
 
       //-----------------------------------------------------------------------
       // PURPOSE: Enable or disable write ready notifications on all sessions
       virtual void monitorWriteReadyOnAllSessions(bool monitor = true) = 0;
-    };
-
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    #pragma mark
-    #pragma mark IICESocketSubscription
-    #pragma mark
-
-    interaction IICESocketSubscription
-    {
-      virtual PUID getID() const = 0;
-
-      virtual void cancel() = 0;
-
-      virtual void background() = 0;
     };
 
     //-------------------------------------------------------------------------
@@ -226,6 +221,24 @@ namespace openpeer
 
       virtual void onICESocketCandidatesChanged(IICESocketPtr socket) = 0;
     };
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IICESocketSubscription
+    #pragma mark
+
+    interaction IICESocketSubscription
+    {
+      virtual PUID getID() const = 0;
+
+      virtual void cancel() = 0;
+
+      virtual void background() = 0;
+    };
+    
   }
 }
 

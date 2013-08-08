@@ -35,8 +35,11 @@
 
 #include <openpeer/services/internal/services_ICESocketSession.h>
 #include <openpeer/services/internal/services_ICESocket.h>
+#include <openpeer/services/internal/services_Helper.h>
+
 #include <openpeer/services/IICESocket.h>
 #include <openpeer/services/ISTUNRequester.h>
+
 #include <zsLib/Exception.h>
 #include <zsLib/helpers.h>
 #include <zsLib/Stringize.h>
@@ -154,10 +157,11 @@ namespace openpeer
                                                                 ICESocketPtr socket,
                                                                 const char *remoteUsernameFrag,
                                                                 const char *remotePassword,
-                                                                ICEControls control
+                                                                ICEControls control,
+                                                                IICESocketSessionPtr foundation
                                                                 )
       {
-        return IICESocketSessionFactory::singleton().create(queue, delegate, socket, remoteUsernameFrag, remotePassword, control);
+        return IICESocketSessionFactory::singleton().create(queue, delegate, socket, remoteUsernameFrag, remotePassword, control, foundation);
       }
 
       //-----------------------------------------------------------------------
@@ -179,15 +183,17 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      ICESocketSession::CandidatePairPtr ICESocketSession::CandidatePair::clone() const
+      String ICESocketSession::CandidatePair::toDebugString(bool includeCommaPrefix) const
       {
-        CandidatePairPtr pThis(new CandidatePair);
-        pThis->mLocal = mLocal;
-        pThis->mRemote = mRemote;
-        pThis->mReceivedRequest = mReceivedRequest;
-        pThis->mReceivedResponse = mReceivedResponse;
-        pThis->mFailed = mFailed;
-        return pThis;
+        bool firstTime = false;
+        return
+        (includeCommaPrefix ? String(", ") : String()) +
+        "local candidate [" + mLocal.toDebugString(false) +
+        "], remote candidate [" + mRemote.toDebugString(false) + "]" +
+        Helper::getDebugValue("received request", mReceivedRequest ? string("true") : String(), firstTime) +
+        Helper::getDebugValue("received response", mReceivedResponse ? string("true") : String(), firstTime) +
+        Helper::getDebugValue("failed", mFailed ? string("true") : String(), firstTime) +
+        Helper::getDebugValue("requester", mRequester ? string("true") : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -205,11 +211,13 @@ namespace openpeer
                                          ICESocketPtr socket,
                                          const char *remoteUsernameFrag,
                                          const char *remotePassword,
-                                         ICEControls control
+                                         ICEControls control,
+                                         IICESocketSessionPtr foundation
                                          ) :
         MessageQueueAssociator(queue),
         mICESocketWeak(socket),
         mCurrentState(ICESocketSessionState_Pending),
+        mFoundation(ICESocketSession::convert(foundation)),
         mRemoteUsernameFrag(remoteUsernameFrag),
         mRemotePassword(remotePassword),
         mDelegate(IICESocketSessionDelegateProxy::createWeak(queue, delegate)),
@@ -297,6 +305,34 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      String ICESocketSession::getLocalUsernameFrag() const
+      {
+        AutoRecursiveLock lock(getLock());
+        return mLocalUsernameFrag;
+      }
+
+      //-----------------------------------------------------------------------
+      String ICESocketSession::getLocalPassword() const
+      {
+        AutoRecursiveLock lock(getLock());
+        return mLocalPassword;
+      }
+
+      //-----------------------------------------------------------------------
+      String ICESocketSession::getRemoteUsernameFrag() const
+      {
+        AutoRecursiveLock lock(getLock());
+        return mRemoteUsernameFrag;
+      }
+
+      //-----------------------------------------------------------------------
+      String ICESocketSession::getRemotePassword() const
+      {
+        AutoRecursiveLock lock(getLock());
+        return mRemotePassword;
+      }
+
+      //-----------------------------------------------------------------------
       void ICESocketSession::getLocalCandidates(CandidateList &outCandidates)
       {
         outCandidates.clear();
@@ -324,7 +360,7 @@ namespace openpeer
         ZS_LOG_DEBUG(log("end of remote candidates"))
 
         AutoRecursiveLock lock(getLock());
-        mEndOfRemoteCandidatesTime = zsLib::now();
+        get(mEndOfRemoteCandidatesFlag) = true;
         step();
       }
 
@@ -438,10 +474,11 @@ namespace openpeer
                                                    ICESocketPtr socket,
                                                    const char *remoteUsernameFrag,
                                                    const char *remotePassword,
-                                                   ICEControls control
+                                                   ICEControls control,
+                                                   IICESocketSessionPtr foundation
                                                    )
       {
-        ICESocketSessionPtr pThis(new ICESocketSession(queue, delegate, socket, remoteUsernameFrag, remotePassword, control));
+        ICESocketSessionPtr pThis(new ICESocketSession(queue, delegate, socket, remoteUsernameFrag, remotePassword, control, foundation));
         pThis->mThisWeak = pThis;
         pThis->init();
         return pThis;
@@ -1182,7 +1219,20 @@ namespace openpeer
             if (pairing->mFailed)
               continue; // do not activate a pair that has already failed
 
-            ZS_LOG_DETAIL(log("activating search on candidate") + ", local ip=" + pairing->mLocal.mIPAddress.string() + ", remote ip=" + pairing->mRemote.mIPAddress.string())
+            if (mFoundation) {
+              if (!mFoundation->canUnfreeze(pairing)) {
+                if (pairing->mFailed) {
+                  ZS_LOG_TRACE(log("candidate now marked as failed (as foundation candidate pairing failed)") + ", local: " + pairing->mLocal.toDebugString(false) + ", remote: " + pairing->mRemote.toDebugString())
+                  // need to perform step after failure
+                  IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
+                  break;
+                }
+                ZS_LOG_TRACE(log("candidate still frozen") + ", local: " + pairing->mLocal.toDebugString(false) + ", remote: " + pairing->mRemote.toDebugString())
+                continue;
+              }
+            }
+
+            ZS_LOG_DETAIL(log("activating search on candidate") + ", local: " + pairing->mLocal.toDebugString(false) + ", remote: " + pairing->mRemote.toDebugString())
 
             // activate this pair right now... if there is no remote username then treat this as a regular STUN request/response situation (plus will automatically nominate if successful)
             STUNPacketPtr request = STUNPacket::createRequest(STUNPacket::Method_Binding);
@@ -1324,73 +1374,70 @@ namespace openpeer
         bool firstTime = !includeCommaPrefix;
 
         return
+        Helper::getDebugValue("ice socket session id", string(mID), firstTime) +
 
-        // TODO
-
-
-        "";
-
-#if 0
-        Helper::getDebugValue("ice socket id", string(mID), firstTime) +
-        Helper::getDebugValue("graceful shutdown", mGracefulShutdownReference ? String("true") : String(), firstTime) +
-
-        Helper::getDebugValue("subscriptions", mSubscriptions.size() > 0 ? string(mSubscriptions.size()) : String(), firstTime) +
-        Helper::getDebugValue("default subscription", mDefaultSubscription ? String("true") : String(), firstTime) +
-
-        Helper::getDebugValue("state", IICESocket::toString(mCurrentState), firstTime) +
+        Helper::getDebugValue("state", IICESocketSession::toString(mCurrentState), firstTime) +
         Helper::getDebugValue("last error", 0 != mLastError ? string(mLastError) : String(), firstTime) +
         Helper::getDebugValue("last reason", mLastErrorReason, firstTime) +
 
+        Helper::getDebugValue("delegate", mDelegate ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("informed write ready", mInformedWriteReady ? String("true") : String(), firstTime) +
+
+        Helper::getDebugValue("socket subscription", mSocketSubscription ? String("true") : String(), firstTime) +
+
         Helper::getDebugValue("foundation", mFoundation ? String("true") : String(), firstTime) +
 
-        Helper::getDebugValue("bind port", 0 != mBindPort ? string(mBindPort) : String(), firstTime) +
-        Helper::getDebugValue("usernameFrag", mUsernameFrag, firstTime) +
-        Helper::getDebugValue("password", mPassword, firstTime) +
+        Helper::getDebugValue("local username frag", mLocalUsernameFrag, firstTime) +
+        Helper::getDebugValue("local password", mLocalPassword, firstTime) +
+        Helper::getDebugValue("remote username frag", mRemoteUsernameFrag, firstTime) +
+        Helper::getDebugValue("remote password", mRemotePassword, firstTime) +
 
-        Helper::getDebugValue("next local preference", 0 != mNextLocalPreference ? string(mNextLocalPreference) : String(), firstTime) +
-        Helper::getDebugValue("socket local IPs", mSocketLocalIPs.size() > 0 ? string(mSocketLocalIPs.size()) : String(), firstTime) +
-        Helper::getDebugValue("turn sockets", mSocketTURNs.size() > 0 ? string(mSocketTURNs.size()) : String(), firstTime) +
-        Helper::getDebugValue("stun sockets", mSocketSTUNs.size() > 0 ? string(mSocketSTUNs.size()) : String(), firstTime) +
-        Helper::getDebugValue("sockets", mSockets.size() > 0 ? string(mSockets.size()) : String(), firstTime) +
+        Helper::getDebugValue("activate timer", mActivateTimer ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("keep-alive timer", mKeepAliveTimer ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("expecting data timer", mExpectingDataTimer ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("step timer", mStepTimer ? String("true") : String(), firstTime) +
 
-        Helper::getDebugValue("rebind timer", mRebindTimer ? String("true") : String(), firstTime) +
-        Helper::getDebugValue("rebind attempt start time", Time() != mRebindAttemptStartTime ? IHelper::timeToString(mRebindAttemptStartTime) : String(), firstTime) +
-        Helper::getDebugValue("rebind check now", mRebindCheckNow ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("control", IICESocket::toString(mControl), firstTime) +
+        Helper::getDebugValue("resolver", 0 != mConflictResolver ? string(mConflictResolver) : String(), firstTime) +
 
-        Helper::getDebugValue("monitoring write ready", mMonitoringWriteReady ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("nominate request", mNominateRequester ? String("true") : String(), firstTime) +
+        (mPendingNominatation ? (String("pending nomination: ") + mPendingNominatation->toDebugString(false)) : String());
+        (mNominated ? (String("nominated: ") + mNominated->toDebugString(false)) : String());
 
-        Helper::getDebugValue("turn srv udp result", mTURNSRVUDPResult ? String("true") : String(), firstTime) +
-        Helper::getDebugValue("turn srv tcp result", mTURNSRVTCPResult ? String("true") : String(), firstTime) +
-        Helper::getDebugValue("turn server", mTURNServer, firstTime) +
-        Helper::getDebugValue("turn username", mTURNUsername, firstTime) +
-        Helper::getDebugValue("turn password", mTURNPassword, firstTime) +
-        Helper::getDebugValue("turn first WORD safe", mFirstWORDInAnyPacketWillNotConflictWithTURNChannels ? String("true") : String(), firstTime) +
-        Helper::getDebugValue("turn last used", Time() != mTURNLastUsed ? IHelper::timeToString(mTURNLastUsed) : String(), firstTime) +
-        Helper::getDebugValue("turn stutdown duration (s)", Duration() != mTURNShutdownIfNotUsedBy ? string(mTURNShutdownIfNotUsedBy.seconds()) : String(), firstTime) +
+        Helper::getDebugValue("last send data", Time() != mLastSentData ? IHelper::timeToString(mLastSentData) : String(), firstTime) +
+        Helper::getDebugValue("last activity", Time() != mLastActivity ? IHelper::timeToString(mLastActivity) : String(), firstTime) +
 
-        Helper::getDebugValue("stun srv udp result", mSTUNSRVResult ? String("true") : String(), firstTime) +
-        Helper::getDebugValue("stun server", mSTUNServer, firstTime) +
+        Helper::getDebugValue("need to notify nominated", mLastNotifiedNominated == mNominated ? String() : String("true"), firstTime) +
 
-        Helper::getDebugValue("sessions", mSessions.size() > 0 ? string(mSessions.size()) : String(), firstTime) +
+        Helper::getDebugValue("alive check requester", mAliveCheckRequester ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("last received data/stun", Time() != mLastReceivedDataOrSTUN ? IHelper::timeToString(mLastReceivedDataOrSTUN) : String(), firstTime) +
 
-        Helper::getDebugValue("routes", mRoutes.size() > 0 ? string(mRoutes.size()) : String(), firstTime) +
+        Helper::getDebugValue("keep alive (ms)", Duration() != mKeepAliveDuration ? string(mKeepAliveDuration.total_milliseconds()) : String(), firstTime) +
+        Helper::getDebugValue("expecting data/stun (ms)", Duration() != mExpectSTUNOrDataWithinDuration ? string(mExpectSTUNOrDataWithinDuration.total_milliseconds()) : String(), firstTime) +
+        Helper::getDebugValue("keel alive stun timeout (ms)", Duration() != mKeepAliveSTUNRequestTimeout ? string(mKeepAliveSTUNRequestTimeout.total_milliseconds()) : String(), firstTime) +
+        Helper::getDebugValue("backgrounding timeout (ms)", Duration() != mBackgroundingTimeout ? string(mBackgroundingTimeout.total_milliseconds()) : String(), firstTime) +
 
-        Helper::getDebugValue("recyle buffers", mRecycledBuffers.size() > 0 ? string(mRecycledBuffers.size()) : String(), firstTime) +
+        Helper::getDebugValue("candidate pairs", mCandidatePairs.size() > 0 ? string(mCandidatePairs.size()) : String(), firstTime) +
 
-        Helper::getDebugValue("notified candidates changed", mNotifiedCandidateChanged ? String("true") : String(), firstTime) +
-        Helper::getDebugValue("candidate crc", 0 != mLastCandidateCRC ? string(mLastCandidateCRC) : String(), firstTime);
-#endif //0
+        Helper::getDebugValue("updated local candidates", mUpdatedLocalCandidates.size() > 0 ? string(mUpdatedLocalCandidates.size()) : String(), firstTime) +
+        Helper::getDebugValue("updated remote candidates", mUpdatedRemoteCandidates.size() > 0 ? string(mUpdatedRemoteCandidates.size()) : String(), firstTime) +
+
+        Helper::getDebugValue("local candidates", mLocalCandidates.size() > 0 ? string(mLocalCandidates.size()) : String(), firstTime) +
+        Helper::getDebugValue("remote candidates", mRemoteCandidates.size() > 0 ? string(mRemoteCandidates.size()) : String(), firstTime) +
+
+        Helper::getDebugValue("end of remote candidates flagged", mEndOfRemoteCandidatesFlag ? String("true") : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
       void ICESocketSession::cancel()
       {
         AutoRecursiveLock lock(getLock());  // just in case
-        if (isShutdown()) return;
+        if (isShutdown()) {
+          ZS_LOG_DEBUG(log("already shutdown"))
+          return;
+        }
 
-        // TODO
-
-        ZS_LOG_DETAIL(log("closing"))
+        ZS_LOG_DETAIL(log("cancel"))
 
         setState(ICESocketSessionState_Shutdown);
 
@@ -1401,10 +1448,14 @@ namespace openpeer
           mSocketSubscription.reset();
         }
 
-        IICESocketForICESocketSessionPtr socketProxy = IICESocketForICESocketSessionProxy::create(mICESocketWeak.lock());
-        if (socketProxy) {
-          socketProxy->onICESocketSessionClosed(getID());
+        mFoundation.reset();
+
+        IICESocketForICESocketSessionPtr iceSocket = mICESocketWeak.lock();
+        if (iceSocket) {
+          IICESocketForICESocketSessionProxy::create(mICESocketWeak.lock())->onICESocketSessionClosed(mID);
         }
+
+        mICESocketWeak.reset();
 
         if (mActivateTimer) {
           mActivateTimer->cancel();
@@ -1435,6 +1486,15 @@ namespace openpeer
           mNominateRequester->cancel();
           mNominateRequester.reset();
         }
+        mPendingNominatation.reset();
+        mNominated.reset();
+
+        mLastNotifiedNominated.reset();
+
+        if (mAliveCheckRequester) {
+          mAliveCheckRequester->cancel();
+          mAliveCheckRequester.reset();
+        }
 
         // scope: we have to completely cancel the old searches...
         {
@@ -1450,6 +1510,12 @@ namespace openpeer
           // bye-bye old pairs...
           mCandidatePairs.clear();
         }
+
+        mUpdatedLocalCandidates.clear();
+        mUpdatedRemoteCandidates.clear();
+
+        mLocalCandidates.clear();
+        mRemoteCandidates.clear();
       }
 
       //-----------------------------------------------------------------------
@@ -1508,6 +1574,7 @@ namespace openpeer
         if (!stepSocket()) goto notify_nominated;
         if (!stepCandidates()) goto notify_nominated;
         if (!stepActivateTimer()) goto notify_nominated;
+        if (!stepEndSearch()) goto notify_nominated;
         if (!stepTimer()) goto notify_nominated;
         if (!stepExpectingDataTimer()) goto notify_nominated;
         if (!stepKeepAliveTimer()) goto notify_nominated;
@@ -1673,13 +1740,13 @@ namespace openpeer
                   // truncate the list at 100 pairs maximum - RFC says that anything above 100 is unreasonable
                   ZS_LOG_WARNING(Detail, log("too many candidates"))
                   reason = "too many candidates";
-                  goto remote_candidate;
+                  goto remove_candidate;
                 }
 
                 if (ICESocket::Type_ServerReflexive == pairing->mLocal.mType) {
                   // this is server reflixive which can never be sent "from" so elimate it
                   reason = "cannot send from server reflexive";
-                  goto remote_candidate;
+                  goto remove_candidate;
                 }
 
                 IPAddress viaLocalIP = getViaLocalIP(pairing->mLocal);
@@ -1704,7 +1771,7 @@ namespace openpeer
 
                 if (foundType) {
                   reason = "remote IP candidate already being searched remotely";
-                  goto remote_candidate;
+                  goto remove_candidate;
                 }
 
                 ++totalAdded;
@@ -1712,8 +1779,8 @@ namespace openpeer
                 continue;
               }
 
-            remote_candidate:
-              // scoope: remote candidate
+            remove_candidate:
+              // scoope: remove candidate
               {
                 if ((mNominated == pairing) ||
                     (mPendingNominatation == pairing)) {
@@ -1788,6 +1855,34 @@ namespace openpeer
         mActivateTimer->cancel();
         mActivateTimer.reset();
         return true;
+      }
+
+      //-----------------------------------------------------------------------
+      bool ICESocketSession::stepEndSearch()
+      {
+        if (!mEndOfRemoteCandidatesFlag) {
+          ZS_LOG_DEBUG(log("no end of candidates flag set so continue search"))
+          return true;
+        }
+        if (mNominated) {
+          ZS_LOG_DEBUG(log("already nominated - no reason to end search"))
+          return true;
+        }
+        for (CandidatePairList::iterator iter = mCandidatePairs.begin(); iter != mCandidatePairs.end(); ++iter)
+        {
+          CandidatePairPtr &pairing = (*iter);
+
+          if (pairing->mFailed) continue;
+
+          ZS_LOG_DEBUG(log("found candidate which has not failed thus no reason to end search yet"))
+          return true;
+        }
+
+        ZS_LOG_ERROR(Detail, log("all candidates have failed"))
+
+        setError(ICESocketSessionShutdownReason_CandidateSearchFailed, "search found no possible candidates to activate");
+        cancel();
+        return false;
       }
 
       //-----------------------------------------------------------------------
@@ -1910,7 +2005,7 @@ namespace openpeer
           CandidatePairPtr &pairing = (*iter);
 
           if (pairing == mNominated) {
-            // stop once we are at the nominated point (the rest are lower priority candidates)
+            // stop once we are at the nominated point (the rest are lower priority candidates which should never be nominated)
             break;
           }
 
@@ -1990,13 +2085,25 @@ namespace openpeer
         if (isShutdown()) return;
         if (newRole == mControl) return; // role did not switch
 
+        ZS_LOG_WARNING(Detail, log("role conflict detected thus must perform checks from start again"))
+
         // switch roles now...
         mControl = newRole;
 
-        // TODO
+        for (CandidatePairList::iterator iter = mCandidatePairs.begin(); iter != mCandidatePairs.end(); ++iter)
+        {
+          CandidatePairPtr &pairing = (*iter);
 
-        // redo all the testing from scratch!
-        updateRemoteCandidates(mRemoteCandidates);
+          pairing->mFailed = false;
+          pairing->mReceivedRequest = false;
+          pairing->mReceivedResponse = false;
+          if (pairing->mRequester) {
+            pairing->mRequester->cancel();
+            pairing->mRequester.reset();
+          }
+        }
+
+        (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
       }
 
       //-----------------------------------------------------------------------
@@ -2021,6 +2128,36 @@ namespace openpeer
 
         ZS_LOG_TRACE(log("sending packet") + ", via IP=" + string(viaLocalIP) + ", via=" + IICESocket::toString(viaTransport) + " to ip=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + string(bufferLengthInBytes) + ", user data=" + (isUserData ? "true" : "false"))
         return socket->forICESocketSession().sendTo(viaLocalIP, viaTransport, destination, buffer, bufferLengthInBytes, isUserData);
+      }
+
+      //-----------------------------------------------------------------------
+      bool ICESocketSession::canUnfreeze(CandidatePairPtr derivedPairing)
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(!derivedPairing)
+
+        AutoRecursiveLock lock(getLock());
+
+        for (CandidatePairList::iterator iter = mCandidatePairs.begin(); iter != mCandidatePairs.end(); ++iter)
+        {
+          CandidatePairPtr &pairing = (*iter);
+
+          if (pairing->mLocal.mFoundation != derivedPairing->mLocal.mFoundation) continue;  // not from the same foundation
+          if (!pairing->mRemote.mIPAddress.isAddressEqualIgnoringIPv4Format(derivedPairing->mRemote.mIPAddress)) continue;
+
+          if (pairing->mFailed) {
+            derivedPairing->mFailed = true; // this candidate failed, do not ever search the derived candidate
+            return false;
+          }
+          if (!pairing->mReceivedRequest) return false; // incomplete check, still frozen
+          if (!pairing->mReceivedResponse) return false; // incomplete check, still frozen
+
+          ZS_LOG_DEBUG(log("foundation is unfozen thus can proceed with activation") + ", local (foundation): " + pairing->mLocal.toDebugString(false) + ", remote (foundation): " + pairing->mRemote.toDebugString(false) + ", local (derived): " + derivedPairing->mLocal.toDebugString(false) + ", remote (derived): " + derivedPairing->mRemote.toDebugString(false))
+
+          return true;
+        }
+
+        ZS_LOG_DEBUG(log("foundation not found thus can proceed with activation") + ", local (derived): " + derivedPairing->mLocal.toDebugString(false) + ", remote (derived): " + derivedPairing->mRemote.toDebugString(false))
+        return true;
       }
     }
 

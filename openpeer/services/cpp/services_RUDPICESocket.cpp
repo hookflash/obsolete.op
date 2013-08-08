@@ -31,6 +31,7 @@
 
 #include <openpeer/services/internal/services_RUDPICESocket.h>
 #include <openpeer/services/internal/services_RUDPICESocketSession.h>
+#include <openpeer/services/internal/services_Helper.h>
 
 #include <zsLib/Exception.h>
 #include <zsLib/helpers.h>
@@ -61,10 +62,9 @@ namespace openpeer
                                    IRUDPICESocketDelegatePtr delegate
                                    ) :
         MessageQueueAssociator(queue),
-        mID(zsLib::createPUID()),
         mCurrentState(RUDPICESocketState_Pending)
       {
-        mDelegates[0] = IRUDPICESocketDelegateProxy::createWeak(queue, delegate);
+        mDefaultSubscription = mSubscriptions.subscribe(delegate, queue);
         ZS_LOG_BASIC(log("created"))
       }
 
@@ -124,6 +124,12 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      RUDPICESocketPtr RUDPICESocket::convert(IRUDPICESocketPtr socket)
+      {
+        return boost::dynamic_pointer_cast<RUDPICESocket>(socket);
+      }
+
+      //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -131,6 +137,15 @@ namespace openpeer
       #pragma mark RUDPICESocket => IRUDPICESocket
       #pragma mark
 
+      //-----------------------------------------------------------------------
+      String RUDPICESocket::toDebugString(IRUDPICESocketPtr socket, bool includeCommaPrefix)
+      {
+        if (!socket) return String(includeCommaPrefix ? ", rudp ice socket=(null)" : "rudp ice socket=(null)");
+
+        RUDPICESocketPtr pThis = RUDPICESocket::convert(socket);
+        return pThis->getDebugValueString(includeCommaPrefix);
+      }
+      
       //-----------------------------------------------------------------------
       RUDPICESocketPtr RUDPICESocket::create(
                                              IMessageQueuePtr queue,
@@ -167,30 +182,53 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      IRUDPICESocket::RUDPICESocketStates RUDPICESocket::getState() const
+      IRUDPICESocket::RUDPICESocketStates RUDPICESocket::getState(
+                                                                  WORD *outLastErrorCode,
+                                                                  String *outLastErrorReason
+                                                                  ) const
       {
+        AutoRecursiveLock lock(getLock());
+        if (outLastErrorCode) {
+          *outLastErrorCode = 0;
+        }
+        if (outLastErrorReason) {
+          *outLastErrorReason = String();
+        }
+
+        if (mICESocket) {
+          mICESocket->getState(outLastErrorCode, outLastErrorReason);
+        }
+
         return mCurrentState;
       }
 
       //-----------------------------------------------------------------------
-      IRUDPICESocketSubscriptionPtr RUDPICESocket::subscribe(IRUDPICESocketDelegatePtr delegate)
+      IRUDPICESocketSubscriptionPtr RUDPICESocket::subscribe(IRUDPICESocketDelegatePtr originalDelegate)
       {
-        AutoRecursiveLock lock(mLock);
-        IRUDPICESocket::RUDPICESocketStates state = getState();
+        ZS_LOG_DETAIL(log("subscribing to socket state"))
 
-        delegate = IRUDPICESocketDelegateProxy::createWeak(getAssociatedMessageQueue(), delegate);
+        AutoRecursiveLock lock(getLock());
+        if (!originalDelegate) return mDefaultSubscription;
 
-        SubscriptionPtr subscription = Subscription::create(mThisWeak.lock());
+        IRUDPICESocketSubscriptionPtr subscription = mSubscriptions.subscribe(originalDelegate);
 
-        if (RUDPICESocketState_Pending != state) {
-          try {
-            delegate->onRUDPICESocketStateChanged(mThisWeak.lock(), state);
-          } catch (IRUDPICESocketDelegateProxy::Exceptions::DelegateGone &) {
+        IRUDPICESocketDelegatePtr delegate = mSubscriptions.delegate(subscription);
+
+        if (delegate) {
+          RUDPICESocketPtr pThis = mThisWeak.lock();
+
+          if (RUDPICESocketState_Pending != mCurrentState) {
+            delegate->onRUDPICESocketStateChanged(pThis, mCurrentState);
+          }
+          if (mNotifiedCandidateChanged) {
+            delegate->onRUDPICESocketCandidatesChanged(pThis);
           }
         }
 
-        if (RUDPICESocketState_Shutdown == state) return subscription;
-        mDelegates[subscription->mID] = delegate;
+        if (isShutdown()) {
+          mSubscriptions.clear();
+        }
+
         return subscription;
       }
 
@@ -224,12 +262,14 @@ namespace openpeer
       //-----------------------------------------------------------------------
       IRUDPICESocketSessionPtr RUDPICESocket::createSessionFromRemoteCandidates(
                                                                                 IRUDPICESocketSessionDelegatePtr delegate,
+                                                                                const char *remoteUsernameFrag,
+                                                                                const char *remotePassword,
                                                                                 const CandidateList &remoteCandidates,
                                                                                 ICEControls control
                                                                                 )
       {
         AutoRecursiveLock lock(mLock);
-        RUDPICESocketSessionPtr session = IRUDPICESocketSessionForRUDPICESocket::create(getAssociatedMessageQueue(), mThisWeak.lock(), delegate, remoteCandidates, control);
+        RUDPICESocketSessionPtr session = IRUDPICESocketSessionForRUDPICESocket::create(getAssociatedMessageQueue(), mThisWeak.lock(), delegate, remoteUsernameFrag, remotePassword, remoteCandidates, control);
 
         if ((isShuttingDown()) ||
             (isShutdown())) {
@@ -302,26 +342,15 @@ namespace openpeer
           cancel();
         }
       }
-      
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark RUDPICESocket => friend Subscription
-      #pragma mark
 
       //-----------------------------------------------------------------------
-      void RUDPICESocket::cancelSubscription(Subscription &subscription)
+      void RUDPICESocket::onICESocketCandidatesChanged(IICESocketPtr socket)
       {
         AutoRecursiveLock lock(mLock);
-        DelegateMap::iterator found = mDelegates.find(subscription.getID());
-        if (found == mDelegates.end()) return;
 
-        mDelegates.erase(found);
-        if (isShuttingDown()) {
-          cancel();
-        }
+        get(mNotifiedCandidateChanged) = true;
+
+        mSubscriptions.delegate()->onRUDPICESocketCandidatesChanged(mThisWeak.lock());
       }
 
       //-----------------------------------------------------------------------
@@ -350,6 +379,29 @@ namespace openpeer
         return RUDPICESocketState_Shutdown == mCurrentState;
       }
 
+      //-----------------------------------------------------------------------
+      String RUDPICESocket::getDebugValueString(bool includeCommaPrefix) const
+      {
+        AutoRecursiveLock lock(getLock());
+        bool firstTime = !includeCommaPrefix;
+        return
+
+        Helper::getDebugValue("rudp ice socket id", string(mID), firstTime) +
+
+        Helper::getDebugValue("graceful shutdown", mGracefulShutdownReference ? String("true") : String(), firstTime) +
+
+        Helper::getDebugValue("state", IRUDPICESocket::toString(mCurrentState), firstTime) +
+
+        Helper::getDebugValue("subscriptions", mSubscriptions.size() > 0 ? string(mSubscriptions.size()) : String(), firstTime) +
+        Helper::getDebugValue("default subscription", mDefaultSubscription ? String("true") : String(), firstTime) +
+
+        Helper::getDebugValue("notified candidates changed", mNotifiedCandidateChanged ? String("true") : String(), firstTime) +
+
+        Helper::getDebugValue("sessions", mSessions.size() > 0 ? string(mSessions.size()) : String(), firstTime) +
+
+        IICESocket::toDebugString(mICESocket, firstTime);
+      }
+      
       //-----------------------------------------------------------------------
       void RUDPICESocket::cancel()
       {
@@ -385,13 +437,14 @@ namespace openpeer
         setState(RUDPICESocketState_Shutdown);
 
         mGracefulShutdownReference.reset();
-        mDelegates.clear();
+
+        mSubscriptions.clear();
+        mDefaultSubscription.reset();
 
         setState(RUDPICESocketState_Shutdown);
 
         if (mICESocket) {
           mICESocket->shutdown();
-          mICESocket.reset();
         }
       }
 
@@ -408,59 +461,10 @@ namespace openpeer
         RUDPICESocketPtr pThis = mThisWeak.lock();
 
         if (pThis) {
-          // notify the delegates
-          for (DelegateMap::iterator delIter = mDelegates.begin(); delIter != mDelegates.end(); )
-          {
-            DelegateMap::iterator current = delIter;
-            ++delIter;
-
-            try {
-              (*current).second->onRUDPICESocketStateChanged(mThisWeak.lock(), (RUDPICESocketStates)state);
-            } catch(IRUDPICESocketDelegateProxy::Exceptions::DelegateGone &) {
-              ZS_LOG_WARNING(Detail, log("delegate gone"))
-              mDelegates.erase(current);
-            }
-          }
+          mSubscriptions.delegate()->onRUDPICESocketStateChanged(pThis, mCurrentState);
         }
       }
 
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark RUDPICESocket::Subscription
-      #pragma mark
-
-      //-----------------------------------------------------------------------
-      RUDPICESocket::Subscription::Subscription(RUDPICESocketPtr outer) :
-        mOuter(outer),
-        mID(zsLib::createPUID())
-      {
-      }
-
-      //-----------------------------------------------------------------------
-      RUDPICESocket::Subscription::~Subscription()
-      {
-        cancel();
-      }
-
-      //-----------------------------------------------------------------------
-      RUDPICESocket::SubscriptionPtr RUDPICESocket::Subscription::create(RUDPICESocketPtr outer)
-      {
-        SubscriptionPtr pThis(new Subscription(outer));
-        return pThis;
-      }
-
-      //-----------------------------------------------------------------------
-      void RUDPICESocket::Subscription::cancel()
-      {
-        RUDPICESocketPtr outer = mOuter.lock();
-        if (!outer) return;
-
-        outer->cancelSubscription(*this);
-        mOuter.reset();
-      }
     }
 
     //-------------------------------------------------------------------------
@@ -475,6 +479,12 @@ namespace openpeer
     const char *IRUDPICESocket::toString(RUDPICESocketStates state)
     {
       return IICESocket::toString((IICESocket::ICESocketStates)state);
+    }
+
+    //-------------------------------------------------------------------------
+    String IRUDPICESocket::toDebugString(IRUDPICESocketPtr socket, bool includeCommaPrefix)
+    {
+      return internal::RUDPICESocket::toDebugString(socket, includeCommaPrefix);
     }
 
     //-------------------------------------------------------------------------

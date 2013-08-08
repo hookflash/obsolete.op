@@ -180,8 +180,9 @@ namespace openpeer
 
         mLastCandidateCRC(0)
       {
-        mDefaultSubscription = mSubscriptions.subscribe(delegate, queue);
         ZS_LOG_BASIC(log("created"))
+
+        mDefaultSubscription = mSubscriptions.subscribe(delegate, queue);
 
         // calculate the empty list CRC value
         CRC32 crc;
@@ -414,11 +415,11 @@ namespace openpeer
                                                                         const char *remoteUsernameFrag,
                                                                         const char *remotePassword,
                                                                         const CandidateList &remoteCandidates,
-                                                                        ICEControls control
+                                                                        ICEControls control,
+                                                                        IICESocketSessionPtr foundation
                                                                         )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!remoteUsernameFrag)
-        ZS_THROW_INVALID_ARGUMENT_IF(!remotePassword)
 
         AutoRecursiveLock lock(mLock);
 
@@ -1193,7 +1194,7 @@ namespace openpeer
           String usernameFrag = (mFoundation ? mFoundation->getUsernameFrag() : mUsernameFrag);
 
           // algorithm to ensure that two candidates with same foundation IP / type end up with same foundation value
-          localSocket->mLocal.mFoundation = IHelper::convertToHex(*IHelper::hash("foundation:" + usernameFrag + ":" + string(bindIP) + ":" + toString(localSocket->mLocal.mType), IHelper::HashAlgorthm_MD5));;
+          localSocket->mLocal.mFoundation = IHelper::convertToHex(*IHelper::hash("foundation:" + usernameFrag + ":" + bindIP.string(false) + ":" + toString(localSocket->mLocal.mType), IHelper::HashAlgorthm_MD5));;
 
           localSocket->mReflexive.mRelatedIP = bindIP;
           localSocket->mRelay.mRelatedIP = bindIP;
@@ -1274,7 +1275,7 @@ namespace openpeer
 
           localSocket->mReflexive.mIPAddress = localSocket->mSTUNDiscovery->getMappedAddress();
           String usernameFrag = (mFoundation ? mFoundation->getUsernameFrag() : mUsernameFrag);
-          localSocket->mReflexive.mFoundation = IHelper::convertToHex(*IHelper::hash("foundation:" + usernameFrag + ":" + string(localSocket->mReflexive.mIPAddress) + ":" + toString(localSocket->mReflexive.mType), IHelper::HashAlgorthm_MD5));;
+          localSocket->mReflexive.mFoundation = IHelper::convertToHex(*IHelper::hash("foundation:" + usernameFrag + ":" + localSocket->mReflexive.mIPAddress.string(false) + ":" + toString(localSocket->mReflexive.mType), IHelper::HashAlgorthm_MD5));;
 
           ZS_LOG_DEBUG(log("stun discovery complete") + ", base IP=" + string(localSocket->mLocal.mIPAddress) + ", discovered=" + string(localSocket->mReflexive.mIPAddress))
         }
@@ -1333,7 +1334,7 @@ namespace openpeer
                     localSocket->mRelay.mIPAddress = localSocket->mTURNSocket->getRelayedIP();
 
                     String usernameFrag = (mFoundation ? mFoundation->getUsernameFrag() : mUsernameFrag);
-                    localSocket->mRelay.mFoundation = IHelper::convertToHex(*IHelper::hash("foundation:" + usernameFrag + ":" + string(localSocket->mRelay.mIPAddress) + ":" + toString(localSocket->mRelay.mType), IHelper::HashAlgorthm_MD5));;
+                    localSocket->mRelay.mFoundation = IHelper::convertToHex(*IHelper::hash("foundation:" + usernameFrag + ":" + localSocket->mRelay.mIPAddress.string(false) + ":" + toString(localSocket->mRelay.mType), IHelper::HashAlgorthm_MD5));;
 
                     ZS_LOG_DEBUG(log("TURN relay ready") + ", base IP=" + string(localSocket->mLocal.mIPAddress) + ", discovered=" + string(localSocket->mRelay.mIPAddress))
                   }
@@ -1920,6 +1921,16 @@ namespace openpeer
           outRemovedCandidates.push_back(oldCandidate);
         }
       }
+    }
+
+    //-------------------------------------------------------------------------
+    const char *IICESocket::toString(ICEControls control)
+    {
+      switch (control) {
+        case ICEControl_Controlling:      return "Controlling";
+        case ICEControl_Controlled:       return "Controlled";
+      }
+      return "UNDEFINED";
     }
 
     //-------------------------------------------------------------------------

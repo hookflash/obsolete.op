@@ -66,8 +66,8 @@ namespace openpeer
                                                                     const IPAddress &remoteIP,
                                                                     WORD incomingChannelNumber,
                                                                     const char *localUserFrag,
-                                                                    const char *remoteUserFrag,
                                                                     const char *localPassword,
+                                                                    const char *remoteUserFrag,
                                                                     const char *remotePassword,
                                                                     STUNPacketPtr channelOpenPacket,
                                                                     STUNPacketPtr &outResponse
@@ -80,8 +80,8 @@ namespace openpeer
                                                                     const IPAddress &remoteIP,
                                                                     WORD incomingChannelNumber,
                                                                     const char *localUserFrag,
-                                                                    const char *remoteUserFrag,
                                                                     const char *localPassword,
+                                                                    const char *remoteUserFrag,
                                                                     const char *remotePassword,
                                                                     const char *connectionInfo
                                                                     );
@@ -188,8 +188,8 @@ namespace openpeer
                     IRUDPChannelDelegateForSessionAndListenerPtr master,
                     const IPAddress &remoteIP,
                     const char *localUserFrag,
-                    const char *remoteUserFrag,
                     const char *localPassword,
+                    const char *remoteUserFrag,
                     const char *remotePassword,
                     DWORD minimumRTT,
                     DWORD lifetime,
@@ -248,8 +248,8 @@ namespace openpeer
                                                                     const IPAddress &remoteIP,
                                                                     WORD incomingChannelNumber,
                                                                     const char *localUserFrag,
-                                                                    const char *remoteUserFrag,
                                                                     const char *localPassword,
+                                                                    const char *remoteUserFrag,
                                                                     const char *remotePassword,
                                                                     STUNPacketPtr channelOpenPacket,
                                                                     STUNPacketPtr &outResponse
@@ -262,8 +262,8 @@ namespace openpeer
                                                                     const IPAddress &remoteIP,
                                                                     WORD incomingChannelNumber,
                                                                     const char *localUserFrag,
-                                                                    const char *remoteUserFrag,
                                                                     const char *localPassword,
+                                                                    const char *remoteUserFrag,
                                                                     const char *remotePassword,
                                                                     const char *connectionInfo
                                                                     );
@@ -519,8 +519,8 @@ namespace openpeer
                                                                      const IPAddress &remoteIP,
                                                                      WORD incomingChannelNumber,
                                                                      const char *localUserFrag,
-                                                                     const char *remoteUserFrag,
                                                                      const char *localPassword,
+                                                                     const char *remoteUserFrag,
                                                                      const char *remotePassword,
                                                                      STUNPacketPtr channelOpenPacket,
                                                                      STUNPacketPtr &outResponse
@@ -533,8 +533,8 @@ namespace openpeer
                                                                      const IPAddress &remoteIP,
                                                                      WORD incomingChannelNumber,
                                                                      const char *localUserFrag,
-                                                                     const char *remoteUserFrag,
                                                                      const char *localPassword,
+                                                                     const char *remoteUserFrag,
                                                                      const char *remotePassword,
                                                                      const char *connectionInfo
                                                                      );

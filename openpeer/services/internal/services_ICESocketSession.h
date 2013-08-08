@@ -72,7 +72,8 @@ namespace openpeer
                                           ICESocketPtr socket,
                                           const char *remoteUsernameFrag,
                                           const char *remotePassword,
-                                          ICEControls control
+                                          ICEControls control,
+                                          IICESocketSessionPtr foundation = IICESocketSessionPtr()
                                           );
 
         virtual PUID getID() const = 0;
@@ -135,7 +136,7 @@ namespace openpeer
         struct CandidatePair
         {
           static CandidatePairPtr create();
-          CandidatePairPtr clone() const;
+          String toDebugString(bool includeCommaPrefix = true) const;
 
           Candidate mLocal;
           Candidate mRemote;
@@ -156,7 +157,8 @@ namespace openpeer
                          ICESocketPtr socket,
                          const char *remoteUsernameFrag,
                          const char *remotePassword,
-                         ICEControls control
+                         ICEControls control,
+                         IICESocketSessionPtr foundation = IICESocketSessionPtr()
                          );
 
         ICESocketSession(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
@@ -186,6 +188,11 @@ namespace openpeer
                                                 ) const;
 
         virtual void close();
+
+        virtual String getLocalUsernameFrag() const;
+        virtual String getLocalPassword() const;
+        virtual String getRemoteUsernameFrag() const;
+        virtual String getRemotePassword() const;
 
         virtual void getLocalCandidates(CandidateList &outCandidates);
         virtual void updateRemoteCandidates(const CandidateList &remoteCandidates);
@@ -223,7 +230,8 @@ namespace openpeer
                                           ICESocketPtr socket,
                                           const char *remoteUsernameFrag,
                                           const char *remotePassword,
-                                          ICEControls control
+                                          ICEControls control,
+                                          IICESocketSessionPtr foundation = IICESocketSessionPtr()
                                           );
 
         // (duplicate) virtual PUID getID() const;
@@ -320,6 +328,7 @@ namespace openpeer
         bool stepSocket();
         bool stepCandidates();
         bool stepActivateTimer();
+        bool stepEndSearch();
         bool stepTimer();
         bool stepExpectingDataTimer();
         bool stepKeepAliveTimer();
@@ -337,6 +346,8 @@ namespace openpeer
                     ULONG bufferLengthInBytes,
                     bool isUserData
                     );
+
+        bool canUnfreeze(CandidatePairPtr derivedPairing);
 
       protected:
         //---------------------------------------------------------------------
@@ -358,6 +369,8 @@ namespace openpeer
         AutoBool mInformedWriteReady;
 
         IICESocketSubscriptionPtr mSocketSubscription;
+
+        ICESocketSessionPtr mFoundation;
 
         String mLocalUsernameFrag;
         String mLocalPassword;
@@ -394,7 +407,7 @@ namespace openpeer
 
         CandidateList mLocalCandidates;
         CandidateList mRemoteCandidates;
-        Time mEndOfRemoteCandidatesTime;  // TODO
+        AutoBool mEndOfRemoteCandidatesFlag;
       };
 
       //-----------------------------------------------------------------------
@@ -417,7 +430,8 @@ namespace openpeer
                                            ICESocketPtr socket,
                                            const char *remoteUsernameFrag,
                                            const char *remotePassword,
-                                           ICEControls control
+                                           ICEControls control,
+                                           IICESocketSessionPtr foundation = IICESocketSessionPtr()
                                            );
       };
 
