@@ -112,7 +112,8 @@ namespace openpeer
 
         void init(
                   WORD port,
-                  const char *srvName
+                  const char *srvNameTURN,
+                  const char *srvNameSTUN
                   )
         {
           zsLib::AutoRecursiveLock lock(getLock());
@@ -120,10 +121,10 @@ namespace openpeer
           mICESocket = IICESocket::create(
                                           getAssociatedMessageQueue(),
                                           mThisWeak.lock(),
-                                          srvName,
+                                          srvNameTURN,
                                           gUsername,
                                           gPassword,
-                                          srvName,
+                                          srvNameSTUN,
                                           port
                                           );
 
@@ -134,7 +135,8 @@ namespace openpeer
         static TestICESocketCallbackPtr create(
                                                zsLib::IMessageQueuePtr queue,
                                                WORD port,
-                                               const char *srvName,
+                                               const char *srvNameTURN,
+                                               const char *srvNameSTUN,
                                                bool expectConnected = true,
                                                bool expectGracefulShutdown = true,
                                                bool expectErrorShutdown = false,
@@ -149,7 +151,7 @@ namespace openpeer
           pThis->mExpectErrorShutdown = expectErrorShutdown;
           pThis->mExpectedSessionConnected = expectedSessionConnected;
           pThis->mExpectedSessionClosed = expectedSessionClosed;
-          pThis->init(port, srvName);
+          pThis->init(port, srvNameTURN, srvNameSTUN);
           return pThis;
         }
 
@@ -178,9 +180,11 @@ namespace openpeer
               IICESocket::CandidateList candidates;
               socket->getLocalCandidates(candidates);
 
-              if (mRemote) {
-                mRemote->updateCandidates(candidates);  // give final list of candidates
-                mRemote->notifyEndOfCandidates();
+              TestICESocketCallbackPtr remote = mRemote.lock();
+
+              if (remote) {
+                remote->updateCandidates(candidates);  // give final list of candidates
+                remote->notifyEndOfCandidates();
               }
               break;
             }
@@ -203,14 +207,16 @@ namespace openpeer
         virtual void onICESocketCandidatesChanged(IICESocketPtr socket)
         {
           zsLib::AutoRecursiveLock lock(getLock());
-          if (!mRemote) return;
+
+          TestICESocketCallbackPtr remote = mRemote.lock();
+          if (!remote) return;
 
           if (!mICESocket) return;
 
           IICESocket::CandidateList candidates;
           socket->getLocalCandidates(candidates);
 
-          mRemote->updateCandidates(candidates);
+          remote->updateCandidates(candidates);
         }
 
         virtual void onICESocketSessionStateChanged(
@@ -367,12 +373,13 @@ namespace openpeer
           zsLib::AutoRecursiveLock lock(getLock());
           if (!mICESocket) return IICESocketSessionPtr();
 
-          if (!mRemote) return IICESocketSessionPtr();
+          TestICESocketCallbackPtr remote = mRemote.lock();
+          if (!remote) return IICESocketSessionPtr();
 
-          String remoteUsernameFrag = mRemote->getLocalUsernameFrag();
-          String remotePassword = mRemote->getLocalPassword();
+          String remoteUsernameFrag = remote->getLocalUsernameFrag();
+          String remotePassword = remote->getLocalPassword();
           IICESocket::CandidateList remoteCandidates;
-          mRemote->getLocalCandidates(remoteCandidates);
+          remote->getLocalCandidates(remoteCandidates);
 
           IICESocketSessionPtr session = mICESocket->createSessionFromRemoteCandidates(mThisWeak.lock(), remoteUsernameFrag, remotePassword, remoteCandidates, control);
           mSessions.push_back(session);
@@ -415,7 +422,7 @@ namespace openpeer
       private:
         TestICESocketCallbackWeakPtr mThisWeak;
 
-        TestICESocketCallbackPtr mRemote;
+        TestICESocketCallbackWeakPtr mRemote;
 
         zsLib::TimerPtr mTimer;
 
@@ -471,24 +478,24 @@ void doTestICESocket()
       bool quit = false;
       ULONG expecting = 0;
       switch (step) {
-        case 0: {
-          testObject1 = TestICESocketCallback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN);
-          testObject2 = TestICESocketCallback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN);
-
-          testObject1->setRemote(testObject2);
-          testObject2->setRemote(testObject1);
-          break;
-        }
 #if 0
-        case 1: {
-          testObject1 = TestICESocketCallback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, true, false, false, true, false);
-          testObject2 = TestICESocketCallback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, true, false, false, true, false);
+        case 0: {
+          testObject1 = TestICESocketCallback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, OPENPEER_SERVICE_TEST_STUN_SERVER);
+          testObject2 = TestICESocketCallback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, OPENPEER_SERVICE_TEST_STUN_SERVER);
 
           testObject1->setRemote(testObject2);
           testObject2->setRemote(testObject1);
           break;
         }
 #endif //0
+        case 0: {
+          testObject1 = TestICESocketCallback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, OPENPEER_SERVICE_TEST_STUN_SERVER, true, false, false, true, false);
+          testObject2 = TestICESocketCallback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, OPENPEER_SERVICE_TEST_STUN_SERVER, true, false, false, true, false);
+
+          testObject1->setRemote(testObject2);
+          testObject2->setRemote(testObject1);
+          break;
+        }
         default:  quit = true; break;
       }
       if (quit) break;
@@ -513,7 +520,7 @@ void doTestICESocket()
         found = 0;
 
         switch (step) {
-          case 0: {
+          case 1: {
             if (1 == totalWait) {
               testObject1->createSessionFromRemoteCandidates(IICESocket::ICEControl_Controlling);
               testObject2->createSessionFromRemoteCandidates(IICESocket::ICEControl_Controlled);
@@ -525,7 +532,7 @@ void doTestICESocket()
             }
             break;
           }
-          case 1: {
+          case 0: {
             if (10 == totalWait) {
               testObject1->createSessionFromRemoteCandidates(IICESocket::ICEControl_Controlling);
               testObject2->createSessionFromRemoteCandidates(IICESocket::ICEControl_Controlling);
@@ -539,10 +546,12 @@ void doTestICESocket()
           }
         }
 
-        found += (testObject1 ? (testObject1->isComplete() ? 1 : 0) : 0);
-        found += (testObject2 ? (testObject2->isComplete() ? 1 : 0) : 0);
-        found += (testObject3 ? (testObject3->isComplete() ? 1 : 0) : 0);
-        found += (testObject4 ? (testObject4->isComplete() ? 1 : 0) : 0);
+        if (0 == found) {
+          found += (testObject1 ? (testObject1->isComplete() ? 1 : 0) : 0);
+          found += (testObject2 ? (testObject2->isComplete() ? 1 : 0) : 0);
+          found += (testObject3 ? (testObject3->isComplete() ? 1 : 0) : 0);
+          found += (testObject4 ? (testObject4->isComplete() ? 1 : 0) : 0);
+        }
 
         if (lastFound != found) {
           lastFound = found;

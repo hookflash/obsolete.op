@@ -1155,6 +1155,12 @@ namespace openpeer
           return;
         }
 
+        if (timer == mDeallocTimer) {
+          ZS_LOG_DEBUG(log("on dealloc timer"))
+          cancel();
+          return;
+        }
+
         // check if it is one of the channel timers...
         for (ChannelNumberMap::iterator iter = mChannelNumberMap.begin(); iter != mChannelNumberMap.end(); ++iter) {
           ChannelInfoPtr info = (*iter).second;
@@ -1205,52 +1211,54 @@ namespace openpeer
       {
         AutoRecursiveLock lock(mLock);
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("turn socket id", string(mID), firstTime) +
-               Helper::getDebugValue("current state", toString(mCurrentState), firstTime) +
-               Helper::getDebugValue("last error", toString(mLastError), firstTime) +
-               Helper::getDebugValue("limit channel range (start)", 0 != mLimitChannelToRangeStart ? string(mLimitChannelToRangeStart) : String(), firstTime) +
-               Helper::getDebugValue("limit channel range (end)", 0 != mLimitChannelToRangeEnd ? string(mLimitChannelToRangeEnd) : String(), firstTime) +
-               Helper::getDebugValue("delegate", mDelegate ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("server name", mServerName, firstTime) +
-               Helper::getDebugValue("username", mUsername, firstTime) +
-               Helper::getDebugValue("password", mPassword, firstTime) +
-               Helper::getDebugValue("realm", mRealm, firstTime) +
-               Helper::getDebugValue("nonce", mNonce, firstTime) +
-               Helper::getDebugValue("udp dns query", mTURNUDPQuery ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("tcp dns query", mTURNTCPQuery ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("udp dns srv records", mTURNUDPSRVResult ? (mTURNUDPSRVResult->mRecords.size() > 0 ? string(mTURNUDPSRVResult->mRecords.size()) : String()) : String(), firstTime) +
-               Helper::getDebugValue("tcp dns srv records", mTURNTCPSRVResult ? (mTURNTCPSRVResult->mRecords.size() > 0 ? string(mTURNTCPSRVResult->mRecords.size()) : String()) : String(), firstTime) +
-               Helper::getDebugValue("use channel binding", mUseChannelBinding ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("allocated response IP", mAllocateResponseIP.string(), firstTime) +
-               Helper::getDebugValue("relayed IP", mRelayedIP.string(), firstTime) +
-               Helper::getDebugValue("reflected IP", mReflectedIP.string(), firstTime) +
-               (mActiveServer ?
-                Helper::getDebugValue("active server", String("true"), firstTime) +
-                Helper::getDebugValue("is udp", mActiveServer->mIsUDP ? String("true") : String(), firstTime) +
-                Helper::getDebugValue("server ip", mActiveServer->mServerIP.string(), firstTime) +
-                Helper::getDebugValue("tcp socket", mActiveServer->mTCPSocket ? String("true") : String(), firstTime) +
-                Helper::getDebugValue("connected", mActiveServer->mIsConnected ? String("true") : String(), firstTime) +
-                Helper::getDebugValue("write ready", mActiveServer->mInformedWriteReady ? String("true") : String(), firstTime) +
-                Helper::getDebugValue("activate after", Time() != mActiveServer->mActivateAfter ? string(mActiveServer->mActivateAfter) : String(), firstTime) +
-                Helper::getDebugValue("allocate requestor", mActiveServer->mAllocateRequester ? String("true") : String(), firstTime) +
-                Helper::getDebugValue("read buffer fill size", 0 != mActiveServer->mReadBufferFilledSizeInBytes ? string(mActiveServer->mReadBufferFilledSizeInBytes) : String(), firstTime) +
-                Helper::getDebugValue("write buffer fill size", 0 != mActiveServer->mWriteBufferFilledSizeInBytes ? string(mActiveServer->mWriteBufferFilledSizeInBytes) : String(), firstTime)
-                : String()) +
-               Helper::getDebugValue("lifetime", 0 != mLifetime ? string(mLifetime) : String(), firstTime) +
-               Helper::getDebugValue("refresh requester", mRefreshRequester ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("refresh timer", mRefreshTimer ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("last send data to server", Time() != mLastSentDataToServer ? string(mLastSentDataToServer) : String(), firstTime) +
-               Helper::getDebugValue("last refreash timer was sent", Time() != mLastRefreshTimerWasSentAt ? string(mLastRefreshTimerWasSentAt) : String(), firstTime) +
-               Helper::getDebugValue("deallocate requester", mDeallocateRequester ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("servers", mServers.size() > 0 ? string(mServers.size()) : String(), firstTime) +
-               Helper::getDebugValue("activation timer", mActivationTimer ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("permissions", mPermissions.size() > 0 ? string(mPermissions.size()) : String(), firstTime) +
-               Helper::getDebugValue("permission timer", mPermissionTimer ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("permission requester", mPermissionRequester ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("permission max capacity", 0 != mPermissionRequesterMaxCapacity ? string(mPermissionRequesterMaxCapacity) : String(), firstTime) +
-               Helper::getDebugValue("channel IP map", mChannelIPMap.size() > 0 ? string(mChannelIPMap.size()) : String(), firstTime) +
-               Helper::getDebugValue("channel number map", mChannelNumberMap.size() > 0 ? string(mChannelNumberMap.size()) : String(), firstTime) +
-               Helper::getDebugValue("recycle buffers", mRecycledBuffers.size() > 0 ? string(mRecycledBuffers.size()) : String(), firstTime);
+        return
+        Helper::getDebugValue("turn socket id", string(mID), firstTime) +
+        Helper::getDebugValue("current state", toString(mCurrentState), firstTime) +
+        Helper::getDebugValue("last error", toString(mLastError), firstTime) +
+        Helper::getDebugValue("limit channel range (start)", 0 != mLimitChannelToRangeStart ? string(mLimitChannelToRangeStart) : String(), firstTime) +
+        Helper::getDebugValue("limit channel range (end)", 0 != mLimitChannelToRangeEnd ? string(mLimitChannelToRangeEnd) : String(), firstTime) +
+        Helper::getDebugValue("delegate", mDelegate ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("server name", mServerName, firstTime) +
+        Helper::getDebugValue("username", mUsername, firstTime) +
+        Helper::getDebugValue("password", mPassword, firstTime) +
+        Helper::getDebugValue("realm", mRealm, firstTime) +
+        Helper::getDebugValue("nonce", mNonce, firstTime) +
+        Helper::getDebugValue("udp dns query", mTURNUDPQuery ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("tcp dns query", mTURNTCPQuery ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("udp dns srv records", mTURNUDPSRVResult ? (mTURNUDPSRVResult->mRecords.size() > 0 ? string(mTURNUDPSRVResult->mRecords.size()) : String()) : String(), firstTime) +
+        Helper::getDebugValue("tcp dns srv records", mTURNTCPSRVResult ? (mTURNTCPSRVResult->mRecords.size() > 0 ? string(mTURNTCPSRVResult->mRecords.size()) : String()) : String(), firstTime) +
+        Helper::getDebugValue("use channel binding", mUseChannelBinding ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("allocated response IP", mAllocateResponseIP.string(), firstTime) +
+        Helper::getDebugValue("relayed IP", mRelayedIP.string(), firstTime) +
+        Helper::getDebugValue("reflected IP", mReflectedIP.string(), firstTime) +
+        (mActiveServer ?
+         Helper::getDebugValue("active server", String("true"), firstTime) +
+         Helper::getDebugValue("is udp", mActiveServer->mIsUDP ? String("true") : String(), firstTime) +
+         Helper::getDebugValue("server ip", mActiveServer->mServerIP.string(), firstTime) +
+         Helper::getDebugValue("tcp socket", mActiveServer->mTCPSocket ? String("true") : String(), firstTime) +
+         Helper::getDebugValue("connected", mActiveServer->mIsConnected ? String("true") : String(), firstTime) +
+         Helper::getDebugValue("write ready", mActiveServer->mInformedWriteReady ? String("true") : String(), firstTime) +
+         Helper::getDebugValue("activate after", Time() != mActiveServer->mActivateAfter ? string(mActiveServer->mActivateAfter) : String(), firstTime) +
+         Helper::getDebugValue("allocate requestor", mActiveServer->mAllocateRequester ? String("true") : String(), firstTime) +
+         Helper::getDebugValue("read buffer fill size", 0 != mActiveServer->mReadBufferFilledSizeInBytes ? string(mActiveServer->mReadBufferFilledSizeInBytes) : String(), firstTime) +
+         Helper::getDebugValue("write buffer fill size", 0 != mActiveServer->mWriteBufferFilledSizeInBytes ? string(mActiveServer->mWriteBufferFilledSizeInBytes) : String(), firstTime)
+         : String()) +
+        Helper::getDebugValue("lifetime", 0 != mLifetime ? string(mLifetime) : String(), firstTime) +
+        Helper::getDebugValue("refresh requester", mRefreshRequester ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("refresh timer", mRefreshTimer ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("last send data to server", Time() != mLastSentDataToServer ? string(mLastSentDataToServer) : String(), firstTime) +
+        Helper::getDebugValue("last refreash timer was sent", Time() != mLastRefreshTimerWasSentAt ? string(mLastRefreshTimerWasSentAt) : String(), firstTime) +
+        Helper::getDebugValue("deallocate requester", mDeallocateRequester ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("deallocate timer", mDeallocTimer ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("servers", mServers.size() > 0 ? string(mServers.size()) : String(), firstTime) +
+        Helper::getDebugValue("activation timer", mActivationTimer ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("permissions", mPermissions.size() > 0 ? string(mPermissions.size()) : String(), firstTime) +
+        Helper::getDebugValue("permission timer", mPermissionTimer ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("permission requester", mPermissionRequester ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("permission max capacity", 0 != mPermissionRequesterMaxCapacity ? string(mPermissionRequesterMaxCapacity) : String(), firstTime) +
+        Helper::getDebugValue("channel IP map", mChannelIPMap.size() > 0 ? string(mChannelIPMap.size()) : String(), firstTime) +
+        Helper::getDebugValue("channel number map", mChannelNumberMap.size() > 0 ? string(mChannelNumberMap.size()) : String(), firstTime) +
+        Helper::getDebugValue("recycle buffers", mRecycledBuffers.size() > 0 ? string(mRecycledBuffers.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -1506,7 +1514,12 @@ namespace openpeer
       {
         AutoRecursiveLock lock(mLock);    // just in case
 
-        if (isShutdown()) return; // already shutdown...
+        if (isShutdown()) {
+          ZS_LOG_DEBUG(log("already cancelled"))
+          return; // already shutdown...
+        }
+
+        ZS_LOG_DEBUG(log("cancel called"))
 
         setState(ITURNSocket::TURNSocketState_ShuttingDown);
 
@@ -1567,7 +1580,10 @@ namespace openpeer
 
           if (!mRelayedIP.isAddressEmpty()) {                                   // if we have a relay address then we must do a proper shutdown
 
-            if (!mDeallocateRequester) {
+            ITURNSocketDelegatePtr originalDelegate = ITURNSocketDelegateProxy::original(mDelegate);
+
+            if ((!mDeallocateRequester) &&
+                (originalDelegate)) {
               ZS_LOG_DETAIL(log("graceful shutdown started"))
 
               // we need to shutdown gracefully... start the process now...
@@ -1581,6 +1597,17 @@ namespace openpeer
               deallocRequest->mLifetime = 0;
               deallocRequest->mCredentialMechanism = STUNPacket::CredentialMechanisms_LongTerm;
               mDeallocateRequester = ISTUNRequester::create(getAssociatedMessageQueue(), mThisWeak.lock(), mActiveServer->mServerIP, deallocRequest, STUNPacket::RFC_5766_TURN);
+
+              if (!mDeallocTimer) {
+                mDeallocTimer = Timer::create(mGracefulShutdownReference, Seconds(1));
+              }
+            }
+
+            if (!originalDelegate) {
+              if (mDeallocateRequester) {
+                mDeallocateRequester->cancel();
+                mDeallocateRequester.reset();
+              }
             }
           }
 
@@ -1593,6 +1620,11 @@ namespace openpeer
         setState(ITURNSocket::TURNSocketState_Shutdown);
 
         ZS_LOG_DETAIL(log("performing final cleanup"))
+
+        if (mDeallocTimer) {
+          mDeallocTimer->cancel();
+          mDeallocTimer.reset();
+        }
 
         mGracefulShutdownReference.reset();
         mDelegate.reset();

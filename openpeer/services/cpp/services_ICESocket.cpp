@@ -814,8 +814,6 @@ namespace openpeer
                                                 ULONG packetLengthInBytes
                                                 )
       {
-        ZS_LOG_TRACE(log("sending packet for STUN discovery") + ", destination=" + destination.string() + ", length=" + string(packetLengthInBytes))
-
         AutoRecursiveLock lock(mLock);
         if (isShutdown()) {
           ZS_LOG_TRACE(log("cannot send packet as already shutdown"))
@@ -824,11 +822,13 @@ namespace openpeer
 
         SocketSTUNMap::iterator found = mSocketSTUNs.find(discovery);
         if (found == mSocketSTUNs.end()) {
-          ZS_LOG_WARNING(Debug, log("cannot send STUN packet as STUN socket does not match current STUN socket") + ", socket ID=" + string(discovery->getID()))
+          ZS_LOG_WARNING(Debug, log("cannot send STUN packet as STUN discovery does not match any STUN socket") + ", socket ID=" + string(discovery->getID()) + ", destination=" + destination.string() + ", length=" + string(packetLengthInBytes))
           return;
         }
 
         LocalSocketPtr &localSocket = (*found).second;
+
+        ZS_LOG_TRACE(log("sending packet for STUN discovery") + ", via=" + localSocket->mLocal.mIPAddress.string() + ", destination=" + destination.string() + ", length=" + string(packetLengthInBytes))
 
         try {
           bool wouldBlock = false;
@@ -1113,14 +1113,14 @@ namespace openpeer
       {
         if (mSockets.size() > 0) {
           if (!mRebindCheckNow) {
-            ZS_LOG_DEBUG(log("already bound thus nothing to do"))
+            ZS_LOG_TRACE(log("already bound thus nothing to do"))
             return true;
           }
-          ZS_LOG_DEBUG(log("rechecking binding now"))
+          ZS_LOG_TRACE(log("rechecking binding now"))
           get(mRebindCheckNow) = false;
         }
 
-        ZS_LOG_DEBUG(log("step bind") + ", total sockets=" + string(mSockets.size()))
+        ZS_LOG_TRACE(log("step bind") + ", total sockets=" + string(mSockets.size()))
 
         IPAddressList localIPs;
         if (!getLocalIPs(localIPs)) {
@@ -1140,7 +1140,7 @@ namespace openpeer
 
           SocketLocalIPMap::iterator found = mSocketLocalIPs.find(bindIP);
           if (found != mSocketLocalIPs.end()) {
-            ZS_LOG_DEBUG(log("already bound") + ", ip=" + string(ip))
+            ZS_LOG_TRACE(log("already bound") + ", ip=" + string(ip))
             continue;
           }
 
@@ -1240,7 +1240,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       bool ICESocket::stepSTUN()
       {
-        ZS_LOG_DEBUG(log("step STUN"))
+        ZS_LOG_TRACE(log("step STUN"))
 
         for (SocketMap::iterator iter = mSockets.begin(); iter != mSockets.end(); ++iter)
         {
@@ -1271,7 +1271,7 @@ namespace openpeer
           }
 
           if (!localSocket->mReflexive.mIPAddress.isAddressEmpty()) {
-            ZS_LOG_TRACE(log("stun discovery already complete yet") + ", base IP=" + string(localSocket->mLocal.mIPAddress) + ", previously discovered=" + string(localSocket->mReflexive.mIPAddress))
+            ZS_LOG_TRACE(log("stun discovery already complete") + ", base IP=" + string(localSocket->mLocal.mIPAddress) + ", previously discovered=" + string(localSocket->mReflexive.mIPAddress))
             continue;
           }
 
@@ -1299,7 +1299,7 @@ namespace openpeer
           shouldSleep = true;
         }
 
-        ZS_LOG_DEBUG(log("step TURN") + ", should sleep=" + (shouldSleep ? "true" : "false"))
+        ZS_LOG_TRACE(log("step TURN") + ", should sleep=" + (shouldSleep ? "true" : "false"))
 
         bool allConnected = true;
         bool allSleeping = true;
@@ -1349,6 +1349,8 @@ namespace openpeer
                 case ITURNSocket::TURNSocketState_Shutdown:   {
                   allConnected = false;
                   clearTURN(localSocket->mTURNSocket);
+                  localSocket->mRelay.mIPAddress.clear();
+                  localSocket->mRelay.mFoundation.clear();
                   localSocket->mTURNSocket.reset();
                   break;
                 }
@@ -1424,6 +1426,8 @@ namespace openpeer
             }
           }
         }
+
+        ZS_LOG_TRACE(log("step TURN complete") + ", should sleep=" + (shouldSleep ? "true" : "false") + ", all sleeping=" + (allSleeping ? "true":"false") + ", all connected=" + (allConnected ? "true":"false"))
 
         if (shouldSleep) {
           if (allSleeping) {
