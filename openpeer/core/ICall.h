@@ -104,6 +104,11 @@ namespace openpeer
 
       virtual bool hasAudio() const = 0;
       virtual bool hasVideo() const = 0;
+      
+      virtual MediaSessionList getReceiveMediaSessions() = 0;
+      virtual MediaSessionList getSendMediaSessions() = 0;
+      virtual void addMediaSession(IMediaSessionPtr session, bool mergeAudioStreams = true) = 0;
+      virtual void removeMediaSession(IMediaSessionPtr session) = 0;
 
       virtual CallStates getState() const = 0;  // state is always relative to "this" location, be is caller or callee
       virtual CallClosedReasons getClosedReason() const = 0;
@@ -135,6 +140,14 @@ namespace openpeer
                                       ICallPtr call,
                                       CallStates state
                                       ) = 0;
+      
+      virtual void onCallMediaSessionAdded(
+                                           IMediaSessionPtr session
+                                           ) = 0;
+      
+      virtual void onCallMediaSessionRemoved(
+                                             IMediaSessionPtr session
+                                             ) = 0;
     };
   }
 }
@@ -142,5 +155,8 @@ namespace openpeer
 ZS_DECLARE_PROXY_BEGIN(openpeer::core::ICallDelegate)
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::core::ICallPtr, ICallPtr)
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::core::ICall::CallStates, CallStates)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::core::IMediaSessionPtr, IMediaSessionPtr)
 ZS_DECLARE_PROXY_METHOD_2(onCallStateChanged, ICallPtr, CallStates)
+ZS_DECLARE_PROXY_METHOD_1(onCallMediaSessionAdded, IMediaSessionPtr)
+ZS_DECLARE_PROXY_METHOD_1(onCallMediaSessionRemoved, IMediaSessionPtr)
 ZS_DECLARE_PROXY_END()

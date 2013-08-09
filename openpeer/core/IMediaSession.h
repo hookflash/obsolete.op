@@ -37,52 +37,31 @@ namespace openpeer
 {
   namespace core
   {
-    interaction IMediaEngine
+    interaction IMediaSession
     {
-      enum VideoOrientations
-      {
-        VideoOrientation_LandscapeLeft,
-        VideoOrientation_PortraitUpsideDown,
-        VideoOrientation_LandscapeRight,
-        VideoOrientation_Portrait
-      };
+      virtual MediaStreamListPtr getAudioStreams() = 0;
+      virtual MediaStreamListPtr getVideoStreams() = 0;
       
-      static const char *toString(VideoOrientations orientation);
+      virtual String getCNAME() = 0;
+      virtual bool getImmutable() = 0;
       
-      enum OutputAudioRoutes
-      {
-        OutputAudioRoute_Headphone,
-        OutputAudioRoute_BuiltInReceiver,
-        OutputAudioRoute_BuiltInSpeaker
-      };
-      
-      static const char *toString(OutputAudioRoutes route);
-      
-      static IMediaEnginePtr singleton();
-      
-      virtual void setDefaultVideoOrientation(VideoOrientations orientation) = 0;
-      virtual VideoOrientations getDefaultVideoOrientation() = 0;
-      virtual void setRecordVideoOrientation(VideoOrientations orientation) = 0;
-      virtual VideoOrientations getRecordVideoOrientation() = 0;
-      virtual void setVideoOrientation() = 0;
-      
-      virtual void setMuteEnabled(bool enabled) = 0;
-      virtual bool getMuteEnabled() = 0;
-      virtual void setLoudspeakerEnabled(bool enabled) = 0;
-      virtual bool getLoudspeakerEnabled() = 0;
-      virtual OutputAudioRoutes getOutputAudioRoute() = 0;
+      virtual void addStream(IMediaStreamPtr stream) = 0;
+      virtual void removeStream(IMediaStreamPtr stream) = 0;
+
+      virtual void setVoiceRecordFile(String fileName) = 0;
+      virtual String getVoiceRecordFile() const = 0;
     };
     
-    interaction IMediaEngineDelegate
+    interaction IMediaSessionDelegate
     {
-      typedef IMediaEngine::OutputAudioRoutes OutputAudioRoutes;
-      
-      virtual void onMediaEngineAudioRouteChanged(OutputAudioRoutes audioRoute) = 0;
+      virtual void onMediaSessionStreamAdded(IMediaStreamPtr track) = 0;
+      virtual void onMediaSessionStreamRemoved(IMediaStreamPtr track) = 0;
     };
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(openpeer::core::IMediaEngineDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(openpeer::core::IMediaEngine::OutputAudioRoutes, OutputAudioRoutes)
-ZS_DECLARE_PROXY_METHOD_1(onMediaEngineAudioRouteChanged, OutputAudioRoutes)
+ZS_DECLARE_PROXY_BEGIN(openpeer::core::IMediaSessionDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::core::IMediaStreamPtr, IMediaStreamPtr)
+ZS_DECLARE_PROXY_METHOD_1(onMediaSessionStreamAdded, IMediaStreamPtr)
+ZS_DECLARE_PROXY_METHOD_1(onMediaSessionStreamRemoved, IMediaStreamPtr)
 ZS_DECLARE_PROXY_END()

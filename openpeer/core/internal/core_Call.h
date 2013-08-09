@@ -105,6 +105,11 @@ namespace openpeer
 
         virtual bool hasAudio() const = 0;
         virtual bool hasVideo() const = 0;
+        
+        virtual MediaSessionList getReceiveMediaSessions() = 0;
+        virtual MediaSessionList getSendMediaSessions() = 0;
+        virtual void addMediaSession(IMediaSessionPtr session, bool mergeAudioStreams = true) = 0;
+        virtual void removeMediaSession(IMediaSessionPtr session) = 0;
 
         virtual void notifyLostFocus() = 0;
 
@@ -234,6 +239,11 @@ namespace openpeer
 
         virtual bool hasAudio() const;
         virtual bool hasVideo() const;
+        
+        virtual MediaSessionList getReceiveMediaSessions();
+        virtual MediaSessionList getSendMediaSessions();
+        virtual void addMediaSession(IMediaSessionPtr session, bool mergeAudioStreams = true);
+        virtual void removeMediaSession(IMediaSessionPtr session);
 
         virtual CallStates getState() const;
         virtual CallClosedReasons getClosedReason() const;
@@ -257,6 +267,11 @@ namespace openpeer
 
         // (duplicate) virtual bool hasAudio() const;
         // (duplicate) virtual bool hasVideo() const;
+        
+        // (duplicate) virtual MediaSessionList getReceiveMediaSessions();
+        // (duplicate) virtual MediaSessionList getSendMediaSessions();
+        // (duplicate) virtual void addMediaSession(IMediaSessionPtr session, bool mergeAudioStreams = true);
+        // (duplicate) virtual void removeMediaSession(IMediaSessionPtr session);
 
         virtual void notifyLostFocus();
 

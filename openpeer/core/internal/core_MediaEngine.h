@@ -33,7 +33,7 @@
 
 #include <openpeer/core/internal/types.h>
 #include <openpeer/core/IMediaEngine.h>
-#include <openpeer/core/internal/core_MediaTrack.h>
+#include <openpeer/core/internal/core_MediaStream.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 
@@ -93,18 +93,8 @@ namespace openpeer
         
         static MediaEnginePtr singleton();
         
-        virtual IMediaTrackForCallTransport::MediaConstraintList getVideoConstraints(ILocalVideoTrack::CameraTypes cameraType) = 0;
-        virtual IMediaTrackForCallTransport::MediaConstraintList getAudioConstraints() = 0;
-        virtual void setLocalStreamForParticipant(String participantID, LocalMediaStreamPtr stream) = 0;
-        virtual void setRemoteStreamForParticipant(String participantID, RemoteMediaStreamPtr stream) = 0;
-        virtual ILocalMediaStreamPtr getLocalStreamForParticipant(String participantID) = 0;
-        virtual IRemoteMediaStreamPtr getRemoteStreamForParticipant(String participantID) = 0;
-        virtual LocalMediaStreamPtr createLocalStream() = 0;
-        virtual RemoteMediaStreamPtr createRemoteStream() = 0;
-        virtual LocalAudioTrackPtr createLocalAudioTrack() = 0;
-        virtual RemoteAudioTrackPtr createRemoteAudioTrack() = 0;
-        virtual LocalVideoTrackPtr createLocalVideoTrack() = 0;
-        virtual RemoteVideoTrackPtr createRemoteVideoTrack() = 0;
+        virtual IMediaStreamForCallTransport::MediaConstraintList getVideoConstraints(ILocalSendVideoStream::CameraTypes cameraType) = 0;
+        virtual IMediaStreamForCallTransport::MediaConstraintList getAudioConstraints() = 0;
       };
       
       //-----------------------------------------------------------------------
@@ -192,9 +182,6 @@ namespace openpeer
         virtual bool getLoudspeakerEnabled();
         virtual OutputAudioRoutes getOutputAudioRoute();
         
-        virtual ILocalMediaStreamPtr getLocalStreamForParticipant(String participantID);
-        virtual IRemoteMediaStreamPtr getRemoteStreamForParticipant(String participantID);
-        
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark MediaEngine => IMediaEngineForStack
@@ -207,16 +194,8 @@ namespace openpeer
         #pragma mark MediaEngine => IMediaEngineForCallTransport
         #pragma mark
         
-        virtual IMediaTrackForCallTransport::MediaConstraintList getVideoConstraints(ILocalVideoTrack::CameraTypes cameraType);
-        virtual IMediaTrackForCallTransport::MediaConstraintList getAudioConstraints();
-        virtual void setLocalStreamForParticipant(String participantID, LocalMediaStreamPtr stream);
-        virtual void setRemoteStreamForParticipant(String participantID, RemoteMediaStreamPtr stream);
-        virtual LocalMediaStreamPtr createLocalStream();
-        virtual RemoteMediaStreamPtr createRemoteStream();
-        virtual LocalAudioTrackPtr createLocalAudioTrack();
-        virtual RemoteAudioTrackPtr createRemoteAudioTrack();
-        virtual LocalVideoTrackPtr createLocalVideoTrack();
-        virtual RemoteVideoTrackPtr createRemoteVideoTrack();
+        virtual IMediaStreamForCallTransport::MediaConstraintList getVideoConstraints(ILocalSendVideoStream::CameraTypes cameraType);
+        virtual IMediaStreamForCallTransport::MediaConstraintList getAudioConstraints();
 
         //---------------------------------------------------------------------
         #pragma mark

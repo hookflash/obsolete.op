@@ -39,25 +39,76 @@ namespace openpeer
   {
     interaction IMediaStream
     {
+      virtual ULONG getSSRC() = 0;
+      virtual IMediaStreamPtr clone() = 0;
     };
     
-    interaction ILocalMediaStream : public IMediaStream
+    interaction ILocalSendAudioStream : public virtual IMediaStream
     {
-      virtual LocalAudioTrackListPtr getAudioTracks() = 0;
-      virtual LocalVideoTrackListPtr getVideoTracks() = 0;
+      virtual void start() = 0;
+      virtual void stop() = 0;
     };
     
-    interaction IRemoteMediaStream : public IMediaStream
+    interaction IRemoteReceiveAudioStream : public virtual IMediaStream
     {
-      virtual RemoteAudioTrackListPtr getAudioTracks() = 0;
-      virtual RemoteVideoTrackListPtr getVideoTracks() = 0;
+      virtual void setEcEnabled(bool enabled) = 0;
+      virtual void setAgcEnabled(bool enabled) = 0;
+      virtual void setNsEnabled(bool enabled) = 0;
+    };
+    
+    interaction IRemoteSendAudioStream : public virtual IMediaStream
+    {
+      
+    };
+    
+    interaction ILocalSendVideoStream : public virtual IMediaStream
+    {
+      enum CameraTypes
+      {
+        CameraType_None,
+        CameraType_Front,
+        CameraType_Back
+      };
+      
+      static const char *toString(CameraTypes type);
+
+      virtual void setContinuousVideoCapture(bool continuousVideoCapture) = 0;
+      virtual bool getContinuousVideoCapture() = 0;
+      
+      virtual void setFaceDetection(bool faceDetection) = 0;
+      virtual bool getFaceDetection() = 0;
+      
+      virtual CameraTypes getCameraType() const = 0;
+      virtual void setCameraType(CameraTypes type) = 0;
+      
+      virtual void setRenderView(void *renderView) = 0;
+      
+      virtual void start() = 0;
+      virtual void stop() = 0;
+      
+      virtual void startRecord(String fileName, bool saveToLibrary = false) = 0;
+      virtual void stopRecord() = 0;
+    };
+    
+    interaction IRemoteReceiveVideoStream : public virtual IMediaStream
+    {
+      virtual void setRenderView(void *renderView) = 0;
+    };
+    
+    interaction IRemoteSendVideoStream : public virtual IMediaStream
+    {
+      virtual void setRenderView(void *renderView) = 0;
     };
     
     interaction IMediaStreamDelegate
     {
+      virtual void onMediaTrackFaceDetected() = 0;
+      virtual void onMediaTrackVideoCaptureRecordStopped() = 0;
     };
   }
 }
 
-//ZS_DECLARE_PROXY_BEGIN(openpeer::core::IMediaStreamDelegate)
-//ZS_DECLARE_PROXY_END()
+ZS_DECLARE_PROXY_BEGIN(openpeer::core::IMediaStreamDelegate)
+ZS_DECLARE_PROXY_METHOD_0(onMediaTrackFaceDetected)
+ZS_DECLARE_PROXY_METHOD_0(onMediaTrackVideoCaptureRecordStopped)
+ZS_DECLARE_PROXY_END()

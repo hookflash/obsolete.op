@@ -228,45 +228,69 @@ namespace openpeer
       typedef boost::shared_ptr<MediaEngine> MediaEnginePtr;
       typedef boost::weak_ptr<MediaEngine> MediaEngineWeakPtr;
       
+      class MediaSession;
+      typedef boost::shared_ptr<MediaSession> MediaSessionPtr;
+      typedef boost::weak_ptr<MediaSession> MediaSessionWeakPtr;
+      
+      class MediaSource;
+      typedef boost::shared_ptr<MediaSource> MediaSourcePtr;
+      typedef boost::weak_ptr<MediaSource> MediaSourceWeakPtr;
+      
+      class LocalMediaSource;
+      typedef boost::shared_ptr<LocalMediaSource> LocalMediaSourcePtr;
+      typedef boost::weak_ptr<LocalMediaSource> LocalMediaSourceWeakPtr;
+      
+      class RemoteMediaSource;
+      typedef boost::shared_ptr<RemoteMediaSource> RemoteMediaSourcePtr;
+      typedef boost::weak_ptr<RemoteMediaSource> RemoteMediaSourceWeakPtr;
+  
+      class MediaTransport;
+      typedef boost::shared_ptr<MediaTransport> MediaTransportPtr;
+      typedef boost::weak_ptr<MediaTransport> MediaTransportWeakPtr;
+      
+      class IMediaTransport;
+      typedef boost::shared_ptr<IMediaTransport> IMediaTransportPtr;
+      typedef boost::weak_ptr<IMediaTransport> IMediaTransportWeakPtr;
+      
+      class SendMediaTransport;
+      typedef boost::shared_ptr<SendMediaTransport> SendMediaTransportPtr;
+      typedef boost::weak_ptr<SendMediaTransport> SendMediaTransportWeakPtr;
+      
+      class ReceiveMediaTransport;
+      typedef boost::shared_ptr<ReceiveMediaTransport> ReceiveMediaTransportPtr;
+      typedef boost::weak_ptr<ReceiveMediaTransport> ReceiveMediaTransportWeakPtr;
+
       class MediaStream;
       typedef boost::shared_ptr<MediaStream> MediaStreamPtr;
       typedef boost::weak_ptr<MediaStream> MediaStreamWeakPtr;
       
-      class LocalMediaStream;
-      typedef boost::shared_ptr<LocalMediaStream> LocalMediaStreamPtr;
-      typedef boost::weak_ptr<LocalMediaStream> LocalMediaStreamWeakPtr;
+      class AudioStream;
+      typedef boost::shared_ptr<AudioStream> AudioStreamPtr;
+      typedef boost::weak_ptr<AudioStream> AudioStreamWeakPtr;
       
-      class RemoteMediaStream;
-      typedef boost::shared_ptr<RemoteMediaStream> RemoteMediaStreamPtr;
-      typedef boost::weak_ptr<RemoteMediaStream> RemoteMediaStreamWeakPtr;
+      class LocalSendAudioStream;
+      typedef boost::shared_ptr<LocalSendAudioStream> LocalSendAudioStreamPtr;
+      typedef boost::weak_ptr<LocalSendAudioStream> LocalSendAudioStreamWeakPtr;
       
-      class MediaTrack;
-      typedef boost::shared_ptr<MediaTrack> MediaTrackPtr;
-      typedef boost::weak_ptr<MediaTrack> MediaTrackWeakPtr;
+      class RemoteReceiveAudioStream;
+      typedef boost::shared_ptr<RemoteReceiveAudioStream> RemoteReceiveAudioStreamPtr;
+      typedef boost::weak_ptr<RemoteReceiveAudioStream> RemoteReceiveAudioStreamWeakPtr;
       
-      class AudioTrack;
-      typedef boost::shared_ptr<AudioTrack> AudioTrackPtr;
-      typedef boost::weak_ptr<AudioTrack> AudioTrackWeakPtr;
+      class RemoteSendAudioStream;
+      typedef boost::shared_ptr<RemoteSendAudioStream> RemoteSendAudioStreamPtr;
+      typedef boost::weak_ptr<RemoteSendAudioStream> RemoteSendAudioStreamWeakPtr;
       
-      class VideoTrack;
-      typedef boost::shared_ptr<VideoTrack> VideoTrackPtr;
-      typedef boost::weak_ptr<VideoTrack> VideoTrackWeakPtr;
+      class LocalSendVideoStream;
+      typedef boost::shared_ptr<LocalSendVideoStream> LocalSendVideoStreamPtr;
+      typedef boost::weak_ptr<LocalSendVideoStream> LocalSendVideoStreamWeakPtr;
       
-      class LocalAudioTrack;
-      typedef boost::shared_ptr<LocalAudioTrack> LocalAudioTrackPtr;
-      typedef boost::weak_ptr<LocalAudioTrack> LocalAudioTrackWeakPtr;
+      class RemoteReceiveVideoStream;
+      typedef boost::shared_ptr<RemoteReceiveVideoStream> RemoteReceiveVideoStreamPtr;
+      typedef boost::weak_ptr<RemoteReceiveVideoStream> RemoteReceiveVideoStreamWeakPtr;
       
-      class RemoteAudioTrack;
-      typedef boost::shared_ptr<RemoteAudioTrack> RemoteAudioTrackPtr;
-      typedef boost::weak_ptr<RemoteAudioTrack> RemoteAudioTrackWeakPtr;
-      
-      class LocalVideoTrack;
-      typedef boost::shared_ptr<LocalVideoTrack> LocalVideoTrackPtr;
-      typedef boost::weak_ptr<LocalVideoTrack> LocalVideoTrackWeakPtr;
-      
-      class RemoteVideoTrack;
-      typedef boost::shared_ptr<RemoteVideoTrack> RemoteVideoTrackPtr;
-      typedef boost::weak_ptr<RemoteVideoTrack> RemoteVideoTrackWeakPtr;
+      class RemoteSendVideoStream;
+      typedef boost::shared_ptr<RemoteSendVideoStream> RemoteSendVideoStreamPtr;
+      typedef boost::weak_ptr<RemoteSendVideoStream> RemoteSendVideoStreamWeakPtr;
 
       interaction IShutdownCheckAgainDelegate;
       typedef boost::shared_ptr<IShutdownCheckAgainDelegate> IShutdownCheckAgainDelegatePtr;
