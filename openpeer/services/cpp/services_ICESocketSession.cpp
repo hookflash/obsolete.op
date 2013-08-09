@@ -52,6 +52,9 @@
 
 #define OPENPEER_SERVICES_ICESOCKETSESSION_MAX_REASONABLE_CANDIDATE_PAIR_SEARCHES (100)
 
+#define OPENPEER_SERVICES_ICESOCKETSESSION_ACTIVATE_TIMER_IN_MS (20)
+#define OPENPEER_SERVICES_ICESOCKETSESSION_STEP_TIMER_IN_SECONDS (2)
+
 namespace openpeer { namespace services { ZS_DECLARE_SUBSYSTEM(openpeer_services) } }
 
 namespace openpeer
@@ -188,8 +191,8 @@ namespace openpeer
         bool firstTime = false;
         return
         (includeCommaPrefix ? String(", ") : String()) +
-        "local candidate [" + mLocal.toDebugString(false) +
-        "], remote candidate [" + mRemote.toDebugString(false) + "]" +
+        "local candidate: [" + mLocal.toDebugString(false) +
+        "], remote candidate: [" + mRemote.toDebugString(false) + "]" +
         Helper::getDebugValue("received request", mReceivedRequest ? string("true") : String(), firstTime) +
         Helper::getDebugValue("received response", mReceivedResponse ? string("true") : String(), firstTime) +
         Helper::getDebugValue("failed", mFailed ? string("true") : String(), firstTime) +
@@ -537,6 +540,9 @@ namespace openpeer
 
         CandidatePairPtr found;
 
+        bool failedIntegrity = (!stun->isValidMessageIntegrity(mLocalPassword));
+        if (failedIntegrity) goto send_response;
+
         if (isCandidateMatch(mNominated, viaLocalIP, viaTransport, source)) {
           found = mNominated;
         }
@@ -550,8 +556,9 @@ namespace openpeer
           }
         }
 
-        bool failedIntegrity = (!stun->isValidMessageIntegrity(mLocalPassword));
-        if (failedIntegrity) goto send_response;
+        if (found) {
+          ZS_LOG_DEBUG(log("found pairing") + ", is nominated=" + (mNominated == found ? "true":"false")  + found->toDebugString())
+        }
 
         if (!found) {
 
@@ -578,7 +585,7 @@ namespace openpeer
             newPair->mRemote = remote;
             newPair->mReceivedRequest = true;
 
-            ZS_LOG_DEBUG(log("new candidate pair discovered") + ", local: " + newPair->mLocal.toDebugString(false) + ", remote: " + newPair->mRemote.toDebugString())
+            ZS_LOG_DEBUG(log("new candidate pair discovered") + newPair->toDebugString())
 
             mCandidatePairs.push_back(newPair);
 
@@ -687,7 +694,7 @@ namespace openpeer
 
               if (mNominated != found) {
                 // the remote party is telling this party that this pair is nominated
-                ZS_LOG_DETAIL(log("candidate is nominated by controlling party (i.e. remote party)") + ", local ip=" + found->mLocal.mIPAddress.string() + ", remote ip=" + found->mRemote.mIPAddress.string())
+                ZS_LOG_DETAIL(log("candidate is nominated by controlling party (i.e. remote party)") + found->toDebugString())
 
                 mNominated = found;
 
@@ -718,33 +725,32 @@ namespace openpeer
         // scope: create new requester
         {
           if (found) {
-            if (!found->mRequester)
-            {
-              if (found->mReceivedResponse) return true; // have we already determined this candidate is valid? if so, then no need to try again
+            if (!found->mRequester) {
+              if (!found->mReceivedResponse) {
+                ZS_LOG_DETAIL(log("candidate search started on reaction to a request") + found->toDebugString())
 
-              ZS_LOG_DETAIL(log("candidate search started on reaction to a request") + ", local ip=" + found->mLocal.mIPAddress.string() + ", remote ip=" + found->mRemote.mIPAddress.string())
+                STUNPacketPtr request = STUNPacket::createRequest(STUNPacket::Method_Binding);
+                fix(request);
+                request->mUsername = mRemoteUsernameFrag + ":" + mLocalUsernameFrag;
+                if (mRemotePassword.hasData()) {
+                  request->mPassword = mRemotePassword;
+                }
+                request->mPriorityIncluded = true;
+                request->mPriority = found->mLocal.mPriority;
+                if (mRemotePassword.hasData()) {
+                  request->mCredentialMechanism = STUNPacket::CredentialMechanisms_ShortTerm;
+                }
+                if (IICESocket::ICEControl_Controlling == mControl) {
+                  request->mIceControllingIncluded = true;
+                  request->mIceControlling = mConflictResolver;
+                } else {
+                  request->mIceControlledIncluded = true;
+                  request->mIceControlled = mConflictResolver;
+                }
 
-              STUNPacketPtr request = STUNPacket::createRequest(STUNPacket::Method_Binding);
-              fix(request);
-              request->mUsername = mRemoteUsernameFrag + ":" + mLocalUsernameFrag;
-              if (mRemotePassword.hasData()) {
-                request->mPassword = mRemotePassword;
+                // activate the pair search now...
+                found->mRequester = ISTUNRequester::create(getAssociatedMessageQueue(), mThisWeak.lock(), found->mRemote.mIPAddress, request, STUNPacket::RFC_5245_ICE);
               }
-              request->mPriorityIncluded = true;
-              request->mPriority = found->mLocal.mPriority;
-              if (mRemotePassword.hasData()) {
-                request->mCredentialMechanism = STUNPacket::CredentialMechanisms_ShortTerm;
-              }
-              if (IICESocket::ICEControl_Controlling == mControl) {
-                request->mIceControllingIncluded = true;
-                request->mIceControlling = mConflictResolver;
-              } else {
-                request->mIceControlledIncluded = true;
-                request->mIceControlled = mConflictResolver;
-              }
-
-              // activate the pair search now...
-              found->mRequester = ISTUNRequester::create(getAssociatedMessageQueue(), mThisWeak.lock(), found->mRemote.mIPAddress, request, STUNPacket::RFC_5245_ICE);
             }
           }
         }
@@ -757,7 +763,7 @@ namespace openpeer
               mLastReceivedDataOrSTUN = zsLib::now();
 
               if (mAliveCheckRequester) {
-                ZS_LOG_DEBUG(log("alive check reuqester is no longer needed as STUN request/integrity bind was received"))
+                ZS_LOG_DEBUG(log("alive check requester is no longer needed as STUN request/integrity bind was received"))
                 mAliveCheckRequester->cancel();
                 mAliveCheckRequester.reset();
               }
@@ -899,6 +905,7 @@ namespace openpeer
       void ICESocketSession::onWake()
       {
         AutoRecursiveLock lock(getLock());
+        ZS_LOG_DEBUG(log("on wake"))
         step();
       }
 
@@ -917,6 +924,7 @@ namespace openpeer
                                                      )
       {
         AutoRecursiveLock lock(getLock());
+        ZS_LOG_DEBUG(log("on ice socket state changed"))
         step();
       }
 
@@ -924,6 +932,8 @@ namespace openpeer
       void ICESocketSession::onICESocketCandidatesChanged(IICESocketPtr socket)
       {
         AutoRecursiveLock lock(getLock());
+
+        ZS_LOG_DEBUG(log("on ice socket candidates changed"))
 
         if (isShutdown()) {
           ZS_LOG_WARNING(Detail, log("already shutdown"))
@@ -951,14 +961,21 @@ namespace openpeer
                                                        ULONG packetLengthInBytes
                                                        )
       {
+        ZS_LOG_TRACE(log("on stun requester send packet"))
+
         AutoRecursiveLock lock(getLock());
         if (isShutdown()) return;
 
-        if ((requester == mNominateRequester) ||
-            (requester == mAliveCheckRequester)) {
-          ZS_THROW_BAD_STATE_IF(!mNominated)
-          sendTo(getViaLocalIP(mNominated->mLocal), mNominated->mLocal.mType, destination, packet.get(), packetLengthInBytes, false);
+        if (requester == mNominateRequester) {
+          ZS_THROW_BAD_STATE_IF(!mPendingNominatation)
+          sendTo(getViaLocalIP(mPendingNominatation->mLocal), mPendingNominatation->mLocal.mType, destination, packet.get(), packetLengthInBytes, false);
           return;
+        }
+
+        if (requester == mAliveCheckRequester) {
+            ZS_THROW_BAD_STATE_IF(!mNominated)
+            sendTo(getViaLocalIP(mNominated->mLocal), mNominated->mLocal.mType, destination, packet.get(), packetLengthInBytes, false);
+            return;
         }
 
         // scope: search the candidates to see which one is sending the request
@@ -983,16 +1000,16 @@ namespace openpeer
                                                          STUNPacketPtr response
                                                          )
       {
+        ZS_LOG_TRACE(log("handle STUN requester response"))
+
         AutoRecursiveLock lock(getLock());
         if (isShutdown()) return false;
 
         if ((requester == mNominateRequester) ||
             (requester == mAliveCheckRequester)) {
-          if (requester == mNominateRequester) {
-            ZS_THROW_BAD_STATE_IF(!mPendingNominatation)
-          } else {
-            ZS_THROW_BAD_STATE_IF(!mNominated)
-          }
+
+          CandidatePairPtr usePair = (requester == mNominateRequester ? mPendingNominatation : mNominated);
+          ZS_THROW_BAD_STATE_IF(!usePair)
 
           if ((0 != response->mErrorCode) ||
               (response->mClass != STUNPacket::Class_Response)) {
@@ -1002,17 +1019,17 @@ namespace openpeer
                 // this request better be signed properly or we will ignore the conflict...
                 if (!mRemotePassword.isEmpty()) {
                   if (!response->isValidMessageIntegrity(mRemotePassword)) {
-                    ZS_LOG_WARNING(Detail, log("nomination caused role conflict reply did not pass integtiry check") + ", local ip=" + mNominated->mLocal.mIPAddress.string() + ", remote ip=" + mNominated->mRemote.mIPAddress.string())
+                    ZS_LOG_WARNING(Detail, log("nomination caused role conflict reply did not pass integtiry check") + usePair->toDebugString())
                     return false;
                   }
                 }
 
                 if (requester == mAliveCheckRequester) {
-                  ZS_LOG_WARNING(Detail, log("alive check caused role conflict reply cannot be issued for alive check request (since already nominated)") + ", local ip=" + mNominated->mLocal.mIPAddress.string() + ", remote ip=" + mNominated->mRemote.mIPAddress.string())
+                  ZS_LOG_WARNING(Detail, log("alive check caused role conflict reply cannot be issued for alive check request (since already nominated)") + usePair->toDebugString())
                   return false;
                 }
 
-                ZS_LOG_WARNING(Detail, log("nomination request caused role conflict") + ", local ip=" + mNominated->mLocal.mIPAddress.string() + ", remote ip=" + mNominated->mRemote.mIPAddress.string())
+                ZS_LOG_WARNING(Detail, log("nomination request caused role conflict") + usePair->toDebugString())
 
                 // we have a role conflict... switch roles now...
                 STUNPacketPtr originalRequest = requester->getRequest();
@@ -1036,7 +1053,7 @@ namespace openpeer
           }
 
           if (requester == mAliveCheckRequester) {
-            ZS_LOG_DEBUG(log("alive check request succeeded") + ", local ip=" + mNominated->mLocal.mIPAddress.string() + ", remote ip=" + mNominated->mRemote.mIPAddress.string())
+            ZS_LOG_DEBUG(log("alive check request succeeded") + usePair->toDebugString())
             mLastReceivedDataOrSTUN = zsLib::now();
 
             mAliveCheckRequester.reset();
@@ -1045,17 +1062,18 @@ namespace openpeer
 
           // yes, okay, it did in fact succeed - we have nominated our candidate!
           // inform that the session is now connected
-          ZS_LOG_DETAIL(log("nomination request succeeded") + ", local ip=" + mNominated->mLocal.mIPAddress.string() + ", remote ip=" + mNominated->mRemote.mIPAddress.string())
+          ZS_LOG_DETAIL(log("nomination request succeeded") + usePair->toDebugString())
 
           // we are now established to the remote party
 
           mNominateRequester.reset();
-          mNominated = mPendingNominatation;
+          mNominated = usePair;
+          mPendingNominatation.reset();
 
           get(mInformedWriteReady) = false;
 
-          notifyLocalWriteReady(getViaLocalIP(mNominated->mLocal));
-          notifyRelayWriteReady(getViaLocalIP(mNominated->mLocal));
+          notifyLocalWriteReady(getViaLocalIP(usePair->mLocal));
+          notifyRelayWriteReady(getViaLocalIP(usePair->mLocal));
 
           (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
           return true;
@@ -1079,7 +1097,7 @@ namespace openpeer
                   if (!response->isValidMessageIntegrity(mRemotePassword)) return false;
                 }
 
-                ZS_LOG_WARNING(Detail, log("candidate role conflict error received") + ", local ip=" + pairing->mLocal.mIPAddress.string() + ", remote ip=" + pairing->mRemote.mIPAddress.string())
+                ZS_LOG_WARNING(Detail, log("candidate role conflict error received") + pairing->toDebugString())
 
                 // we have a role conflict... switch roles now...
                 STUNPacketPtr originalRequest = requester->getRequest();
@@ -1099,6 +1117,7 @@ namespace openpeer
             // fake that we received a request since we will never receive in this case
             pairing->mReceivedRequest = true;
           }
+          ZS_LOG_DEBUG(log("pairing response received") + pairing->toDebugString())
           step();
           return true;
         }
@@ -1109,10 +1128,12 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void ICESocketSession::onSTUNRequesterTimedOut(ISTUNRequesterPtr requester)
       {
+        ZS_LOG_TRACE(log("on STUN requester timed out"))
+
         AutoRecursiveLock lock(getLock());
 
         if (requester == mAliveCheckRequester) {
-          ZS_LOG_WARNING(Detail, log("alive connectivity check failed (probably a connection timeout)") + ", local ip=" + mNominated->mLocal.mIPAddress.string() + ", remote ip=" + mNominated->mRemote.mIPAddress.string())
+          ZS_LOG_WARNING(Detail, log("alive connectivity check failed (probably a connection timeout)") + mNominated->toDebugString())
 
           mAliveCheckRequester.reset();
           setError(ICESocketSessionShutdownReason_Timeout, "activity check timeout");
@@ -1128,7 +1149,7 @@ namespace openpeer
           {
             CandidatePairPtr pairing = (*iter);
             if (mPendingNominatation == pairing) {
-              ZS_LOG_ERROR(Detail, log("nomination of candidate failed") + ", local ip=" + pairing->mLocal.mIPAddress.string() + ", remote ip=" + pairing->mRemote.mIPAddress.string())
+              ZS_LOG_ERROR(Detail, log("nomination of candidate failed") + pairing->toDebugString())
 
               // we found the candidate that was going to be nomiated but it can't be since the nomination failed...
               pairing->mFailed = false;
@@ -1156,7 +1177,7 @@ namespace openpeer
             CandidatePairPtr pairing = (*iter);
             if (requester == pairing->mRequester) {
               // mark this pair as failed
-              ZS_LOG_DETAIL(log("candidate timeout") + ", local ip=" + pairing->mLocal.mIPAddress.string() + ", remote ip=" + pairing->mRemote.mIPAddress.string())
+              ZS_LOG_DETAIL(log("candidate timeout") + pairing->toDebugString())
 
               pairing->mRequester.reset();
               pairing->mFailed = true;
@@ -1195,6 +1216,7 @@ namespace openpeer
         }
 
         if (timer == mStepTimer) {
+          ZS_LOG_TRACE(log("step timer"))
           step();
           return;
         }
@@ -1210,29 +1232,28 @@ namespace openpeer
           for (CandidatePairList::iterator iter = mCandidatePairs.begin(); iter != mCandidatePairs.end(); ++iter)
           {
             CandidatePairPtr pairing = (*iter);
-            if (pairing->mRequester)
-              continue;
-
-            if (pairing->mReceivedResponse)
-              continue; // no need to activate a second time if a response has been received
-
-            if (pairing->mFailed)
-              continue; // do not activate a pair that has already failed
+            if (pairing == mNominated) {
+              ZS_LOG_DEBUG(log("cannot activate beyond the point of nomination"))
+              break;
+            }
+            if (pairing->mRequester) continue;
+            if (pairing->mReceivedResponse) continue; // no need to activate a second time if a response has been received
+            if (pairing->mFailed) continue; // do not activate a pair that has already failed
 
             if (mFoundation) {
               if (!mFoundation->canUnfreeze(pairing)) {
                 if (pairing->mFailed) {
-                  ZS_LOG_TRACE(log("candidate now marked as failed (as foundation candidate pairing failed)") + ", local: " + pairing->mLocal.toDebugString(false) + ", remote: " + pairing->mRemote.toDebugString())
+                  ZS_LOG_TRACE(log("candidate now marked as failed (as foundation candidate pairing failed)") + pairing->toDebugString())
                   // need to perform step after failure
                   IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
                   break;
                 }
-                ZS_LOG_TRACE(log("candidate still frozen") + ", local: " + pairing->mLocal.toDebugString(false) + ", remote: " + pairing->mRemote.toDebugString())
+                ZS_LOG_TRACE(log("candidate still frozen") + pairing->toDebugString())
                 continue;
               }
             }
 
-            ZS_LOG_DETAIL(log("activating search on candidate") + ", local: " + pairing->mLocal.toDebugString(false) + ", remote: " + pairing->mRemote.toDebugString())
+            ZS_LOG_DETAIL(log("activating search on candidate") + pairing->toDebugString())
 
             // activate this pair right now... if there is no remote username then treat this as a regular STUN request/response situation (plus will automatically nominate if successful)
             STUNPacketPtr request = STUNPacket::createRequest(STUNPacket::Method_Binding);
@@ -1273,7 +1294,7 @@ namespace openpeer
             return;  // not enough time has passed since sending data to send more...
           }
 
-          ZS_LOG_DETAIL(log("keep alive") + ", local ip=" + mNominated->mLocal.mIPAddress.string() + ", remote ip=" + mNominated->mRemote.mIPAddress.string())
+          ZS_LOG_DETAIL(log("keep alive") + mNominated->toDebugString())
           STUNPacketPtr indication = STUNPacket::createIndication(STUNPacket::Method_Binding);
           fix(indication);
 
@@ -1592,7 +1613,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       bool ICESocketSession::stepSocket()
       {
-        ZS_LOG_DEBUG(log("step socket"))
+        ZS_LOG_TRACE(log("step socket"))
 
         IICESocketPtr socket = getSocket();
         if (!socket) {
@@ -1638,7 +1659,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       bool ICESocketSession::stepCandidates()
       {
-        ZS_LOG_DEBUG(log("step candidates"))
+        ZS_LOG_TRACE(log("step candidates"))
 
         CandidateList newLocalCandidates;
         CandidateList newRemoteCandidates;
@@ -1668,7 +1689,7 @@ namespace openpeer
 
         if ((newLocalCandidates.size() < 1) &&
             (newRemoteCandidates.size() < 1)) {
-          ZS_LOG_DEBUG(log("candidates have not changed since last time"))
+          ZS_LOG_TRACE(log("candidates have not changed since last time"))
           return true;
         }
 
@@ -1784,7 +1805,7 @@ namespace openpeer
               {
                 if ((mNominated == pairing) ||
                     (mPendingNominatation == pairing)) {
-                  ZS_LOG_WARNING(Detail, log("cannot remove candidate pair that is nominating/nominated") + ", local: " + pairing->mLocal.toDebugString(false) + " remote: " + pairing->mRemote.toDebugString())
+                  ZS_LOG_WARNING(Detail, log("cannot remove candidate pair that is nominating/nominated") + pairing->toDebugString())
                   continue;
                 }
 
@@ -1794,14 +1815,16 @@ namespace openpeer
                   pairing->mRequester.reset();
                 }
 
-                ZS_LOG_DEBUG(log("removing candidate pair") + ", reason=" + reason + ", local: " + pairing->mLocal.toDebugString(false) + " remote: " + pairing->mRemote.toDebugString())
+                ZS_LOG_DEBUG(log("removing candidate pair") + ", reason=" + reason + pairing->toDebugString())
+
+                mCandidatePairs.erase(current);
               }
             }
           }
         }
 
         if (ZS_IS_LOGGING(Debug)) {
-          ZS_LOG_DEBUG(log("--- ICE SESSION CANDIDATES START ---") + ", control=" + (mControl == IICESocket::ICEControl_Controlling ? "CONTROLLING" : "CONTROLLED"))
+          ZS_LOG_DEBUG(log("--- ICE SESSION CANDIDATES START ") + (mControl == IICESocket::ICEControl_Controlling ? "(CONTROLLING) ---" : "(CONTROLLED) ---"))
 
           for (CandidatePairList::iterator iter = mCandidatePairs.begin(); iter != mCandidatePairs.end(); ++iter) {
             CandidatePairPtr &pairing = (*iter);
@@ -1817,8 +1840,6 @@ namespace openpeer
       //-----------------------------------------------------------------------
       bool ICESocketSession::stepActivateTimer()
       {
-        ZS_LOG_DEBUG(log("step activate timer"))
-
         bool foundUnsearched = false;
 
         for (CandidatePairList::iterator iter = mCandidatePairs.begin(); iter != mCandidatePairs.end(); ++iter)
@@ -1839,13 +1860,13 @@ namespace openpeer
           break;
         }
 
-        ZS_LOG_DEBUG(log("step activate timer") + ", needs timer=" + (foundUnsearched ? "true" : "false"))
+        ZS_LOG_TRACE(log("step activate timer") + ", needs timer=" + (foundUnsearched ? "true" : "false"))
 
         if (foundUnsearched) {
           if (mActivateTimer) return true;
 
           mLastActivity = zsLib::now();
-          mActivateTimer = Timer::create(mThisWeak.lock(), Milliseconds(20)); // this will cause candidates to start searching right away
+          mActivateTimer = Timer::create(mThisWeak.lock(), Milliseconds(OPENPEER_SERVICES_ICESOCKETSESSION_ACTIVATE_TIMER_IN_MS)); // this will cause candidates to start searching right away
 
           return true;
         }
@@ -1861,11 +1882,11 @@ namespace openpeer
       bool ICESocketSession::stepEndSearch()
       {
         if (!mEndOfRemoteCandidatesFlag) {
-          ZS_LOG_DEBUG(log("no end of candidates flag set so continue search"))
+          ZS_LOG_TRACE(log("no end of candidates flag set so continue search"))
           return true;
         }
         if (mNominated) {
-          ZS_LOG_DEBUG(log("already nominated - no reason to end search"))
+          ZS_LOG_TRACE(log("already nominated - no reason to end search"))
           return true;
         }
         for (CandidatePairList::iterator iter = mCandidatePairs.begin(); iter != mCandidatePairs.end(); ++iter)
@@ -1874,7 +1895,7 @@ namespace openpeer
 
           if (pairing->mFailed) continue;
 
-          ZS_LOG_DEBUG(log("found candidate which has not failed thus no reason to end search yet"))
+          ZS_LOG_TRACE(log("found candidate which has not failed thus no reason to end search yet"))
           return true;
         }
 
@@ -1888,13 +1909,13 @@ namespace openpeer
       //-----------------------------------------------------------------------
       bool ICESocketSession::stepTimer()
       {
-        ZS_LOG_DEBUG(log("step timer") + ", needs timer=" + (mNominated ? "false" : "true"))
+        ZS_LOG_TRACE(log("step timer") + ", needs timer=" + (mNominated ? "false" : "true"))
 
         if (!mNominated) {
           if (mStepTimer) return true;
 
           mLastActivity = zsLib::now();
-          mStepTimer = Timer::create(mThisWeak.lock(), Milliseconds(20)); // this will cause candidates to start searching right away
+          mStepTimer = Timer::create(mThisWeak.lock(), Seconds(OPENPEER_SERVICES_ICESOCKETSESSION_STEP_TIMER_IN_SECONDS)); // this will cause candidates to start searching right away
 
           return true;
         }
@@ -1910,7 +1931,7 @@ namespace openpeer
       bool ICESocketSession::stepExpectingDataTimer()
       {
         bool needed =  ((mNominated) && (Duration() != mExpectSTUNOrDataWithinDuration));
-        ZS_LOG_DEBUG(log("expecting data timer") + ", needs timer=" + (needed ? "true" : "false"))
+        ZS_LOG_TRACE(log("expecting data timer") + ", needs timer=" + (needed ? "true" : "false"))
 
         if (needed) {
           if (mExpectingDataTimer) return true;
@@ -1932,7 +1953,7 @@ namespace openpeer
       bool ICESocketSession::stepKeepAliveTimer()
       {
         bool needed =  ((mNominated) && (Duration() != mKeepAliveDuration));
-        ZS_LOG_DEBUG(log("keep alive timer") + ", needs timer=" + (needed ? "true" : "false"))
+        ZS_LOG_TRACE(log("keep alive timer") + ", needs timer=" + (needed ? "true" : "false"))
 
         if (needed) {
           if (mKeepAliveTimer) return true;
@@ -1954,7 +1975,7 @@ namespace openpeer
       bool ICESocketSession::stepCancelLowerPriority()
       {
         if (!mNominated) {
-          ZS_LOG_DEBUG(log("cannot cancel until nominiated"))
+          ZS_LOG_TRACE(log("cannot cancel until nominiated"))
           return true;
         }
 
@@ -1971,7 +1992,7 @@ namespace openpeer
 
           if (!pairing->mRequester) continue;
 
-          ZS_LOG_DETAIL(log("cancelling requester for candidate") + ", local: " + pairing->mLocal.toDebugString(false) + ", remote: " + pairing->mRemote.toDebugString(false))
+          ZS_LOG_DEBUG(log("cancelling requester for candidate") + pairing->toDebugString())
 
           pairing->mRequester->cancel();
           pairing->mRequester.reset();
@@ -1984,20 +2005,19 @@ namespace openpeer
       bool ICESocketSession::stepNominate()
       {
         if (mNominateRequester) {
-          ZS_LOG_DEBUG(log("already nominating"))
-          setState(ICESocketSessionState_Nominating);
-          return false;
+          ZS_LOG_TRACE(log("already nominating"))
+          goto set_final_state;
         }
 
-        if (IICESocket::ICEControl_Controlling == mControl)
+        if (IICESocket::ICEControl_Controlled == mControl)
         {
           if (mNominated) {
-            ZS_LOG_DEBUG(log("already nominated (any other nominations must come from controlling party)"))
-            return true;
+            ZS_LOG_TRACE(log("already nominated (any other nominations must come from controlling party)"))
+            goto set_final_state;
           }
 
-          ZS_LOG_DEBUG(log("waiting for nominatation from remote party"))
-          return false;
+          ZS_LOG_TRACE(log("waiting for nominatation from remote party"))
+          goto set_final_state;
         }
 
         for (CandidatePairList::iterator iter = mCandidatePairs.begin(); iter != mCandidatePairs.end(); ++iter)
@@ -2013,7 +2033,7 @@ namespace openpeer
           if (!pairing->mReceivedRequest) continue;
           if (!pairing->mReceivedResponse) continue;
 
-          ZS_LOG_DETAIL(log("nominating candidate") + ", local: " + pairing->mLocal.toDebugString(false) + ", remote: " + pairing->mRemote.toDebugString(false))
+          ZS_LOG_DETAIL(log("nominating candidate") + pairing->toDebugString())
 
           if (mRemotePassword.isEmpty()) {
             ZS_LOG_DEBUG(log("remote password is not set thus this pair can be immediately nominated (i.e. server mode)"))
@@ -2028,7 +2048,7 @@ namespace openpeer
 
             // we are now connected to this IP address...
             (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
-            return true;
+            goto set_final_state;
           }
 
           mPendingNominatation = pairing;
@@ -2042,24 +2062,36 @@ namespace openpeer
           request->mIceControllingIncluded = true;
           request->mIceControlling = mConflictResolver;
           request->mPriorityIncluded = true;
-          request->mPriority = mNominated->mLocal.mPriority;
+          request->mPriority = mPendingNominatation->mLocal.mPriority;
           request->mUseCandidateIncluded = true;
 
           // form a new request
-          mNominateRequester = ISTUNRequester::create(getAssociatedMessageQueue(), mThisWeak.lock(), mNominated->mRemote.mIPAddress, request, STUNPacket::RFC_5245_ICE);
-          setState(ICESocketSessionState_Nominating);
+          mNominateRequester = ISTUNRequester::create(getAssociatedMessageQueue(), mThisWeak.lock(), mPendingNominatation->mRemote.mIPAddress, request, STUNPacket::RFC_5245_ICE);
 
           (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
-          return false;
+          goto set_final_state;
         }
 
-        if (mCandidatePairs.size() > 0) {
-          setState(ICESocketSessionState_Searching);
-        } else {
-          setState(ICESocketSessionState_Prepared);
+        if (!mNominated) {
+          ZS_LOG_TRACE(log("nothing to nominiate yet"))
         }
 
-        ZS_LOG_DEBUG(log("nothing to nominiate yet"))
+      set_final_state:
+        {
+          if (mNominated) return true;
+
+          if (mNominateRequester) {
+            setState(ICESocketSessionState_Nominating);
+            return false;
+          }
+
+          if (mCandidatePairs.size() > 0) {
+            setState(ICESocketSessionState_Searching);
+          } else {
+            setState(ICESocketSessionState_Prepared);
+          }
+        }
+
         return false;
       }
 
@@ -2151,12 +2183,12 @@ namespace openpeer
           if (!pairing->mReceivedRequest) return false; // incomplete check, still frozen
           if (!pairing->mReceivedResponse) return false; // incomplete check, still frozen
 
-          ZS_LOG_DEBUG(log("foundation is unfozen thus can proceed with activation") + ", local (foundation): " + pairing->mLocal.toDebugString(false) + ", remote (foundation): " + pairing->mRemote.toDebugString(false) + ", local (derived): " + derivedPairing->mLocal.toDebugString(false) + ", remote (derived): " + derivedPairing->mRemote.toDebugString(false))
+          ZS_LOG_TRACE(log("foundation is unfozen thus can proceed with activation") + ", foundation: " + pairing->toDebugString(false))
 
           return true;
         }
 
-        ZS_LOG_DEBUG(log("foundation not found thus can proceed with activation") + ", local (derived): " + derivedPairing->mLocal.toDebugString(false) + ", remote (derived): " + derivedPairing->mRemote.toDebugString(false))
+        ZS_LOG_DEBUG(log("foundation not found thus can proceed with activation") + ", derived: " + derivedPairing->toDebugString(false))
         return true;
       }
     }
@@ -2179,7 +2211,7 @@ namespace openpeer
     const char *IICESocketSession::toString(ICESocketSessionStates state)
     {
       switch (state) {
-        case ICESocketSessionState_Pending:    return "Preparing";
+        case ICESocketSessionState_Pending:    return "Pending";
         case ICESocketSessionState_Prepared:   return "Prepared";
         case ICESocketSessionState_Searching:  return "Searching";
         case ICESocketSessionState_Nominating: return "Nominating";

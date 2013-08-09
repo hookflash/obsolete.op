@@ -115,7 +115,7 @@ namespace openpeer
                   const char *srvName
                   )
         {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
 
           mICESocket = IICESocket::create(
                                           getAssociatedMessageQueue(),
@@ -168,7 +168,7 @@ namespace openpeer
                                              ICESocketStates state
                                              )
         {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
           switch (state) {
             case IICESocket::ICESocketState_Ready:
             {
@@ -202,7 +202,7 @@ namespace openpeer
 
         virtual void onICESocketCandidatesChanged(IICESocketPtr socket)
         {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
           if (!mRemote) return;
 
           if (!mICESocket) return;
@@ -218,7 +218,7 @@ namespace openpeer
                                                     ICESocketSessionStates state
                                                     )
         {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
 
           switch(state) {
             case IICESocketSession::ICESocketSessionState_Nominated:
@@ -249,7 +249,7 @@ namespace openpeer
                                                           zsLib::ULONG bufferLengthInBytes
                                                           )
         {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
         }
 
         virtual bool handleICESocketSessionReceivedSTUNPacket(
@@ -259,29 +259,29 @@ namespace openpeer
                                                               const zsLib::String &remoteUsernameFrag
                                                               )
         {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
           return false;
         }
 
         virtual void onICESocketSessionWriteReady(IICESocketSessionPtr session)
         {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
         }
 
         virtual void onICESocketSessionNominationChanged(IICESocketSessionPtr session)
         {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
         }
 
         virtual void onTimer(zsLib::TimerPtr timer)
         {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
           if (timer != mTimer) return;
         }
 
         void shutdown()
         {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
 
           mRemote.reset();
 
@@ -309,7 +309,7 @@ namespace openpeer
         }
 
         void expectationsOkay() {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
           if (mExpectConnected) {
             BOOST_CHECK(mConnected);
           } else {
@@ -343,29 +343,28 @@ namespace openpeer
 
         void getLocalCandidates(IICESocket::CandidateList &outCandidates)
         {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
           if (!mICESocket) return;
-          BOOST_CHECK(mConnected);
           mICESocket->getLocalCandidates(outCandidates);
         }
 
         String getLocalUsernameFrag()
         {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
           if (!mICESocket) return String();
           return mICESocket->getUsernameFrag();
         }
 
         String getLocalPassword()
         {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
           if (!mICESocket) return String();
           return mICESocket->getPassword();
         }
 
         IICESocketSessionPtr createSessionFromRemoteCandidates(IICESocket::ICEControls control)
         {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
           if (!mICESocket) return IICESocketSessionPtr();
 
           if (!mRemote) return IICESocketSessionPtr();
@@ -383,13 +382,13 @@ namespace openpeer
 
         void setRemote(TestICESocketCallbackPtr remote)
         {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
           mRemote = remote;
         }
 
         void updateCandidates(const IICESocket::CandidateList &candidates)
         {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
           for (SessionList::iterator iter = mSessions.begin(); iter != mSessions.end(); ++iter)
           {
             IICESocketSessionPtr session = (*iter);
@@ -399,7 +398,7 @@ namespace openpeer
 
         void notifyEndOfCandidates()
         {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
           for (SessionList::iterator iter = mSessions.begin(); iter != mSessions.end(); ++iter)
           {
             IICESocketSessionPtr session = (*iter);
@@ -407,8 +406,13 @@ namespace openpeer
           }
         }
 
+        RecursiveLock &getLock() const
+        {
+          static RecursiveLock lock;
+          return lock;
+        }
+
       private:
-        mutable zsLib::RecursiveLock mLock;
         TestICESocketCallbackWeakPtr mThisWeak;
 
         TestICESocketCallbackPtr mRemote;
@@ -445,6 +449,8 @@ void doTestICESocket()
 
   BOOST_INSTALL_LOGGER();
 
+  boost::this_thread::sleep(zsLib::Seconds(1));
+
   zsLib::MessageQueueThreadPtr thread(zsLib::MessageQueueThread::createBasic());
 
   TestICESocketCallbackPtr testObject1;
@@ -457,16 +463,15 @@ void doTestICESocket()
   // check to see if all DNS routines have resolved
   {
     ULONG step = 0;
-    ULONG totalSteps = 2;
 
     do
     {
       BOOST_STDOUT() << "STEP:         ---------->>>>>>>>>> " << step << " <<<<<<<<<<----------\n";
 
+      bool quit = false;
       ULONG expecting = 0;
       switch (step) {
         case 0: {
-          expecting = 2;
           testObject1 = TestICESocketCallback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN);
           testObject2 = TestICESocketCallback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN);
 
@@ -474,8 +479,8 @@ void doTestICESocket()
           testObject2->setRemote(testObject1);
           break;
         }
+#if 0
         case 1: {
-          expecting = 2;
           testObject1 = TestICESocketCallback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, true, false, false, true, false);
           testObject2 = TestICESocketCallback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, true, false, false, true, false);
 
@@ -483,7 +488,16 @@ void doTestICESocket()
           testObject2->setRemote(testObject1);
           break;
         }
+#endif //0
+        default:  quit = true; break;
       }
+      if (quit) break;
+
+      expecting = 0;
+      expecting += (testObject1 ? 1 : 0);
+      expecting += (testObject2 ? 1 : 0);
+      expecting += (testObject3 ? 1 : 0);
+      expecting += (testObject4 ? 1 : 0);
 
       ULONG found = 0;
       ULONG lastFound = 0;
@@ -500,7 +514,7 @@ void doTestICESocket()
 
         switch (step) {
           case 0: {
-            if (10 == totalWait) {
+            if (1 == totalWait) {
               testObject1->createSessionFromRemoteCandidates(IICESocket::ICEControl_Controlling);
               testObject2->createSessionFromRemoteCandidates(IICESocket::ICEControl_Controlled);
             }
@@ -556,7 +570,7 @@ void doTestICESocket()
       testObject4.reset();
 
       ++step;
-    } while (step < totalSteps);
+    } while (true);
   }
 
   BOOST_STDOUT() << "WAITING:      All ICE sockets have finished. Waiting for 'bogus' events to process (10 second wait).\n";

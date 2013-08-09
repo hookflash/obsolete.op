@@ -408,7 +408,6 @@ void doTestTCPMessagingLoopback()
 
   {
     ULONG step = 0;
-    ULONG totalSteps = 2;
 
     IPAddress ip1("127.0.0.1");
     ip1.setPort(IHelper::random(10000, 29999));
@@ -421,21 +420,21 @@ void doTestTCPMessagingLoopback()
     {
       ZS_LOG_BASIC(String("STEP:         ---------->>>>>>>>>> ") + string(step) + " <<<<<<<<<<----------")
 
+      bool quit = false;
       ULONG expecting = 0;
       switch (step) {
         case 0: {
           testObject1 = TestTCPMessagingLoopback::create(thread, ip1, true);
-//          testObject1 = TestRUDPICESocketLoopback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, true);
-//          testObject2 = TestRUDPICESocketLoopback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, false);
           break;
         }
         case 1: {
           testObject1 = TestTCPMessagingLoopback::create(thread, ip2, false);
-//          testObject1 = TestRUDPICESocketLoopback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, true, true, false, false, true, false, true, false);
-//          testObject2 = TestRUDPICESocketLoopback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, false, true, false, false, true, false, true, false);
           break;
         }
+        default: quit = true; break;
       }
+
+      if (quit) break;
 
       expecting = 0;
       expecting += (testObject1 ? 1 : 0);
@@ -527,7 +526,7 @@ void doTestTCPMessagingLoopback()
       testObject4.reset();
 
       ++step;
-    } while (step < totalSteps);
+    } while (true);
   }
 
   ZS_LOG_BASIC("WAITING:      All TCP messaging have finished. Waiting for 'bogus' events to process (10 second wait).");

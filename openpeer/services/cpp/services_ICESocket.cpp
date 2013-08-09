@@ -109,7 +109,7 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      static bool compare(const IICESocket::Candidate &candidate1, const IICESocket::Candidate &candidate2)
+      static bool isEqual(const IICESocket::Candidate &candidate1, const IICESocket::Candidate &candidate2)
       {
         if (candidate1.mType != candidate2.mType) return false;
         if (candidate1.mPriority != candidate2.mPriority) return false;
@@ -1149,7 +1149,7 @@ namespace openpeer
           ZS_LOG_DEBUG(log("attempting to bind to IP") + ", ip=" + string(bindIP))
 
           try {
-            SocketPtr socket = Socket::createUDP();
+            socket = Socket::createUDP();
 
             socket->bind(ip);
             socket->setBlocking(false);
@@ -1173,7 +1173,7 @@ namespace openpeer
           }
 
           if (!socket) {
-            ZS_LOG_WARNING(Debug, log("bind failure"))
+            ZS_LOG_WARNING(Debug, log("bind failure") + ", bind port=" + string(mBindPort))
             continue;
           }
 
@@ -1205,8 +1205,10 @@ namespace openpeer
 
         if ((hadNone) &&
             (mSockets.size() > 0)) {
-          mRebindTimer->cancel();
-          mRebindTimer.reset();
+          if (mRebindTimer) {
+            mRebindTimer->cancel();
+            mRebindTimer.reset();
+          }
         }
 
         if (!mRebindTimer) {
@@ -1228,7 +1230,7 @@ namespace openpeer
             return false;
           }
 
-          ZS_LOG_WARNING(Detail, log("unable to bind to local UDP port but will try again") + string(mBindPort))
+          ZS_LOG_WARNING(Detail, log("unable to bind to local UDP port but will try again") + ", bind port=" + string(mBindPort))
         }
 
         ZS_LOG_DEBUG(log("UDP port is bound"))
@@ -1468,9 +1470,11 @@ namespace openpeer
         crc.Final((BYTE *)(&crcValue));
 
         if (mLastCandidateCRC == crcValue) {
-          ZS_LOG_DEBUG(log("candidate list has not changed"))
+          ZS_LOG_TRACE(log("candidate list has not changed") + ", crc=" + string(crcValue))
           return true;
         }
+
+        ZS_LOG_DEBUG(log("candidate list has changed") + ", crc=" + string(crcValue))
 
         mLastCandidateCRC = crcValue;
 
@@ -1887,9 +1891,9 @@ namespace openpeer
 
         for (CandidateList::const_iterator innerIter = inOldCandidatesList.begin(); innerIter != inOldCandidatesList.end(); ++innerIter)
         {
-          const Candidate &oldCandidate = (*outerIter);
+          const Candidate &oldCandidate = (*innerIter);
 
-          if (!internal::compare(newCandidate, oldCandidate)) continue;
+          if (!internal::isEqual(newCandidate, oldCandidate)) continue;
 
           found = true;
           break;
@@ -1909,9 +1913,9 @@ namespace openpeer
 
         for (CandidateList::const_iterator innerIter = inNewCandidatesList.begin(); innerIter != inNewCandidatesList.end(); ++innerIter)
         {
-          const Candidate &newCandidate = (*outerIter);
+          const Candidate &newCandidate = (*innerIter);
 
-          if (!internal::compare(newCandidate, oldCandidate)) continue;
+          if (!internal::isEqual(newCandidate, oldCandidate)) continue;
 
           found = true;
           break;

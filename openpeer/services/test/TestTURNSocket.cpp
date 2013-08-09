@@ -543,13 +543,15 @@ void doTestTURNSocket()
 
   BOOST_INSTALL_LOGGER();
 
+  boost::this_thread::sleep(Seconds(1));
+
   MessageQueueThreadPtr thread(MessageQueueThread::createBasic());
 
-  TestTURNSocketCallbackPtr testObject1 = TestTURNSocketCallback::create(thread, 0, "siptest." OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, true);
-  TestTURNSocketCallbackPtr testObject2 = TestTURNSocketCallback::create(thread, 0, "siptest." OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, false);
+  TestTURNSocketCallbackPtr testObject1 = TestTURNSocketCallback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, true);
+  TestTURNSocketCallbackPtr testObject2 = TestTURNSocketCallback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, false);
   TestTURNSocketCallbackPtr testObject3 = TestTURNSocketCallback::create(thread, 0, "bogus." OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, false, false, false, false, true);
-  TestTURNSocketCallbackPtr testObject4 = TestTURNSocketCallback::create(thread, 0, "turntest1." OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, false);
-  TestTURNSocketCallbackPtr testObject5 = TestTURNSocketCallback::create(thread, 0, "turntest4." OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, false);
+  TestTURNSocketCallbackPtr testObject4 = TestTURNSocketCallback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN_VIA_A_RECORD_1, true);
+  TestTURNSocketCallbackPtr testObject5 = TestTURNSocketCallback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN_VIA_A_RECORD_2, false);
 
   BOOST_STDOUT() << "WAITING:      Waiting for TURN testing to complete (max wait is 180 seconds).\n";
 
@@ -659,8 +661,12 @@ void doTestTURNSocket()
   }
 
 #ifdef OPENPEER_SERVICE_TEST_WHAT_IS_MY_IP
-  BOOST_EQUAL(testObject1->getIP().string(false), OPENPEER_SERVICE_TEST_WHAT_IS_MY_IP);
-  BOOST_EQUAL(testObject2->getIP().string(false), OPENPEER_SERVICE_TEST_WHAT_IS_MY_IP);
+  if (testObject1) {
+    BOOST_EQUAL(testObject1->getIP().string(false), OPENPEER_SERVICE_TEST_WHAT_IS_MY_IP);
+  }
+  if (testObject2) {
+    BOOST_EQUAL(testObject2->getIP().string(false), OPENPEER_SERVICE_TEST_WHAT_IS_MY_IP);
+  }
 #endif //OPENPEER_SERVICE_TEST_WHAT_IS_MY_IP
 
   testObject1.reset();

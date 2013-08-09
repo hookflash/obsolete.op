@@ -623,7 +623,7 @@ namespace openpeer
             }
             mA = data;
           } else {
-            ZS_LOG_DEBUG("DNS A record lookup failed.")
+            ZS_LOG_DEBUG(String("DNS A record lookup failed") + ", name=" + mName)
           }
           try {
             mDelegate->onLookupCompleted(mThis.lock());
@@ -696,7 +696,7 @@ namespace openpeer
             }
             mAAAA = data;
           } else {
-            ZS_LOG_DEBUG("DNS AAAA record lookup failed")
+            ZS_LOG_DEBUG(String("DNS AAAA record lookup failed") + ", name=" + mName)
           }
 
           try {
@@ -796,7 +796,7 @@ namespace openpeer
             sortSRV(data);
             mSRV = data;
           } else {
-            ZS_LOG_DEBUG("DNS SRV record lookup failed")
+            ZS_LOG_DEBUG(String("DNS SRV record lookup failed") + ", name=" + mName + ", service=" + mService + ", protocol=" + mProtocol)
           }
 
           try {
