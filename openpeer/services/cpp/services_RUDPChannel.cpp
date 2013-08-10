@@ -244,7 +244,7 @@ namespace openpeer
       void RUDPChannel::shutdownDirection(Shutdown state)
       {
         AutoRecursiveLock lock(mLock);
-        ZS_LOG_DETAIL(log("shutdown direction called") + ", state=" + string(state) + ", current shutdown=" + string(mShutdownDirection))
+        ZS_LOG_DETAIL(log("shutdown direction called") + ", state=" + IRUDPChannel::toString(state) + ", current shutdown=" + IRUDPChannel::toString(mShutdownDirection))
         mShutdownDirection = static_cast<IRUDPChannelStream::Shutdown>(mShutdownDirection | state);
         if (!mStream) return;
         mStream->shutdownDirection(mShutdownDirection);
@@ -723,8 +723,6 @@ namespace openpeer
                                    ULONG bufferLengthInBytes
                                    )
       {
-        ZS_LOG_DEBUG(log("received RUDP packet") + ", length=" + string(bufferLengthInBytes))
-
         IRUDPChannelStreamPtr stream;
         boost::shared_array<BYTE> newBuffer;
 
@@ -737,6 +735,8 @@ namespace openpeer
           }
 
           stream = mStream;
+
+          ZS_LOG_DEBUG(log("received RUDP packet") + ", stream ID=" + string(stream->getID()) + ", length=" + string(bufferLengthInBytes))
 
           newBuffer = boost::shared_array<BYTE>(new BYTE[bufferLengthInBytes]);
           memcpy(newBuffer.get(), buffer, bufferLengthInBytes);
@@ -754,15 +754,19 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void RUDPChannel::notifyWriteReady()
       {
-        ZS_LOG_DEBUG(log("received notify write ready"))
         IRUDPChannelStreamPtr stream;
 
         // scope: do the work in the context of a lock but call the stream outside the lock
         {
           AutoRecursiveLock lock(mLock);
-          if (!mStream) return;
+          if (!mStream) {
+            ZS_LOG_WARNING(Trace, log("received notify write ready but no stream is attached"))
+            return;
+          }
 
           stream = mStream;
+
+          ZS_LOG_DEBUG(log("received notify write ready") + ", stream ID=" + string(stream->getID()))
         }
         stream->notifySocketWriteReady();
       }
@@ -962,7 +966,7 @@ namespace openpeer
                                                         )
       {
         AutoRecursiveLock lock(mLock);
-        ZS_LOG_DETAIL(log("notify channel stream shutdown"))
+        ZS_LOG_DETAIL(log("notify channel stream shutdown") + ", stream ID=" + string(stream->getID()))
 
         if (stream != mStream) return;
 
@@ -978,7 +982,7 @@ namespace openpeer
       void RUDPChannel::onRUDPChannelStreamReadReady(IRUDPChannelStreamPtr stream)
       {
         AutoRecursiveLock lock(mLock);
-        ZS_LOG_DEBUG(log("notify channel stream read ready"))
+        ZS_LOG_DEBUG(log("notify channel stream read ready") + ", stream ID=" + string(stream->getID()))
         if (!mDelegate) {
           ZS_LOG_DEBUG(log("delegate not present thus not notifying of read ready"))
           return;
@@ -1003,7 +1007,7 @@ namespace openpeer
       void RUDPChannel::onRUDPChannelStreamWriteReady(IRUDPChannelStreamPtr stream)
       {
         AutoRecursiveLock lock(mLock);
-        ZS_LOG_DEBUG(log("notify channel stream write ready"))
+        ZS_LOG_DEBUG(log("notify channel stream write ready") + ", stream ID=" + string(stream->getID()))
         if (!mDelegate) return;
         if (mInformedWriteReady) return;
 
@@ -1024,7 +1028,7 @@ namespace openpeer
                                                           ULONG packetLengthInBytes
                                                           )
       {
-        ZS_LOG_DEBUG(log("notify channel stream send packet") + ", length=" + string(packetLengthInBytes))
+        ZS_LOG_DEBUG(log("notify channel stream send packet") + ", stream ID=" + string(stream->getID()) + ", length=" + string(packetLengthInBytes))
         IRUDPChannelDelegateForSessionAndListenerPtr master;
         IPAddress remoteIP;
 
@@ -1053,7 +1057,7 @@ namespace openpeer
                                                               PUID guarenteeDeliveryRequestID
                                                               )
       {
-        ZS_LOG_DETAIL(log("notify channel stream send external ACK now") + ", gaurantee=" + (guarenteeDelivery ? "true" : "false"))
+        ZS_LOG_DETAIL(log("notify channel stream send external ACK now") + ", stream ID=" + string(stream->getID()) + ", gaurantee=" + (guarenteeDelivery ? "true" : "false"))
         IRUDPChannelDelegateForSessionAndListenerPtr master;
         STUNPacketPtr stun;
 
@@ -1118,6 +1122,7 @@ namespace openpeer
         ZS_LOG_DEBUG(log("notify requester send packet") + ", ip=" + destination.string() + ", length=" + string(packetLengthInBytes))
 
         IRUDPChannelDelegateForSessionAndListenerPtr master;
+        bool isShuttdingDown = false;
 
         {
           AutoRecursiveLock lock(mLock);
@@ -1127,15 +1132,35 @@ namespace openpeer
           }
           master = mMasterDelegate;
           mLastSentData = zsLib::now();
+          isShuttdingDown = isShuttingDown();
         }
 
         try {
-          master->notifyRUDPChannelSendPacket(mThisWeak.lock(), destination, packet.get(), packetLengthInBytes);
+          bool result = master->notifyRUDPChannelSendPacket(mThisWeak.lock(), destination, packet.get(), packetLengthInBytes);
+          if ((!result) &&
+              (isShuttdingDown)) {
+            goto do_shutdown;
+          }
         } catch(IRUDPChannelDelegateForSessionAndListenerProxy::Exceptions::DelegateGone &) {
           ZS_LOG_WARNING(Detail, log("cannot send STUN packet as master delegate is now gone"))
+          goto do_shutdown;
+        }
+
+        return;
+
+      do_shutdown:
+        {
+          AutoRecursiveLock lock(mLock);
+          if (isShuttdingDown) {
+            if (mStream) {
+              mStream->shutdown(false);
+            }
+            if (mShutdownRequest) {
+              mShutdownRequest->cancel();
+            }
+          }
           setShutdownReason(RUDPChannelShutdownReason_DelegateGone);
           cancel(false);
-          return;
         }
       }
 
@@ -1397,7 +1422,13 @@ namespace openpeer
       {
         AutoRecursiveLock lock(mLock); // just in case...
 
-        if (isShutdown()) return;
+        if (isShutdown()) {
+          ZS_LOG_DEBUG(log("already shutdown"))
+          return;
+        }
+
+        ZS_LOG_DEBUG(log("cancel called"))
+
         if (!mGracefulShutdownReference) mGracefulShutdownReference = mThisWeak.lock();
 
         // we don't need any external ACKs going on to clutter the traffic
@@ -1486,6 +1517,8 @@ namespace openpeer
           mStream.reset();
         }
         mPendingBuffers.clear();
+
+        ZS_LOG_DEBUG(log("cancel complete"))
       }
 
       //-----------------------------------------------------------------------
@@ -1698,6 +1731,8 @@ namespace openpeer
           stream = mStream;
           pending = mPendingBuffers;
           mPendingBuffers.clear();
+
+          ZS_LOG_TRACE(log("send pending now") + ", stream ID=" + string(stream->getID()))
         }
         for (PendingSendBufferList::iterator iter = pending.begin(); iter != pending.end(); ++iter) {
           stream->send((*iter).first.get(), (*iter).second);

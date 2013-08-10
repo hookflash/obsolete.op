@@ -338,7 +338,10 @@ namespace openpeer
       {
         ZS_LOG_DETAIL(log("shutdown called") + ", only when data sent=" + (shutdownOnlyOnceAllDataSent ? "true" : "false"))
 
-        if (isShutdown()) return;
+        if (isShutdown()) {
+          ZS_LOG_DEBUG(log("shutdown called but already cancelled"))
+          return;
+        }
 
         AutoRecursiveLock lock(mLock);
         if (!shutdownOnlyOnceAllDataSent) {
@@ -990,11 +993,14 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void RUDPChannelStream::cancel()
       {
-        ZS_LOG_TRACE(log("cancel called"))
-
         AutoRecursiveLock lock(mLock);          // just in case...
 
-        if (isShutdown()) return;
+        if (isShutdown()) {
+          ZS_LOG_DEBUG(log("cancel already complete"))
+          return;
+        }
+
+        ZS_LOG_TRACE(log("cancel called"))
 
         setState(RUDPChannelStreamState_Shutdown);
 
@@ -1022,6 +1028,8 @@ namespace openpeer
           mAddToAvailableBurstBatonsTimer->cancel();
           mAddToAvailableBurstBatonsTimer.reset();
         }
+
+        ZS_LOG_TRACE(log("cancel complete"))
       }
 
       //-----------------------------------------------------------------------
