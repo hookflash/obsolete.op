@@ -30,8 +30,11 @@
  */
 
 #include <openpeer/services/internal/services_RUDPMessaging.h>
+#include <openpeer/services/internal/services_Helper.h>
+
 #include <openpeer/services/IRUDPListener.h>
 #include <openpeer/services/IRUDPICESocketSession.h>
+
 #include <zsLib/Exception.h>
 #include <zsLib/helpers.h>
 #include <zsLib/Log.h>
@@ -65,14 +68,9 @@ namespace openpeer
                                    ULONG maxMessageSizeInBytes
                                    ) :
         MessageQueueAssociator(queue),
-        mID(zsLib::createPUID()),
         mDelegate(IRUDPMessagingDelegateProxy::createWeak(queue, delegate)),
         mCurrentState(RUDPMessagingState_Connecting),
-        mShutdownReason(RUDPMessagingShutdownReason_None),
-        mMaxMessageSizeInBytes(maxMessageSizeInBytes),
-        mNextMessageSizeInBytes(0),
-        mInformedReadReady(false),
-        mInformedWriteReady(false)
+        mMaxMessageSizeInBytes(maxMessageSizeInBytes)
       {
         ZS_LOG_BASIC(log("created"))
       }
@@ -93,11 +91,27 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      RUDPMessagingPtr RUDPMessaging::convert(IRUDPMessagingPtr messaging)
+      {
+        return boost::dynamic_pointer_cast<RUDPMessaging>(messaging);
+      }
+
+      //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
       #pragma mark RUDPMessaging => IRUDPMessaging
       #pragma mark
+
+      //-----------------------------------------------------------------------
+      String RUDPMessaging::toDebugString(IRUDPMessagingPtr messaging, bool includeCommaPrefix)
+      {
+        if (!messaging) return String(includeCommaPrefix ? ", rudp channel stream=(null)" : "rudp channel stream=(null)");
+
+        RUDPMessagingPtr pThis = RUDPMessaging::convert(messaging);
+        return pThis->getDebugValueString(includeCommaPrefix);
+      }
+
       //-----------------------------------------------------------------------
       RUDPMessagingPtr RUDPMessaging::acceptChannel(
                                                     IMessageQueuePtr queue,
@@ -114,7 +128,7 @@ namespace openpeer
         pThis->init();
         if (!pThis->mChannel) {
           ZS_LOG_ERROR(Detail, pThis->log("listener failed to accept channel"))
-          pThis->setShutdownReason(RUDPMessagingShutdownReason_OpenFailure);
+          pThis->setError(RUDPMessagingShutdownReason_OpenFailure, "channel accept failure");
           pThis->cancel();
           return RUDPMessagingPtr();
         }
@@ -138,7 +152,7 @@ namespace openpeer
         pThis->init();
         if (!pThis->mChannel) {
           ZS_LOG_ERROR(Detail, pThis->log("session failed to accept channel"))
-          pThis->setShutdownReason(RUDPMessagingShutdownReason_OpenFailure);
+          pThis->setError(RUDPMessagingShutdownReason_OpenFailure, "channel accept failure");
           pThis->cancel();
           return RUDPMessagingPtr();
         }
@@ -163,7 +177,7 @@ namespace openpeer
         pThis->init();
         if (!pThis->mChannel) {
           ZS_LOG_ERROR(Detail, pThis->log("session failed to open channel"))
-          pThis->setShutdownReason(RUDPMessagingShutdownReason_OpenFailure);
+          pThis->setError(RUDPMessagingShutdownReason_OpenFailure, "channel open failure");
           pThis->cancel();
           return RUDPMessagingPtr();
         }
@@ -172,32 +186,21 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      IRUDPMessaging::RUDPMessagingStates RUDPMessaging::getState() const
+      IRUDPMessaging::RUDPMessagingStates RUDPMessaging::getState(
+                                                                  WORD *outLastErrorCode,
+                                                                  String *outLastErrorReason
+                                                                  ) const
       {
         AutoRecursiveLock lock(mLock);
+        if (outLastErrorCode) *outLastErrorCode = mLastError;
+        if (outLastErrorReason) *outLastErrorReason = mLastErrorReason;
         return mCurrentState;
-      }
-
-      //-----------------------------------------------------------------------
-      IRUDPMessaging::RUDPMessagingShutdownReasons RUDPMessaging::getShutdownReason() const
-      {
-        AutoRecursiveLock lock(mLock);
-        if (RUDPMessagingShutdownReason_None != mShutdownReason) return mShutdownReason;
-        if (mChannel) {
-          IRUDPChannel::RUDPChannelShutdownReasons reason = mChannel->getShutdownReason();
-          if (IRUDPChannel::RUDPChannelShutdownReason_None != reason) {
-            RUDPMessaging *pThis = const_cast<RUDPMessaging *>(this);
-            pThis->mShutdownReason = ((RUDPMessagingShutdownReasons)reason);
-          }
-        }
-        return mShutdownReason;
       }
 
       //-----------------------------------------------------------------------
       void RUDPMessaging::shutdown()
       {
         AutoRecursiveLock lock(mLock);
-        setShutdownReason(RUDPMessagingShutdownReason_Closed);
         cancel();
       }
 
@@ -217,7 +220,7 @@ namespace openpeer
       {
         {
           AutoRecursiveLock lock(mLock);
-          mInformedWriteReady = false;  // if the send was called in response to a write-ready event then the write-ready flag must be cleared so the event can be fired again
+          get(mInformedWriteReady) = false;  // if the send was called in response to a write-ready event then the write-ready flag must be cleared so the event can be fired again
           ZS_LOG_DEBUG(log("send called") + ", message length=" + string(messsageLengthInBytes))
         }
 
@@ -310,21 +313,21 @@ namespace openpeer
         ZS_LOG_DEBUG(log("channel data received") + ", size=" + string(received))
 
         if (0 == received) return 0;
-        mInformedReadReady = false; // if the receive was called in response to a read-ready event then the read-ready event flag must be cleared so the event can fire again
+        get(mInformedReadReady) = false; // if the receive was called in response to a read-ready event then the read-ready event flag must be cleared so the event can fire again
 
         if (received != nextMessageSize) {
-          ZS_LOG_ERROR(Detail, log("failed to obtain data from the channel in the exact size as indicated in the stream"))
+          ZS_LOG_ERROR(Detail, log("failed to obtain data from the channel in the exact size as indicated in the stream") + ", received=" + string(received) + ", next message size=" + string(nextMessageSize))
           // this should not happen
           mChannel->shutdown();
           mChannel.reset();
 
-          setShutdownReason(RUDPMessagingShutdownReason_IllegalStreamState);
+          setError(RUDPMessagingShutdownReason_IllegalStreamState, "received size does not equal next expecting message size");
           cancel();
           return 0;
         }
 
         // reset the next message size since we have received it
-        mNextMessageSizeInBytes = 0;
+        get(mNextMessageSizeInBytes) = 0;
 
         // cause a read ready notification if there is enough data available for a message
         getNextReceivedMessageSizeInBytes();
@@ -382,15 +385,17 @@ namespace openpeer
             break;
           }
           case IRUDPChannel::RUDPChannelState_ShuttingDown:
-          {
-            getShutdownReason();
-            cancel();
-            break;
-          }
           case IRUDPChannel::RUDPChannelState_Shutdown:
           {
-            getShutdownReason();
-            mChannel.reset();
+            WORD errorCode = 0;
+            String reason;
+            mChannel->getState(&errorCode, &reason);
+            if (0 != errorCode) {
+              setError(errorCode, reason);
+            }
+            if (IRUDPChannel::RUDPChannelState_Shutdown == state) {
+              mChannel.reset();
+            }
             cancel();
             break;
           }
@@ -416,9 +421,9 @@ namespace openpeer
         try {
           ZS_LOG_DEBUG(log("notify write ready"))
           mDelegate->onRUDPMessagingWriteReady(mThisWeak.lock());
-          mInformedWriteReady = true;
+          get(mInformedWriteReady) = true;
         } catch(IRUDPMessagingDelegateProxy::Exceptions::DelegateGone &) {
-          setShutdownReason(RUDPMessagingShutdownReason_DelegateGone);
+          setError(RUDPMessagingShutdownReason_DelegateGone, "delegate gone");
           cancel();
         }
       }
@@ -435,6 +440,35 @@ namespace openpeer
       String RUDPMessaging::log(const char *message) const
       {
         return String("RUDPMessaging [") + string(mID) + "] " + message;
+      }
+
+      //-----------------------------------------------------------------------
+      String RUDPMessaging::getDebugValueString(bool includeCommaPrefix) const
+      {
+        AutoRecursiveLock lock(mLock);
+        bool firstTime = !includeCommaPrefix;
+        return
+
+        Helper::getDebugValue("rudp messaging ID", string(mID), firstTime) +
+
+        Helper::getDebugValue("state", IRUDPMessaging::toString(mCurrentState), firstTime) +
+        Helper::getDebugValue("last error", 0 != mLastError ? string(mLastError) : String(), firstTime) +
+        Helper::getDebugValue("last reason", mLastErrorReason, firstTime) +
+
+        Helper::getDebugValue("delegate", mDelegate ? String("true") : String(), firstTime) +
+
+        Helper::getDebugValue("informed read ready", mInformedReadReady ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("informed write ready", mInformedWriteReady ? String("true") : String(), firstTime) +
+
+        Helper::getDebugValue("graceful shutdown reference", mGracefulShutdownReference ? String("true") : String(), firstTime) +
+
+        Helper::getDebugValue("channel", mChannel ? String("true") : String(), firstTime) +
+
+        Helper::getDebugValue("next message size (bytes)", 0 != mNextMessageSizeInBytes ? string(mNextMessageSizeInBytes) : String(), firstTime) +
+
+        Helper::getDebugValue("max message size (bytes)", 0 != mMaxMessageSizeInBytes ? string(mNextMessageSizeInBytes) : String(), firstTime) +
+
+        Helper::getDebugValue("recycled buffers", mRecycledBuffers.size() > 0 ? string(mRecycledBuffers.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -471,7 +505,7 @@ namespace openpeer
 
         mChannel.reset();
 
-        mNextMessageSizeInBytes = 0;
+        get(mNextMessageSizeInBytes) = 0;
       }
 
       //-----------------------------------------------------------------------
@@ -495,20 +529,28 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      void RUDPMessaging::setShutdownReason(RUDPMessagingShutdownReasons reason)
+      void RUDPMessaging::setError(WORD errorCode, const char *inReason)
       {
-        AutoRecursiveLock lock(mLock);
-        if (mShutdownReason == reason) return;
+        String reason(inReason);
+        if (reason.isEmpty()) {
+          reason = IHTTP::toString(IHTTP::toStatusCode(errorCode));
+        }
 
-        getShutdownReason();  // fix shutdown state to the RUDPChannel
-
-        if (RUDPMessagingShutdownReason_None != mShutdownReason) {
-          ZS_LOG_WARNING(Detail, log("attempting to set shutdown reason when already have one") + ", current reason=" + toString(mShutdownReason) + ", attempting to set reason=" + toString(reason))
+        if ((isShuttingDown()) ||
+            (isShutdown())) {
+          ZS_LOG_WARNING(Detail, log("already shutting down thus ignoring new error") + ", new error=" + string(errorCode) + ", new reason=" + reason + getDebugValueString())
           return;
         }
 
-        ZS_LOG_DEBUG(log("setting shutdown reason") + ", reason=" + toString(reason))
-        mShutdownReason = reason;
+        if (0 != mLastError) {
+          ZS_LOG_WARNING(Detail, log("error already set thus ignoring new error") + ", new error=" + string(errorCode) + ", new reason=" + reason + getDebugValueString())
+          return;
+        }
+
+        get(mLastError) = errorCode;
+        mLastErrorReason = reason;
+
+        ZS_LOG_WARNING(Detail, log("error set") + ", code=" + string(mLastError) + ", reason=" + mLastErrorReason + getDebugValueString())
       }
 
       //-----------------------------------------------------------------------
@@ -535,16 +577,16 @@ namespace openpeer
           mChannel->shutdown();
           mChannel.reset();
 
-          setShutdownReason(RUDPMessagingShutdownReason_IllegalStreamState);
+          setError(RUDPMessagingShutdownReason_IllegalStreamState, "buffer size should equal available size");
           cancel();
           return;
         }
-        mNextMessageSizeInBytes = ntohl(*((DWORD *)&(buffer[0])));
+        get(mNextMessageSizeInBytes) = ntohl(*((DWORD *)&(buffer[0])));
         if (mNextMessageSizeInBytes > mMaxMessageSizeInBytes) {
           mChannel->shutdown();
           mChannel.reset();
 
-          setShutdownReason(RUDPMessagingShutdownReason_IllegalStreamState);
+          setError(RUDPMessagingShutdownReason_IllegalStreamState, "buffer size exceeds maximum message size");
           cancel();
           return;
         }
@@ -566,9 +608,9 @@ namespace openpeer
         try {
           ZS_LOG_DEBUG(log("notify read ready"))
           mDelegate->onRUDPMessagingReadReady(mThisWeak.lock());
-          mInformedReadReady = true;
+          get(mInformedReadReady) = true;
         } catch(IRUDPMessagingDelegateProxy::Exceptions::DelegateGone &) {
-          setShutdownReason(RUDPMessagingShutdownReason_DelegateGone);
+          setError(RUDPMessagingShutdownReason_DelegateGone, "delegate gone");
           cancel();
         }
       }
@@ -625,6 +667,12 @@ namespace openpeer
     const char *IRUDPMessaging::toString(RUDPMessagingShutdownReasons reason)
     {
       return IRUDPChannel::toString((IRUDPChannel::RUDPChannelShutdownReasons)reason);
+    }
+
+    //-------------------------------------------------------------------------
+    String IRUDPMessaging::toDebugString(IRUDPMessagingPtr messaging, bool includeCommaPrefix)
+    {
+      return internal::RUDPMessaging::toDebugString(messaging, includeCommaPrefix);
     }
 
     //-------------------------------------------------------------------------

@@ -30,7 +30,10 @@
  */
 
 #include <openpeer/services/internal/services_RUDPChannelStream.h>
+#include <openpeer/services/internal/services_Helper.h>
+
 #include <openpeer/services/RUDPPacket.h>
+
 #include <zsLib/Exception.h>
 #include <zsLib/helpers.h>
 #include <zsLib/Stringize.h>
@@ -182,6 +185,12 @@ namespace openpeer
         return true;
       }
 
+      //-------------------------------------------------------------------------
+      String IRUDPChannelStream::toDebugString(IRUDPChannelStreamPtr stream, bool includeCommaPrefix)
+      {
+        return IRUDPChannelStream::toDebugString(stream, includeCommaPrefix);
+      }
+
       //-----------------------------------------------------------------------
       IRUDPChannelStreamPtr IRUDPChannelStream::create(
                                                        IMessageQueuePtr queue,
@@ -225,40 +234,24 @@ namespace openpeer
                                            DWORD minimumNegotiatedRTTInMilliseconds
                                            ) :
         MessageQueueAssociator(queue),
-        mID(zsLib::createPUID()),
         mDelegate(IRUDPChannelStreamDelegateProxy::createWeak(queue, delegate)),
-        mInformedReadReady(false),
-        mInformedWriteReady(false),
         mDidReceiveWriteReady(true),
         mCurrentState(RUDPChannelStreamState_Connected),
-        mShutdownReason(RUDPChannelStreamShutdownReason_None),
         mSendingChannelNumber(sendingChannelNumber),
         mReceivingChannelNumber(receivingChannelNumber),
         mMinimumRTT(Milliseconds(minimumNegotiatedRTTInMilliseconds)),
         mCalculatedRTT(Milliseconds(OPENPEER_SERVICES_RUDP_DEFAULT_CALCULATE_RTT_IN_MILLISECONDS)),
         mNextSequenceNumber(nextSequenceNumberToUseForSending),
-        mXORedParityToNow(false),
         mGSNR(nextSequenberNumberExpectingToReceive-1),
         mGSNFR(nextSequenberNumberExpectingToReceive-1),
-        mGSNRParity(false),
-        mXORedParityToGSNFR(false),
-        mWaitToSendUntilReceivedRemoteSequenceNumber(0),
         mShutdownState(IRUDPChannel::Shutdown_None),
-        mDuplicateReceived(false),
-        mECNReceived(false),
         mLastDeliveredReadData(zsLib::now()),
-        mAttemptingSendNow(false),
-        mRandomPoolPos(0),
-        mTotalPacketsToResend(0),
         mAvailableBurstBatons(1),
         mAddToAvailableBurstBatonsDuation(Milliseconds(OPENPEER_SERVICES_RUDP_DEFAULT_CALCULATE_RTT_IN_MILLISECONDS)),
         mPacketsPerBurst(OPENPEER_SERVICES_DEFAULT_PACKETS_PER_BURST),
-        mBandwidthIncreaseFrozen(false),
         mStartedSendingAtTime(zsLib::now()),
         mTotalSendingPeriodWithoutIssues(Milliseconds(0)),
-        mForceACKOfSentPacketsAtSendingSequnceNumber(0),
-        mForceACKOfSentPacketsRequestID(0),
-        mForceACKNextTimePossible(false)
+        mForceACKOfSentPacketsRequestID(0)
       {
         ZS_LOG_BASIC(log("created"))
         if (mCalculatedRTT < mMinimumRTT)
@@ -287,28 +280,9 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      RUDPChannelStreamPtr RUDPChannelStream::create(
-                                                     IMessageQueuePtr queue,
-                                                     IRUDPChannelStreamDelegatePtr delegate,
-                                                     QWORD nextSequenceNumberToUseForSending,
-                                                     QWORD nextSequenberNumberExpectingToReceive,
-                                                     WORD sendingChannelNumber,
-                                                     WORD receivingChannelNumber,
-                                                     DWORD minimumNegotiatedRTT
-                                                     )
+      RUDPChannelStreamPtr RUDPChannelStream::convert(IRUDPChannelStreamPtr stream)
       {
-        RUDPChannelStreamPtr pThis(new RUDPChannelStream(
-                                           queue,
-                                           delegate,
-                                           nextSequenceNumberToUseForSending,
-                                           nextSequenberNumberExpectingToReceive,
-                                           sendingChannelNumber,
-                                           receivingChannelNumber,
-                                           minimumNegotiatedRTT
-                                           ));
-        pThis->mThisWeak = pThis;
-        pThis->init();
-        return pThis;
+        return boost::dynamic_pointer_cast<RUDPChannelStream>(stream);
       }
 
       //-----------------------------------------------------------------------
@@ -320,17 +294,49 @@ namespace openpeer
       #pragma mark
 
       //-----------------------------------------------------------------------
-      IRUDPChannelStream::RUDPChannelStreamStates RUDPChannelStream::getState() const
+      String RUDPChannelStream::toDebugString(IRUDPChannelStreamPtr stream, bool includeCommaPrefix)
       {
-        AutoRecursiveLock lock(mLock);
-        return mCurrentState;
+        if (!stream) return String(includeCommaPrefix ? ", rudp channel stream=(null)" : "rudp channel stream=(null)");
+
+        RUDPChannelStreamPtr pThis = RUDPChannelStream::convert(stream);
+        return pThis->getDebugValueString(includeCommaPrefix);
       }
 
       //-----------------------------------------------------------------------
-      IRUDPChannelStream::RUDPChannelStreamShutdownReasons RUDPChannelStream::getShutdownReason() const
+      RUDPChannelStreamPtr RUDPChannelStream::create(
+                                                     IMessageQueuePtr queue,
+                                                     IRUDPChannelStreamDelegatePtr delegate,
+                                                     QWORD nextSequenceNumberToUseForSending,
+                                                     QWORD nextSequenberNumberExpectingToReceive,
+                                                     WORD sendingChannelNumber,
+                                                     WORD receivingChannelNumber,
+                                                     DWORD minimumNegotiatedRTT
+                                                     )
+      {
+        RUDPChannelStreamPtr pThis(new RUDPChannelStream(
+                                                         queue,
+                                                         delegate,
+                                                         nextSequenceNumberToUseForSending,
+                                                         nextSequenberNumberExpectingToReceive,
+                                                         sendingChannelNumber,
+                                                         receivingChannelNumber,
+                                                         minimumNegotiatedRTT
+                                                         ));
+        pThis->mThisWeak = pThis;
+        pThis->init();
+        return pThis;
+      }
+      
+      //-----------------------------------------------------------------------
+      IRUDPChannelStream::RUDPChannelStreamStates RUDPChannelStream::getState(
+                                                                              WORD *outLastErrorCode,
+                                                                              String *outLastErrorReason
+                                                                              ) const
       {
         AutoRecursiveLock lock(mLock);
-        return mShutdownReason;
+        if (outLastErrorCode) *outLastErrorCode = mLastError;
+        if (outLastErrorReason) *outLastErrorReason = mLastErrorReason;
+        return mCurrentState;
       }
 
       //-----------------------------------------------------------------------
@@ -345,7 +351,6 @@ namespace openpeer
 
         AutoRecursiveLock lock(mLock);
         if (!shutdownOnlyOnceAllDataSent) {
-          setShutdownReason(RUDPChannelStreamShutdownReason_Closed);
           cancel();
           return;
         }
@@ -378,7 +383,7 @@ namespace openpeer
       {
         AutoRecursiveLock lock(mLock);
         ZS_LOG_DETAIL(log("hold sending until receive sequence number") + ", sequence number=" + sequenceToString(sequenceNumber))
-        mWaitToSendUntilReceivedRemoteSequenceNumber = sequenceNumber;
+        get(mWaitToSendUntilReceivedRemoteSequenceNumber) = sequenceNumber;
 
         if (0 == mWaitToSendUntilReceivedRemoteSequenceNumber) {
           // the hold was manually removed, try to deliver data now...
@@ -395,7 +400,7 @@ namespace openpeer
         ZS_LOG_DEBUG(log("receive called") + ", buffer size=" + string(bufferSizeAvailableInBytes))
 
         AutoRecursiveLock lock(mLock);
-        mInformedReadReady = false; // if this method was called in response to a read-ready event then clear the read-ready flag so the event can fire again
+        get(mInformedReadReady) = false; // if this method was called in response to a read-ready event then clear the read-ready flag so the event can fire again
 
         if (0 == bufferSizeAvailableInBytes) {
           notifyReadReadyAgainIfData();
@@ -438,7 +443,7 @@ namespace openpeer
       bool RUDPChannelStream::doesReceiveHaveMoreDataAvailable()
       {
         AutoRecursiveLock lock(mLock);
-        mInformedReadReady = false;  // if this method was called in response to a read-ready event then clear the read-ready flag so the event can fire again
+        get(mInformedReadReady) = false;  // if this method was called in response to a read-ready event then clear the read-ready flag so the event can fire again
 
         for (BufferedDataList::iterator iter = mReadData.begin(); iter != mReadData.end(); ++iter)
         {
@@ -454,7 +459,7 @@ namespace openpeer
       ULONG RUDPChannelStream::getReceiveSizeAvailableInBytes()
       {
         AutoRecursiveLock lock(mLock);
-        mInformedReadReady = false;  // if this method was called in response to a read-ready event then clear the read-ready flag so the event can fire again
+        get(mInformedReadReady) = false;  // if this method was called in response to a read-ready event then clear the read-ready flag so the event can fire again
 
         ULONG totalAvailable = 0;
 
@@ -480,7 +485,7 @@ namespace openpeer
         ZS_THROW_INVALID_USAGE_IF(!buffer)
 
         AutoRecursiveLock lock(mLock);
-        mInformedWriteReady = false;  // if this method was called in response to a write-ready event then clear the write-ready flag so the event can fire again
+        get(mInformedWriteReady) = false;  // if this method was called in response to a write-ready event then clear the write-ready flag so the event can fire again
 
         if (isShutdown()) return false;
 
@@ -569,17 +574,17 @@ namespace openpeer
             return false;
           }
 
-          mECNReceived = (mECNReceived || ecnMarked);
+          get(mECNReceived) = (mECNReceived || ecnMarked);
 
           QWORD sequenceNumber = packet->getSequenceNumber(mGSNR);
 
           // we no longer have to wait on a send once we find the correct sequence number
           if (sequenceNumber >= mWaitToSendUntilReceivedRemoteSequenceNumber)
-            mWaitToSendUntilReceivedRemoteSequenceNumber = 0;
+            get(mWaitToSendUntilReceivedRemoteSequenceNumber) = 0;
 
           if (sequenceNumber <= mGSNFR) {
             ZS_LOG_WARNING(Debug, log("received duplicate packet") + ", GSNFR=" + sequenceToString(mGSNFR) + ", packet sequence number=" + sequenceToString(sequenceNumber))
-            mDuplicateReceived = true;
+            get(mDuplicateReceived) = true;
             return true;
           }
 
@@ -605,7 +610,7 @@ namespace openpeer
                       );
           } catch(Exceptions::IllegalACK &) {
             ZS_LOG_WARNING(Debug, log("received illegal ACK") + ", packet sequence number=" + sequenceToString(sequenceNumber))
-            setShutdownReason(RUDPChannelStreamShutdownReason_IllegalStreamState);
+            setError(RUDPChannelStreamShutdownReason_IllegalStreamState, "received illegal ack");
             cancel();
             return true;
           }
@@ -615,7 +620,7 @@ namespace openpeer
           if (findIter != mReceivedPackets.end()) {
             ZS_LOG_WARNING(Debug, log("received packet is duplicated and already exist in pending buffers thus dropping packet") + ", packet sequence number=" + sequenceToString(sequenceNumber))
             // we have already received and processed this packet
-            mDuplicateReceived = true;
+            get(mDuplicateReceived) = true;
             return true;
           }
 
@@ -655,7 +660,7 @@ namespace openpeer
           mReceivedPackets[sequenceNumber] = bufferedPacket;
           if (sequenceNumber > mGSNR) {
             mGSNR = sequenceNumber;
-            mGSNRParity = packet->isFlagSet(RUDPPacket::Flag_PS_ParitySending);
+            get(mGSNRParity) = packet->isFlagSet(RUDPPacket::Flag_PS_ParitySending);
           }
 
           // if set then remote wants an ACK right away - if we are able to send data packets then we will be able to ACK the packet right now without an external ACK
@@ -683,7 +688,7 @@ namespace openpeer
         try {
           mDelegate->onRUDPChannelStreamSendExternalACKNow(mThisWeak.lock(), false);
         } catch(IRUDPChannelStreamDelegateProxy::Exceptions::DelegateGone &) {
-          setShutdownReason(RUDPChannelStreamShutdownReason_DelegateGone);
+          setError(RUDPChannelStreamShutdownReason_DelegateGone, "delegate gone");
           cancel();
           return true;
         }
@@ -735,7 +740,7 @@ namespace openpeer
         }
 
         if (nextSequenceNumber >= mWaitToSendUntilReceivedRemoteSequenceNumber)
-          mWaitToSendUntilReceivedRemoteSequenceNumber = 0;
+          get(mWaitToSendUntilReceivedRemoteSequenceNumber) = 0;
 
         try {
           handleAck(
@@ -752,7 +757,7 @@ namespace openpeer
                     );
         } catch(Exceptions::IllegalACK &) {
           ZS_LOG_TRACE(log("received illegal ACK"))
-          setShutdownReason(RUDPChannelStreamShutdownReason_IllegalStreamState);
+          setError(RUDPChannelStreamShutdownReason_IllegalStreamState, "received illegal ack");
           cancel();
           return;
         }
@@ -766,7 +771,7 @@ namespace openpeer
           // resend get delivered.
 
           mForceACKOfSentPacketsRequestID = 0;
-          mForceACKNextTimePossible = false;
+          get(mForceACKNextTimePossible) = false;
 
           bool firstTime = true;
 
@@ -895,8 +900,8 @@ namespace openpeer
       {
         ZS_LOG_TRACE(log("external ACK sent"))
         AutoRecursiveLock lock(mLock);
-        mDuplicateReceived = false;
-        mECNReceived = false;
+        get(mDuplicateReceived) = false;
+        get(mECNReceived) = false;
       }
 
       //-----------------------------------------------------------------------
@@ -936,7 +941,7 @@ namespace openpeer
             mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer.reset();
 
             // we will use the "force" ACK mechanism to ensure that data has arrived
-            mForceACKNextTimePossible = true;
+            get(mForceACKNextTimePossible) = true;
             goto quickExitToSendNow;
           }
 
@@ -990,6 +995,86 @@ namespace openpeer
         return String("RUDPChannelStream [") + string(mID) + "] " + message;
       }
 
+      //-----------------------------------------------------------------------
+      String RUDPChannelStream::getDebugValueString(bool includeCommaPrefix) const
+      {
+        AutoRecursiveLock lock(mLock);
+        bool firstTime = !includeCommaPrefix;
+        return
+
+        Helper::getDebugValue("rudp channel stream ID", string(mID), firstTime) +
+
+        Helper::getDebugValue("delegate", mDelegate ? String("true") : String(), firstTime) +
+
+        Helper::getDebugValue("state", IRUDPChannelStream::toString(mCurrentState), firstTime) +
+        Helper::getDebugValue("last error", 0 != mLastError ? string(mLastError) : String(), firstTime) +
+        Helper::getDebugValue("last reason", mLastErrorReason, firstTime) +
+
+        Helper::getDebugValue("informed read ready", mInformedReadReady ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("informed write ready", mInformedWriteReady ? String("true") : String(), firstTime) +
+
+        Helper::getDebugValue("did receive write ready", mDidReceiveWriteReady ? String("true") : String(), firstTime) +
+
+        Helper::getDebugValue("sending channel number", 0 != mSendingChannelNumber ? string(mSendingChannelNumber) : String(), firstTime) +
+        Helper::getDebugValue("receiving channel number", 0 != mReceivingChannelNumber ? string(mReceivingChannelNumber) : String(), firstTime) +
+
+        Helper::getDebugValue("minimum RTT (ms)", Duration() != mMinimumRTT ? string(mMinimumRTT.total_milliseconds()) : String(), firstTime) +
+        Helper::getDebugValue("calculated RTT (ms)", Duration() != mCalculatedRTT ? string(mCalculatedRTT.total_milliseconds()) : String(), firstTime) +
+
+        Helper::getDebugValue("next sequence number", 0 != mNextSequenceNumber ? string(mNextSequenceNumber) : String(), firstTime) +
+
+        Helper::getDebugValue("xor parity to now", mXORedParityToNow ? "1" : "0", firstTime) +
+
+        Helper::getDebugValue("GSNR", 0 != mGSNR ? string(mGSNR) : String(), firstTime) +
+        Helper::getDebugValue("GSNFR", 0 != mGSNFR ? string(mGSNFR) : String(), firstTime) +
+
+        Helper::getDebugValue("GSNR parity", mGSNRParity ? "1" : "0", firstTime) +
+        Helper::getDebugValue("xor parity to GSNFR", mXORedParityToGSNFR ? "1" : "0", firstTime) +
+
+        Helper::getDebugValue("wait to send until received sequence number", 0 != mWaitToSendUntilReceivedRemoteSequenceNumber ? string(mWaitToSendUntilReceivedRemoteSequenceNumber) : String(), firstTime) +
+
+        Helper::getDebugValue("shutdown state", IRUDPChannel::toString(mShutdownState), firstTime) +
+
+        Helper::getDebugValue("duplicate received", mDuplicateReceived ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("ECN received", mECNReceived ? String("true") : String(), firstTime) +
+
+        Helper::getDebugValue("last delivered read data", Time() != mLastDeliveredReadData ? IHelper::timeToString(mLastDeliveredReadData) : String(), firstTime) +
+
+        Helper::getDebugValue("attempting send now", mAttemptingSendNow ? String("true") : String(), firstTime) +
+
+        Helper::getDebugValue("sending packets", mSendingPackets.size() > 0 ? string(mSendingPackets.size()) : String(), firstTime) +
+        Helper::getDebugValue("received packets", mReceivedPackets.size() > 0 ? string(mReceivedPackets.size()) : String(), firstTime) +
+
+        Helper::getDebugValue("read data", mReadData.size() > 0 ? string(mReadData.size()) : String(), firstTime) +
+        Helper::getDebugValue("write data", mWriteData.size() > 0 ? string(mWriteData.size()) : String(), firstTime) +
+
+        Helper::getDebugValue("recycled buffers", mRecycleBuffers.size() > 0 ? string(mRecycleBuffers.size()) : String(), firstTime) +
+
+        Helper::getDebugValue("random pool pos", 0 != mRandomPoolPos ? string(mRandomPoolPos) : String(), firstTime) +
+
+        Helper::getDebugValue("total packets to resend", 0 != mTotalPacketsToResend ? string(mTotalPacketsToResend) : String(), firstTime) +
+
+        Helper::getDebugValue("available burst batons", 0 != mAvailableBurstBatons ? string(mAvailableBurstBatons) : String(), firstTime) +
+
+        Helper::getDebugValue("burst timer", mBurstTimer ? String("true") : String(), firstTime) +
+
+        Helper::getDebugValue("ensure data has arrived when no more burst batons available timer", mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer ? String("true") : String(), firstTime) +
+
+        Helper::getDebugValue("add to available burst batons timer", mAddToAvailableBurstBatonsTimer ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("add to available burst batons duration (ms)", Duration() != mAddToAvailableBurstBatonsDuation ? string(mAddToAvailableBurstBatonsDuation.total_milliseconds()) : String(), firstTime) +
+
+        Helper::getDebugValue("total packets per burst", 0 != mPacketsPerBurst ? string(mPacketsPerBurst) : String(), firstTime) +
+
+        Helper::getDebugValue("bandwidth increase frozen", mBandwidthIncreaseFrozen ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("started sending time", Time() != mStartedSendingAtTime ? string(mStartedSendingAtTime) : String(), firstTime) +
+        Helper::getDebugValue("total sending period without issues (ms)", Duration() != mTotalSendingPeriodWithoutIssues ? string(mTotalSendingPeriodWithoutIssues.total_milliseconds()) : String(), firstTime) +
+
+        Helper::getDebugValue("force ACKs of sent packets sending sequence number", 0 != mForceACKOfSentPacketsAtSendingSequnceNumber ? string(mForceACKOfSentPacketsAtSendingSequnceNumber) : String(), firstTime) +
+        Helper::getDebugValue("force ACKs of sent packets request ID", 0 != mForceACKOfSentPacketsRequestID ? string(mForceACKOfSentPacketsRequestID) : String(), firstTime) +
+
+        Helper::getDebugValue("force ACK next time possible", mForceACKNextTimePossible ? String("true") : String(), firstTime);
+      }
+      
       //-----------------------------------------------------------------------
       void RUDPChannelStream::cancel()
       {
@@ -1051,18 +1136,28 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      void RUDPChannelStream::setShutdownReason(RUDPChannelStreamShutdownReasons reason)
+      void RUDPChannelStream::setError(WORD errorCode, const char *inReason)
       {
-        AutoRecursiveLock lock(mLock);
-        if (reason == mShutdownReason) return;
+        String reason(inReason ? String(inReason) : String());
+        if (reason.isEmpty()) {
+          reason = IHTTP::toString(IHTTP::toStatusCode(errorCode));
+        }
 
-        if (RUDPChannelStreamShutdownReason_None != mShutdownReason) {
-          ZS_LOG_WARNING(Detail, log("attempting to set shutdown reason when already have a reason") + ", current reason=" + toString(mShutdownReason) + ", attempting to set reason=" + toString(reason))
+        if ((isShuttingDown()) ||
+            (isShutdown())) {
+          ZS_LOG_WARNING(Detail, log("already shutting down thus ignoring new error") + ", new error=" + string(errorCode) + ", new reason=" + reason + getDebugValueString())
           return;
         }
 
-        ZS_LOG_DEBUG(log("setting shutdown reason") + ", reason=" + toString(reason))
-        mShutdownReason = reason;
+        if (0 != mLastError) {
+          ZS_LOG_WARNING(Detail, log("error already set thus ignoring new error") + ", new error=" + string(errorCode) + ", new reason=" + reason + getDebugValueString())
+          return;
+        }
+
+        get(mLastError) = errorCode;
+        mLastErrorReason = reason;
+
+        ZS_LOG_WARNING(Detail, log("error set") + ", code=" + string(mLastError) + ", reason=" + mLastErrorReason + getDebugValueString())
       }
 
       //-----------------------------------------------------------------------
@@ -1219,9 +1314,9 @@ namespace openpeer
               newPacket->setFlag(RUDPPacket::Flag_PG_ParityGSNR, mGSNRParity);
               newPacket->setFlag(RUDPPacket::Flag_XP_XORedParityToGSNFR, mXORedParityToGSNFR);
               newPacket->setFlag(RUDPPacket::Flag_DP_DuplicatePacket, mDuplicateReceived);
-              mDuplicateReceived = false;
+              get(mDuplicateReceived) = false;
               newPacket->setFlag(RUDPPacket::Flag_EC_ECNPacket, mECNReceived);
-              mECNReceived = false;
+              get(mECNReceived) = false;
 
               if (!firstPacketCreated) {
                 String vectorParityField; // for debugging
@@ -1309,7 +1404,7 @@ namespace openpeer
 
               BufferedPacketPtr bufferedPacket = BufferedPacket::create();
               bufferedPacket->mSequenceNumber = mNextSequenceNumber;
-              mXORedParityToNow = internal::logicalXOR(mXORedParityToNow, newPacket->isFlagSet(RUDPPacket::Flag_PS_ParitySending));   // have to keep track of the current parity of all packets sent until this point
+              get(mXORedParityToNow) = internal::logicalXOR(mXORedParityToNow, newPacket->isFlagSet(RUDPPacket::Flag_PS_ParitySending));   // have to keep track of the current parity of all packets sent until this point
               bufferedPacket->mXORedParityToNow = mXORedParityToNow;          // when the remore party reports their GSNFR parity in an ACK, this value is required to verify it is accurate
               bufferedPacket->mRUDPPacket = newPacket;
               bufferedPacket->mPacket = packetizedBuffer;
@@ -1374,14 +1469,14 @@ namespace openpeer
             if (attemptToDeliver->mFlagForResendingInNextBurst) {
               ZS_LOG_TRACE(log("flag for resending in next burst is set this will force an ACK next time possible"))
 
-              mForceACKNextTimePossible = true;                     // we need to force an ACK when there is resent data to ensure it has arrived
+              get(mForceACKNextTimePossible) = true;                // we need to force an ACK when there is resent data to ensure it has arrived
               attemptToDeliver->doNotResend(mTotalPacketsToResend); // if this was marked for resending, then clear it now since it is resent
             }
           }
         } catch(IRUDPChannelStreamDelegateProxy::Exceptions::DelegateGone &) {
           AutoRecursiveLock lock(mLock);
           ZS_LOG_WARNING(Trace, log("delegate gone thus cannot send packet"))
-          setShutdownReason(RUDPChannelStreamShutdownReason_DelegateGone);
+          setError(RUDPChannelStreamShutdownReason_DelegateGone, "delegate gone");
           cancel();
         }
 
@@ -1542,15 +1637,15 @@ namespace openpeer
 
         if (forceACKOfSentPacketsRequired) {
           mForceACKOfSentPacketsRequestID = zsLib::createPUID();
-          mForceACKOfSentPacketsAtSendingSequnceNumber = mNextSequenceNumber - 1;
-          mForceACKNextTimePossible = false;
+          get(mForceACKOfSentPacketsAtSendingSequnceNumber) = mNextSequenceNumber - 1;
+          get(mForceACKNextTimePossible) = false;
 
           ZS_LOG_TRACE(log("forcing an ACK immediately") + ", ack ID=" + string(mForceACKOfSentPacketsRequestID) + ", forced sequence number=" + sequenceToString(mForceACKOfSentPacketsAtSendingSequnceNumber) + ", available batons=" + string(mAvailableBurstBatons) + ", write size=" + string(mWriteData.size()) + ", sending size=" + string(mSendingPackets.size()))
 
           try {
             mDelegate->onRUDPChannelStreamSendExternalACKNow(mThisWeak.lock(), true, mForceACKOfSentPacketsRequestID);
           } catch(IRUDPChannelStreamDelegateProxy::Exceptions::DelegateGone &) {
-            setShutdownReason(RUDPChannelStreamShutdownReason_DelegateGone);
+            setError(RUDPChannelStreamShutdownReason_DelegateGone, "delegate gone");
             cancel();
             return;
           }
@@ -1857,7 +1952,7 @@ namespace openpeer
         bool wasFrozen = mBandwidthIncreaseFrozen;
 
         // freeze the increase to prevent an increase in the socket sending
-        mBandwidthIncreaseFrozen = true;
+        get(mBandwidthIncreaseFrozen) = true;
         mStartedSendingAtTime = zsLib::now();
         mTotalSendingPeriodWithoutIssues = Milliseconds(0);
 
@@ -1913,7 +2008,7 @@ namespace openpeer
       void RUDPChannelStream::handleUnfreezing()
       {
         if (mTotalSendingPeriodWithoutIssues > Seconds(OPENPEER_SERVICES_UNFREEZE_AFTER_SECONDS_OF_GOOD_TRANSMISSION)) {
-          mBandwidthIncreaseFrozen = false;
+          get(mBandwidthIncreaseFrozen) = false;
           mTotalSendingPeriodWithoutIssues = Milliseconds(0);
 
           // decrease the time between adding new batons
@@ -1998,7 +2093,7 @@ namespace openpeer
 
           // recalculate the GSNFR information
           mGSNFR = bufferedPacket->mSequenceNumber;
-          mXORedParityToGSNFR = internal::logicalXOR(mXORedParityToGSNFR, bufferedPacket->mRUDPPacket->isFlagSet(RUDPPacket::Flag_PS_ParitySending));
+          get(mXORedParityToGSNFR) = internal::logicalXOR(mXORedParityToGSNFR, bufferedPacket->mRUDPPacket->isFlagSet(RUDPPacket::Flag_PS_ParitySending));
 
           // the front packet can now be removed
           mReceivedPackets.erase(iter);
@@ -2057,9 +2152,9 @@ namespace openpeer
         try {
           ZS_LOG_TRACE(log("notify more read data available"))
           mDelegate->onRUDPChannelStreamReadReady(mThisWeak.lock());
-          mInformedReadReady = true;
+          get(mInformedReadReady) = true;
         } catch(IRUDPChannelStreamDelegateProxy::Exceptions::DelegateGone &) {
-          setShutdownReason(RUDPChannelStreamShutdownReason_DelegateGone);
+          setError(RUDPChannelStreamShutdownReason_DelegateGone, "delegate gone");
           cancel();
           return;
         }
@@ -2078,9 +2173,9 @@ namespace openpeer
         try {
           ZS_LOG_TRACE(log("notify more write space available"))
           mDelegate->onRUDPChannelStreamWriteReady(mThisWeak.lock());
-          mInformedWriteReady = true;
+          get(mInformedWriteReady) = true;
         } catch(IRUDPChannelStreamDelegateProxy::Exceptions::DelegateGone &) {
-          setShutdownReason(RUDPChannelStreamShutdownReason_DelegateGone);
+          setError(RUDPChannelStreamShutdownReason_DelegateGone, "delegate gone");
           cancel();
           return;
         }
@@ -2125,7 +2220,7 @@ namespace openpeer
       {
         ++mRandomPoolPos;
         if (mRandomPoolPos > (sizeof(mRandomPool)*8)) {
-          mRandomPoolPos = 0;
+          get(mRandomPoolPos) = 0;
 
           CryptoPP::AutoSeededRandomPool rng;
           rng.GenerateBlock(&(mRandomPool[0]), sizeof(mRandomPool));
@@ -2147,7 +2242,6 @@ namespace openpeer
         ZS_LOG_TRACE(log("all data sent and now will close stream"))
 
         // all data has already been delivered so cancel the connection now
-        setShutdownReason(RUDPChannelStreamShutdownReason_Closed);
         cancel();
       }
 

@@ -69,8 +69,6 @@ namespace openpeer
         {
           RUDPChannelStreamShutdownReason_None                      = IRUDPChannel::RUDPChannelShutdownReason_None,
 
-          RUDPChannelStreamShutdownReason_Closed                    = IRUDPChannel::RUDPChannelShutdownReason_Closed,
-
           RUDPChannelStreamShutdownReason_OpenFailure               = IRUDPChannel::RUDPChannelShutdownReason_OpenFailure,
           RUDPChannelStreamShutdownReason_DelegateGone              = IRUDPChannel::RUDPChannelShutdownReason_DelegateGone,
           RUDPChannelStreamShutdownReason_Timeout                   = IRUDPChannel::RUDPChannelShutdownReason_Timeout,
@@ -105,6 +103,10 @@ namespace openpeer
                                                    CongestionAlgorithmList &outResponseAlgorithmsForRemote
                                                    );
 
+        //-----------------------------------------------------------------------
+        // PURPOSE: returns a debug string containing internal object state
+        static String toDebugString(IRUDPChannelStreamPtr stream, bool includeCommaPrefix = true);
+
         static IRUDPChannelStreamPtr create(
                                             IMessageQueuePtr queue,
                                             IRUDPChannelStreamDelegatePtr delegate,
@@ -121,9 +123,10 @@ namespace openpeer
 
         //-----------------------------------------------------------------------
         // PURPOSE: Gets the current state of the channel stream.
-        virtual RUDPChannelStreamStates getState() const = 0;
-
-        virtual RUDPChannelStreamShutdownReasons getShutdownReason() const = 0;
+        virtual RUDPChannelStreamStates getState(
+                                                 WORD *outLastErrorCode = NULL,
+                                                 String *outLastErrorReason = NULL
+                                                 ) const = 0;
 
         //-----------------------------------------------------------------------
         // PURPOSE: Close the stream down to prevent further usage.
