@@ -478,7 +478,6 @@ void doTestICESocket()
       bool quit = false;
       ULONG expecting = 0;
       switch (step) {
-#if 0
         case 0: {
           testObject1 = TestICESocketCallback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, OPENPEER_SERVICE_TEST_STUN_SERVER);
           testObject2 = TestICESocketCallback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, OPENPEER_SERVICE_TEST_STUN_SERVER);
@@ -487,8 +486,7 @@ void doTestICESocket()
           testObject2->setRemote(testObject1);
           break;
         }
-#endif //0
-        case 0: {
+        case 1: {
           testObject1 = TestICESocketCallback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, OPENPEER_SERVICE_TEST_STUN_SERVER, true, false, false, true, false);
           testObject2 = TestICESocketCallback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, OPENPEER_SERVICE_TEST_STUN_SERVER, true, false, false, true, false);
 
@@ -520,7 +518,7 @@ void doTestICESocket()
         found = 0;
 
         switch (step) {
-          case 1: {
+          case 0: {
             if (1 == totalWait) {
               testObject1->createSessionFromRemoteCandidates(IICESocket::ICEControl_Controlling);
               testObject2->createSessionFromRemoteCandidates(IICESocket::ICEControl_Controlled);
@@ -532,7 +530,7 @@ void doTestICESocket()
             }
             break;
           }
-          case 0: {
+          case 1: {
             if (10 == totalWait) {
               testObject1->createSessionFromRemoteCandidates(IICESocket::ICEControl_Controlling);
               testObject2->createSessionFromRemoteCandidates(IICESocket::ICEControl_Controlling);

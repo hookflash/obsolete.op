@@ -162,6 +162,11 @@ namespace openpeer
 
         bool sendTo(
                     const IPAddress &destination,
+                    STUNPacketPtr stun
+                    );
+
+        bool sendTo(
+                    const IPAddress &destination,
                     const BYTE *buffer,
                     ULONG bufferLengthInBytes
                     );

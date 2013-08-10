@@ -423,7 +423,7 @@ namespace openpeer
 
         AutoRecursiveLock lock(mLock);
 
-        ICESocketSessionPtr session = IICESocketSessionForICESocket::create(getAssociatedMessageQueue(), delegate, mThisWeak.lock(), remoteUsernameFrag, remotePassword, control);
+        ICESocketSessionPtr session = IICESocketSessionForICESocket::create(getAssociatedMessageQueue(), delegate, mThisWeak.lock(), remoteUsernameFrag, remotePassword, control, foundation);
         ZS_THROW_BAD_STATE_IF(!session)
 
         if ((isShuttingDown()) ||

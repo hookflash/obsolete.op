@@ -95,7 +95,8 @@ namespace BoostReplacement
     }
 
     if (OPENPEER_SERVICE_TEST_USE_TELNET_LOGGING) {
-      ILogger::installTelnetLogger(OPENPEER_SERVICE_TEST_TELNET_LOGGING_PORT, 60, true);
+      bool serverMode = (OPENPEER_SERVICE_TEST_DO_RUDPICESOCKET_CLIENT_TO_SERVER_TEST) && (!OPENPEER_SERVICE_TEST_RUNNING_AS_CLIENT);
+      ILogger::installTelnetLogger(serverMode ? OPENPEER_SERVICE_TEST_TELNET_SERVER_LOGGING_PORT : OPENPEER_SERVICE_TEST_TELNET_LOGGING_PORT, 60, true);
 
       for (int tries = 0; tries < 60; ++tries)
       {

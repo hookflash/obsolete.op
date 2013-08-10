@@ -162,7 +162,7 @@ namespace openpeer
               mSocketSession = mSocket->createSessionFromRemoteCandidates(
                                                                           mThisWeak.lock(),
                                                                           "serverUsernameFrag",
-                                                                          "serverUsernameFrag",
+                                                                          NULL,
                                                                           candidates,
                                                                           IICESocket::ICEControl_Controlling
                                                                           );
@@ -304,7 +304,7 @@ void doTestRUDPICESocket()
       if (totalWait >= (10*60))
         break;
 
-      if ((5*60) == totalWait) {
+      if ((4*60 + 50) == totalWait) {
         testObject1->shutdown();
       }
 

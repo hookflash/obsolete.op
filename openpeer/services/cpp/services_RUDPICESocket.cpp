@@ -351,11 +351,30 @@ namespace openpeer
       {
         AutoRecursiveLock lock(mLock);
 
-        setState((RUDPICESocketStates)state);
-
-        if ((isShutdown()) ||
-            (isShuttingDown())) {
+        if ((isShuttingDown()) ||
+            (isShutdown())) {
+          ZS_LOG_DEBUG(log("already shutting down/shutdown"))
           cancel();
+          return;
+        }
+
+        ZS_LOG_DEBUG(log("ice socket state changed") + ", id=" + string(socket->getID()) + ", state=" + IICESocket::toString(state))
+
+        switch  (state){
+          case IICESocket::ICESocketState_Pending:
+          case IICESocket::ICESocketState_Ready:
+          case IICESocket::ICESocketState_GoingToSleep:
+          case IICESocket::ICESocketState_Sleeping:
+          {
+            setState((RUDPICESocketStates)state);
+            break;
+          }
+          case IICESocket::ICESocketState_ShuttingDown:
+          case IICESocket::ICESocketState_Shutdown:
+          {
+            cancel();
+            break;
+          }
         }
       }
 
@@ -422,7 +441,12 @@ namespace openpeer
       void RUDPICESocket::cancel()
       {
         AutoRecursiveLock lock(mLock);    // just in case
-        if (isShutdown()) return;
+        if (isShutdown()) {
+          ZS_LOG_DEBUG(log("already shutdown"))
+          return;
+        }
+
+        ZS_LOG_DEBUG(log("cancel called"))
 
         setState(RUDPICESocketState_ShuttingDown);
 
@@ -457,11 +481,11 @@ namespace openpeer
         mSubscriptions.clear();
         mDefaultSubscription.reset();
 
-        setState(RUDPICESocketState_Shutdown);
-
         if (mICESocket) {
           mICESocket->shutdown();
         }
+
+        ZS_LOG_DEBUG(log("cancel complete"))
       }
 
       //-----------------------------------------------------------------------

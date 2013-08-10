@@ -65,9 +65,9 @@ namespace openpeer
                                                                     IRUDPChannelDelegateForSessionAndListenerPtr master,
                                                                     const IPAddress &remoteIP,
                                                                     WORD incomingChannelNumber,
-                                                                    const char *localUserFrag,
+                                                                    const char *localUsernameFrag,
                                                                     const char *localPassword,
-                                                                    const char *remoteUserFrag,
+                                                                    const char *remoteUsernameFrag,
                                                                     const char *remotePassword,
                                                                     STUNPacketPtr channelOpenPacket,
                                                                     STUNPacketPtr &outResponse
@@ -79,9 +79,9 @@ namespace openpeer
                                                                     IRUDPChannelDelegatePtr delegate,
                                                                     const IPAddress &remoteIP,
                                                                     WORD incomingChannelNumber,
-                                                                    const char *localUserFrag,
+                                                                    const char *localUsernameFrag,
                                                                     const char *localPassword,
-                                                                    const char *remoteUserFrag,
+                                                                    const char *remoteUsernameFrag,
                                                                     const char *remotePassword,
                                                                     const char *connectionInfo
                                                                     );

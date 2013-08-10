@@ -81,15 +81,15 @@ namespace openpeer
                                                                                                 IRUDPChannelDelegateForSessionAndListenerPtr master,
                                                                                                 const IPAddress &remoteIP,
                                                                                                 WORD incomingChannelNumber,
-                                                                                                const char *localUserFrag,
-                                                                                                const char *remoteUserFrag,
+                                                                                                const char *localUsernameFrag,
                                                                                                 const char *localPassword,
+                                                                                                const char *remoteUsernameFrag,
                                                                                                 const char *remotePassword,
                                                                                                 STUNPacketPtr channelOpenPacket,
                                                                                                 STUNPacketPtr &outResponse
                                                                                                 )
       {
-        return IRUDPChannelFactory::singleton().createForRUDPICESocketSessionIncoming(queue, master, remoteIP, incomingChannelNumber, localUserFrag, remoteUserFrag, localPassword, remotePassword, channelOpenPacket, outResponse);
+        return IRUDPChannelFactory::singleton().createForRUDPICESocketSessionIncoming(queue, master, remoteIP, incomingChannelNumber, localUsernameFrag, localPassword, remoteUsernameFrag, remotePassword, channelOpenPacket, outResponse);
       }
 
       //-----------------------------------------------------------------------
@@ -99,16 +99,16 @@ namespace openpeer
                                                                                                 IRUDPChannelDelegatePtr delegate,
                                                                                                 const IPAddress &remoteIP,
                                                                                                 WORD incomingChannelNumber,
-                                                                                                const char *localUserFrag,
+                                                                                                const char *localUsernameFrag,
                                                                                                 const char *localPassword,
-                                                                                                const char *remoteUserFrag,
+                                                                                                const char *remoteUsernameFrag,
                                                                                                 const char *remotePassword,
                                                                                                 const char *connectionInfo
                                                                                                 )
       {
-        return IRUDPChannelFactory::singleton().createForRUDPICESocketSessionOutgoing(queue, master, delegate, remoteIP, incomingChannelNumber, localUserFrag, localPassword, remoteUserFrag, remotePassword, connectionInfo);
+        return IRUDPChannelFactory::singleton().createForRUDPICESocketSessionOutgoing(queue, master, delegate, remoteIP, incomingChannelNumber, localUsernameFrag, localPassword, remoteUsernameFrag, remotePassword, connectionInfo);
       }
-      
+
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -142,9 +142,9 @@ namespace openpeer
                                IMessageQueuePtr queue,
                                IRUDPChannelDelegateForSessionAndListenerPtr master,
                                const IPAddress &remoteIP,
-                               const char *localUserFrag,
+                               const char *localUsernameFrag,
                                const char *localPassword,
-                               const char *remoteUserFrag,
+                               const char *remoteUsernameFrag,
                                const char *remotePassword,
                                DWORD minimumRTT,
                                DWORD lifetime,
@@ -166,10 +166,10 @@ namespace openpeer
         mSTUNRequestPreviouslyTimedOut(false),
         mRemoteIP(remoteIP),
         mShutdownDirection(IRUDPChannel::Shutdown_None),
-        mLocalUsernameFrag(localUserFrag ? localUserFrag : ""),
-        mLocalPassword(localPassword ? localPassword : ""),
-        mRemoteUsernameFrag(remoteUserFrag ? remoteUserFrag : ""),
-        mRemotePassword(remotePassword ? remotePassword : ""),
+        mLocalUsernameFrag(localUsernameFrag),
+        mLocalPassword(localPassword),
+        mRemoteUsernameFrag(remoteUsernameFrag),
+        mRemotePassword(remotePassword),
         mIncomingChannelNumber(incomingChannelNumber),
         mOutgoingChannelNumber(outgoingChannelNumber),
         mLocalSequenceNumber(localSequenceNumber),
@@ -341,8 +341,8 @@ namespace openpeer
                                                                         const IPAddress &remoteIP,
                                                                         WORD incomingChannelNumber,
                                                                         const char *localUsernameFrag,
-                                                                        const char *remoteUsernameFrag,
                                                                         const char *localPassword,
+                                                                        const char *remoteUsernameFrag,
                                                                         const char *remotePassword,
                                                                         STUNPacketPtr stun,
                                                                         STUNPacketPtr &outResponse
@@ -810,9 +810,11 @@ namespace openpeer
         stun->mConnectionInfo = mLocalChannelInfo;
         stun->mLocalCongestionControl = local;
         stun->mRemoteCongestionControl = remote;
-        if (mRemoteUsernameFrag.isEmpty()) {
+        if (mRemotePassword.isEmpty()) {
           // we are attempting a server connect, we won't actually put the username on the request but we will generate a username for later
-          mRemoteUsernameFrag = IHelper::randomString(20);
+          if (mRemoteUsernameFrag.isEmpty()) {
+            mRemoteUsernameFrag = IHelper::randomString(20);
+          }
           mRemotePassword = mRemoteUsernameFrag;
           mLocalPassword = mLocalUsernameFrag;
           stun->mUsername.clear();
@@ -890,8 +892,8 @@ namespace openpeer
                                              master,
                                              remoteIP,
                                              localUsernameFrag,
-                                             remoteUsernameFrag,
                                              localUsernameFrag,
+                                             remoteUsernameFrag,
                                              remoteUsernameFrag,
                                              minimumRTT,
                                              lifetime,
