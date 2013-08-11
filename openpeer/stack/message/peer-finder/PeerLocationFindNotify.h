@@ -48,6 +48,7 @@ namespace openpeer
           enum AttributeTypes
           {
             AttributeType_RequestfindProofBundleDigestValue,
+            AttributeType_Context,
             AttributeType_PeerSecret,
             AttributeType_LocationInfo,
             AttributeType_Routes,
@@ -70,8 +71,17 @@ namespace openpeer
 
           bool hasAttribute(AttributeTypes type) const;
 
-          const SecureByteBlockPtr &peerSecret() const                  {return mPeerSecret;}
-          void peerSecret(const SecureByteBlockPtr &secret)             {mPeerSecret = secret;}
+          const String &context() const                                 {return mContext;}
+          void context(const String &secret)                            {mContext = secret;}
+
+          const String &peerSecret() const                              {return mPeerSecret;}
+          void peerSecret(const String &secret)                         {mPeerSecret = secret;}
+
+          const String &iceUsernameFrag() const                         {return mICEUsernameFrag;}
+          void iceUsernameFrag(const String &val)                       {mICEUsernameFrag = val;}
+
+          const String &icePassword() const                             {return mICEPassword;}
+          void icePassword(const String &val)                           {mICEPassword = val;}
 
           const String &requestFindProofBundleDigestValue() const       {return mRequestfindProofBundleDigestValue;}
           void requestFindProofBundleDigestValue(const String &secret)  {mRequestfindProofBundleDigestValue = secret;}
@@ -88,7 +98,11 @@ namespace openpeer
         protected:
           PeerLocationFindNotify();
 
-          SecureByteBlockPtr mPeerSecret;
+          String mContext;
+          String mPeerSecret;
+
+          String mICEUsernameFrag;
+          String mICEPassword;
 
           String mRequestfindProofBundleDigestValue;
           LocationInfo mLocationInfo;

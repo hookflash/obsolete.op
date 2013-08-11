@@ -52,6 +52,7 @@ namespace openpeer
       using zsLib::XML::Attribute;
       using zsLib::XML::AttributePtr;
 
+      using services::IICESocket;
       using services::IRSAPrivateKey;
       using services::IRSAPrivateKeyPtr;
       using services::IRSAPublicKey;
@@ -59,9 +60,6 @@ namespace openpeer
 
       typedef std::list<String> RouteList;
       typedef std::list<String> StringList;
-
-      typedef openpeer::services::IICESocket::Candidate Candidate;
-      typedef openpeer::services::IICESocket::CandidateList CandidateList;
 
       typedef stack::LocationInfo LocationInfo;
       typedef stack::LocationInfoList LocationInfoList;

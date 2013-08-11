@@ -56,7 +56,10 @@ namespace openpeer
           {
             AttributeType_RequestfindProofBundleDigestValue,  // filled when decoding from incoming request or after calling encode
             AttributeType_FindPeer,
-            AttributeType_PeerSecret,                         // filled when decoding from incoming request and must be set when creating a request
+            AttributeType_Context,
+            AttributeType_PeerSecret,
+            AttributeType_ICEUsernameFrag,
+            AttributeType_ICEPassword,
             AttributeType_ExcludedLocations,
             AttributeType_LocationInfo,
             AttributeType_Routes,                             // filled when decoding from incoming request
@@ -86,8 +89,17 @@ namespace openpeer
           const IPeerPtr &findPeer() const                                {return mFindPeer;}
           void findPeer(const IPeerPtr &peer)                             {mFindPeer = peer;}
 
-          const SecureByteBlockPtr &peerSecret() const                    {return mPeerSecret;}
-          void peerSecret(const SecureByteBlockPtr &secret)               {mPeerSecret = secret;}
+          const String &context() const                                   {return mContext;}
+          void context(const String &val)                                 {mContext = val;}
+
+          const String &peerSecret() const                                {return mPeerSecret;}
+          void peerSecret(const String &secret)                           {mPeerSecret = secret;}
+
+          const String &iceUsernameFrag() const                           {return mICEUsernameFrag;}
+          void iceUsernameFrag(const String &val)                         {mICEUsernameFrag = val;}
+
+          const String &icePassword() const                               {return mICEPassword;}
+          void icePassword(const String &val)                             {mICEPassword = val;}
 
           const ExcludedLocationList &excludeLocations() const            {return mExcludedLocations;}
           void excludeLocations(const ExcludedLocationList &excludeList)  {mExcludedLocations = excludeList;}
@@ -108,7 +120,11 @@ namespace openpeer
 
           IPeerPtr mFindPeer;
 
-          SecureByteBlockPtr mPeerSecret;
+          String mContext;
+          String mPeerSecret;
+
+          String mICEUsernameFrag;
+          String mICEPassword;
 
           ExcludedLocationList mExcludedLocations;
 

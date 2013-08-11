@@ -53,11 +53,11 @@ namespace openpeer
 
           static ElementPtr createElement(
                                           const Candidate &candidate,
-                                          const SecureByteBlock *encryptionKey = NULL
+                                          const char *encryptionPassphrase = NULL
                                           );
           static ElementPtr createElement(
                                           const LocationInfo &candidate,
-                                          const SecureByteBlock *encryptionKey = NULL
+                                          const char *encryptionPassphrase = NULL
                                           );
           static ElementPtr createElement(
                                           const IdentityInfo &identity,
@@ -98,11 +98,11 @@ namespace openpeer
           static LocationInfo createLocation(
                                              ElementPtr elem,
                                              IMessageSourcePtr messageSource,
-                                             const SecureByteBlock *encryptionKey = NULL
+                                             const char *encryptionPassphrase = NULL
                                              );
           static Candidate    createCandidate(
                                               ElementPtr elem,
-                                              const SecureByteBlock *encryptionKey = NULL
+                                              const char *encryptionPassphrase = NULL
                                               );
           static Finder                       createFinder(ElementPtr elem);
           static Service                      createService(ElementPtr serviceEl);

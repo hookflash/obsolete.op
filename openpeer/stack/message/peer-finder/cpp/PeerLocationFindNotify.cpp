@@ -81,9 +81,17 @@ namespace openpeer
 
             ElementPtr findProofEl = root->findFirstChildElementChecked("findProofBundle")->findFirstChildElementChecked("findProof");
 
+            ret->mRequestfindProofBundleDigestValue = IMessageHelper::getElementTextAndDecode(findProofEl->findFirstChildElementChecked("requestFindProofBundleDigestValue"));
+
+            ret->mContext = IMessageHelper::getElementTextAndDecode(findProofEl->findFirstChildElementChecked("context"));
+            ret->mPeerSecret = IMessageHelper::getElementTextAndDecode(findProofEl->findFirstChildElementChecked("peerSecret"));
+
+            ret->mICEUsernameFrag = IMessageHelper::getElementTextAndDecode(findProofEl->findFirstChildElementChecked("iceUsernameFrag"));
+            ret->mICEPassword = IMessageHelper::getElementTextAndDecode(findProofEl->findFirstChildElementChecked("icePassword"));
+
             ElementPtr locationEl = findProofEl->findFirstChildElement("location");
             if (locationEl) {
-              ret->mLocationInfo = internal::MessageHelper::createLocation(locationEl, messageSource, (ret->mPeerSecret).get());
+              ret->mLocationInfo = internal::MessageHelper::createLocation(locationEl, messageSource, ret->mPeerSecret.hasData() ? ret->mPeerSecret.c_str() : NULL);
             }
 
             if (!ret->mLocationInfo.mLocation) {
@@ -103,7 +111,8 @@ namespace openpeer
               return PeerLocationFindNotifyPtr();
             }
 
-            ret->mRequestfindProofBundleDigestValue = findProofEl->findFirstChildElementChecked("requestFindProofBundleDigestValue")->getText();
+#define WARNING_REMOVE_ROUTES 1
+#define WARNING_REMOVE_ROUTES 2
 
             ElementPtr routes = root->findFirstChildElement("routes");
             if (routes)
@@ -156,7 +165,8 @@ namespace openpeer
           switch (type)
           {
             case AttributeType_RequestfindProofBundleDigestValue: return mRequestfindProofBundleDigestValue.hasData();
-            case AttributeType_PeerSecret:                        return mPeerSecret;
+            case AttributeType_Context:                           return mContext.hasData();
+            case AttributeType_PeerSecret:                        return mPeerSecret.hasData();
             case AttributeType_LocationInfo:                      return mLocationInfo.hasData();
             case AttributeType_Routes:                            return mRoutes.size() > 0;
             case AttributeType_PeerFiles:                         return mPeerFiles;
@@ -197,14 +207,24 @@ namespace openpeer
             findProofEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("requestFindProofBundleDigestValue", mRequestfindProofBundleDigestValue));
           }
 
-          if (hasAttribute(AttributeType_LocationInfo))
-          {
-            findProofEl->adoptAsLastChild(MessageHelper::createElement(mLocationInfo, mPeerSecret.get()));
+          if (hasAttribute(AttributeType_Context)) {
+            findProofEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("context", mContext));
+          }
+
+          if (hasAttribute(AttributeType_PeerSecret)) {
+            findProofEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("peerSecret", mPeerSecret));
+          }
+
+          if (hasAttribute(AttributeType_LocationInfo)) {
+            findProofEl->adoptAsLastChild(MessageHelper::createElement(mLocationInfo, mPeerSecret.hasData() ? mPeerSecret.c_str() : NULL));
           }
 
           findProofBundleEl->adoptAsLastChild(findProofEl);
           peerFilePrivate->signElement(findProofEl);
           root->adoptAsLastChild(findProofBundleEl);
+
+#define WARNING_REMOVE_ROUTES 1
+#define WARNING_REMOVE_ROUTES 2
 
           if (hasAttribute(AttributeType_Routes))
           {

@@ -34,6 +34,11 @@
 #include <openpeer/stack/types.h>
 #include <openpeer/stack/message/types.h>
 
+#define OPENPEER_STACK_CANDIDATE_CLASS_ICE_CANDIDATES "ice"
+#define OPENPEER_STACK_CANDIDATE_CLASS_FINDER_RELAY   "finder-relay"
+
+#define OPENPEER_STACK_TRANSPORT_JSON_MLS_RUDP "json-mls/rudp"
+
 namespace openpeer
 {
   namespace stack

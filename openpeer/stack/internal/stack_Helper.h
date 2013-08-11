@@ -68,6 +68,16 @@ namespace openpeer
                                            String *outFullPublicKey = NULL,
                                            String *outFingerprint = NULL
                                            );
+
+        static String splitEncrypt(
+                                   SecureByteBlock &key,
+                                   SecureByteBlock &value
+                                   );
+
+        static SecureByteBlockPtr splitDecrypt(
+                                               SecureByteBlock &key,
+                                               const char *hexIVAndBase64EncodedData
+                                               );
       };
     }
   }

@@ -48,7 +48,9 @@ namespace openpeer
         public:
           enum AttributeTypes
           {
-            AttributeType_ServerAgent = AttributeType_Last + 1,
+            AttributeType_RelayAccessToken = AttributeType_Last + 1,
+            AttributeType_RelayAccessSecret,
+            AttributeType_ServerAgent,
             AttributeType_Expires,
           };
 
@@ -66,6 +68,12 @@ namespace openpeer
 
           bool hasAttribute(AttributeTypes type) const;
 
+          const String &relayAccessToken()            {return mRelayAccessToken;}
+          void relayAccessToken(const String &val)    {mRelayAccessToken = val;}
+
+          const String &relayAccessSecret()           {return mRelayAccessSecret;}
+          void relayAccessSecret(const String &val)   {mRelayAccessSecret = val;}
+
           const String &serverAgent() const           {return mServerAgent;}
           void serverAgent(const String &val)         {mServerAgent = val;}
 
@@ -74,6 +82,9 @@ namespace openpeer
 
         protected:
           SessionCreateResult();
+
+          String mRelayAccessToken;
+          String mRelayAccessSecret;
 
           String mServerAgent;
           Time mExpires;

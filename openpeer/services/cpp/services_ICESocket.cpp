@@ -2000,6 +2000,25 @@ namespace openpeer
     }
 
     //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IICESocket::Candidate
+    #pragma mark
+
+    //-------------------------------------------------------------------------
+    bool IICESocket::Candidate::hasData() const
+    {
+      return ((IICESocket::Type_Unknown != mType) ||
+              (mFoundation.hasData()) ||
+              (!mIPAddress.isEmpty()) ||
+              (0 != mPriority) ||
+              (0 != mLocalPreference) ||
+              (!mRelatedIP.isEmpty()));
+    }
+
+    //-------------------------------------------------------------------------
     String IICESocket::Candidate::toDebugString(bool includeCommaPrefix) const
     {
       bool firstTime = !includeCommaPrefix;
@@ -2008,7 +2027,7 @@ namespace openpeer
              internal::Helper::getDebugValue("ip", mIPAddress.string(), firstTime) +
              internal::Helper::getDebugValue("priority", 0 != mPriority ? string(mPriority) : String(), firstTime) +
              internal::Helper::getDebugValue("preference", 0 != mLocalPreference ? string(mLocalPreference) : String(), firstTime) +
-             internal::Helper::getDebugValue("protocol", mProtocol, firstTime);
+             internal::Helper::getDebugValue("related", mRelatedIP.isEmpty() ? String() : mRelatedIP.string(), firstTime);
     }
   }
 }

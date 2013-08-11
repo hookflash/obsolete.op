@@ -348,40 +348,60 @@ namespace openpeer
         //---------------------------------------------------------------------
         ElementPtr MessageHelper::createElement(
                                                 const Candidate &candidate,
-                                                const SecureByteBlock *encryptionKey
+                                                const char *encryptionPassphrase
                                                 )
         {
           ElementPtr candidateEl = IMessageHelper::createElement("candidate");
 
-          candidateEl->adoptAsLastChild(IMessageHelper::createElementWithText("transport", "rudp/udp"));
-
-          ElementPtr ipEl = IMessageHelper::createElementWithText("ip", candidate.mIPAddress.string(false));
-          candidateEl->adoptAsLastChild(ipEl);
-          candidateEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("port", string(candidate.mIPAddress.getPort())));
-
-          if (!candidate.mUsernameFrag.isEmpty())
-          {
-            candidateEl->adoptAsLastChild(IMessageHelper::createElementWithText("usernameFrag", candidate.mUsernameFrag));
+          if (candidate.mClass.hasData()) {
+            candidateEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("transport", candidate.mClass));
           }
 
-          if (!candidate.mPassword.isEmpty())
-          {
-            if (encryptionKey) {
-              String encryptedPassword = IHelper::convertToBase64(*IHelper::encrypt(*encryptionKey, *IHelper::hash(candidate.mUsernameFrag, IHelper::HashAlgorthm_MD5), candidate.mPassword));
-              candidateEl->adoptAsLastChild(IMessageHelper::createElementWithText("passwordEncrypted", encryptedPassword));
+          const char *typeAsString = NULL;
+          switch (candidate.mType) {
+            case IICESocket::Type_Unknown:          break;
+            case IICESocket::Type_Local:            typeAsString = "host"; break;
+            case IICESocket::Type_ServerReflexive:  typeAsString = "srflx";break;
+            case IICESocket::Type_PeerReflexive:    typeAsString = "prflx"; break;
+            case IICESocket::Type_Relayed:          typeAsString = "relay"; break;
+          }
+
+          if (typeAsString) {
+            candidateEl->adoptAsFirstChild(IMessageHelper::createElementWithText("type", typeAsString));
+          }
+
+          if (candidate.mFoundation.hasData()) {
+            candidateEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("foundation", candidate.mFoundation));
+          }
+
+          if (!candidate.mIPAddress.isEmpty()) {
+            if (candidate.mAccessToken.hasData()) {
+              candidateEl->adoptAsLastChild(IMessageHelper::createElementWithText("host", candidate.mIPAddress.string(false)));
             } else {
-              candidateEl->adoptAsLastChild(IMessageHelper::createElementWithText("password", candidate.mPassword));
+              candidateEl->adoptAsLastChild(IMessageHelper::createElementWithText("ip", candidate.mIPAddress.string(false)));
             }
+            candidateEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("port", string(candidate.mIPAddress.getPort())));
           }
 
-          if (candidate.mPriority > 0)
-          {
+          if (0 != candidate.mPriority) {
             candidateEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("priority", string(candidate.mPriority)));
           }
 
-          if (!candidate.mProtocol.isEmpty())
-          {
-            candidateEl->adoptAsLastChild(IMessageHelper::createElementWithText("protocol", candidate.mProtocol));
+          if (!candidate.mRelatedIP.isEmpty()) {
+            ElementPtr relatedEl = Element::create("related");
+            candidateEl->adoptAsLastChild(relatedEl);
+            relatedEl->adoptAsLastChild(IMessageHelper::createElementWithText("ip", candidate.mRelatedIP.string(false)));
+            relatedEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("port", string(candidate.mRelatedIP.getPort())));
+          }
+
+          if (candidate.mAccessToken.hasData()) {
+            candidateEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("accessToken", candidate.mAccessToken));
+          }
+
+          if ((candidate.mAccessSecretProof.hasData()) &&
+              (encryptionPassphrase)) {
+            String accessSecretProofEncrypted = stack::IHelper::splitEncrypt(*IHelper::hash(encryptionPassphrase, IHelper::HashAlgorthm_SHA256), *IHelper::convertToBuffer(candidate.mAccessSecretProof, false));
+            candidateEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("accessSecretProofEncrypted", accessSecretProofEncrypted));
           }
 
           return candidateEl;
@@ -390,7 +410,7 @@ namespace openpeer
         //---------------------------------------------------------------------
         ElementPtr MessageHelper::createElement(
                                                 const LocationInfo &locationInfo,
-                                                const SecureByteBlock *encryptionKey
+                                                const char *encryptionPassphrase
                                                 )
         {
           if (!locationInfo.mLocation) {
@@ -443,7 +463,7 @@ namespace openpeer
             for(it=locationInfo.mCandidates.begin(); it!=locationInfo.mCandidates.end(); ++it)
             {
               Candidate candidate(*it);
-              candidates->adoptAsLastChild(MessageHelper::createElement(candidate, encryptionKey));
+              candidates->adoptAsLastChild(MessageHelper::createElement(candidate, encryptionPassphrase));
             }
 
             locationEl->adoptAsLastChild(candidates);
@@ -1450,7 +1470,7 @@ namespace openpeer
         LocationInfo MessageHelper::createLocation(
                                                    ElementPtr elem,
                                                    IMessageSourcePtr messageSource,
-                                                   const SecureByteBlock *encryptionKey
+                                                   const char *encryptionPassphrase
                                                    )
         {
           LocationInfo ret;
@@ -1472,7 +1492,7 @@ namespace openpeer
             ElementPtr candidate = candidates->findFirstChildElement("candidate");
             while (candidate)
             {
-              Candidate c = MessageHelper::createCandidate(candidate, encryptionKey);
+              Candidate c = MessageHelper::createCandidate(candidate, encryptionPassphrase);
               candidateLst.push_back(c);
 
               candidate = candidate->getNextSiblingElement();
@@ -1512,54 +1532,96 @@ namespace openpeer
         //---------------------------------------------------------------------
         Candidate MessageHelper::createCandidate(
                                                  ElementPtr elem,
-                                                 const SecureByteBlock *encryptionKey
+                                                 const char *encryptionPassphrase
                                                  )
         {
           Candidate ret;
           if (!elem) return ret;
 
-          ElementPtr ip = elem->findFirstChildElement("ip");
-          ElementPtr port = elem->findFirstChildElement("port");
-          ElementPtr un = elem->findFirstChildElement("usernameFrag");
-          ElementPtr pwd = elem->findFirstChildElement("password");
-          ElementPtr epwd = elem->findFirstChildElement("passwordEncrypted");
-          ElementPtr priority = elem->findFirstChildElement("priority");
-          ElementPtr protocol = elem->findFirstChildElement("protocol");
+          ElementPtr classEl = elem->findFirstChildElement("class");
+          ElementPtr transportEl = elem->findFirstChildElement("transport");
+          ElementPtr typeEl = elem->findFirstChildElement("type");
+          ElementPtr foundationEl = elem->findFirstChildElement("foundation");
+          ElementPtr hostEl = elem->findFirstChildElement("host");
+          ElementPtr ipEl = elem->findFirstChildElement("ip");
+          ElementPtr portEl = elem->findFirstChildElement("port");
+          ElementPtr priorityEl = elem->findFirstChildElement("priority");
+          ElementPtr accessTokenEl = elem->findFirstChildElement("accessToken");
+          ElementPtr accessSecretProofEncryptedEl = elem->findFirstChildElement("accessSecretProofEncrypted");
+          ElementPtr relatedEl = elem->findFirstChildElement("related");
+          ElementPtr relatedIPEl;
+          ElementPtr relatedPortEl;
+          if (relatedEl) {
+            relatedIPEl = relatedEl->findFirstChildElement("ip");
+            relatedPortEl = relatedEl->findFirstChildElement("port");
+          }
 
-          if (ip)
+          ret.mClass = IMessageHelper::getElementTextAndDecode(classEl);
+          ret.mTransport = IMessageHelper::getElementTextAndDecode(transportEl);
+
+          String type = IMessageHelper::getElementTextAndDecode(typeEl);
+          if ("host" == type) {
+            ret.mType = IICESocket::Type_Local;
+          } else if ("srflx" == type) {
+            ret.mType = IICESocket::Type_ServerReflexive;
+          } else if ("prflx" == type) {
+            ret.mType = IICESocket::Type_PeerReflexive;
+          } else if ("relay" == type) {
+            ret.mType = IICESocket::Type_Relayed;
+          }
+
+          ret.mFoundation = IMessageHelper::getElementTextAndDecode(foundationEl);
+
+          if ((ipEl) ||
+              (hostEl))
           {
-            WORD portNo = 0;
-            if(port) {
+            WORD port = 0;
+            if (portEl) {
               try {
-                portNo = Numeric<WORD>(IMessageHelper::getElementText(port));
+                port = Numeric<WORD>(IMessageHelper::getElementText(portEl));
               } catch(Numeric<WORD>::ValueOutOfRange &) {
               }
             }
 
-            IPAddress ipOriginal(IMessageHelper::getElementText(ip), portNo);
-            ret.mIPAddress.mIPAddress = ipOriginal.mIPAddress;
-            ret.mIPAddress.setPort(portNo);
+            if (ipEl)
+              ret.mIPAddress = IPAddress(IMessageHelper::getElementText(ipEl), port);
+            if (hostEl)
+              ret.mIPAddress = IPAddress(IMessageHelper::getElementText(hostEl), port);
+
+            ret.mIPAddress.setPort(port);
           }
-          if (un) ret.mUsernameFrag = IMessageHelper::getElementText(un);
-          if (pwd) ret.mPassword = IMessageHelper::getElementText(pwd);
-          if (epwd) {
-            if (encryptionKey) {
-              ret.mPassword = IHelper::convertToString(*IHelper::decrypt(*encryptionKey, *IHelper::hash(ret.mUsernameFrag, IHelper::HashAlgorthm_MD5), *IHelper::convertFromBase64(IMessageHelper::getElementText(epwd))));
-            } else {
-              ret.mPassword = IMessageHelper::getElementText(epwd);
-              if (ret.mPassword.isEmpty()) {
-                ret.mPassword =IMessageHelper::getElementText(pwd);
-              }
-            }
-          }
-          if (priority) {
+
+          if (priorityEl) {
             try {
-              ret.mPriority = (DWORD)Numeric<DWORD>(IMessageHelper::getElementText(priority));
+              ret.mPriority = Numeric<typeof(ret.mPriority)>(IMessageHelper::getElementText(priorityEl));
             } catch(Numeric<DWORD>::ValueOutOfRange &) {
             }
           }
-          else ret.mPriority = 0;
-          if (protocol) ret.mProtocol = IMessageHelper::getElementText(protocol);
+
+          if (relatedIPEl) {
+            WORD port = 0;
+            if (relatedPortEl) {
+              try {
+                port = Numeric<WORD>(IMessageHelper::getElementText(relatedPortEl));
+              } catch(Numeric<WORD>::ValueOutOfRange &) {
+              }
+            }
+
+            ret.mRelatedIP = IPAddress(IMessageHelper::getElementText(ipEl), port);
+            ret.mRelatedIP.setPort(port);
+          }
+
+          ret.mAccessToken = IMessageHelper::getElementTextAndDecode(accessTokenEl);
+
+          String accessSecretProofEncrypted = IMessageHelper::getElementTextAndDecode(accessTokenEl);
+          if ((accessSecretProofEncrypted.hasData()) &&
+              (encryptionPassphrase)) {
+
+            SecureByteBlockPtr accessSeretProof = stack::IHelper::splitDecrypt(*IHelper::hash(encryptionPassphrase, IHelper::HashAlgorthm_SHA256), accessSecretProofEncrypted);
+            if (accessSeretProof) {
+              ret.mAccessSecretProof = IHelper::convertToString(*accessSeretProof);
+            }
+          }
 
           return ret;
         }

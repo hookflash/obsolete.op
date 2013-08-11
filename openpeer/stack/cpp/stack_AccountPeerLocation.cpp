@@ -118,8 +118,6 @@ namespace openpeer
                                                const LocationInfo &locationInfo
                                                ) :
         MessageQueueAssociator(queue),
-
-        mID(zsLib::createPUID()),
         mDelegate(IAccountPeerLocationDelegateProxy::createWeak(IStackForInternal::queueStack(), delegate)),
         mOuter(outer),
         mCurrentState(IAccount::AccountState_Pending),
@@ -231,8 +229,12 @@ namespace openpeer
 
       //-----------------------------------------------------------------------
       void AccountPeerLocation::connectLocation(
+                                                const char *remoteContextID,
+                                                const char *remotePeerSecret,
+                                                const char *remoteICEUsernameFrag,
+                                                const char *remoteICEPassword,
                                                 const CandidateList &candidates,
-                                                ICEControls control
+                                                IICESocket::ICEControls control
                                                 )
       {
         AutoRecursiveLock lock(getLock());
@@ -248,20 +250,37 @@ namespace openpeer
           return;
         }
 
-        ZS_LOG_DETAIL(log("creating session from remote candidates") + ", total candidates=" + string(candidates.size()))
+        mRemoteContextID = String(remoteContextID);
+        mRemotePeerSecret = String(remotePeerSecret);
 
-        mSocketSession = socket->createSessionFromRemoteCandidates(mThisWeak.lock(), candidates, control);
+        ZS_LOG_DETAIL(log("creating session from remote candidates") + ", total candidates=" + string(candidates.size()) + getDebugValueString())
 
-        if (mSocketSession) {
-          ZS_LOG_DEBUG(log("setting keep alive properties for socket session"))
-          mSocketSession->setKeepAliveProperties(
-                                                 Seconds(OPENPEER_STACK_ACCOUNT_PEER_LOCATION_SEND_ICE_KEEP_ALIVE_INDICATIONS_IN_SECONDS),
-                                                 Seconds(OPENPEER_STACK_ACCOUNT_PEER_LOCATION_EXPECT_SESSION_DATA_IN_SECONDS),
-                                                 Duration(),
-                                                 Seconds(OPENPEER_STACK_ACCOUNT_PEER_LOCATION_BACKGROUNDING_TIMEOUT_IN_SECONDS)
-                                                 );
+        // filter out only ICE candidates with a transport type that is understood
+        IICESocket::CandidateList iceCandidates;
+        for (CandidateList::const_iterator iter = candidates.begin(); iter != candidates.end(); ++iter) {
+          const Candidate &candidate = (*iter);
+          if ((candidate.mClass == OPENPEER_STACK_CANDIDATE_CLASS_ICE_CANDIDATES) &&
+              (candidate.mTransport == OPENPEER_STACK_TRANSPORT_JSON_MLS_RUDP)) {
+            iceCandidates.push_back(candidate);
+          }
+        }
+
+        if (!mSocketSession) {
+          mSocketSession = socket->createSessionFromRemoteCandidates(mThisWeak.lock(), remoteICEUsernameFrag, remoteICEPassword, iceCandidates, control);
+
+          if (mSocketSession) {
+            ZS_LOG_DEBUG(log("setting keep alive properties for socket session"))
+            mSocketSession->setKeepAliveProperties(
+                                                   Seconds(OPENPEER_STACK_ACCOUNT_PEER_LOCATION_SEND_ICE_KEEP_ALIVE_INDICATIONS_IN_SECONDS),
+                                                   Seconds(OPENPEER_STACK_ACCOUNT_PEER_LOCATION_EXPECT_SESSION_DATA_IN_SECONDS),
+                                                   Duration(),
+                                                   Seconds(OPENPEER_STACK_ACCOUNT_PEER_LOCATION_BACKGROUNDING_TIMEOUT_IN_SECONDS)
+                                                   );
+          } else {
+            ZS_LOG_ERROR(Detail, log("failed to create socket session"))
+          }
         } else {
-          ZS_LOG_ERROR(Detail, log("failed to create socket session"))
+          mSocketSession->updateRemoteCandidates(iceCandidates);
         }
 
         (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
@@ -417,6 +436,13 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      void AccountPeerLocation::onRUDPICESocketCandidatesChanged(IRUDPICESocketPtr socket)
+      {
+        AutoRecursiveLock lock(getLock());
+        step();
+      }
+
+      //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -447,10 +473,13 @@ namespace openpeer
         if ((IRUDPICESocketSession::RUDPICESocketSessionState_ShuttingDown == state) ||
             (IRUDPICESocketSession::RUDPICESocketSessionState_Shutdown == state))
         {
-          IRUDPICESocketSession::RUDPICESocketSessionShutdownReasons reason = session->getShutdownReason();
-          ZS_LOG_WARNING(Detail, log("notified RUDP ICE socket session is shutdown") + ", reason=" + IRUDPICESocketSession::toString(reason))
-          if ((IRUDPICESocketSession::RUDPICESocketSessionShutdownReason_Timeout == reason) ||
-              (IRUDPICESocketSession::RUDPICESocketSessionShutdownReason_BackgroundingTimeout)) {
+          WORD errorCode = 0;
+          String reason;
+          session->getState(&errorCode, &reason);
+
+          ZS_LOG_WARNING(Detail, log("notified RUDP ICE socket session is shutdown") + ", error=" + IRUDPICESocketSession::toString(static_cast<IRUDPICESocketSession::RUDPICESocketSessionShutdownReasons>(errorCode)) + ", reason=" + reason)
+          if ((IRUDPICESocketSession::RUDPICESocketSessionShutdownReason_Timeout == errorCode) ||
+              (IRUDPICESocketSession::RUDPICESocketSessionShutdownReason_BackgroundingTimeout == errorCode)) {
             mShouldRefindNow = true;
           }
           cancel();
@@ -559,9 +588,11 @@ namespace openpeer
         if ((IRUDPMessaging::RUDPMessagingState_ShuttingDown == state) ||
             (IRUDPMessaging::RUDPMessagingState_Shutdown == state))
         {
-          IRUDPMessaging::RUDPMessagingShutdownReasons reason = messaging->getShutdownReason();
-          ZS_LOG_WARNING(Detail, log("notified messaging shutdown") + ", reason=" + IRUDPMessaging::toString(reason))
-          if (IRUDPMessaging::RUDPMessagingShutdownReason_Timeout == reason) {
+          WORD errorCode = 0;
+          String reason;
+          messaging->getState(&errorCode, &reason);
+          ZS_LOG_WARNING(Detail, log("notified messaging shutdown") + ", error=" + IRUDPMessaging::toString(static_cast<IRUDPMessaging::RUDPMessagingShutdownReasons>(errorCode)) + ", reason=" + reason)
+          if (IRUDPMessaging::RUDPMessagingShutdownReason_Timeout == errorCode) {
             mShouldRefindNow = true;
           }
           cancel();
@@ -860,21 +891,24 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("account peer location id", string(mID), firstTime) +
-               Helper::getDebugValue("state", IAccount::toString(mCurrentState), firstTime) +
-               Helper::getDebugValue("refind", mShouldRefindNow ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("last activity", Time() != mLastActivity ? IHelper::timeToString(mLastActivity) : String(), firstTime) +
-               Helper::getDebugValue("pending requests", mPendingRequests.size() > 0 ? string(mPendingRequests.size()) : String(), firstTime) +
-               mLocationInfo.getDebugValueString() +
-               (mLocation != mLocationInfo.mLocation ? ILocation::toDebugString(mLocation) : String()) +
-               IPeer::toDebugString(mPeer) +
-               Helper::getDebugValue("rudp ice socket subscription id", mSocketSubscription ? string(mSocketSubscription->getID()) : String(), firstTime) +
-               Helper::getDebugValue("rudp ice socket session id", mSocketSession ? string(mSocketSession->getID()) : String(), firstTime) +
-               Helper::getDebugValue("rudp messagine id", mMessaging ? string(mMessaging->getID()) : String(), firstTime) +
-               Helper::getDebugValue("incoming", mIncoming ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("identify time", Time() != mIdentifyTime ? IHelper::timeToString(mIdentifyTime) : String(), firstTime) +
-               Helper::getDebugValue("identity monitor", mIdentifyMonitor ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("keep alive monitor", mKeepAliveMonitor ? String("true") : String(), firstTime);
+        return
+        Helper::getDebugValue("account peer location id", string(mID), firstTime) +
+        Helper::getDebugValue("state", IAccount::toString(mCurrentState), firstTime) +
+        Helper::getDebugValue("refind", mShouldRefindNow ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("last activity", Time() != mLastActivity ? IHelper::timeToString(mLastActivity) : String(), firstTime) +
+        Helper::getDebugValue("pending requests", mPendingRequests.size() > 0 ? string(mPendingRequests.size()) : String(), firstTime) +
+        Helper::getDebugValue("remote context ID", mRemoteContextID, firstTime) +
+        Helper::getDebugValue("remote peer secret", mRemotePeerSecret, firstTime) +
+        mLocationInfo.getDebugValueString() +
+        (mLocation != mLocationInfo.mLocation ? ILocation::toDebugString(mLocation) : String()) +
+        IPeer::toDebugString(mPeer) +
+        Helper::getDebugValue("rudp ice socket subscription id", mSocketSubscription ? string(mSocketSubscription->getID()) : String(), firstTime) +
+        Helper::getDebugValue("rudp ice socket session id", mSocketSession ? string(mSocketSession->getID()) : String(), firstTime) +
+        Helper::getDebugValue("rudp messagine id", mMessaging ? string(mMessaging->getID()) : String(), firstTime) +
+        Helper::getDebugValue("incoming", mIncoming ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("identify time", Time() != mIdentifyTime ? IHelper::timeToString(mIdentifyTime) : String(), firstTime) +
+        Helper::getDebugValue("identity monitor", mIdentifyMonitor ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("keep alive monitor", mKeepAliveMonitor ? String("true") : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -980,7 +1014,7 @@ namespace openpeer
         }
 
         if (!stepSocketSubscription(socket)) return;
-        if (!stepPendingRequests()) return;
+        if (!stepPendingRequests(socket)) return;
         if (!stepSocketSession()) return;
         if (!stepIncomingIdentify()) return;
         if (!stepMessaging()) return;
@@ -1020,7 +1054,7 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      bool AccountPeerLocation::stepPendingRequests()
+      bool AccountPeerLocation::stepPendingRequests(IRUDPICESocketPtr socket)
       {
         if (mPendingRequests.size() < 1) {
           ZS_LOG_DEBUG(log("no pending requests"))
@@ -1050,12 +1084,16 @@ namespace openpeer
           // local candidates are now preparerd, the request can be answered
           PeerLocationFindNotifyPtr reply = PeerLocationFindNotify::create(pendingRequest);
 
+          reply->context(outer->forAccountPeerLocation().getLocalContextID(mPeer->forAccount().getPeerURI()));
+          reply->peerSecret(outer->forAccountPeerLocation().getLocalPassword(mPeer->forAccount().getPeerURI()));
+          reply->iceUsernameFrag(socket->getUsernameFrag());
+          reply->iceUsernameFrag(socket->getPassword());
           reply->locationInfo(*selfLocationInfo);
           reply->peerFiles(outer->forAccountPeerLocation().getPeerFiles());
 
           if (mPendingRequests.size() < 1) {
             // this is the final location, use this location as the connection point as it likely to be the latest of all the requests (let's hope)
-            connectLocation(remoteCandidates, IICESocket::ICEControl_Controlled);
+            connectLocation(pendingRequest->context(), pendingRequest->peerSecret(), pendingRequest->iceUsernameFrag(), pendingRequest->icePassword(), remoteCandidates, IICESocket::ICEControl_Controlled);
           }
 
           finderLocation->forAccount().sendMessage(reply);

@@ -109,6 +109,7 @@ namespace openpeer
       #pragma mark (helpers)
       #pragma mark
 
+      //-----------------------------------------------------------------------
       ILocation::LocationConnectionStates toLocationConnectionState(IAccount::AccountStates state)
       {
         switch (state) {
@@ -120,6 +121,7 @@ namespace openpeer
         return ILocation::LocationConnectionState_Disconnected;
       }
 
+      //-----------------------------------------------------------------------
       static String getRUDPTransport(const Finder &finder)
       {
         for (Finder::ProtocolList::const_iterator iter = finder.mProtocols.begin(); iter != finder.mProtocols.end(); ++iter)
@@ -131,6 +133,16 @@ namespace openpeer
           }
         }
         return String();
+      }
+
+      //-----------------------------------------------------------------------
+      static String calculatePassphrase(
+                                        const String &masterPassword,
+                                        const String &remotePeerURI,
+                                        const char *phrase
+                                        )
+      {
+        return IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(masterPassword), String(phrase) + ":" + remotePeerURI, IHelper::HashAlgorthm_SHA256));
       }
 
       //-----------------------------------------------------------------------
@@ -148,13 +160,13 @@ namespace openpeer
                        ServiceLockboxSessionPtr peerContactSession
                        ) :
         MessageQueueAssociator(queue),
-        mID(zsLib::createPUID()),
         mLocationID(IHelper::randomString(32)),
         mCurrentState(IAccount::AccountState_Pending),
         mLastError(0),
         mDelegate(IAccountDelegateProxy::createWeak(IStackForInternal::queueDelegate(), delegate)),
         mBlockLocationShutdownsUntil(zsLib::now()),
         mPeerContactSession(peerContactSession),
+        mMasterPeerSecret(IHelper::randomString(32*8/5)),
         mFinderRetryAfter(zsLib::now()),
         mLastRetryFinderAfterDuration(Seconds(OPENPEER_STACK_ACCOUNT_FINDER_STARTING_RETRY_AFTER_IN_SECONDS))
       {
@@ -340,6 +352,17 @@ namespace openpeer
         return IAccount::AccountState_Ready == mFinder->forAccount().getState();
       }
 
+      //-----------------------------------------------------------------------
+      String Account::getLocalContextID(const String &peerURI) const
+      {
+        return calculatePassphrase(mMasterPeerSecret, peerURI, "context");
+      }
+
+      //-----------------------------------------------------------------------
+      String Account::getLocalPassword(const String &peerURI) const
+      {
+        return calculatePassphrase(mMasterPeerSecret, peerURI, "password");
+      }
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -440,16 +463,18 @@ namespace openpeer
 
         if (location == mSelfLocation) {
           if (mSocket) {
-            mSocket->getLocalCandidates(info->mCandidates);
+            IICESocket::CandidateList candidates;
+            mSocket->getLocalCandidates(candidates);
 
-            for (CandidateList::iterator iter = info->mCandidates.begin(); iter != info->mCandidates.end(); ++iter) {
-              openpeer::services::IICESocket::Candidate &candidate = (*iter);
+            for (IICESocket::CandidateList::iterator iter = candidates.begin(); iter != candidates.end(); ++iter) {
+              IICESocket::Candidate &candidate = (*iter);
               if (IICESocket::Type_Local == candidate.mType) {
                 info->mIPAddress = (*iter).mIPAddress;
               }
-              if (IICESocket::Type_ServerReflexive == candidate.mType) {
-                break;
-              }
+              Candidate convert(candidate);
+              convert.mClass = OPENPEER_STACK_CANDIDATE_CLASS_ICE_CANDIDATES;
+              convert.mTransport = OPENPEER_STACK_TRANSPORT_JSON_MLS_RUDP;
+              info->mCandidates.push_back(convert);
             }
           }
 
@@ -1252,6 +1277,17 @@ namespace openpeer
                                                 RUDPICESocketStates state
                                                 )
       {
+        ZS_LOG_DEBUG(log("on rudp ice socket state changed"))
+
+        AutoRecursiveLock lock(getLock());
+        step();
+      }
+
+      //-----------------------------------------------------------------------
+      void Account::onRUDPICESocketCandidatesChanged(IRUDPICESocketPtr socket)
+      {
+        ZS_LOG_DEBUG(log("on rudp ice socket candidates changed"))
+
         AutoRecursiveLock lock(getLock());
         step();
       }
@@ -1431,22 +1467,12 @@ namespace openpeer
 
               PeerLocationFindRequestPtr request = PeerLocationFindRequest::convert(monitor->getMonitoredMessage());
 
-              SecureByteBlockPtr encryptionKey = request->peerSecret();
+              String remoteContextID = findReply->context();
+              String remotePassword = findReply->peerSecret();
+              String remoteICEUsernameFrag = findReply->iceUsernameFrag();
+              String remoteICEPassword = findReply->icePassword();
 
-              if (encryptionKey) {
-                ZS_LOG_DEBUG(log("decrypting candidate passwords sent from report party"))
-                for (CandidateList::iterator canIter = candidates.begin(); canIter != candidates.end(); ++canIter)
-                {
-                  Candidate &candidate = (*canIter);
-                  String originalPassword = candidate.mPassword;
-
-                  candidate.mPassword = IHelper::convertToString(*IHelper::decrypt(*encryptionKey, *IHelper::hash(candidate.mUsernameFrag, IHelper::HashAlgorthm_MD5), *IHelper::convertFromBase64(originalPassword)));
-
-                  ZS_LOG_DEBUG(log("decrypted password") + ", orginal=" + originalPassword + ", decrypted=" + candidate.mPassword)
-                }
-              }
-
-              peerLocation->forAccount().connectLocation(candidates, IICESocket::ICEControl_Controlling);
+              peerLocation->forAccount().connectLocation(remoteContextID, remotePassword, remoteICEUsernameFrag, remoteICEPassword, candidates, IICESocket::ICEControl_Controlling);
 
               bool locationRemainThatHaveNotReplied = false;
               // scope: check to see if their are remaining locations yet to return their replies
@@ -1560,24 +1586,26 @@ namespace openpeer
         getNATServers(turn, username, password, stun);
 
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("stack account id", string(mID), firstTime) +
-               Helper::getDebugValue("state", IAccount::toString(mCurrentState), firstTime) +
-               Helper::getDebugValue("location ID", mLocationID, firstTime) +
-               Helper::getDebugValue("error code", 0 != mLastError ? string(mLastError) : String(), firstTime) +
-               Helper::getDebugValue("error reason", mLastErrorReason, firstTime) +
-               Helper::getDebugValue("timer last fired", Time() != mLastTimerFired ? IHelper::timeToString(mLastTimerFired) : String(), firstTime) +
-               Helper::getDebugValue("block until", Time() != mBlockLocationShutdownsUntil ? IHelper::timeToString(mBlockLocationShutdownsUntil) : String(), firstTime) +
-               Helper::getDebugValue("turn", turn, firstTime) +
-               Helper::getDebugValue("turn username", username, firstTime) +
-               Helper::getDebugValue("turn password", password, firstTime) +
-               Helper::getDebugValue("stun", stun, firstTime) +
-               //mSelfLocation->forAccount().getDebugValueString() +
-               Helper::getDebugValue("finder", mFinder ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("finder retry after", Time() != mFinderRetryAfter ? IHelper::timeToString(mFinderRetryAfter) : String(), firstTime) +
-               Helper::getDebugValue("peer infos", mPeers.size() > 0 ? string(mPeers.size()) : String(), firstTime) +
-               Helper::getDebugValue("peer infos", mPeerInfos.size() > 0 ? string(mPeerInfos.size()) : String(), firstTime) +
-               Helper::getDebugValue("subscribers", mPeerSubscriptions.size() > 0 ? string(mPeerSubscriptions.size()) : String(), firstTime) +
-               Helper::getDebugValue("locations", mLocations.size() > 0 ? string(mLocations.size()) : String(), firstTime);
+        return
+        Helper::getDebugValue("stack account id", string(mID), firstTime) +
+        Helper::getDebugValue("state", IAccount::toString(mCurrentState), firstTime) +
+        Helper::getDebugValue("location ID", mLocationID, firstTime) +
+        Helper::getDebugValue("error code", 0 != mLastError ? string(mLastError) : String(), firstTime) +
+        Helper::getDebugValue("error reason", mLastErrorReason, firstTime) +
+        Helper::getDebugValue("timer last fired", Time() != mLastTimerFired ? IHelper::timeToString(mLastTimerFired) : String(), firstTime) +
+        Helper::getDebugValue("block until", Time() != mBlockLocationShutdownsUntil ? IHelper::timeToString(mBlockLocationShutdownsUntil) : String(), firstTime) +
+        Helper::getDebugValue("turn", turn, firstTime) +
+        Helper::getDebugValue("turn username", username, firstTime) +
+        Helper::getDebugValue("turn password", password, firstTime) +
+        Helper::getDebugValue("stun", stun, firstTime) +
+        //mSelfLocation->forAccount().getDebugValueString() +
+        Helper::getDebugValue("master peer secret", mMasterPeerSecret, firstTime) +
+        Helper::getDebugValue("finder", mFinder ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("finder retry after", Time() != mFinderRetryAfter ? IHelper::timeToString(mFinderRetryAfter) : String(), firstTime) +
+        Helper::getDebugValue("peer infos", mPeers.size() > 0 ? string(mPeers.size()) : String(), firstTime) +
+        Helper::getDebugValue("peer infos", mPeerInfos.size() > 0 ? string(mPeerInfos.size()) : String(), firstTime) +
+        Helper::getDebugValue("subscribers", mPeerSubscriptions.size() > 0 ? string(mPeerSubscriptions.size()) : String(), firstTime) +
+        Helper::getDebugValue("locations", mLocations.size() > 0 ? string(mLocations.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -2262,7 +2290,10 @@ namespace openpeer
 
         LocationInfoPtr locationInfo = getLocationInfo(mSelfLocation);
         request->findPeer(peerInfo->mPeer);
-        request->peerSecret(IHelper::random(32));
+        request->context(getLocalContextID(peerURI));
+        request->peerSecret(getLocalPassword(peerURI));
+        request->iceUsernameFrag(mSocket->getUsernameFrag());
+        request->icePassword(mSocket->getPassword());
         request->excludeLocations(exclude);
         request->locationInfo(*locationInfo);
         request->peerFiles(peerFiles);
@@ -2415,7 +2446,6 @@ namespace openpeer
       Account::PeerInfoPtr Account::PeerInfo::create()
       {
         PeerInfoPtr pThis(new PeerInfo);
-        pThis->mID = zsLib::createPUID();
         pThis->mFindAtNextPossibleMoment = false;
         pThis->findTimeReset();
         pThis->mCurrentFindState = IPeer::PeerFindState_Idle;
@@ -2444,18 +2474,19 @@ namespace openpeer
       String Account::PeerInfo::getDebugValueString(bool includeCommaPrefix) const
       {
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("peer info id", string(mID), firstTime) +
-               Helper::getDebugValue("find next moment", mFindAtNextPossibleMoment ? String("true") : String(), firstTime) +
-               IPeer::toDebugString(mPeer) +
-               Helper::getDebugValue("locations", mLocations.size() > 0 ? string(mLocations.size()) : String(), firstTime) +
-               Helper::getDebugValue("find monitor", mPeerFindMonitor ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("find because", mPeerFindBecauseOfLocations.size() > 0 ? string(mPeerFindBecauseOfLocations.size()) : String(), firstTime) +
-               Helper::getDebugValue("find redo because", mPeerFindNeedsRedoingBecauseOfLocations.size() > 0 ? string(mPeerFindNeedsRedoingBecauseOfLocations.size()) : String(), firstTime) +
-               Helper::getDebugValue("find state", IPeer::toString(mCurrentFindState), firstTime) +
-               Helper::getDebugValue("subscribers", 0 != mTotalSubscribers ? string(mTotalSubscribers) : String(), firstTime) +
-               Helper::getDebugValue("next find", Time() != mNextScheduledFind ? IHelper::timeToString(mNextScheduledFind) : String(), firstTime) +
-               Helper::getDebugValue("last duration", 0 != mLastScheduleFindDuration.total_milliseconds() ? string(mLastScheduleFindDuration.total_milliseconds()) : String(), firstTime) +
-               Helper::getDebugValue("prevent crazy refind", mPreventCrazyRefindNextTime ? String("true") : String(), firstTime);
+        return
+        Helper::getDebugValue("peer info id", string(mID), firstTime) +
+        Helper::getDebugValue("find next moment", mFindAtNextPossibleMoment ? String("true") : String(), firstTime) +
+        IPeer::toDebugString(mPeer) +
+        Helper::getDebugValue("locations", mLocations.size() > 0 ? string(mLocations.size()) : String(), firstTime) +
+        Helper::getDebugValue("find monitor", mPeerFindMonitor ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("find because", mPeerFindBecauseOfLocations.size() > 0 ? string(mPeerFindBecauseOfLocations.size()) : String(), firstTime) +
+        Helper::getDebugValue("find redo because", mPeerFindNeedsRedoingBecauseOfLocations.size() > 0 ? string(mPeerFindNeedsRedoingBecauseOfLocations.size()) : String(), firstTime) +
+        Helper::getDebugValue("find state", IPeer::toString(mCurrentFindState), firstTime) +
+        Helper::getDebugValue("subscribers", 0 != mTotalSubscribers ? string(mTotalSubscribers) : String(), firstTime) +
+        Helper::getDebugValue("next find", Time() != mNextScheduledFind ? IHelper::timeToString(mNextScheduledFind) : String(), firstTime) +
+        Helper::getDebugValue("last duration", 0 != mLastScheduleFindDuration.total_milliseconds() ? string(mLastScheduleFindDuration.total_milliseconds()) : String(), firstTime) +
+        Helper::getDebugValue("prevent crazy refind", mPreventCrazyRefindNextTime ? String("true") : String(), firstTime);
       }
     }
 

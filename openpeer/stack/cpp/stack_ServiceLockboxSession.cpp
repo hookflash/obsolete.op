@@ -1979,7 +1979,6 @@ namespace openpeer
                                                const char *valueName
                                                ) const
       {
-        typedef IHelper::SplitMap SplitMap;
         typedef LockboxContentGetResult::NameValueMap NameValueMap;
 
         ZS_THROW_INVALID_ARGUMENT_IF(!namespaceURL)
@@ -2009,28 +2008,11 @@ namespace openpeer
         IHelper::SplitMap split;
         IHelper::split(preSplitValue, split, ':');
 
-        if (split.size() != 2) {
-          ZS_LOG_DEBUG(log("failed to split value into salt and encrypted value") + ", namespace=" + namespaceURL + ", value name=" + valueName + getDebugValueString())
-          return String();
-        }
-
-        const String &salt = split[0];
-        const String &value = split[1];
-
-        ZS_LOG_TRACE(log("decrypting content using") + ", namespace=" + namespaceURL + ", value name=" + valueName + ", key=" + IHelper::convertToBase64(*mLockboxInfo.mKey))
-
         SecureByteBlockPtr key = IHelper::hmac(*mLockboxInfo.mKey, (String("lockbox:") + namespaceURL + ":" + valueName).c_str(), IHelper::HashAlgorthm_SHA256);
-        SecureByteBlockPtr iv = IHelper::hash(salt, IHelper::HashAlgorthm_MD5);
 
-        SecureByteBlockPtr dataToConvert = IHelper::convertFromBase64(value);
-        if (!dataToConvert) {
-          ZS_LOG_WARNING(Detail, log("failed to decode data from base64") + ", namespace=" + namespaceURL + ", value name=" + valueName + ", value=" + value + getDebugValueString())
-          return String();
-        }
-
-        SecureByteBlockPtr result = IHelper::decrypt(*key, *iv, *dataToConvert);
+        SecureByteBlockPtr result = stack::IHelper::splitDecrypt(*key, preSplitValue);
         if (!result) {
-          ZS_LOG_WARNING(Detail, log("failed to decrypt value") + ", namespace=" + namespaceURL + ", value name=" + valueName + ", value=" + value + getDebugValueString())
+          ZS_LOG_WARNING(Detail, log("failed to decrypt value") + ", namespace=" + namespaceURL + ", value name=" + valueName + ", value=" + preSplitValue + getDebugValueString())
           return String();
         }
 
@@ -2103,10 +2085,7 @@ namespace openpeer
 
         ZS_LOG_TRACE(log("encrpting content using") + ", namespace=" + namespaceURL + ", value name=" + valueName + ", key=" + IHelper::convertToBase64(*mLockboxInfo.mKey))
 
-        String salt = IHelper::randomString((20*8)/5);
-
         SecureByteBlockPtr key = IHelper::hmac(*mLockboxInfo.mKey, (String("lockbox:") + namespaceURL + ":" + valueName).c_str(), IHelper::HashAlgorthm_SHA256);
-        SecureByteBlockPtr iv = IHelper::hash(salt, IHelper::HashAlgorthm_MD5);
 
         SecureByteBlockPtr dataToConvert = IHelper::convertToBuffer(value);
         if (!dataToConvert) {
@@ -2114,13 +2093,7 @@ namespace openpeer
           return;
         }
 
-        SecureByteBlockPtr result = IHelper::encrypt(*key, *iv, *dataToConvert);
-        if (!result) {
-          ZS_LOG_WARNING(Detail, log("failed to decrypt value") + ", namespace=" + namespaceURL + ", value name=" + valueName + ", value=" + value + getDebugValueString())
-          return;
-        }
-
-        String encodedValue = salt + ":" + IHelper::convertToBase64(*result);
+        String encodedValue = stack::IHelper::splitEncrypt(*key, *dataToConvert);
         if (encodedValue.isEmpty()) {
           ZS_LOG_WARNING(Detail, log("failed to encode encrypted to base64") + ", namespace=" + namespaceURL + ", value name=" + valueName + ", value=" + value + getDebugValueString())
           return;

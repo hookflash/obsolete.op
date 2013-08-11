@@ -134,7 +134,6 @@ namespace openpeer
                                    AccountPtr outer
                                    ) :
         MessageQueueAssociator(queue),
-        mID(zsLib::createPUID()),
         mDelegate(IAccountFinderDelegateProxy::createWeak(IStackForInternal::queueStack(), delegate)),
         mOuter(outer),
         mCurrentState(IAccount::AccountState_Pending)
@@ -325,8 +324,17 @@ namespace openpeer
                                                       )
       {
         ZS_LOG_DEBUG(log("notified RUDP ICE socket state changed"))
-        AutoRecursiveLock lock(getLock());
 
+        AutoRecursiveLock lock(getLock());
+        step();
+      }
+
+      //-----------------------------------------------------------------------
+      void AccountFinder::onRUDPICESocketCandidatesChanged(IRUDPICESocketPtr socket)
+      {
+        ZS_LOG_DEBUG(log("notified RUDP ICE socket candidates changed"))
+
+        AutoRecursiveLock lock(getLock());
         step();
       }
 
@@ -920,13 +928,13 @@ namespace openpeer
 
         // found an IP, put into a candidate structure
 
-        Candidate candidate;
+        IICESocket::Candidate candidate;
         candidate.mType = IICESocket::Type_Unknown;
         candidate.mIPAddress = mFinderIP;
         candidate.mPriority = 0;
         candidate.mLocalPreference = 0;
 
-        CandidateList candidateList;
+        IICESocket::CandidateList candidateList;
         candidateList.push_back(candidate);
 
         // ready for the next time if we need to prepare again...
@@ -934,7 +942,7 @@ namespace openpeer
         ZS_LOG_DEBUG(log("reqesting to connect to server") + ", ip=" + mFinderIP.string())
 
         // create the socket session now
-        mSocketSession =  socket->createSessionFromRemoteCandidates(mThisWeak.lock(), candidateList, IICESocket::ICEControl_Controlling);
+        mSocketSession =  socket->createSessionFromRemoteCandidates(mThisWeak.lock(), IHelper::randomString(32), NULL, candidateList, IICESocket::ICEControl_Controlling);
         // well, this is bad...
         if (!mSocketSession) {
           ZS_LOG_ERROR(Detail, log("cannot create a socket session"))

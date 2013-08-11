@@ -119,6 +119,47 @@ namespace openpeer
         }
         return signedEl;
       }
+
+      //-----------------------------------------------------------------------
+      String Helper::splitEncrypt(
+                                  SecureByteBlock &key,
+                                  SecureByteBlock &value
+                                  )
+      {
+        SecureByteBlockPtr iv = services::IHelper::random(services::IHelper::getHashDigestSize(services::IHelper::HashAlgorthm_MD5));
+        String base64 = services::IHelper::convertToBase64(*services::IHelper::encrypt(key, *iv, value));
+        return services::IHelper::convertToHex(*iv) + ":" + base64;
+      }
+
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr Helper::splitDecrypt(
+                                              SecureByteBlock &key,
+                                              const char *hexIVAndBase64EncodedData
+                                              )
+      {
+        if (!hexIVAndBase64EncodedData) return SecureByteBlockPtr();
+
+        services::IHelper::SplitMap split;
+        services::IHelper::split(hexIVAndBase64EncodedData, split, ':');
+
+        if (split.size() != 2) {
+          ZS_LOG_WARNING(Detail, String("failed to decode data (does not have salt:base64 pattern") + ", value=" + hexIVAndBase64EncodedData)
+          return SecureByteBlockPtr();
+        }
+
+        const String &salt = split[0];
+        const String &value = split[1];
+
+        SecureByteBlockPtr iv = services::IHelper::convertFromHex(salt);
+
+        SecureByteBlockPtr dataToConvert = services::IHelper::convertFromBase64(value);
+        if (!dataToConvert) {
+          ZS_LOG_WARNING(Detail, String("failed to decode data from base64") + ", value=" + value)
+          return SecureByteBlockPtr();
+        }
+
+       return services::IHelper::decrypt(key, *iv, *dataToConvert);
+      }
     }
 
     //-------------------------------------------------------------------------
@@ -143,5 +184,22 @@ namespace openpeer
     {
       return internal::Helper::getSignatureInfo(signedEl, outSignatureEl, outPeerURI, outKeyID, outKeyDomain, outService, outFullPublicKey, outFingerprint);
     }
+
+    String IHelper::splitEncrypt(
+                                 SecureByteBlock &key,
+                                 SecureByteBlock &value
+                                 )
+    {
+      return internal::Helper::splitEncrypt(key, value);
+    }
+
+    SecureByteBlockPtr IHelper::splitDecrypt(
+                                           SecureByteBlock &key,
+                                           const char *hexIVAndBase64EncodedData
+                                           )
+    {
+      return internal::Helper::splitDecrypt(key, hexIVAndBase64EncodedData);
+    }
+
   }
 }

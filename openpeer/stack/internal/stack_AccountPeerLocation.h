@@ -56,9 +56,7 @@ namespace openpeer
   {
     namespace internal
     {
-      typedef services::IICESocket::CandidateList CandidateList;
-      typedef services::IICESocket::Candidate Candidate;
-      typedef services::IICESocket::ICEControls ICEControls;
+      using services::IICESocket;
 
       typedef services::IRUDPICESocketSubscriptionPtr IRUDPICESocketSubscriptionPtr;
       typedef services::IRUDPMessagingPtr IRUDPMessagingPtr;
@@ -105,8 +103,12 @@ namespace openpeer
         virtual Time getTimeOfLastActivity() const = 0;
 
         virtual void connectLocation(
+                                     const char *remoteContextID,
+                                     const char *remotePeerSecret,
+                                     const char *remoteICEUsernameFrag,
+                                     const char *remoteICEPassword,
                                      const CandidateList &candidates,
-                                     ICEControls control
+                                     IICESocket::ICEControls control
                                      ) = 0;
 
         virtual void incomingRespondWhenCandidatesReady(PeerLocationFindRequestPtr request) = 0;
@@ -190,8 +192,12 @@ namespace openpeer
         virtual Time getTimeOfLastActivity() const;
 
         virtual void connectLocation(
+                                     const char *remoteContextID,
+                                     const char *remotePeerSecret,
+                                     const char *remoteICEUsernameFrag,
+                                     const char *remoteICEPassword,
                                      const CandidateList &candidates,
-                                     ICEControls control
+                                     IICESocket::ICEControls control
                                      );
 
         virtual void incomingRespondWhenCandidatesReady(PeerLocationFindRequestPtr request);
@@ -223,6 +229,7 @@ namespace openpeer
                                                  IRUDPICESocketPtr socket,
                                                  RUDPICESocketStates state
                                                  );
+        virtual void onRUDPICESocketCandidatesChanged(IRUDPICESocketPtr socket);
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -302,7 +309,7 @@ namespace openpeer
 
         void step();
         bool stepSocketSubscription(IRUDPICESocketPtr socket);
-        bool stepPendingRequests();
+        bool stepPendingRequests(IRUDPICESocketPtr socket);
         bool stepSocketSession();
         bool stepIncomingIdentify();
         bool stepMessaging();
@@ -316,7 +323,7 @@ namespace openpeer
         #pragma mark AccountPeerLocation => (data)
         #pragma mark
 
-        PUID mID;
+        AutoPUID mID;
         mutable RecursiveLock mBogusLock;
         mutable AccountPeerLocationWeakPtr mThisWeak;
 
@@ -330,6 +337,9 @@ namespace openpeer
         mutable Time mLastActivity;
 
         PendingRequestList mPendingRequests;
+
+        String mRemoteContextID;
+        String mRemotePeerSecret;
 
         // information about the location found
         LocationInfo mLocationInfo;

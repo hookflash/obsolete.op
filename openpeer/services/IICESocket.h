@@ -85,11 +85,11 @@ namespace openpeer
         IPAddress mIPAddress;
         DWORD     mPriority;
         WORD      mLocalPreference;  // fill with "0" if unknown
-        String    mProtocol;
 
         IPAddress mRelatedIP;         // if server reflexive, peer reflexive or relayed, the related base IP
 
         Candidate(): mType(Type_Unknown), mPriority(0), mLocalPreference(0) {}
+        bool hasData() const;
         String toDebugString(bool includeCommaPrefix = true) const;
       };
 
