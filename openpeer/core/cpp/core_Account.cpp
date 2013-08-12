@@ -320,6 +320,14 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      String Account::getStableID() const
+      {
+        AutoRecursiveLock lock(getLock());
+        if (!mLockboxSession) return String();
+        return mLockboxSession->getStableID();
+      }
+
+      //-----------------------------------------------------------------------
       String Account::getLocationID() const
       {
         AutoRecursiveLock lock(getLock());

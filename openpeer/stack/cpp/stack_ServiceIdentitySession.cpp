@@ -587,6 +587,15 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      void ServiceIdentitySession::getIdentityInfo(IdentityInfo &outIdentityInfo) const
+      {
+        AutoRecursiveLock lock(getLock());
+
+        outIdentityInfo = mPreviousLookupInfo;
+        outIdentityInfo.mergeFrom(mIdentityInfo, true);
+      }
+
+      //-----------------------------------------------------------------------
       String ServiceIdentitySession::getInnerBrowserWindowFrameURL() const
       {
         AutoRecursiveLock lock(getLock());

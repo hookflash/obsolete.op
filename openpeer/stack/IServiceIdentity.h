@@ -32,7 +32,7 @@
 #pragma once
 
 #include <openpeer/stack/types.h>
-
+#include <openpeer/stack/message/types.h>
 
 namespace openpeer
 {
@@ -112,6 +112,7 @@ namespace openpeer
 
     interaction IServiceIdentitySession
     {
+      typedef message::IdentityInfo IdentityInfo;
       typedef message::IdentityInfoListPtr IdentityInfoListPtr;
 
       enum SessionStates
@@ -173,6 +174,8 @@ namespace openpeer
 
       virtual String getIdentityURI() const = 0;
       virtual String getIdentityProviderDomain() const = 0;
+
+      virtual void getIdentityInfo(IdentityInfo &outIdentityInfo) const = 0;
 
       virtual String getInnerBrowserWindowFrameURL() const = 0;
 

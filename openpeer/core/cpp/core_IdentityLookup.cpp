@@ -729,35 +729,7 @@ namespace openpeer
           }
 
           IdentityContact info;
-
-          info.mIdentityURI = resultInfo.mURI;
-          info.mIdentityProvider = resultInfo.mProvider;
-          info.mStableID = resultInfo.mStableID;
-
-          info.mPeerFilePublic = resultInfo.mPeerFilePublic;
-          info.mIdentityProofBundleEl = resultInfo.mIdentityProofBundle;
-
-          info.mPriority = resultInfo.mPriority;
-          info.mWeight = resultInfo.mWeight;
-
-          info.mLastUpdated = resultInfo.mUpdated;
-          info.mExpires = resultInfo.mExpires;
-
-          info.mName = resultInfo.mName;
-          info.mProfileURL = resultInfo.mProfile;
-          info.mVProfileURL = resultInfo.mVProfile;
-
-          for (StackIdentityInfo::AvatarList::const_iterator avIter = resultInfo.mAvatars.begin();  avIter != resultInfo.mAvatars.end(); ++avIter)
-          {
-            const StackIdentityInfo::Avatar &resultAvatar = (*avIter);
-            IdentityContact::Avatar avatar;
-
-            avatar.mName = resultAvatar.mName;
-            avatar.mURL = resultAvatar.mURL;
-            avatar.mWidth = resultAvatar.mWidth;
-            avatar.mHeight = resultAvatar.mHeight;
-            info.mAvatars.push_back(avatar);
-          }
+          Helper::convert(resultInfo, info);
 
           mResults.push_back(info);
         }

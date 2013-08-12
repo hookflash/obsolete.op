@@ -33,6 +33,8 @@
 
 #include <openpeer/core/internal/types.h>
 #include <openpeer/core/types.h>
+#include <openpeer/stack/types.h>
+#include <openpeer/stack/message/types.h>
 #include <openpeer/services/types.h>
 
 namespace openpeer
@@ -126,6 +128,8 @@ namespace openpeer
       using stack::IServiceNamespaceGrantSession;
       using stack::IServiceNamespaceGrantSessionPtr;
       using stack::IServiceNamespaceGrantSessionDelegate;
+
+      using stack::message::IdentityInfo;
 
       using services::IICESocket;
       using services::IICESocketPtr;
