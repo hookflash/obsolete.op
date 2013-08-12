@@ -85,7 +85,6 @@ namespace openpeer
 {
   namespace services
   {
-    using zsLib::Stringize;
     using zsLib::Numeric;
     using zsLib::AutoRecursiveLock;
 
@@ -104,12 +103,12 @@ namespace openpeer
       static String currentThreadIDAsString()
       {
 #ifdef _WIN32
-        return Stringize<DWORD>(GetCurrentThreadId());
+        return string(GetCurrentThreadId());
 #else
 #ifdef APPLE
-        return Stringize<mach_port_t>(pthread_mach_thread_np(pthread_self()));
+        return string(pthread_mach_thread_np(pthread_self()));
 #else
-        return Stringize<pthread_t>(pthread_self());
+        return string(pthread_self());
 #endif //APPLE
 #endif //_WIN32
       }
@@ -172,7 +171,7 @@ namespace openpeer
                       + colorLevel + inMessage
                       + OPENPEER_SERVICES_SEQUENCE_COLOUR_RESET + " "
                       + OPENPEER_SERVICES_SEQUENCE_COLOUR_FILENAME + "@" + fileName
-                      + OPENPEER_SERVICES_SEQUENCE_COLOUR_LINENUMBER + "(" + Stringize<ULONG>(inLineNumber).string() + ")"
+                      + OPENPEER_SERVICES_SEQUENCE_COLOUR_LINENUMBER + "(" + string(inLineNumber) + ")"
                       + OPENPEER_SERVICES_SEQUENCE_COLOUR_RESET + " "
                       + OPENPEER_SERVICES_SEQUENCE_COLOUR_FUNCTION + "[" + inFunction + "]"
                       + OPENPEER_SERVICES_SEQUENCE_COLOUR_RESET + (eol ? "\n" : "");
@@ -219,7 +218,7 @@ namespace openpeer
           case Log::Fatal:           severity = "F:"; break;
         }
 
-        String result = current + " " + severity + " <"  + currentThreadIDAsString() + "> " + inMessage + " " + "@" + fileName + "(" + Stringize<ULONG>(inLineNumber).string() + ")" + " " + "[" + inFunction + "]" + (eol ? "\n" : "");
+        String result = current + " " + severity + " <"  + currentThreadIDAsString() + "> " + inMessage + " " + "@" + fileName + "(" + string(inLineNumber) + ")" + " " + "[" + inFunction + "]" + (eol ? "\n" : "");
         return result;
       }
 
@@ -245,7 +244,7 @@ namespace openpeer
           case Log::Fatal:           severity = "F:"; break;
         }
 
-        String result = String(inFilePath) +  "(" + Stringize<ULONG>(inLineNumber).string() + ") " + severity + current + " : <" + currentThreadIDAsString() + "> " + inMessage + (eol ? "\n" : "");
+        String result = String(inFilePath) +  "(" + string(inLineNumber) + ") " + severity + current + " : <" + currentThreadIDAsString() + "> " + inMessage + (eol ? "\n" : "");
         return result;
       }
 
@@ -755,7 +754,7 @@ namespace openpeer
 
           int error = 0;
 
-          std::cout << "TELNET LOGGER: Attempting to listen for client connections on port: " << mListenPort << " (start time=" << Stringize<Time>(mStartListenTime).string() << ")...\n";
+          std::cout << "TELNET LOGGER: Attempting to listen for client connections on port: " << mListenPort << " (start time=" << string(mStartListenTime) << ")...\n";
           mListenSocket->bind(any, &error);
 
           Time tick = zsLib::now();

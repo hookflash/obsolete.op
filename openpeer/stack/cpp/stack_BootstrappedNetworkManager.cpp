@@ -43,8 +43,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
-
       typedef zsLib::String String;
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -193,7 +191,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String BootstrappedNetworkManager::log(const char *message) const
       {
-        return String("BootstrappedNetworkManager [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("BootstrappedNetworkManager [") + string(mID) + "] " + message;
       }
     }
   }

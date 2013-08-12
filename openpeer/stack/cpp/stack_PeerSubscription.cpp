@@ -53,8 +53,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
-
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -314,7 +312,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String PeerSubscription::log(const char *message) const
       {
-        return String("PeerSubscription [") + Stringize<PUID>(mID).string() + "] " + message;
+        return String("PeerSubscription [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -322,7 +320,7 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("peer subscription id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("peer subscription id", string(mID), firstTime) +
                Helper::getDebugValue("subscribing", mPeer ? "peer" : "all", firstTime) +
                IPeer::toDebugString(mPeer);
       }

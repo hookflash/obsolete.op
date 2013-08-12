@@ -34,7 +34,6 @@
 
 #include <openpeer/stack/message/MessageRequest.h>
 #include <openpeer/stack/message/MessageResult.h>
-#include <openpeer/stack/message/MessageReply.h>
 #include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
 #include <openpeer/stack/message/IMessageFactory.h>
 
@@ -51,7 +50,6 @@ namespace openpeer
     {
       namespace internal
       {
-        using zsLib::Stringize;
         typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
 
         //---------------------------------------------------------------------
@@ -188,7 +186,7 @@ namespace openpeer
         //---------------------------------------------------------------------
         String MessageFactoryManager::log(const char *message)
         {
-          return String("MessageFactoryManager [") + Stringize<PUID>(mID).string() + "] " + message;
+          return String("MessageFactoryManager [") + string(mID) + "] " + message;
         }
 
         //---------------------------------------------------------------------
@@ -256,7 +254,6 @@ namespace openpeer
                 message = MessageResult::create(root, error, toString(error));
                 break;
               }
-              case Message::MessageType_Reply:  break;
             }
           }
 

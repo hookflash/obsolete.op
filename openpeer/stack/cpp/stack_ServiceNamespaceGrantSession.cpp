@@ -59,7 +59,6 @@ namespace openpeer
     {
       using services::IHelper;
 
-      using zsLib::Stringize;
       typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
 
       using message::namespace_grant::NamespaceGrantWindowRequest;
@@ -541,7 +540,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void ServiceNamespaceGrantSession::notifyQueryGone(PUID queryID)
       {
-        ZS_LOG_WARNING(Debug, log("removing query") + ", query ID=" + Stringize<typeof(queryID)>(queryID).string())
+        ZS_LOG_WARNING(Debug, log("removing query") + ", query ID=" + string(queryID))
 
         AutoRecursiveLock lock(getLock());
         {
@@ -559,7 +558,7 @@ namespace openpeer
           }
         }
 
-        ZS_LOG_WARNING(Debug, log("query already gone") + ", query ID=" + Stringize<typeof(queryID)>(queryID).string())
+        ZS_LOG_WARNING(Debug, log("query already gone") + ", query ID=" + string(queryID))
         return;
       }
 
@@ -574,7 +573,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void ServiceNamespaceGrantSession::notifyWaitGone(PUID waitID)
       {
-        ZS_LOG_DEBUG(log("removing wait") + ", wait ID=" + Stringize<typeof(waitID)>(waitID).string())
+        ZS_LOG_DEBUG(log("removing wait") + ", wait ID=" + string(waitID))
 
         AutoRecursiveLock lock(getLock());
 
@@ -618,7 +617,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String ServiceNamespaceGrantSession::log(const char *message) const
       {
-        return String("ServiceNamespaceGrantSession [") + Stringize<PUID>(mID).string() + "] " + message;
+        return String("ServiceNamespaceGrantSession [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -626,12 +625,12 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("namespace grant id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("namespace grant id", string(mID), firstTime) +
                Helper::getDebugValue("delegate", mDelegate ? String("true") : String() , firstTime) +
                IBootstrappedNetwork::toDebugString(mBootstrappedNetwork) +
                Helper::getDebugValue("namespace grant validate", mNamespaceGrantValidateMonitor ? String("true") : String() , firstTime) +
                Helper::getDebugValue("state", toString(mCurrentState), firstTime) +
-               Helper::getDebugValue("error code", 0 != mLastError ? Stringize<typeof(mLastError)>(mLastError).string() : String(), firstTime) +
+               Helper::getDebugValue("error code", 0 != mLastError ? string(mLastError) : String(), firstTime) +
                Helper::getDebugValue("error reason", mLastErrorReason, firstTime) +
                Helper::getDebugValue("grant ID", mGrantID, firstTime) +
                Helper::getDebugValue("browser window ready", mBrowserWindowReady ? String("true") : String(), firstTime) +
@@ -640,11 +639,11 @@ namespace openpeer
                Helper::getDebugValue("need browser window visible", mNeedsBrowserWindowVisible ? String("true") : String(), firstTime) +
                Helper::getDebugValue("namespace grant start notification", mNamespaceGrantStartNotificationSent ? String("true") : String(), firstTime) +
                Helper::getDebugValue("received namespace grant complete notification", mReceivedNamespaceGrantCompleteNotify ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("pending messages", mPendingMessagesToDeliver.size() > 0 ? Stringize<DocumentList::size_type>(mPendingMessagesToDeliver.size()) : String(), firstTime) +
-               Helper::getDebugValue("total waits", 0 != mTotalWaits ? Stringize<typeof(mTotalWaits)>(mTotalWaits) : String(), firstTime) +
-               Helper::getDebugValue("queries in process", mQueriesInProcess.size() > 0 ? Stringize<QueryMap::size_type>(mQueriesInProcess.size()) : String(), firstTime) +
-               Helper::getDebugValue("pending queries", mPendingQueries.size() > 0 ? Stringize<QueryMap::size_type>(mPendingQueries.size()) : String(), firstTime) +
-               Helper::getDebugValue("waiting delegates", mWaitingDelegates.size() > 0 ? Stringize<WaitingDelegateList::size_type>(mWaitingDelegates.size()) : String(), firstTime);
+               Helper::getDebugValue("pending messages", mPendingMessagesToDeliver.size() > 0 ? string(mPendingMessagesToDeliver.size()) : String(), firstTime) +
+               Helper::getDebugValue("total waits", 0 != mTotalWaits ? string(mTotalWaits) : String(), firstTime) +
+               Helper::getDebugValue("queries in process", mQueriesInProcess.size() > 0 ? string(mQueriesInProcess.size()) : String(), firstTime) +
+               Helper::getDebugValue("pending queries", mPendingQueries.size() > 0 ? string(mPendingQueries.size()) : String(), firstTime) +
+               Helper::getDebugValue("waiting delegates", mWaitingDelegates.size() > 0 ? string(mWaitingDelegates.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -744,7 +743,7 @@ namespace openpeer
               mostFoundDomain = domain;
             }
 
-            ZS_LOG_DEBUG(log("found another usage of domain") + ", domain=" + domain + ", total=" + Stringize<typeof(usage)>(usage).string())
+            ZS_LOG_DEBUG(log("found another usage of domain") + ", domain=" + domain + ", total=" + string(usage))
           }
         }
 
@@ -777,7 +776,7 @@ namespace openpeer
           for (SplitMap::iterator iterSplit = domains.begin(); iterSplit != domains.end(); ++iterSplit) {
             String domain = (*iterSplit).second;
             if (domain == mostFoundDomain) {
-              ZS_LOG_DEBUG(log("query is going to execute now") + ", domain=" + domain + ", query ID=" + Stringize<PUID>(query->getID()).string())
+              ZS_LOG_DEBUG(log("query is going to execute now") + ", domain=" + domain + ", query ID=" + string(query->getID()))
               mQueriesInProcess[query->getID()] = query;
               mPendingQueries.erase(current);
               break;
@@ -816,7 +815,7 @@ namespace openpeer
           return true;
         }
 
-        ZS_LOG_ERROR(Detail, log("bootstrapped network failed for lockbox") + ", error=" + Stringize<typeof(errorCode)>(errorCode).string() + ", reason=" + reason)
+        ZS_LOG_ERROR(Detail, log("bootstrapped network failed for lockbox") + ", error=" + string(errorCode) + ", reason=" + reason)
 
         setError(errorCode, reason);
         cancel();
@@ -1003,7 +1002,7 @@ namespace openpeer
           reason = IHTTP::toString(IHTTP::toStatusCode(errorCode));
         }
         if (0 != mLastError) {
-          ZS_LOG_WARNING(Detail, log("erorr already set thus ignoring new error") + ", new error=" + Stringize<typeof(errorCode)>(errorCode).string() + ", new reason=" + reason + getDebugValueString())
+          ZS_LOG_WARNING(Detail, log("erorr already set thus ignoring new error") + ", new error=" + string(errorCode) + ", new reason=" + reason + getDebugValueString())
           return;
         }
 

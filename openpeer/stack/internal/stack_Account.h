@@ -118,6 +118,9 @@ namespace openpeer
         virtual IPeerFilesPtr getPeerFiles() const = 0;
 
         virtual bool isFinderReady() const = 0;
+
+        virtual String getLocalContextID(const String &peerURI) const = 0;
+        virtual String getLocalPassword(const String &peerURI) const = 0;
       };
 
       //-----------------------------------------------------------------------
@@ -407,6 +410,9 @@ namespace openpeer
 
         virtual bool isFinderReady() const;
 
+        virtual String getLocalContextID(const String &peerURI) const;
+        virtual String getLocalPassword(const String &peerURI) const;
+
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark Account => IAccountForLocation
@@ -538,6 +544,8 @@ namespace openpeer
                                                  RUDPICESocketStates state
                                                  );
 
+        virtual void onRUDPICESocketCandidatesChanged(IRUDPICESocketPtr socket);
+
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark Account => IMessageMonitorDelegate
@@ -659,7 +667,7 @@ namespace openpeer
           void findTimeScheduleNext();
           String getDebugValueString(bool includeCommaPrefix = true) const;
 
-          PUID mID;
+          AutoPUID mID;
           bool mFindAtNextPossibleMoment;
 
           PeerPtr mPeer;
@@ -692,7 +700,7 @@ namespace openpeer
         #pragma mark Account => (data)
         #pragma mark
 
-        PUID mID;
+        AutoPUID mID;
         mutable RecursiveLock mLock;
         AccountWeakPtr mThisWeak;
         AccountPtr mGracefulShutdownReference;
@@ -712,6 +720,8 @@ namespace openpeer
         Service::MethodPtr mSTUN;
 
         IRUDPICESocketPtr mSocket;
+
+        String mMasterPeerSecret;
 
         String mLocationID;
         PeerPtr mSelfPeer;

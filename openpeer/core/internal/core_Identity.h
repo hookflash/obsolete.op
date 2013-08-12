@@ -142,6 +142,8 @@ namespace openpeer
         virtual String getIdentityURI() const;
         virtual String getIdentityProviderDomain() const;
 
+        virtual void getIdentityContact(IdentityContact &outIdentityContact) const;
+
         virtual String getInnerBrowserWindowFrameURL() const;
 
         virtual void notifyBrowserWindowVisible();

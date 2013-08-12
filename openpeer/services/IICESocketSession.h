@@ -33,6 +33,7 @@
 
 #include <openpeer/services/types.h>
 #include <openpeer/services/IICESocket.h>
+#include <openpeer/services/IHTTP.h>
 #include <zsLib/types.h>
 #include <zsLib/IPAddress.h>
 #include <zsLib/Proxy.h>
@@ -70,31 +71,39 @@ namespace openpeer
 
       enum ICESocketSessionShutdownReasons
       {
-        ICESocketSessionShutdownReason_None,
+        ICESocketSessionShutdownReason_None                   = IHTTP::HTTPStatusCode_None,
 
-        ICESocketSessionShutdownReason_Closed,
+        ICESocketSessionShutdownReason_Timeout                = IHTTP::HTTPStatusCode_RequestTimeout,
+        ICESocketSessionShutdownReason_BackgroundingTimeout   = IHTTP::HTTPStatusCode_Networkconnecttimeouterror,
 
-        ICESocketSessionShutdownReason_Timeout,
-        ICESocketSessionShutdownReason_BackgroundingTimeout,
-        ICESocketSessionShutdownReason_CandidateSearchFailed,
+        ICESocketSessionShutdownReason_CandidateSearchFailed  = IHTTP::HTTPStatusCode_NotFound,
 
-        ICESocketSessionShutdownReason_DelegateGone,
-        ICESocketSessionShutdownReason_SocketGone,
+        ICESocketSessionShutdownReason_DelegateGone           = IHTTP::HTTPStatusCode_Gone,
       };
 
       static const char *toString(ICESocketSessionShutdownReasons reason);
+
+      static String toDebugString(IICESocketSessionPtr session, bool includeCommaPrefix = true);
 
       virtual PUID getID() const = 0;
 
       virtual IICESocketPtr getSocket() = 0;
 
-      virtual ICESocketSessionStates getState() const = 0;
-      virtual ICESocketSessionShutdownReasons getShutdownReason() const = 0;
+      virtual ICESocketSessionStates getState(
+                                              WORD *outLastErrorCode = NULL,
+                                              String *outLastErrorReason = NULL
+                                              ) const = 0;
 
       virtual void close() = 0;
 
+      virtual String getLocalUsernameFrag() const = 0;
+      virtual String getLocalPassword() const = 0;
+      virtual String getRemoteUsernameFrag() const = 0;
+      virtual String getRemotePassword() const = 0;
+
       virtual void getLocalCandidates(CandidateList &outCandidates) = 0;
       virtual void updateRemoteCandidates(const CandidateList &remoteCandidates) = 0;
+      virtual void endOfRemoteCandidates() = 0;
 
       virtual void setKeepAliveProperties(
                                           Duration sendKeepAliveIndications,
@@ -152,6 +161,8 @@ namespace openpeer
                                                   ICESocketSessionStates state
                                                   ) = 0;
 
+      virtual void onICESocketSessionNominationChanged(IICESocketSessionPtr session) = 0;
+
       //-----------------------------------------------------------------------
       // PURPOSE: Pushes a received packet to the delegate to be processed
       //          immediately upon receipt.
@@ -181,6 +192,7 @@ ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::IICESocketSessionPtr, IICESocketSes
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::STUNPacketPtr, STUNPacketPtr)
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::IICESocketSessionDelegate::ICESocketSessionStates, ICESocketSessionStates)
 ZS_DECLARE_PROXY_METHOD_2(onICESocketSessionStateChanged, IICESocketSessionPtr, openpeer::services::IICESocketSessionDelegate::ICESocketSessionStates)
+ZS_DECLARE_PROXY_METHOD_1(onICESocketSessionNominationChanged, IICESocketSessionPtr)
 ZS_DECLARE_PROXY_METHOD_SYNC_3(handleICESocketSessionReceivedPacket, IICESocketSessionPtr, const BYTE *, ULONG)
 ZS_DECLARE_PROXY_METHOD_SYNC_RETURN_4(handleICESocketSessionReceivedSTUNPacket, bool, IICESocketSessionPtr, STUNPacketPtr, const String &, const String &)
 ZS_DECLARE_PROXY_METHOD_1(onICESocketSessionWriteReady, openpeer::services::IICESocketSessionPtr)

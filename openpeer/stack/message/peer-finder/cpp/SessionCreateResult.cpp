@@ -30,12 +30,23 @@
  */
 
 #include <openpeer/stack/message/peer-finder/SessionCreateResult.h>
+
 #include <openpeer/stack/message/internal/stack_message_MessageHelper.h>
+
+#include <openpeer/stack/internal/stack_Location.h>
+#include <openpeer/stack/internal/stack_Peer.h>
+#include <openpeer/stack/internal/stack_Account.h>
+
+#include <openpeer/stack/IPeerFiles.h>
+#include <openpeer/stack/IPeerFilePublic.h>
+#include <openpeer/stack/IPeerFilePrivate.h>
 
 #include <openpeer/services/IHelper.h>
 
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>
+
+namespace openpeer { namespace stack { namespace message { ZS_DECLARE_SUBSYSTEM(openpeer_stack_message) } } }
 
 namespace openpeer
 {
@@ -44,6 +55,7 @@ namespace openpeer
     namespace message
     {
       using services::IHelper;
+      using namespace stack::internal;
 
       namespace peer_finder
       {
@@ -60,15 +72,53 @@ namespace openpeer
 
         //---------------------------------------------------------------------
         SessionCreateResultPtr SessionCreateResult::create(
-                                                           ElementPtr root,
+                                                           ElementPtr rootEl,
                                                            IMessageSourcePtr messageSource
                                                            )
         {
           SessionCreateResultPtr ret(new SessionCreateResult);
-          IMessageHelper::fill(*ret, root, messageSource);
+          IMessageHelper::fill(*ret, rootEl, messageSource);
 
-          ret->mServerAgent = IMessageHelper::getElementTextAndDecode(root->findFirstChildElement("server"));
-          ret->mExpires = IHelper::stringToTime(IMessageHelper::getElementText(root->findFirstChildElement("expires")));
+          ElementPtr relayEl = rootEl->findFirstChildElement("relay");
+
+          LocationPtr messageLocation = ILocationForMessages::convert(messageSource);
+          if (!messageLocation) {
+            ZS_LOG_ERROR(Detail, "SessionCreateResult [] message source was not a known location")
+            return SessionCreateResultPtr();
+          }
+
+          AccountPtr account = messageLocation->forMessages().getAccount();
+          if (!account) {
+            ZS_LOG_ERROR(Detail, "SessionCreateResult [] account object is gone")
+            return SessionCreateResultPtr();
+          }
+
+          IPeerFilesPtr peerFiles = account->forMessages().getPeerFiles();
+          if (!peerFiles) {
+            ZS_LOG_ERROR(Detail, "SessionCreateResult [] peer files not found in account")
+            return SessionCreateResultPtr();
+          }
+
+          IPeerFilePrivatePtr peerFilePrivate = peerFiles->getPeerFilePrivate();
+          if (!peerFilePrivate) {
+            ZS_LOG_ERROR(Detail, "SessionCreateResult [] peer file private was null")
+            return SessionCreateResultPtr();
+          }
+
+          IPeerFilePublicPtr peerFilePublic = peerFiles->getPeerFilePublic();
+          if (!peerFilePublic) {
+            ZS_LOG_ERROR(Detail, "SessionCreateResult [] peer file public was null")
+            return SessionCreateResultPtr();
+          }
+
+          if (relayEl) {
+            ret->mRelayAccessToken = IMessageHelper::getElementTextAndDecode(relayEl->findFirstChildElement("accessToken"));
+            String accessSecretEncrypted = IMessageHelper::getElementTextAndDecode(relayEl->findFirstChildElement("accessSecretEncrypted"));
+            ret->mRelayAccessSecret = IHelper::convertToString(*peerFilePrivate->decrypt(*IHelper::convertFromBase64(accessSecretEncrypted)));
+          }
+
+          ret->mServerAgent = IMessageHelper::getElementTextAndDecode(rootEl->findFirstChildElement("server"));
+          ret->mExpires = IHelper::stringToTime(IMessageHelper::getElementText(rootEl->findFirstChildElement("expires")));
 
           return ret;
         }
@@ -78,8 +128,11 @@ namespace openpeer
         {
           switch (type)
           {
-            case AttributeType_Expires:   return (Time() != mExpires);
-            default:                      break;
+            case AttributeType_RelayAccessToken:    return mRelayAccessToken.hasData();
+            case AttributeType_RelayAccessSecret:   return mRelayAccessSecret.hasData();
+            case AttributeType_ServerAgent:         return mServerAgent.hasData();
+            case AttributeType_Expires:             return (Time() != mExpires);
+            default:                                break;
           }
           return MessageResult::hasAttribute((MessageResult::AttributeTypes)type);
         }

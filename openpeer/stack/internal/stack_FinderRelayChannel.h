@@ -54,10 +54,10 @@ namespace openpeer
       using services::IMessageLayerSecurityChannelDelegate;
       using services::IMessageLayerSecurityChannelDelegatePtr;
 
-      interaction IFinderRelayChannelForFinderConnectionMultiplexOutgoing
+      interaction IFinderRelayChannelForFinderConnection
       {
-        IFinderRelayChannelForFinderConnectionMultiplexOutgoing &forConnection() {return *this;}
-        const IFinderRelayChannelForFinderConnectionMultiplexOutgoing &forConnection() const {return *this;}
+        IFinderRelayChannelForFinderConnection &forConnection() {return *this;}
+        const IFinderRelayChannelForFinderConnection &forConnection() const {return *this;}
 
         static FinderRelayChannelPtr createIncoming(
                                                     IFinderRelayChannelDelegatePtr delegate, // can pass in IFinderRelayChannelDelegatePtr() if not interested in the events
@@ -80,7 +80,7 @@ namespace openpeer
       class FinderRelayChannel : public Noop,
                                  public zsLib::MessageQueueAssociator,
                                  public IFinderRelayChannel,
-                                 public IFinderRelayChannelForFinderConnectionMultiplexOutgoing,
+                                 public IFinderRelayChannelForFinderConnection,
                                  public IFinderConnectionRelayChannelDelegate,
                                  public IMessageLayerSecurityChannelDelegate
       {
@@ -93,6 +93,8 @@ namespace openpeer
         {
           IPAddress mFinderIP;
           String mLocalContextID;
+          String mRemoteContextID;
+          String mRelayDomain;
           String mRelayAccessToken;
           String mRelayAccessSecretProof;
           String mEncryptionPassphrase;
@@ -133,6 +135,8 @@ namespace openpeer
                                              ITransportStreamPtr sendStream,
                                              IPAddress remoteFinderIP,
                                              const char *localContextID,
+                                             const char *remoteContextID,
+                                             const char *relayDomain,
                                              const char *relayAccessToken,
                                              const char *relayAccessSecretProof,
                                              const char *encryptDataUsingEncodingPassphrase
@@ -165,7 +169,7 @@ namespace openpeer
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark FinderRelayChannel => IFinderRelayChannelForFinderConnectionMultiplexOutgoing
+        #pragma mark FinderRelayChannel => IFinderRelayChannelForFinderConnection
         #pragma mark
 
         static FinderRelayChannelPtr createIncoming(
@@ -214,7 +218,9 @@ namespace openpeer
         void setError(WORD errorCode, const char *inReason = NULL);
 
         void step();
-        
+        bool stepMLS();
+        bool stepConnectionRelayChannel();
+
       protected:
         //---------------------------------------------------------------------
         #pragma mark
@@ -241,6 +247,7 @@ namespace openpeer
 
         IMessageLayerSecurityChannelPtr mMLSChannel;
 
+        AutoBool mNotifiedNeedsContext;
         IPeerPtr mRemotePeer;
         IRSAPublicKeyPtr mRemotePublicKey;
 
@@ -270,6 +277,8 @@ namespace openpeer
                                               ITransportStreamPtr sendStream,
                                               IPAddress remoteFinderIP,
                                               const char *localContextID,
+                                              const char *remoteContextID,
+                                              const char *relayDomain,
                                               const char *relayAccessToken,
                                               const char *relayAccessSecretProof,
                                               const char *encryptDataUsingEncodingPassphrase

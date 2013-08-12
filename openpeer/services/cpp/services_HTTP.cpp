@@ -52,8 +52,6 @@ namespace openpeer
       typedef timeval TIMEVAL;
 #endif //_WIN32
 
-      using zsLib::Stringize;
-
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -192,7 +190,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String HTTP::log(const char *message)
       {
-        return String("HTTP [") + Stringize<PUID>(mID).string() + "] " + message;
+        return String("HTTP [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -244,7 +242,7 @@ namespace openpeer
         }
 
         if (0 != errorCode) {
-          ZS_LOG_ERROR(Basic, log("SocketMonitor: Could not wake up socket monitor. This will cause a delay in the socket monitor response time") + ", error=" + (Stringize<int>(errorCode).string()))
+          ZS_LOG_ERROR(Basic, log("SocketMonitor: Could not wake up socket monitor. This will cause a delay in the socket monitor response time") + ", error=" + (string(errorCode)))
         }
       }
 
@@ -475,7 +473,7 @@ namespace openpeer
             int maxfd = -1;
             CURLMcode result = curl_multi_fdset(mMultiCurl, &fdread, &fdwrite, &fdexcep, &maxfd);
             if (result != CURLM_OK) {
-              ZS_LOG_ERROR(Basic, log("failed multi-select") + ", result=" + Stringize<CURLMcode>(result).string() + ", error=" + curl_multi_strerror(result))
+              ZS_LOG_ERROR(Basic, log("failed multi-select") + ", result=" + string(result) + ", error=" + curl_multi_strerror(result))
               mShouldShutdown = true;
             }
 
@@ -879,10 +877,10 @@ namespace openpeer
           if ((mIsPost) &&
               (mPostData.size() > 0)) {
             ZS_LOG_BASIC(log("INFO") + ", content type=" + mMimeType)
-            ZS_LOG_BASIC(log("INFO") + ", posted length=" + Stringize<SecureByteBlock::size_type>(mPostData.size()-sizeof(char)).string()) // added extra NUL to buffer so must subtract to get proper length
+            ZS_LOG_BASIC(log("INFO") + ", posted length=" + string(mPostData.size()-sizeof(char))) // added extra NUL to buffer so must subtract to get proper length
           }
           if (Duration() != mTimeout) {
-            ZS_LOG_BASIC(log("INFO") + ", timeout (ms)=" + Stringize<Duration::tick_type>(mTimeout.total_milliseconds()).string())
+            ZS_LOG_BASIC(log("INFO") + ", timeout (ms)=" + string(mTimeout.total_milliseconds()))
           }
           ZS_LOG_BASIC("------------------------------------HTTP INFO----------------------------------")
           if (mIsPost) {
@@ -939,8 +937,8 @@ namespace openpeer
           bool successful = (((mResponseCode >= 200) && (mResponseCode < 400)) &&
                              (CURLE_OK == mResultCode));
           ZS_LOG_BASIC(log("INFO") + ", success=" + (successful ? "TRUE" : "FALSE"))
-          ZS_LOG_BASIC(log("INFO") + ", HTTP response code=" + Stringize<typeof(mResponseCode)>(mResponseCode).string())
-          ZS_LOG_BASIC(log("INFO") + ", CURL result code=" + Stringize<typeof(mResultCode)>(mResultCode).string())
+          ZS_LOG_BASIC(log("INFO") + ", HTTP response code=" + string(mResponseCode))
+          ZS_LOG_BASIC(log("INFO") + ", CURL result code=" + string(mResultCode))
           ZS_LOG_BASIC(log("----------------------------------HTTP COMPLETE--------------------------------"))
         }
         cleanupCurl();
@@ -957,7 +955,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String HTTP::HTTPQuery::log(const char *message) const
       {
-        return String("HTTPQuery [") + Stringize<PUID>(mID).string() + "] " + message;
+        return String("HTTPQuery [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------

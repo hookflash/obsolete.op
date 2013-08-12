@@ -49,7 +49,6 @@ namespace openpeer
   namespace services
   {
     using zsLib::DWORD;
-    using zsLib::Stringize;
     using zsLib::Timer;
 
     namespace internal
@@ -152,7 +151,7 @@ namespace openpeer
         int errorCode = 0;
         pThis->mSocket = boost::dynamic_pointer_cast<Socket>(socket->accept(pThis->mRemoteIP, &errorCode));
         if (!pThis->mSocket) {
-          ZS_LOG_ERROR(Detail, pThis->log("failed to accept socket") + ", error code=" + Stringize<typeof(errorCode)>(errorCode).string())
+          ZS_LOG_ERROR(Detail, pThis->log("failed to accept socket") + ", error code=" + string(errorCode))
           pThis->shutdown(Seconds(0));
         } else {
           pThis->mSocket->setOptionFlag(Socket::SetOptionFlag::NonBlocking, true);
@@ -193,7 +192,7 @@ namespace openpeer
         pThis->mSocket->connect(remoteIP, &wouldBlock, &errorCode);
         ZS_LOG_DEBUG(pThis->log("attempting to connect") + ", server IP=" + remoteIP.string())
         if (0 != errorCode) {
-          ZS_LOG_ERROR(Detail, pThis->log("failed to connect socket") + ", error code=" + Stringize<typeof(errorCode)>(errorCode).string())
+          ZS_LOG_ERROR(Detail, pThis->log("failed to connect socket") + ", error code=" + string(errorCode))
           pThis->shutdown(Seconds(0));
         }
         pThis->init();
@@ -335,7 +334,7 @@ namespace openpeer
           mReceivingQueue->Put(buffer.BytePtr(), bytesRead);
 
         } catch(ISocket::Exceptions::Unspecified &error) {
-          ZS_LOG_ERROR(Detail, log("receive error") + Stringize<ISocket::Exceptions::Unspecified::error_type>(error.getErrorCode()).string())
+          ZS_LOG_ERROR(Detail, log("receive error") + string(error.getErrorCode()))
           setError(IHTTP::HTTPStatusCode_Networkconnecttimeouterror, (String("network error: ") + error.getMessage()).c_str());
           cancel();
           return;
@@ -354,7 +353,7 @@ namespace openpeer
           }
 
           if (size < needingSize) {
-            ZS_LOG_TRACE(log("unsufficient receive data to continue processing") + ", available=" + Stringize<typeof(size)>(size).string())
+            ZS_LOG_TRACE(log("unsufficient receive data to continue processing") + ", available=" + string(size))
             break;
           }
 
@@ -372,7 +371,7 @@ namespace openpeer
           needingSize += bufferSize;
 
           if (size < needingSize) {
-            ZS_LOG_TRACE(log("unsufficient receive data to continue processing") + ", available=" + Stringize<typeof(size)>(size).string() + ", needing=" + Stringize<typeof(needingSize)>(needingSize).string())
+            ZS_LOG_TRACE(log("unsufficient receive data to continue processing") + ", available=" + string(size) + ", needing=" + string(needingSize))
             if (mFramesHaveChannelNumber) {
               // put back the buffered channel number
               mReceivingQueue->Unget((const BYTE *)(&bufferedChannel), sizeof(bufferedChannel));
@@ -381,7 +380,7 @@ namespace openpeer
           }
 
           if (bufferSize > mMaxMessageSizeInBytes) {
-            ZS_LOG_ERROR(Detail, log("read message size exceeds maximum buffer size") + ", message size=" + Stringize<typeof(bufferSize)>(bufferSize).string() + ", max size=" + Stringize<typeof(mMaxMessageSizeInBytes)>(mMaxMessageSizeInBytes).string())
+            ZS_LOG_ERROR(Detail, log("read message size exceeds maximum buffer size") + ", message size=" + string(bufferSize) + ", max size=" + string(mMaxMessageSizeInBytes))
             setError(IHTTP::HTTPStatusCode_PreconditionFailed, "read message size exceeds maximum buffer size allowed");
             cancel();
             return;
@@ -401,7 +400,7 @@ namespace openpeer
             channelHeader->mChannelID = channel;
           }
 
-          ZS_LOG_DEBUG(log("message read from network") + ", message size=" + Stringize<typeof(bufferSize)>(bufferSize).string() + ", channel=" + Stringize<typeof(channel)>(channel).string())
+          ZS_LOG_DEBUG(log("message read from network") + ", message size=" + string(bufferSize) + ", channel=" + string(channel))
           mReceiveStream->write(message, channelHeader);
         } while(true);
       }
@@ -479,7 +478,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String TCPMessaging::log(const char *message) const
       {
-        return String("TCPMessaging [" + mID.string() + "] " + message);
+        return String("TCPMessaging [" + string(mID) + "] " + message);
       }
 
       //-----------------------------------------------------------------------
@@ -487,17 +486,17 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("tcp messaging id", mID.string(), firstTime) +
+        return Helper::getDebugValue("tcp messaging id", string(mID), firstTime) +
                Helper::getDebugValue("graceful shutdown", mGracefulShutdownReference ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("subscriptions", mSubscriptions.size() > 0 ? Stringize<ITCPMessagingDelegateSubscriptions::size_type>(mSubscriptions.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("subscriptions", mSubscriptions.size() > 0 ? string(mSubscriptions.size()) : String(), firstTime) +
                Helper::getDebugValue("default subscription", mDefaultSubscription ? String("true") : String(), firstTime) +
                Helper::getDebugValue("state", ITCPMessaging::toString(mCurrentState), firstTime) +
-               Helper::getDebugValue("last error", 0 != mLastError ? Stringize<typeof(mLastError)>(mLastError).string() : String(), firstTime) +
+               Helper::getDebugValue("last error", 0 != mLastError ? string(mLastError) : String(), firstTime) +
                Helper::getDebugValue("last reason", mLastErrorReason, firstTime) +
                ", receive stream: " + ITransportStream::toDebugString(mReceiveStream->getStream(), false) +
                ", send stream: " + ITransportStream::toDebugString(mSendStream->getStream(), false) +
                Helper::getDebugValue("send stream subscription", mSendStreamSubscription ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("max size", Stringize<typeof(mMaxMessageSizeInBytes)>(mMaxMessageSizeInBytes).string(), firstTime) +
+               Helper::getDebugValue("max size", string(mMaxMessageSizeInBytes), firstTime) +
                Helper::getDebugValue("write ready", mTCPWriteReady ? String("true") : String(), firstTime) +
                Helper::getDebugValue("remote IP", mRemoteIP.string(), firstTime) +
                Helper::getDebugValue("socket", mSocket ? String("true") : String(), firstTime) +
@@ -532,14 +531,14 @@ namespace openpeer
         }
 
         if (0 != mLastError) {
-          ZS_LOG_WARNING(Detail, log("error already set thus ignoring new error") + ", new error=" + Stringize<typeof(errorCode)>(errorCode).string() + ", new reason=" + reason + getDebugValueString())
+          ZS_LOG_WARNING(Detail, log("error already set thus ignoring new error") + ", new error=" + string(errorCode) + ", new reason=" + reason + getDebugValueString())
           return;
         }
 
         get(mLastError) = errorCode;
         mLastErrorReason = reason;
 
-        ZS_LOG_WARNING(Detail, log("error set") + ", code=" + Stringize<typeof(mLastError)>(mLastError).string() + ", reason=" + mLastErrorReason + getDebugValueString())
+        ZS_LOG_WARNING(Detail, log("error set") + ", code=" + string(mLastError) + ", reason=" + mLastErrorReason + getDebugValueString())
       }
 
       //-----------------------------------------------------------------------
@@ -625,9 +624,9 @@ namespace openpeer
           StreamHeaderPtr header;
           SecureByteBlockPtr buffer = mSendStream->read(&header);
 
-          ZS_LOG_TRACE(log("attempting to send data over TCP") + ", message size=" + Stringize<typeof(SecureByteBlock::size_type)>(buffer->SizeInBytes()).string())
+          ZS_LOG_TRACE(log("attempting to send data over TCP") + ", message size=" + string(buffer->SizeInBytes()))
 
-          ChannelHeaderPtr channelHeader = boost::dynamic_pointer_cast<ChannelHeader>(header);
+          ChannelHeaderPtr channelHeader = ChannelHeader::convert(header);
 
           if (mFramesHaveChannelNumber) {
             if (!channelHeader) {
@@ -670,7 +669,7 @@ namespace openpeer
         mSendingQueue->Peek(buffer.BytePtr(), size);
 
         try {
-          ZS_LOG_TRACE(log("attempting to send data over TCP") + ", size=" + Stringize<typeof(size)>(size).string())
+          ZS_LOG_TRACE(log("attempting to send data over TCP") + ", size=" + string(size))
           bool wouldBlock = false;
           ULONG sent = mSocket->send(buffer.BytePtr(), size, &wouldBlock);
           outSent = sent;
@@ -678,14 +677,14 @@ namespace openpeer
             mSendingQueue->Skip(sent);
           }
 
-          ZS_LOG_TRACE(log("data sent over TCP") + ", size=" + Stringize<typeof(sent)>(sent).string())
+          ZS_LOG_TRACE(log("data sent over TCP") + ", size=" + string(sent))
 
           if (mSendingQueue->CurrentSize() > 0) {
             ZS_LOG_DEBUG(log("still more data in the sending queue to be sent, wait for next write ready..."))
             return false;
           }
         } catch (ISocket::Exceptions::Unspecified &error) {
-          ZS_LOG_ERROR(Detail, log("send error") + Stringize<ISocket::Exceptions::Unspecified::error_type>(error.getErrorCode()).string())
+          ZS_LOG_ERROR(Detail, log("send error") + string(error.getErrorCode()))
           setError(IHTTP::HTTPStatusCode_Networkconnecttimeouterror, (String("network error: ") + error.getMessage()).c_str());
           cancel();
           return false;
@@ -752,5 +751,19 @@ namespace openpeer
     {
       return internal::ITCPMessagingFactory::singleton().connect(delegate, receiveStream, sendStream, framesHaveChannelNumber, remoteIP, maxMessageSizeInBytes);
     }
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    #pragma mark
+    #pragma mark ITCPMessaging::ChannelHeader
+    #pragma mark
+
+    //-----------------------------------------------------------------------
+    ITCPMessaging::ChannelHeaderPtr ITCPMessaging::ChannelHeader::convert(ITransportStream::StreamHeaderPtr header)
+    {
+      return boost::dynamic_pointer_cast<ChannelHeader>(header);
+    }
+
   }
 }

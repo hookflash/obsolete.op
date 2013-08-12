@@ -35,20 +35,20 @@
 		0063BBE716CA9A2900E6DB4D /* core.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = core.h; sourceTree = "<group>"; };
 		0063BBE916CA9A2900E6DB4D /* core.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core.cpp; sourceTree = "<group>"; };
 		0063BBEA16CA9A2900E6DB4D /* core_Account.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_Account.cpp; sourceTree = "<group>"; };
-		0063BBEB16CA9A2900E6DB4D /* core_Call.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_Call.cpp; sourceTree = "<group>"; };
-		0063BBEC16CA9A2900E6DB4D /* core_CallTransport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_CallTransport.cpp; sourceTree = "<group>"; };
+		0063BBEB16CA9A2900E6DB4D /* core_Call.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = core_Call.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		0063BBEC16CA9A2900E6DB4D /* core_CallTransport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = core_CallTransport.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		0063BBED16CA9A2900E6DB4D /* core_Contact.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_Contact.cpp; sourceTree = "<group>"; };
-		0063BBEF16CA9A2900E6DB4D /* core_ConversationThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_ConversationThread.cpp; sourceTree = "<group>"; };
+		0063BBEF16CA9A2900E6DB4D /* core_ConversationThread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = core_ConversationThread.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		0063BBF016CA9A2900E6DB4D /* core_ConversationThreadDocumentFetcher.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_ConversationThreadDocumentFetcher.cpp; sourceTree = "<group>"; };
-		0063BBF116CA9A2900E6DB4D /* core_ConversationThreadHost.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_ConversationThreadHost.cpp; sourceTree = "<group>"; };
-		0063BBF216CA9A2900E6DB4D /* core_ConversationThreadSlave.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_ConversationThreadSlave.cpp; sourceTree = "<group>"; };
+		0063BBF116CA9A2900E6DB4D /* core_ConversationThreadHost.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = core_ConversationThreadHost.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		0063BBF216CA9A2900E6DB4D /* core_ConversationThreadSlave.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = core_ConversationThreadSlave.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		0063BBF316CA9A2900E6DB4D /* core_Factory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_Factory.cpp; sourceTree = "<group>"; };
 		0063BBF416CA9A2900E6DB4D /* core_Helper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_Helper.cpp; sourceTree = "<group>"; };
-		0063BBF516CA9A2900E6DB4D /* core_IConversationThreadParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_IConversationThreadParser.cpp; sourceTree = "<group>"; };
+		0063BBF516CA9A2900E6DB4D /* core_IConversationThreadParser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = core_IConversationThreadParser.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		0063BBF616CA9A2900E6DB4D /* core_Identity.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_Identity.cpp; sourceTree = "<group>"; };
 		0063BBF716CA9A2900E6DB4D /* core_IdentityLookup.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_IdentityLookup.cpp; sourceTree = "<group>"; };
 		0063BBF816CA9A2900E6DB4D /* core_Logger.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_Logger.cpp; sourceTree = "<group>"; };
-		0063BBF916CA9A2900E6DB4D /* core_MediaEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_MediaEngine.cpp; sourceTree = "<group>"; };
+		0063BBF916CA9A2900E6DB4D /* core_MediaEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = core_MediaEngine.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		0063BBFA16CA9A2900E6DB4D /* core_Stack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_Stack.cpp; sourceTree = "<group>"; };
 		0063BBFB16CA9A2900E6DB4D /* IAccount.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IAccount.h; sourceTree = "<group>"; };
 		0063BBFC16CA9A2900E6DB4D /* ICall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICall.h; sourceTree = "<group>"; };
@@ -306,19 +306,19 @@
 					../../../libs,
 					../../../libs/boost/staging/include,
 					../../../libs/zsLib,
-					"../../../hookflash-libs/webRTC",
-					"../../../hookflash-libs/webRTC/webrtc",
-					"../../../hookflash-libs/webRTC/webrtc/common_video/interface/",
-					"../../../hookflash-libs/webRTC/webrtc/common_video/vplib/main/interface",
-					"../../../hookflash-libs/webRTC/webrtc/modules/interface",
-					"../../../hookflash-libs/webRTC/webrtc/modules/video_capture/include",
-					"../../../hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/interface/",
-					"../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/source/iPhone",
-					"../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/interface",
-					"../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface",
-					"../../../hookflash-libs/webRTC/webrtc/video_engine/include",
-					"../../../hookflash-libs/webRTC/webrtc/video_engine/main/interface",
-					"../../../hookflash-libs/webRTC/webrtc/voice_engine/include",
+					../../../libs/webrtc,
+					../../../libs/webrtc/webrtc,
+					../../../libs/webrtc/webrtc/common_video/interface/,
+					../../../libs/webrtc/webrtc/common_video/vplib/main/interface,
+					../../../libs/webrtc/webrtc/modules/interface,
+					../../../libs/webrtc/webrtc/modules/video_capture/include,
+					../../../libs/webrtc/webrtc/modules/video_coding/codecs/interface/,
+					../../../libs/webrtc/webrtc/modules/video_render/main/source/iPhone,
+					../../../libs/webrtc/webrtc/modules/video_render/main/interface,
+					../../../libs/webrtc/webrtc/system_wrappers/interface,
+					../../../libs/webrtc/webrtc/video_engine/include,
+					../../../libs/webrtc/webrtc/video_engine/main/interface,
+					../../../libs/webrtc/webrtc/voice_engine/include,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				ONLY_ACTIVE_ARCH = YES;
@@ -355,19 +355,19 @@
 					../../../libs,
 					../../../libs/boost/staging/include,
 					../../../libs/zsLib,
-					"../../../hookflash-libs/webRTC",
-					"../../../hookflash-libs/webRTC/webrtc",
-					"../../../hookflash-libs/webRTC/webrtc/common_video/interface/",
-					"../../../hookflash-libs/webRTC/webrtc/common_video/vplib/main/interface",
-					"../../../hookflash-libs/webRTC/webrtc/modules/interface",
-					"../../../hookflash-libs/webRTC/webrtc/modules/video_capture/include",
-					"../../../hookflash-libs/webRTC/webrtc/modules/video_coding/codecs/interface/",
-					"../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/source/iPhone",
-					"../../../hookflash-libs/webRTC/webrtc/modules/video_render/main/interface",
-					"../../../hookflash-libs/webRTC/webrtc/system_wrappers/interface",
-					"../../../hookflash-libs/webRTC/webrtc/video_engine/include",
-					"../../../hookflash-libs/webRTC/webrtc/video_engine/main/interface",
-					"../../../hookflash-libs/webRTC/webrtc/voice_engine/include",
+					../../../libs/webrtc,
+					../../../libs/webrtc/webrtc,
+					../../../libs/webrtc/webrtc/common_video/interface/,
+					../../../libs/webrtc/webrtc/common_video/vplib/main/interface,
+					../../../libs/webrtc/webrtc/modules/interface,
+					../../../libs/webrtc/webrtc/modules/video_capture/include,
+					../../../libs/webrtc/webrtc/modules/video_coding/codecs/interface/,
+					../../../libs/webrtc/webrtc/modules/video_render/main/source/iPhone,
+					../../../libs/webrtc/webrtc/modules/video_render/main/interface,
+					../../../libs/webrtc/webrtc/system_wrappers/interface,
+					../../../libs/webrtc/webrtc/video_engine/include,
+					../../../libs/webrtc/webrtc/video_engine/main/interface,
+					../../../libs/webrtc/webrtc/voice_engine/include,
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.8;
 				SDKROOT = macosx;

@@ -32,6 +32,7 @@
 #include <openpeer/core/internal/core_Identity.h>
 #include <openpeer/core/internal/core_Stack.h>
 #include <openpeer/core/internal/core_Account.h>
+#include <openpeer/core/internal/core_Helper.h>
 
 #include <openpeer/stack/IBootstrappedNetwork.h>
 #include <openpeer/stack/IHelper.h>
@@ -48,11 +49,10 @@ namespace openpeer
   namespace core
   {
     using stack::IServiceIdentitySession;
+    using stack::message::IdentityInfo;
 
     namespace internal
     {
-      using zsLib::Stringize;
-
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -319,6 +319,15 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      void Identity::getIdentityContact(IdentityContact &outIdentityContact) const
+      {
+        IdentityInfo identityInfo;
+        mSession->getIdentityInfo(identityInfo);
+
+        Helper::convert(identityInfo, outIdentityContact);
+      }
+
+      //-----------------------------------------------------------------------
       String Identity::getInnerBrowserWindowFrameURL() const
       {
         return mSession->getInnerBrowserWindowFrameURL();
@@ -513,7 +522,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String Identity::log(const char *message) const
       {
-        return String("core::Identity [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("core::Identity [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------

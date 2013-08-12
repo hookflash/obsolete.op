@@ -71,8 +71,6 @@ namespace openpeer
       {
         RUDPMessagingShutdownReason_None                        = IRUDPChannel::RUDPChannelShutdownReason_None,
 
-        RUDPMessagingShutdownReason_Closed                      = IRUDPChannel::RUDPChannelShutdownReason_Closed,
-
         RUDPMessagingShutdownReason_OpenFailure                 = IRUDPChannel::RUDPChannelShutdownReason_OpenFailure,
         RUDPMessagingShutdownReason_DelegateGone                = IRUDPChannel::RUDPChannelShutdownReason_DelegateGone,
         RUDPMessagingShutdownReason_Timeout                     = IRUDPChannel::RUDPChannelShutdownReason_Timeout,
@@ -80,6 +78,10 @@ namespace openpeer
       };
 
       static const char *toString(RUDPMessagingShutdownReasons reason);
+
+      //-----------------------------------------------------------------------
+      // PURPOSE: returns a debug string containing internal object state
+      static String toDebugString(IRUDPMessagingPtr messaging, bool includeCommaPrefix = true);
 
       //-----------------------------------------------------------------------
       // PURPOSE: Creates a messaging object from an RUDP listener by accepting
@@ -122,9 +124,10 @@ namespace openpeer
 
       //-----------------------------------------------------------------------
       // PURPOSE: Get the current state of the messaging
-      virtual RUDPMessagingStates getState() const = 0;
-
-      virtual RUDPMessagingShutdownReasons getShutdownReason() const = 0;
+      virtual RUDPMessagingStates getState(
+                                           WORD *outLastErrorCode = NULL,
+                                           String *outLastErrorReason = NULL
+                                           ) const = 0;
 
       //-----------------------------------------------------------------------
       // PURPOSE: This closes the session gracefully.

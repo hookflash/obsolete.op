@@ -1,327 +1,0 @@
-Tturbojpeg
-v5
-r1
-cCheck dependencies
-cCompileC build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/jdatadst-tj.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jdatadst-tj.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/jdatasrc-tj.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jdatasrc-tj.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/transupp.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/transupp.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/turbojpeg.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/turbojpeg.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/jdatadst-tj.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jdatadst-tj.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/jdatasrc-tj.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jdatasrc-tj.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler
-cLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/libturbojpeg.a normal armv7
-cCompileC build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/transupp.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/transupp.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler
-cCompileC build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/turbojpeg.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/turbojpeg.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler
-cLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/libturbojpeg.a normal armv7s
-cCreateUniversalBinary /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/Debug-iphoneos/libturbojpeg.a normal "armv7 armv7s"
-cPhaseScriptExecution "Run Script" /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Script-427BF7451645DAF900BC3809.sh
-
-N/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk
-c0000000050ED385D0000000000000110
-t1357723741
-s272
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/Debug-iphoneos/libjpeg.a
-c0000000051681A8A000000000024FB58
-t1365777034
-s2423640
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/Debug-iphoneos/libsimd-arm.a
-c0000000051681C4D000000000001B260
-t1365777485
-s111200
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/Debug-iphoneos/libturbojpeg.a
-t1365777526
-s2814392
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/jdatadst-tj.o
-t1365777522
-s16428
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/jdatasrc-tj.o
-t1365777522
-s16952
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/libturbojpeg.a
-t1365777523
-s1406376
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/transupp.o
-t1365777523
-s44508
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/turbojpeg.LinkFileList
-c0000000051681C4F00000000000002C3
-t1365777487
-s707
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/turbojpeg.o
-t1365777523
-s60972
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/jdatadst-tj.o
-t1365777523
-s16428
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/jdatasrc-tj.o
-t1365777523
-s16952
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/libturbojpeg.a
-t1365777525
-s1407968
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/transupp.o
-t1365777524
-s44532
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/turbojpeg.LinkFileList
-c0000000051681C4F00000000000002C7
-t1365777487
-s711
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/turbojpeg.o
-t1365777524
-s60788
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Script-427BF7451645DAF900BC3809.sh
-c0000000051681C4F000000000000006D
-t1365777487
-s109
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/lib/libturbojpeg-arm.a
-t1365778071
-s2814392
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libjpeg/jerror.h
-c00000000516818FC000000000000399C
-t1365776636
-s14748
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libjpeg/jpegcomp.h
-c00000000516818FC000000000000041E
-t1365776636
-s1054
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libjpeg/jpegint.h
-c00000000516818FC0000000000003EDA
-t1365776636
-s16090
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/./tjutil.h
-c00000000516818FC000000000000079C
-t1365776636
-s1948
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/./turbojpeg.h
-c00000000516818FC0000000000008ED5
-t1365776636
-s36565
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jconfig.h
-c00000000516818FC0000000000000676
-t1365776636
-s1654
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jdatadst-tj.c
-c00000000516818FC0000000000001811
-t1365776636
-s6161
-i"jinclude.h"
-i"jpeglib.h"
-i"jerror.h"
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jdatasrc-tj.c
-c00000000516818FC0000000000001974
-t1365776636
-s6516
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jinclude.h
-c00000000516818FC0000000000000CB2
-t1365776636
-s3250
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jmorecfg.h
-c00000000516818FC00000000000035CE
-t1365776636
-s13774
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jpeglib.h
-c00000000516818FC000000000000C41F
-t1365776636
-s50207
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/transupp.c
-c00000000516818FC000000000000E169
-t1365776636
-s57705
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/transupp.h
-c00000000516818FC0000000000002564
-t1365776636
-s9572
-
-N/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/turbojpeg.c
-c00000000516818FC0000000000009231
-t1365776636
-s37425
-
-CBuild AST from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jdatadst-tj.c
-r0
-
-CBuild AST from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jdatasrc-tj.c
-r0
-
-CBuild AST from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/transupp.c
-r0
-
-CBuild AST from /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/turbojpeg.c
-r0
-
-CCheck dependencies
-r0
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection18"Check dependenciese525f7ce6718b741^41bc06cf6718b741^---0#1#0#--18"Check dependencies36"B963A629-C9DF-4758-A4D6-33CFE4FF6C55-
-
-CCompileC build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/jdatadst-tj.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jdatadst-tj.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-s387470322.344808
-e387470322.597825
-r1
-xCompileC
-xbuild/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/jdatadst-tj.o
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jdatadst-tj.c
-xnormal
-xarmv7
-xc
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection116"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jdatadst-tj.cd09958f25318b741^382c99f25318b741^---0#0#0#-19%DVTDocumentLocation2@124"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jdatadst-tj.c0000000000000000^3506"CompileC build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/jdatadst-tj.o libturbojpeg/jdatadst-tj.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=gnu99 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wempty-body -Wuninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -funroll-loops -fstrict-aliasing -Wdeprecated-declarations -g -Wno-sign-conversion -miphoneos-version-min=6.0 -iquote /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-generated-files.hmap -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-own-target-headers.hmap -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-all-target-headers.hmap -iquote /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-project-headers.hmap -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/Debug-iphoneos/include -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libjpeg -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/DerivedSources -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/jdatadst-tj.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/jdatadst-tj.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jdatadst-tj.c -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/jdatadst-tj.o36"218B22EB-DF2A-4D7E-8D23-9916489F7A93-
-
-CCompileC build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/jdatasrc-tj.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jdatasrc-tj.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-s387470322.450710
-e387470322.611093
-r1
-xCompileC
-xbuild/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/jdatasrc-tj.o
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jdatasrc-tj.c
-xnormal
-xarmv7
-xc
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection116"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jdatasrc-tj.c03b273f25318b741^ad8a9cf25318b741^---0#0#0#-19%DVTDocumentLocation2@124"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jdatasrc-tj.c0000000000000000^3506"CompileC build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/jdatasrc-tj.o libturbojpeg/jdatasrc-tj.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=gnu99 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wempty-body -Wuninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -funroll-loops -fstrict-aliasing -Wdeprecated-declarations -g -Wno-sign-conversion -miphoneos-version-min=6.0 -iquote /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-generated-files.hmap -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-own-target-headers.hmap -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-all-target-headers.hmap -iquote /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-project-headers.hmap -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/Debug-iphoneos/include -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libjpeg -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/DerivedSources -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/jdatasrc-tj.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/jdatasrc-tj.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jdatasrc-tj.c -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/jdatasrc-tj.o36"507D95A4-E9B7-4BCA-B434-2332409F7E79-
-
-CCompileC build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/transupp.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/transupp.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-s387470322.628771
-e387470323.111287
-r1
-xCompileC
-xbuild/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/transupp.o
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/transupp.c
-xnormal
-xarmv7
-xc
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection113"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/transupp.c7c43a1f25318b741^cba11df35318b741^---0#0#0#-19%DVTDocumentLocation2@121"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/transupp.c0000000000000000^3488"CompileC build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/transupp.o libturbojpeg/transupp.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=gnu99 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wempty-body -Wuninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -funroll-loops -fstrict-aliasing -Wdeprecated-declarations -g -Wno-sign-conversion -miphoneos-version-min=6.0 -iquote /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-generated-files.hmap -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-own-target-headers.hmap -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-all-target-headers.hmap -iquote /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-project-headers.hmap -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/Debug-iphoneos/include -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libjpeg -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/DerivedSources -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/transupp.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/transupp.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/transupp.c -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/transupp.o36"23F6F792-E351-4DF5-98A5-7622A5F190F3-
-
-CCompileC build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/turbojpeg.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/turbojpeg.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler
-s387470323.149090
-e387470323.635396
-r1
-xCompileC
-xbuild/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/turbojpeg.o
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/turbojpeg.c
-xnormal
-xarmv7
-xc
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection114"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/turbojpeg.c252131f35318b741^3a1faaf35318b741^---0#0#0#-19%DVTDocumentLocation2@122"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/turbojpeg.c0000000000000000^3494"CompileC build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/turbojpeg.o libturbojpeg/turbojpeg.c normal armv7 c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7 -fmessage-length=0 -std=gnu99 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wempty-body -Wuninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -funroll-loops -fstrict-aliasing -Wdeprecated-declarations -g -Wno-sign-conversion -miphoneos-version-min=6.0 -iquote /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-generated-files.hmap -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-own-target-headers.hmap -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-all-target-headers.hmap -iquote /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-project-headers.hmap -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/Debug-iphoneos/include -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libjpeg -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/DerivedSources/armv7 -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/DerivedSources -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/turbojpeg.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/turbojpeg.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/turbojpeg.c -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/turbojpeg.o36"A7C6AD83-45D7-4607-B50D-43C89CE4395A-
-
-CCompileC build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/jdatadst-tj.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jdatadst-tj.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler
-s387470323.472680
-e387470323.618761
-r1
-xCompileC
-xbuild/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/jdatadst-tj.o
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jdatadst-tj.c
-xnormal
-xarmv7s
-xc
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection116"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jdatadst-tj.cd55979f35318b741^dd44a9f35318b741^---0#0#0#-19%DVTDocumentLocation2@124"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jdatadst-tj.c0000000000000000^3513"CompileC build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/jdatadst-tj.o libturbojpeg/jdatadst-tj.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7s -fmessage-length=0 -std=gnu99 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wempty-body -Wuninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -funroll-loops -fstrict-aliasing -Wdeprecated-declarations -g -Wno-sign-conversion -miphoneos-version-min=6.0 -iquote /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-generated-files.hmap -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-own-target-headers.hmap -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-all-target-headers.hmap -iquote /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-project-headers.hmap -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/Debug-iphoneos/include -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libjpeg -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/DerivedSources/armv7s -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/DerivedSources -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/jdatadst-tj.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/jdatadst-tj.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jdatadst-tj.c -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/jdatadst-tj.o36"06B1C98B-F087-45D8-8457-048EF38A800F-
-
-CCompileC build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/jdatasrc-tj.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jdatasrc-tj.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler
-s387470323.640261
-e387470323.750187
-r1
-xCompileC
-xbuild/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/jdatasrc-tj.o
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jdatasrc-tj.c
-xnormal
-xarmv7s
-xc
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection116"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jdatasrc-tj.ca855a4f35318b741^9db83cf45318b741^---0#0#0#-19%DVTDocumentLocation2@124"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jdatasrc-tj.c0000000000000000^3513"CompileC build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/jdatasrc-tj.o libturbojpeg/jdatasrc-tj.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7s -fmessage-length=0 -std=gnu99 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wempty-body -Wuninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -funroll-loops -fstrict-aliasing -Wdeprecated-declarations -g -Wno-sign-conversion -miphoneos-version-min=6.0 -iquote /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-generated-files.hmap -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-own-target-headers.hmap -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-all-target-headers.hmap -iquote /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-project-headers.hmap -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/Debug-iphoneos/include -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libjpeg -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/DerivedSources/armv7s -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/DerivedSources -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/jdatasrc-tj.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/jdatasrc-tj.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/jdatasrc-tj.c -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/jdatasrc-tj.o36"33E88235-0369-4653-8E63-9847F7E28870-
-
-CCompileC build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/transupp.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/transupp.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler
-s387470323.880052
-e387470324.310508
-r1
-xCompileC
-xbuild/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/transupp.o
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/transupp.c
-xnormal
-xarmv7s
-xc
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection113"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/transupp.c51a2e1f35318b741^12be4ff45318b741^---0#0#0#-19%DVTDocumentLocation2@121"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/transupp.c0000000000000000^3495"CompileC build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/transupp.o libturbojpeg/transupp.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7s -fmessage-length=0 -std=gnu99 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wempty-body -Wuninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -funroll-loops -fstrict-aliasing -Wdeprecated-declarations -g -Wno-sign-conversion -miphoneos-version-min=6.0 -iquote /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-generated-files.hmap -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-own-target-headers.hmap -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-all-target-headers.hmap -iquote /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-project-headers.hmap -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/Debug-iphoneos/include -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libjpeg -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/DerivedSources/armv7s -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/DerivedSources -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/transupp.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/transupp.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/transupp.c -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/transupp.o36"F601CC70-E4C4-4833-B7F8-5DB83CC587FF-
-
-CCompileC build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/turbojpeg.o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/turbojpeg.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler
-s387470323.972263
-e387470324.508630
-r1
-xCompileC
-xbuild/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/turbojpeg.o
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/turbojpeg.c
-xnormal
-xarmv7s
-xc
-xcom.apple.compilers.llvm.clang.1_0.compiler
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection114"Compile /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/turbojpeg.cf33bf9f35318b741^855e8bf45318b741^---0#0#0#-19%DVTDocumentLocation2@122"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/turbojpeg.c0000000000000000^3501"CompileC build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/turbojpeg.o libturbojpeg/turbojpeg.c normal armv7s c com.apple.compilers.llvm.clang.1_0.compiler    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios    setenv LANG en_US.US-ASCII    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang -x c -arch armv7s -fmessage-length=0 -std=gnu99 -Wno-trigraphs -fpascal-strings -O0 -Wno-missing-field-initializers -Wno-missing-prototypes -Wreturn-type -Wformat -Wno-missing-braces -Wparentheses -Wswitch -Wno-unused-function -Wno-unused-label -Wno-unused-parameter -Wunused-variable -Wunused-value -Wempty-body -Wuninitialized -Wno-unknown-pragmas -Wno-shadow -Wno-four-char-constants -Wno-conversion -Wno-constant-conversion -Wno-int-conversion -Wno-enum-conversion -Wno-shorten-64-to-32 -Wpointer-sign -Wno-newline-eof -DDEBUG=1 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -funroll-loops -fstrict-aliasing -Wdeprecated-declarations -g -Wno-sign-conversion -miphoneos-version-min=6.0 -iquote /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-generated-files.hmap -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-own-target-headers.hmap -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-all-target-headers.hmap -iquote /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/turbojpeg-project-headers.hmap -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/Debug-iphoneos/include -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libjpeg -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/DerivedSources/armv7s -I/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/DerivedSources -F/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/Debug-iphoneos -MMD -MT dependencies -MF /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/turbojpeg.d --serialize-diagnostics /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/turbojpeg.dia -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/libturbojpeg/turbojpeg.c -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/turbojpeg.o36"80199016-2F2C-4444-AAE6-7F403B7E494B-
-
-CCreateUniversalBinary /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/Debug-iphoneos/libturbojpeg.a normal "armv7 armv7s"
-s387470326.096504
-e387470326.570131
-r1
-xCreateUniversalBinary
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/Debug-iphoneos/libturbojpeg.a
-xnormal
-xarmv7 armv7s
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection141"Create universal binary /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/Debug-iphoneos/libturbojpeg.a29ea18f65318b741^005796f65318b741^---0#0#0#-19%DVTDocumentLocation2@133"file://localhost/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/Debug-iphoneos/libturbojpeg.a000000000080d041^857"CreateUniversalBinary build/Debug-iphoneos/libturbojpeg.a normal "armv7 armv7s"    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    libtool -static /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/libturbojpeg.a /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/libturbojpeg.a -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/Debug-iphoneos/libturbojpeg.a36"920B4D5B-6719-423C-9770-2D95AFA0A89E-
-
-CLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/libturbojpeg.a normal armv7
-s387470323.751937
-e387470323.964186
-r1
-xLibtool
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/libturbojpeg.a
-xnormal
-xarmv7
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection117"Libtool build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/libturbojpeg.a normal armv712c1c0f35318b741^7ac43cf45318b741^---0#0#0#--1177"Libtool build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/libturbojpeg.a normal armv7    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios    setenv IPHONEOS_DEPLOYMENT_TARGET 6.0    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only armv7 -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -L/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/Debug-iphoneos -filelist /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/turbojpeg.LinkFileList -ljpeg -lsimd-arm -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7/libturbojpeg.a36"56558AD9-6F34-4ADF-8877-122A1B49FB1B-
-
-CLibtool /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/libturbojpeg.a normal armv7s
-s387470325.574593
-e387470325.761414
-r1
-xLibtool
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/libturbojpeg.a
-xnormal
-xarmv7s
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection119"Libtool build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/libturbojpeg.a normal armv7sb95396f55318b741^5706d5f55318b741^---0#0#0#--1182"Libtool build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/libturbojpeg.a normal armv7s    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios    setenv IPHONEOS_DEPLOYMENT_TARGET 6.0    setenv PATH "/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/usr/bin:/Applications/Xcode.app/Contents/Developer/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin"    /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/libtool -static -arch_only armv7s -syslibroot /Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk -L/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/Debug-iphoneos -filelist /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/turbojpeg.LinkFileList -ljpeg -lsimd-arm -o /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Objects-normal/armv7s/libturbojpeg.a36"64AB104F-97DE-4E30-9B35-8C44FAF1BE84-
-
-CPhaseScriptExecution "Run Script" /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Script-427BF7451645DAF900BC3809.sh
-s387470329.845513
-e387470330.012071
-r1
-xPhaseScriptExecution
-xRun Script
-x/Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Script-427BF7451645DAF900BC3809.sh
-lSLF05#21%IDEActivityLogSection1@2#32"com.apple.dt.IDE.BuildLogSection36"Run custom shell script 'Run Script'b1f8d9f95318b741^8ca051fa5318b741^---0#0#0#--412"PhaseScriptExecution "Run Script" build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Script-427BF7451645DAF900BC3809.sh    cd /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios    /bin/sh -c /Users/johnny/Documents/IDG/op/hookflash-libs/webRTC/third_party/libturbojpeg-ios/build/libjpeg-turbo-ios.build/Debug-iphoneos/turbojpeg.build/Script-427BF7451645DAF900BC3809.sh36"7ED37B4F-EC1C-4557-94E2-1B548BD945E1-
-

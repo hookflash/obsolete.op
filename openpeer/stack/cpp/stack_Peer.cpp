@@ -50,8 +50,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
-
       typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
 
       //-----------------------------------------------------------------------
@@ -471,7 +469,7 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("peer id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("peer id", string(mID), firstTime) +
                Helper::getDebugValue("peer uri", getPeerURI(), firstTime) +
                Helper::getDebugValue("peer file public", mPeerFilePublic ? String("true") : String(), firstTime);
       }
@@ -495,7 +493,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String Peer::log(const char *message) const
       {
-        return String("Peer [" + Stringize<typeof(mID)>(mID).string() + "] " + message);
+        return String("Peer [" + string(mID) + "] " + message);
       }
     }
 

@@ -46,7 +46,6 @@ namespace openpeer
 {
   namespace services
   {
-    using zsLib::Stringize;
     using CryptoPP::AutoSeededRandomPool;
 
     typedef std::list<String> StringList;
@@ -624,7 +623,7 @@ namespace openpeer
             }
             mA = data;
           } else {
-            ZS_LOG_DEBUG("DNS A record lookup failed.")
+            ZS_LOG_DEBUG(String("DNS A record lookup failed") + ", name=" + mName)
           }
           try {
             mDelegate->onLookupCompleted(mThis.lock());
@@ -697,7 +696,7 @@ namespace openpeer
             }
             mAAAA = data;
           } else {
-            ZS_LOG_DEBUG("DNS AAAA record lookup failed")
+            ZS_LOG_DEBUG(String("DNS AAAA record lookup failed") + ", name=" + mName)
           }
 
           try {
@@ -790,14 +789,14 @@ namespace openpeer
               srvRecord.mPort = srv.port;
               srvRecord.mName = srv.name;
 
-              ZS_LOG_DEBUG(String("DNS SRV record found: name=") + srvRecord.mName + ", port=" + Stringize<typeof(srvRecord.mPort)>(srvRecord.mPort).string() + ", priority=" + Stringize<typeof(srvRecord.mPriority)>(srvRecord.mPriority).string() + ", weight=" + Stringize<typeof(srvRecord.mWeight)>(srvRecord.mWeight).string())
+              ZS_LOG_DEBUG(String("DNS SRV record found: name=") + srvRecord.mName + ", port=" + string(srvRecord.mPort) + ", priority=" + string(srvRecord.mPriority) + ", weight=" + string(srvRecord.mWeight))
 
               data->mRecords.push_back(srvRecord);
             }
             sortSRV(data);
             mSRV = data;
           } else {
-            ZS_LOG_DEBUG("DNS SRV record lookup failed")
+            ZS_LOG_DEBUG(String("DNS SRV record lookup failed") + ", name=" + mName + ", service=" + mService + ", protocol=" + mProtocol)
           }
 
           try {
@@ -1234,7 +1233,7 @@ namespace openpeer
 
             fixDefaultPort(srvRecord, mDefaultPort);
 
-            ZS_LOG_DEBUG(String("DNS A/AAAAA converting to SRV record: name=") + srvRecord.mName + ", port=" + Stringize<typeof(srvRecord.mPort)>(srvRecord.mPort).string() + ", priority=" + Stringize<typeof(srvRecord.mPriority)>(srvRecord.mPriority).string() + ", weight=" + Stringize<typeof(srvRecord.mWeight)>(srvRecord.mWeight).string())
+            ZS_LOG_DEBUG(String("DNS A/AAAAA converting to SRV record: name=") + srvRecord.mName + ", port=" + string(srvRecord.mPort) + ", priority=" + string(srvRecord.mPriority) + ", weight=" + string(srvRecord.mWeight))
 
             data->mRecords.push_back(srvRecord);
             mSRVResult = data;
@@ -1521,7 +1520,7 @@ namespace openpeer
           for (DNSQueryList::iterator iter = mQueries.begin(); iter != mQueries.end(); ++iter)
           {
             IDNSQueryPtr &query = (*iter);
-            ZS_LOG_DEBUG(log("cancelling DNS query") + ", query ID=" + Stringize<PUID>(query->getID()).string())
+            ZS_LOG_DEBUG(log("cancelling DNS query") + ", query ID=" + string(query->getID()))
             query->cancel();
           }
           mDelegate.reset();
@@ -1572,10 +1571,10 @@ namespace openpeer
         virtual void onLookupCompleted(IDNSQueryPtr inQuery)
         {
           AutoRecursiveLock lock(mLock);
-          ZS_LOG_DEBUG(log("query completed") + ", query ID=" + Stringize<PUID>(inQuery->getID()).string())
+          ZS_LOG_DEBUG(log("query completed") + ", query ID=" + string(inQuery->getID()))
 
           if (!mDelegate) {
-            ZS_LOG_WARNING(Detail, log("query result came in after delegate was gone") + ", query ID=" + Stringize<PUID>(inQuery->getID()).string())
+            ZS_LOG_WARNING(Detail, log("query result came in after delegate was gone") + ", query ID=" + string(inQuery->getID()))
             return;
           }
 
@@ -1612,7 +1611,7 @@ namespace openpeer
           }
 
           if (mQueries.size() > 0) {
-            ZS_LOG_DEBUG(log("waiting for more queries to complete") + ", waiting total=" + Stringize<size_t>(mQueries.size()).string())
+            ZS_LOG_DEBUG(log("waiting for more queries to complete") + ", waiting total=" + string(mQueries.size()))
             return;
           }
 
@@ -1641,7 +1640,7 @@ namespace openpeer
         //---------------------------------------------------------------------
         String log(const char *message) const
         {
-          return String("DNSListQuery [") + Stringize<PUID>(mID).string() + "] " + message;
+          return String("DNSListQuery [") + string(mID) + "] " + message;
         }
 
       private:
@@ -1873,7 +1872,7 @@ namespace openpeer
           return temp;
         }
 
-        ZS_LOG_DEBUG(String("DNS SRV lookup: name=") + name + ", service=" + service + ", protocol=" + protocol + ", default port=" + Stringize<WORD>(defaultPort).string() + ", type=" + Stringize<int>((int)lookupType).string())
+        ZS_LOG_DEBUG(String("DNS SRV lookup: name=") + name + ", service=" + service + ", protocol=" + protocol + ", default port=" + string(defaultPort) + ", type=" + string((int)lookupType))
         
         StringList dnsList;
         if (internal::isDNSsList(name, dnsList)) {

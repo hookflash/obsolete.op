@@ -58,6 +58,7 @@ namespace openpeer
       {
       public:
         friend interaction IRUDPMessagingFactory;
+        friend interaction IRUDPMessaging;
         
         typedef IRUDPMessaging::MessageBuffer MessageBuffer;
         typedef boost::shared_array<BYTE> RecycledPacketBuffer;
@@ -77,11 +78,15 @@ namespace openpeer
       public:
         ~RUDPMessaging();
 
+        static RUDPMessagingPtr convert(IRUDPMessagingPtr socket);
+
       protected:
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark RUDPMessaging => IRUDPMessaging
         #pragma mark
+
+        static String toDebugString(IRUDPMessagingPtr messaging, bool includeCommaPrefix = true);
 
         static RUDPMessagingPtr acceptChannel(
                                               IMessageQueuePtr queue,
@@ -107,8 +112,10 @@ namespace openpeer
 
         virtual PUID getID() const {return mID;}
 
-        virtual RUDPMessagingStates getState() const;
-        virtual RUDPMessagingShutdownReasons getShutdownReason() const;
+        virtual RUDPMessagingStates getState(
+                                             WORD *outLastErrorCode = NULL,
+                                             String *outLastErrorReason = NULL
+                                             ) const;
 
         virtual void shutdown();
 
@@ -155,9 +162,11 @@ namespace openpeer
 
         String log(const char *message) const;
 
+        virtual String getDebugValueString(bool includeCommaPrefix = true) const;
+
         void cancel();
         void setState(RUDPMessagingStates state);
-        void setShutdownReason(RUDPMessagingShutdownReasons reason);
+        void setError(WORD errorCode, const char *inReason = NULL);
 
         IRUDPChannelPtr getChannel() const;
 
@@ -188,22 +197,23 @@ namespace openpeer
         #pragma mark RUDPMessaging => (data)
         #pragma mark
 
+        AutoPUID mID;
         mutable RecursiveLock mLock;
         RUDPMessagingWeakPtr mThisWeak;
-        PUID mID;
 
         RUDPMessagingStates mCurrentState;
-        RUDPMessagingShutdownReasons mShutdownReason;
+        AutoWORD mLastError;
+        String mLastErrorReason;
 
         IRUDPMessagingDelegatePtr mDelegate;
-        bool mInformedReadReady;
-        bool mInformedWriteReady;
+        AutoBool mInformedReadReady;
+        AutoBool mInformedWriteReady;
 
         RUDPMessagingPtr mGracefulShutdownReference;
 
         IRUDPChannelPtr mChannel;
 
-        DWORD mNextMessageSizeInBytes;
+        AutoDWORD mNextMessageSizeInBytes;
 
         ULONG mMaxMessageSizeInBytes;
 

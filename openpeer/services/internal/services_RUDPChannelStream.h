@@ -115,12 +115,16 @@ namespace openpeer
       public:
         ~RUDPChannelStream();
 
+        static RUDPChannelStreamPtr convert(IRUDPChannelStreamPtr socket);
+
       protected:
 
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark RUDPChannelStream => IRUDPChannelStream
         #pragma mark
+
+        static String toDebugString(IRUDPChannelStreamPtr stream, bool includeCommaPrefix = true);
 
         static RUDPChannelStreamPtr create(
                                            IMessageQueuePtr queue,
@@ -134,8 +138,10 @@ namespace openpeer
 
         virtual PUID getID() const {return mID;}
 
-        virtual RUDPChannelStreamStates getState() const;
-        virtual RUDPChannelStreamShutdownReasons getShutdownReason() const;
+        virtual RUDPChannelStreamStates getState(
+                                                 WORD *outLastErrorCode = NULL,
+                                                 String *outLastErrorReason = NULL
+                                                 ) const;
 
         virtual void shutdown(bool shutdownOnlyOnceAllDataSent = false);
 
@@ -222,9 +228,11 @@ namespace openpeer
         bool isShuttingDown() {return RUDPChannelStreamState_ShuttingDown == mCurrentState;}
         bool isShutdown() {return RUDPChannelStreamState_Shutdown == mCurrentState;}
 
+        virtual String getDebugValueString(bool includeCommaPrefix = true) const;
+
         void cancel();
         void setState(RUDPChannelStreamStates state);
-        void setShutdownReason(RUDPChannelStreamShutdownReasons reason);
+        void setError(WORD errorCode, const char *inReason = NULL);
 
         bool sendNowHelper(
                            IRUDPChannelStreamDelegatePtr &delegate,
@@ -334,18 +342,19 @@ namespace openpeer
 
         mutable RecursiveLock mLock;
 
+        AutoPUID mID;
         RUDPChannelStreamWeakPtr mThisWeak;
-        PUID mID;
 
         IRUDPChannelStreamDelegatePtr mDelegate;
 
-        bool mInformedReadReady;
-        bool mInformedWriteReady;
+        RUDPChannelStreamStates mCurrentState;
+        AutoWORD mLastError;
+        String mLastErrorReason;
+
+        AutoBool mInformedReadReady;
+        AutoBool mInformedWriteReady;
 
         bool mDidReceiveWriteReady;
-
-        RUDPChannelStreamStates mCurrentState;
-        RUDPChannelStreamShutdownReasons mShutdownReason;
 
         WORD mSendingChannelNumber;
         WORD mReceivingChannelNumber;
@@ -353,23 +362,23 @@ namespace openpeer
         Duration mMinimumRTT;
         Duration mCalculatedRTT;
         QWORD mNextSequenceNumber;        // next sequence number to use for sending
-        bool mXORedParityToNow;           // the current parity of all packets sent to this point
+        AutoBool mXORedParityToNow;       // the current parity of all packets sent to this point
 
         QWORD mGSNR;                      // Greatest Sequence Number Received (this is the remote party's sequence number)
         QWORD mGSNFR;                     // Greatest Sequence Number Fully Received (this is the remote party's sequence number)
-        bool mGSNRParity;                 // This is the parity bit from the remote party
-        bool mXORedParityToGSNFR;         // what is the combined parity of packets received up to the GSNFR from the remote party
+        AutoBool mGSNRParity;             // This is the parity bit from the remote party
+        AutoBool mXORedParityToGSNFR;     // what is the combined parity of packets received up to the GSNFR from the remote party
 
-        QWORD mWaitToSendUntilReceivedRemoteSequenceNumber;
+        AutoQWORD mWaitToSendUntilReceivedRemoteSequenceNumber;
 
         Shutdown mShutdownState;
 
-        bool mDuplicateReceived;
-        bool mECNReceived;
+        AutoBool mDuplicateReceived;
+        AutoBool mECNReceived;
 
         Time mLastDeliveredReadData;
 
-        bool mAttemptingSendNow;
+        AutoBool mAttemptingSendNow;
 
         BufferedPacketMap mSendingPackets;
         BufferedPacketMap mReceivedPackets;
@@ -379,33 +388,33 @@ namespace openpeer
 
         RecycleBufferList mRecycleBuffers;
 
-        ULONG mRandomPoolPos;
+        AutoULONG mRandomPoolPos;
         BYTE mRandomPool[256];
 
-        ULONG mTotalPacketsToResend;
+        AutoULONG mTotalPacketsToResend;
 
         // congestion control parameters
-        ULONG mAvailableBurstBatons;                        // how many "batons" (aka relay style batons) are available for sending new bursts right now
+        ULONG mAvailableBurstBatons;                            // how many "batons" (aka relay style batons) are available for sending new bursts right now
 
-        TimerPtr mBurstTimer;                               // this timer will be used to consume the available batons until they are gone (the timer will be cancelled when there is no more available batons or there is no more data to send)
+        TimerPtr mBurstTimer;                                   // this timer will be used to consume the available batons until they are gone (the timer will be cancelled when there is no more available batons or there is no more data to send)
 
         // If there is no burst timer and no "batons" available then when this
         // timer fires an external ACK must be delivered to ensure that data
         // has in fact been delivered to the other side.
         TimerPtr mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer;
 
-        TimerPtr mAddToAvailableBurstBatonsTimer;           // add to the batons available when this timer fires (this timer is only active as long as there is data to send)
-        Duration mAddToAvailableBurstBatonsDuation;         // every time there is new congestion this duration is doubled
+        TimerPtr mAddToAvailableBurstBatonsTimer;               // add to the batons available when this timer fires (this timer is only active as long as there is data to send)
+        Duration mAddToAvailableBurstBatonsDuation;             // every time there is new congestion this duration is doubled
 
-        ULONG mPacketsPerBurst;                             // how many packets to deliver in a single burst
+        ULONG mPacketsPerBurst;                                 // how many packets to deliver in a single burst
 
-        bool mBandwidthIncreaseFrozen;                      // the bandwidth increase routine is currently frozen because an insufficient time without issues has not occurerd
-        Time mStartedSendingAtTime;                         // when did the sending activate again (so when the final ACK comes in the total duration can be calculated)
-        Duration mTotalSendingPeriodWithoutIssues;          // how long has there been a successful period of sending without and sending difficulties
+        AutoBool mBandwidthIncreaseFrozen;                      // the bandwidth increase routine is currently frozen because an insufficient time without issues has not occurerd
+        Time mStartedSendingAtTime;                             // when did the sending activate again (so when the final ACK comes in the total duration can be calculated)
+        Duration mTotalSendingPeriodWithoutIssues;              // how long has there been a successful period of sending without and sending difficulties
 
-        QWORD mForceACKOfSentPacketsAtSendingSequnceNumber;  // when the ACK reply comes back we can be sure of the state of lost packets up to this sequence number
-        PUID mForceACKOfSentPacketsRequestID;                // the identification of the request that is causing the force
-        bool mForceACKNextTimePossible;                      // force an ACK at the next possibel interval
+        AutoQWORD mForceACKOfSentPacketsAtSendingSequnceNumber; // when the ACK reply comes back we can be sure of the state of lost packets up to this sequence number
+        PUID mForceACKOfSentPacketsRequestID;                   // the identification of the request that is causing the force
+        AutoBool mForceACKNextTimePossible;                     // force an ACK at the next possibel interval
       };
 
       //-----------------------------------------------------------------------

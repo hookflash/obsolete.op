@@ -48,8 +48,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
-
       using CryptoPP::ByteQueue;
       using CryptoPP::AutoSeededRandomPool;
       typedef CryptoPP::RSA::PublicKey PublicKey;
@@ -232,7 +230,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String RSAPrivateKey::log(const char *message) const
       {
-        return String("RSAPrivateKey [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("RSAPrivateKey [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------

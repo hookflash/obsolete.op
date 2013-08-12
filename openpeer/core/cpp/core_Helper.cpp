@@ -113,6 +113,42 @@ namespace openpeer
         if (!peerFilePublic) return ElementPtr();
         return peerFilePublic->saveToElement();
       }
+
+      //-----------------------------------------------------------------------
+      void Helper::convert(
+                           const IdentityInfo &source,
+                           IdentityContact &outContact
+                           )
+      {
+        outContact.mIdentityURI = source.mURI;
+        outContact.mIdentityProvider = source.mProvider;
+        outContact.mStableID = source.mStableID;
+
+        outContact.mPeerFilePublic = source.mPeerFilePublic;
+        outContact.mIdentityProofBundleEl = source.mIdentityProofBundle;
+
+        outContact.mPriority = source.mPriority;
+        outContact.mWeight = source.mWeight;
+
+        outContact.mLastUpdated = source.mUpdated;
+        outContact.mExpires = source.mExpires;
+
+        outContact.mName = source.mName;
+        outContact.mProfileURL = source.mProfile;
+        outContact.mVProfileURL = source.mVProfile;
+
+        for (IdentityInfo::AvatarList::const_iterator avIter = source.mAvatars.begin();  avIter != source.mAvatars.end(); ++avIter)
+        {
+          const IdentityInfo::Avatar &resultAvatar = (*avIter);
+          IdentityContact::Avatar avatar;
+
+          avatar.mName = resultAvatar.mName;
+          avatar.mURL = resultAvatar.mURL;
+          avatar.mWidth = resultAvatar.mWidth;
+          avatar.mHeight = resultAvatar.mHeight;
+          outContact.mAvatars.push_back(avatar);
+        }
+      }
     }
 
     //-------------------------------------------------------------------------

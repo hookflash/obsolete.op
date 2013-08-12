@@ -66,6 +66,11 @@ namespace openpeer
 
         static IPeerFilePublicPtr createPeerFilePublic(const ElementPtr &element);
         static ElementPtr convertToElement(IPeerFilePublicPtr peerFilePublic);
+
+        static void convert(
+                            const IdentityInfo &source,
+                            IdentityContact &outContact
+                            );
       };
     }
   }

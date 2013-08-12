@@ -189,6 +189,8 @@ namespace openpeer
                                                  RUDPICESocketStates state
                                                  );
 
+        virtual void onRUDPICESocketCandidatesChanged(IRUDPICESocketPtr socket);
+
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark AccountFinder => IRUDPICESocketSessionDelegate
@@ -305,7 +307,7 @@ namespace openpeer
         #pragma mark AccountFinder => (data)
         #pragma mark
 
-        PUID mID;
+        AutoPUID mID;
         mutable RecursiveLock mBogusLock;
 
         AccountStates mCurrentState;

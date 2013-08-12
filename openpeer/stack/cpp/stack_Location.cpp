@@ -46,8 +46,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
-
       typedef zsLib::String String;
 
       //-----------------------------------------------------------------------
@@ -513,7 +511,7 @@ namespace openpeer
       String Location::getDebugValueString(bool includeCommaPrefix) const
       {
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("location id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("location id", string(mID), firstTime) +
                Helper::getDebugValue("type", toString(mType), firstTime) +
                IPeer::toDebugString(mPeer) +
                Helper::getDebugValue("location id(s)", mLocationID, firstTime);
@@ -530,7 +528,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String Location::log(const char *message) const
       {
-        return String("Location [" + Stringize<typeof(mID)>(mID).string() + "] " + message);
+        return String("Location [" + string(mID) + "] " + message);
       }
     }
 

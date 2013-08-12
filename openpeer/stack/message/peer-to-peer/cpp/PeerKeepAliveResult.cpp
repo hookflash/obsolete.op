@@ -50,8 +50,6 @@ namespace openpeer
 
       namespace peer_to_peer
       {
-        using zsLib::Stringize;
-
         //---------------------------------------------------------------------
         PeerKeepAliveResultPtr PeerKeepAliveResult::convert(MessagePtr message)
         {
@@ -61,6 +59,7 @@ namespace openpeer
         //---------------------------------------------------------------------
         PeerKeepAliveResult::PeerKeepAliveResult()
         {
+          mAppID.clear();
         }
 
         //---------------------------------------------------------------------
@@ -98,7 +97,7 @@ namespace openpeer
 
           if (hasAttribute(AttributeType_Expires))
           {
-            root->adoptAsFirstChild(IMessageHelper::createElementWithText("expires", Stringize<time_t>(zsLib::toEpoch(mExpires))));
+            root->adoptAsFirstChild(IMessageHelper::createElementWithText("expires", IHelper::timeToString(mExpires)));
           }
 
           return ret;

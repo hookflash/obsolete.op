@@ -34,6 +34,8 @@
 #include <openpeer/services/STUNPacket.h>
 #include <openpeer/services/RUDPPacket.h>
 #include <openpeer/services/ISTUNRequesterManager.h>
+#include <openpeer/services/IICESocket.h>
+
 #include <zsLib/Exception.h>
 #include <zsLib/helpers.h>
 #include <zsLib/Log.h>
@@ -66,7 +68,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
       using CryptoPP::StringSink;
       using CryptoPP::Weak::MD5;
 
@@ -105,7 +106,7 @@ namespace openpeer
         queue.CopyTo(decoder);
         decoder.MessageEnd();
 
-        size_t outputLengthInBytes = outputQueue->CurrentSize();
+        size_t outputLengthInBytes = static_cast<size_t>(outputQueue->CurrentSize());
         output.CleanNew(outputLengthInBytes);
 
         outputQueue->Get(output, outputLengthInBytes);
@@ -334,6 +335,21 @@ namespace openpeer
         stun = STUNPacket::parseIfSTUN(buffer.get(), bytesRead, static_cast<STUNPacket::RFCs>(STUNPacket::RFC_5389_STUN | STUNPacket::RFC_draft_RUDP), false, "RUDPListener", mID);
         while (stun)  // NOTE: using this as a scope that can be broken rather than a loop
         {
+          String localUsernameFrag;
+          String remoteUsernameFrag;
+
+          if (stun->hasAttribute(STUNPacket::Attribute_Username)) {
+            size_t pos = stun->mUsername.find(":");
+            if (String::npos == pos) {
+              localUsernameFrag = stun->mUsername;
+              remoteUsernameFrag = stun->mUsername;
+            } else {
+              // split the string at the fragments
+              localUsernameFrag = stun->mUsername.substr(0, pos); // this would be our local username
+              remoteUsernameFrag = stun->mUsername.substr(pos+1);  // this would be the remote username
+            }
+          }
+
           // first thing to check is if this is a response to an outstanding request
           if (ISTUNRequesterManager::handleSTUNPacket(remote, stun)) return;
 
@@ -352,29 +368,35 @@ namespace openpeer
             } else {
               response = STUNPacket::createResponse(stun);
               fix(response);
+              if ((remoteUsernameFrag.hasData()) &&
+                  (localUsernameFrag.hasData())) {
+                if (stun->isValidMessageIntegrity(localUsernameFrag)) {
+                  response->mUsername = remoteUsernameFrag + ":" + localUsernameFrag;
+                  response->mPassword = localUsernameFrag;
+                  response->mCredentialMechanism = STUNPacket::CredentialMechanisms_ShortTerm;
+
+                  STUNPacketPtr request = STUNPacket::createRequest(STUNPacket::Method_Binding);
+                  request->mUsername = remoteUsernameFrag + ":" + localUsernameFrag;
+                  request->mPassword = remoteUsernameFrag;
+                  request->mCredentialMechanism = STUNPacket::CredentialMechanisms_ShortTerm;
+                  request->mPriorityIncluded = true;
+                  request->mPriority = ((1 << 24)*(static_cast<DWORD>(IICESocket::Type_Local))) + ((1 << 8)*(static_cast<DWORD>(0))) + (256 - 0);
+                  request->mIceControlledIncluded = true;
+                  request->mIceControlled = 0;
+                  sendTo(remote, request);
+                }
+              }
               response->mMappedAddress = remote;
             }
             break;
           }
 
           RUDPChannelPtr session;
-          String localUsernameFrag;
-          String remoteUsernameFrag;
 
           // scope: next we attempt to see if there is already a session that handles this IP/channel pairing
           if ((stun->hasAttribute(STUNPacket::Attribute_Username)) &&
               (stun->hasAttribute(STUNPacket::Attribute_ChannelNumber)))
           {
-            size_t pos = stun->mUsername.find(":");
-            if (String::npos == pos) {
-              localUsernameFrag = stun->mUsername;
-              remoteUsernameFrag = stun->mUsername;
-            } else {
-              // split the string at the fragments
-              localUsernameFrag = stun->mUsername.substr(0, pos); // this would be our local username
-              remoteUsernameFrag = stun->mUsername.substr(pos+1);  // this would be the remote username
-            }
-
             AutoRecursiveLock lock(mLock);
             ChannelPair lookup(remote, stun->mChannelNumber);
             SessionMap::iterator found = mRemoteChannelNumberSessions.find(lookup);
@@ -418,13 +440,7 @@ namespace openpeer
         }
 
         if (response) {
-          AutoRecursiveLock lock(mLock);
-
-          boost::shared_array<BYTE> packetized;
-          ULONG packetizedLength = 0;
-          response->packetize(packetized, packetizedLength, STUNPacket::Method_Binding == response->mMethod ? STUNPacket::RFC_5389_STUN : STUNPacket::RFC_draft_RUDP);
-
-          sendTo(remote, packetized.get(), packetizedLength);
+          sendTo(remote, response);
           return;
         }
 
@@ -448,6 +464,7 @@ namespace openpeer
           session->forListener().handleRUDP(rudp, buffer.get(), bytesRead);
         }
       }
+
 
       //-----------------------------------------------------------------------
       void RUDPListener::onWriteReady(ISocketPtr socket)
@@ -532,7 +549,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String RUDPListener::log(const char *message) const
       {
-        return String("RUDPListener [") + Stringize<PUID>(mID).string() + "] " + message;
+        return String("RUDPListener [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -632,6 +649,21 @@ namespace openpeer
       //-----------------------------------------------------------------------
       bool RUDPListener::sendTo(
                                 const IPAddress &destination,
+                                STUNPacketPtr stun
+                                )
+      {
+        AutoRecursiveLock lock(mLock);
+
+        boost::shared_array<BYTE> packetized;
+        ULONG packetizedLength = 0;
+        stun->packetize(packetized, packetizedLength, STUNPacket::Method_Binding == stun->mMethod ? (stun->mPriorityIncluded ? STUNPacket::RFC_5245_ICE : STUNPacket::RFC_5389_STUN) : STUNPacket::RFC_draft_RUDP);
+
+        return sendTo(destination, packetized.get(), packetizedLength);
+      }
+
+      //-----------------------------------------------------------------------
+      bool RUDPListener::sendTo(
+                                const IPAddress &destination,
                                 const BYTE *buffer,
                                 ULONG bufferLengthInBytes
                                 )
@@ -643,10 +675,10 @@ namespace openpeer
         try {
           bool wouldBlock = false;
           ULONG bytesSent = mUDPSocket->sendTo(destination, buffer, bufferLengthInBytes, &wouldBlock);
-          ZS_LOG_TRACE(log("sendTo called") + ", destination=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + Stringize<ULONG>(bufferLengthInBytes).string() + ", bytes sent=" + Stringize<ULONG>(bytesSent).string() + ", would block=" + (wouldBlock? "true" : "false"))
+          ZS_LOG_TRACE(log("sendTo called") + ", destination=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + string(bufferLengthInBytes) + ", bytes sent=" + string(bytesSent) + ", would block=" + (wouldBlock? "true" : "false"))
           return (bytesSent == bufferLengthInBytes);
         } catch(ISocket::Exceptions::Unspecified &) {
-          ZS_LOG_ERROR(Detail, log("sendTo exception") + ", destination=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + Stringize<ULONG>(bufferLengthInBytes).string())
+          ZS_LOG_ERROR(Detail, log("sendTo exception") + ", destination=" + destination.string() + ", buffer=" + (buffer ? "true" : "false") + ", buffer length=" + string(bufferLengthInBytes))
           return false;
         }
         return false;

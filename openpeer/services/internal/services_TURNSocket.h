@@ -470,6 +470,7 @@ namespace openpeer
         Time mLastRefreshTimerWasSentAt;
 
         ISTUNRequesterPtr mDeallocateRequester;
+        TimerPtr mDeallocTimer;
 
         ServerList mServers;
         TimerPtr mActivationTimer;

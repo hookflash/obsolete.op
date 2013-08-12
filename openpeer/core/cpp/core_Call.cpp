@@ -37,6 +37,8 @@
 #include <openpeer/core/internal/core_Helper.h>
 #include <openpeer/core/internal/core_MediaStream.h>
 
+#include <openpeer/stack/IHelper.h>
+
 #include <zsLib/helpers.h>
 
 #define OPENPEER_CALL_CLEANUP_TIMEOUT_IN_SECONDS (60*2)
@@ -53,8 +55,6 @@
 
 namespace openpeer { namespace core { ZS_DECLARE_SUBSYSTEM(openpeer_media) } }
 
-using zsLib::Stringize;
-
 namespace openpeer
 {
   namespace core
@@ -63,7 +63,10 @@ namespace openpeer
     {
       using zsLib::ITimerDelegateProxy;
 
+      using stack::CandidateList;
       typedef IConversationThreadParser::Dialog Dialog;
+      typedef IConversationThreadParser::Dialog::DescriptionList DescriptionList;
+      typedef IConversationThreadParser::Dialog::DescriptionPtr DescriptionPtr;
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -186,7 +189,7 @@ namespace openpeer
         mID(zsLib::createPUID()),
         mQueue(IStackForInternal::queueCore()),
         mDelegate(delegate),
-        mCallID(callID ? Stringize<CSTR>(callID).string() : services::IHelper::randomString(32)),
+        mCallID(callID ? string(callID) : services::IHelper::randomString(32)),
         mHasAudio(hasAudio),
         mHasVideo(hasVideo),
         mIncomingCall(false),
@@ -487,36 +490,6 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      bool Call::sendRTCPPacket(
-                                PUID toLocationID,
-                                SocketTypes type,
-                                const BYTE *packet,
-                                ULONG packetLengthInBytes
-                                )
-      {
-        CallLocationPtr callLocation;
-
-        // scope
-        {
-          AutoRecursiveLock lock(getMediaLock());
-          callLocation = mPickedLocation;
-          if (!callLocation) {
-            callLocation = mEarlyLocation;
-          }
-        }
-
-        if (!callLocation) {
-          ZS_LOG_WARNING(Trace, log("unable to send RTCP packet as there is no picked/early location to communicate"))
-          return false;
-        }
-        if (callLocation->getID() != toLocationID) {
-          ZS_LOG_WARNING(Trace, log("unable to send the RTCP packet as the picked/early location does not match the to location"))
-          return false;
-        }
-        return callLocation->sendRTCPPacket(type, packet, packetLengthInBytes);
-      }
-
-      //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -689,6 +662,13 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      void Call::onICESocketCandidatesChanged(IICESocketPtr inSocket)
+      {
+        ZS_LOG_DEBUG(log("ICE socket candidates change thus invoking step"))
+        IWakeDelegateProxy::create(getQueue(), mThisWeak.lock())->onWake();
+      }
+
+      //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -763,41 +743,12 @@ namespace openpeer
               return;
             }
           } else if (mPickedLocation->getID() != locationID) {
-            ZS_LOG_WARNING(Trace, log("ignoring received RTP packet as location specified is not chosen location") + ", chosen=" + Stringize<PUID>(mPickedLocation->getID()).string() + ", specified=" + Stringize<PUID>(locationID).string())
+            ZS_LOG_WARNING(Trace, log("ignoring received RTP packet as location specified is not chosen location") + ", chosen=" + string(mPickedLocation->getID()) + ", specified=" + string(locationID))
             return;
           }
         }
 
         mTransport->forCall().notifyReceivedRTPPacket(mID, locationID, internal::convert(type), buffer, bufferLengthInBytes);
-      }
-
-      //-----------------------------------------------------------------------
-      void Call::notifyReceivedRTCPPacket(
-                                          PUID locationID,
-                                          SocketTypes type,
-                                          const BYTE *buffer,
-                                          ULONG bufferLengthInBytes
-                                          )
-      {
-        // scope:
-        {
-          AutoRecursiveLock lock(getMediaLock());
-          if (!mPickedLocation) {
-            if (!mEarlyLocation) {
-              ZS_LOG_WARNING(Trace, log("ignoring received RTCP packet as no call location was chosen"))
-              return;
-            }
-            if (mEarlyLocation->getID() != locationID) {
-              ZS_LOG_WARNING(Trace, log("ignoring received RTCP packet as packet did not come from chosen early location"))
-              return;
-            }
-          } else if (mPickedLocation->getID() != locationID) {
-            ZS_LOG_WARNING(Trace, log("ignoring received RTCP packet as location specified is not chosen location") + ", chosen=" + Stringize<PUID>(mPickedLocation->getID()).string() + ", specified=" + Stringize<PUID>(locationID).string())
-            return;
-          }
-        }
-
-        mTransport->forCall().notifyReceivedRTCPPacket(mID, locationID, internal::convert(type), buffer, bufferLengthInBytes);
       }
 
       //-----------------------------------------------------------------------
@@ -812,7 +763,7 @@ namespace openpeer
             AutoRecursiveLock lock(getLock());
             CallLocationMap::iterator found = mCallLocations.find(location->getLocationID());
             if (found != mCallLocations.end()) {
-              ZS_LOG_DEBUG(log("location shutdown") + ", object ID=" + Stringize<PUID>(location->getID()).string() + ", location ID=" + location->getLocationID())
+              ZS_LOG_DEBUG(log("location shutdown") + ", object ID=" + string(location->getID()) + ", location ID=" + location->getLocationID())
               mCallLocations.erase(found);
             }
           }
@@ -825,7 +776,7 @@ namespace openpeer
             if (mPickedLocation) {
               if (mPickedLocation->getLocationID() == location->getLocationID()) {
                 // the picked location is shutting down...
-                ZS_LOG_WARNING(Detail, log("picked location shutdown") + ", object ID=" + Stringize<PUID>(location->getID()).string() + ", location ID=" + location->getLocationID())
+                ZS_LOG_WARNING(Detail, log("picked location shutdown") + ", object ID=" + string(location->getID()) + ", location ID=" + location->getLocationID())
                 mPickedLocation.reset();
                 pickedRemoved = true;
               }
@@ -879,7 +830,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String Call::log(const char *message) const
       {
-        return String("Call [") + Stringize<PUID>(mID).string() + "] " + message;
+        return String("Call [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -890,7 +841,7 @@ namespace openpeer
                                        ) const
       {
         bool firstTime = !includeCommaPrefix;
-        String result = Helper::getDebugValue("call id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        String result = Helper::getDebugValue("call id", string(mID), firstTime) +
                         Helper::getDebugValue("call id (s)", mCallID, firstTime) +
                         Helper::getDebugValue("has audio", mHasAudio ? String("true") : String(), firstTime) +
                         Helper::getDebugValue("has video", mHasVideo ? String("true") : String(), firstTime) +
@@ -903,7 +854,7 @@ namespace openpeer
           result += Helper::getDebugValue("state", ICall::toString(mCurrentState), firstTime) +
                     Helper::getDebugValue("closed reason", ICall::toString(mClosedReason), firstTime) +
                     Helper::getDebugValue("notified", mIncomingNotifiedThreadOfPreparing ? String("true") : String(), firstTime) +
-                    Helper::getDebugValue("locations", mCallLocations.size() > 0 ? Stringize<size_t>(mCallLocations.size()).string() : String(), firstTime) +
+                    Helper::getDebugValue("locations", mCallLocations.size() > 0 ? string(mCallLocations.size()) : String(), firstTime) +
                     Helper::getDebugValue("place call", mPlaceCall ? String("true") : String(), firstTime) +
                     Helper::getDebugValue("ring called", mRingCalled ? String("true") : String(), firstTime) +
                     Helper::getDebugValue("answer called", mAnswerCalled ? String("true") : String(), firstTime) +
@@ -969,7 +920,7 @@ namespace openpeer
           mCallLocations.clear();
         }
 
-        ZS_LOG_DEBUG(log("closing call locations") + ", total=" + Stringize<size_t>(locationsToClose.size()).string())
+        ZS_LOG_DEBUG(log("closing call locations") + ", total=" + string(locationsToClose.size()))
 
         // close the locations now...
         for (CallLocationList::iterator iter = locationsToClose.begin(); iter != locationsToClose.end(); ++iter)
@@ -990,17 +941,9 @@ namespace openpeer
             mAudioRTPSocketSubscription->cancel();
             mAudioRTPSocketSubscription.reset();
           }
-          if (mAudioRTCPSocketSubscription) {
-            mAudioRTCPSocketSubscription->cancel();
-            mAudioRTCPSocketSubscription.reset();
-          }
           if (mVideoRTPSocketSubscription) {
             mVideoRTPSocketSubscription->cancel();
             mVideoRTPSocketSubscription.reset();
-          }
-          if (mVideoRTCPSocketSubscription) {
-            mVideoRTCPSocketSubscription->cancel();
-            mVideoRTCPSocketSubscription.reset();
           }
         }
 
@@ -1192,10 +1135,12 @@ namespace openpeer
       //-----------------------------------------------------------------------
       bool Call::stepIsMediaReady(
                                   bool needCandidates,
+                                  String &outAudioICEUsernameFrag,
+                                  String &outAudioICEPassword,
                                   CandidateList &outAudioRTPCandidates,
-                                  CandidateList &outAudioRTCPCandidates,
-                                  CandidateList &outVideoRTPCandidates,
-                                  CandidateList &outVideoRTCPCandidates
+                                  String &outVideoICEUsernameFrag,
+                                  String &outVideoICEPassword,
+                                  CandidateList &outVideoRTPCandidates
                                   ) throw (Exceptions::StepFailure)
       {
         typedef services::IICESocketDelegateProxy IICESocketDelegateProxy;
@@ -1205,21 +1150,14 @@ namespace openpeer
         AutoRecursiveLock lock(getMediaLock());
 
         // setup all the audio ICE socket subscriptions...
-        IICESocketPtr socketAudioRTP = mTransport->forCall().getSocket(internal::convert(SocketType_Audio), true);
-        IICESocketPtr socketAudioRTCP = mTransport->forCall().getSocket(internal::convert(SocketType_Audio), false);
+        IICESocketPtr socketAudioRTP = mTransport->forCall().getSocket(internal::convert(SocketType_Audio));
 
-        IICESocketPtr socketVideoRTP = mTransport->forCall().getSocket(internal::convert(SocketType_Video), true);
-        IICESocketPtr socketVideoRTCP = mTransport->forCall().getSocket(internal::convert(SocketType_Video), false);
+        IICESocketPtr socketVideoRTP = mTransport->forCall().getSocket(internal::convert(SocketType_Video));
         if (hasAudio()) {
           if (!mAudioRTPSocketSubscription) {
             ZS_LOG_DEBUG(log("subscripting audio RTP socket"))
             mAudioRTPSocketSubscription = socketAudioRTP->subscribe(IICESocketDelegateProxy::create(mMediaQueue, mThisWeak.lock()));
             ZS_THROW_CUSTOM_IF(Exceptions::StepFailure, !mAudioRTPSocketSubscription)
-          }
-          if (!mAudioRTCPSocketSubscription) {
-            ZS_LOG_DEBUG(log("subscripting audio RTCP socket"))
-            mAudioRTCPSocketSubscription = socketAudioRTCP->subscribe(IICESocketDelegateProxy::create(mMediaQueue, mThisWeak.lock()));
-            ZS_THROW_CUSTOM_IF(Exceptions::StepFailure, !mAudioRTCPSocketSubscription)
           }
         }
 
@@ -1230,30 +1168,19 @@ namespace openpeer
             mVideoRTPSocketSubscription = socketVideoRTP->subscribe(IICESocketDelegateProxy::create(mMediaQueue, mThisWeak.lock()));
             ZS_THROW_CUSTOM_IF(Exceptions::StepFailure, !mVideoRTPSocketSubscription)
           }
-          if (!mVideoRTCPSocketSubscription) {
-            ZS_LOG_DEBUG(log("subscripting video RTCP socket"))
-            mVideoRTCPSocketSubscription = socketVideoRTCP->subscribe(IICESocketDelegateProxy::create(mMediaQueue, mThisWeak.lock()));
-            ZS_THROW_CUSTOM_IF(Exceptions::StepFailure, !mVideoRTCPSocketSubscription)
-          }
         }
 
         if (hasAudio()) {
           socketAudioRTP->wakeup();
-          socketAudioRTCP->wakeup();
         }
 
         if (hasVideo()) {
           socketVideoRTP->wakeup();
-          socketVideoRTCP->wakeup();
         }
 
         if (hasAudio()) {
           if (IICESocket::ICESocketState_Ready != socketAudioRTP->getState()) {
             ZS_LOG_DEBUG(log("waiting for audio RTP socket to wakeup"))
-            return false;
-          }
-          if (IICESocket::ICESocketState_Ready != socketAudioRTCP->getState()) {
-            ZS_LOG_DEBUG(log("waiting for audio RTCP socket to wakeup"))
             return false;
           }
         }
@@ -1263,10 +1190,6 @@ namespace openpeer
             ZS_LOG_DEBUG(log("waiting for video RTP socket to wakeup"))
             return false;
           }
-          if (IICESocket::ICESocketState_Ready != socketVideoRTCP->getState()) {
-            ZS_LOG_DEBUG(log("waiting for video RTCP socket to wakeup"))
-            return false;
-          }
         }
 
         ZS_LOG_DEBUG(log("audio and/or video sockets are all awake and ready") + ", has audio=" + (hasAudio() ? "true" : "false") + ", has video=" + (hasVideo() ? "true" : "false"))
@@ -1274,14 +1197,23 @@ namespace openpeer
         if (needCandidates) {
           ZS_LOG_DEBUG(log("candidates are being fetched"))
 
+          IICESocket::CandidateList tempAudioRTPCandidates;
+          IICESocket::CandidateList tempVideoRTPCandidates;
+
           if (hasAudio()) {
-            socketAudioRTP->getLocalCandidates(outAudioRTPCandidates);
-            socketAudioRTCP->getLocalCandidates(outAudioRTCPCandidates);
+            outAudioICEUsernameFrag = socketAudioRTP->getUsernameFrag();
+            outAudioICEPassword = socketAudioRTP->getPassword();
+            
+            socketAudioRTP->getLocalCandidates(tempAudioRTPCandidates);
+            stack::IHelper::convert(tempAudioRTPCandidates, outAudioRTPCandidates);
           }
 
           if (hasVideo()) {
-            socketVideoRTP->getLocalCandidates(outVideoRTPCandidates);
-            socketVideoRTCP->getLocalCandidates(outVideoRTCPCandidates);
+            outVideoICEUsernameFrag = socketVideoRTP->getUsernameFrag();
+            outVideoICEPassword = socketVideoRTP->getPassword();
+
+            socketVideoRTP->getLocalCandidates(tempVideoRTPCandidates);
+            stack::IHelper::convert(tempVideoRTPCandidates, outVideoRTPCandidates);
           }
         }
 
@@ -1291,10 +1223,12 @@ namespace openpeer
       //-----------------------------------------------------------------------
       bool Call::stepPrepareCallFirstTime(
                                           CallLocationPtr &picked,
+                                          const String &audioICEUsernameFrag,
+                                          const String &audioICEPassword,
                                           const CandidateList &audioRTPCandidates,
-                                          const CandidateList &audioRTCPCandidates,
-                                          const CandidateList &videoRTPCandidates,
-                                          const CandidateList &videoRTCPCandidates
+                                          const String &videoICEUsernameFrag,
+                                          const String &videoICEPassword,
+                                          const CandidateList &videoRTPCandidates
                                           ) throw (Exceptions::StepFailure)
       {
         typedef Dialog::Description Description;
@@ -1333,8 +1267,9 @@ namespace openpeer
             desc->mDescriptionID = services::IHelper::randomString(20);
             desc->mType = "audio";
             desc->mSSRC = 0;
-            desc->mCandidateLists[0] = audioRTPCandidates;
-            desc->mCandidateLists[1] = audioRTCPCandidates;
+            desc->mICEUsernameFrag = audioICEUsernameFrag;
+            desc->mICEPassword = audioICEPassword;
+            desc->mCandidates = audioRTPCandidates;
             descriptions.push_back(desc);
           }
 
@@ -1345,8 +1280,9 @@ namespace openpeer
             desc->mDescriptionID = services::IHelper::randomString(20);
             desc->mType = "video";
             desc->mSSRC = 0;
-            desc->mCandidateLists[0] = videoRTPCandidates;
-            desc->mCandidateLists[1] = videoRTCPCandidates;
+            desc->mICEUsernameFrag = videoICEUsernameFrag;
+            desc->mICEPassword = videoICEPassword;
+            desc->mCandidates = videoRTPCandidates;
             descriptions.push_back(desc);
           }
 
@@ -1855,10 +1791,12 @@ namespace openpeer
         bool mediaHolding = false;
         bool needCandidates = false;
 
+        String audioICEUsernameFrag;
+        String audioICEPassword;
         CandidateList audioRTPCandidates;
-        CandidateList audioRTCPCandidates;
+        String videoICEUsernameFrag;
+        String videoICEPassword;
         CandidateList videoRTPCandidates;
-        CandidateList videoRTCPCandidates;
 
         CallLocationList locationsToClose;
         LocationDialogMap locationDialogMap;
@@ -1887,7 +1825,7 @@ namespace openpeer
         // scope: media
         try
         {
-          if (!stepIsMediaReady(needCandidates, audioRTPCandidates, audioRTCPCandidates, videoRTPCandidates, videoRTCPCandidates)) {
+          if (!stepIsMediaReady(needCandidates, audioICEUsernameFrag, audioICEPassword, audioRTPCandidates, videoICEUsernameFrag, videoICEPassword, videoRTPCandidates)) {
             ZS_LOG_DEBUG(log("waiting for media to be ready"))
             return;
           }
@@ -1907,7 +1845,7 @@ namespace openpeer
         // scope: object
         try
         {
-          if (!stepPrepareCallFirstTime(picked, audioRTPCandidates, audioRTCPCandidates, videoRTPCandidates, videoRTCPCandidates)) {
+          if (!stepPrepareCallFirstTime(picked, audioICEUsernameFrag, audioICEPassword, audioRTPCandidates, videoICEUsernameFrag, videoICEPassword, videoRTPCandidates)) {
             ZS_LOG_DEBUG(log("prepare first call caused call to close"))
             goto call_closed_exception;
           }
@@ -1922,7 +1860,7 @@ namespace openpeer
         // examine what is going on in the conversation thread...
         thread->forCall().gatherDialogReplies(mCallID, locationDialogMap);
 
-        ZS_LOG_DEBUG(log("gathering dialog replies has completed") + ", total found=" + Stringize<size_t>(locationDialogMap.size()).string())
+        ZS_LOG_DEBUG(log("gathering dialog replies has completed") + ", total found=" + string(locationDialogMap.size()))
 
         try
         {
@@ -2170,27 +2108,19 @@ namespace openpeer
         }
 
         if (hasAudio()) {
-          if (socket == mTransport->forCall().getSocket(internal::convert(SocketType_Audio), true)) {
+          if (socket == mTransport->forCall().getSocket(internal::convert(SocketType_Audio))) {
             return mAudioRTPSocketSubscription;
-          }
-          if (socket == mTransport->forCall().getSocket(internal::convert(SocketType_Audio), false)) {
-            if (outIsRTP) *outIsRTP = false;
-            return mAudioRTCPSocketSubscription;
           }
         }
 
         if (outType) *outType = SocketType_Video;
         if (hasVideo()) {
-          if (socket == mTransport->forCall().getSocket(internal::convert(SocketType_Video), true)) {
+          if (socket == mTransport->forCall().getSocket(internal::convert(SocketType_Video))) {
             return mVideoRTPSocketSubscription;
-          }
-          if (socket == mTransport->forCall().getSocket(internal::convert(SocketType_Video), false)) {
-            if (outIsRTP) *outIsRTP = false;
-            return mVideoRTCPSocketSubscription;
           }
         }
 
-        ZS_LOG_WARNING(Detail, log("did not find socket subscription for socket") + ", socket ID=" + Stringize<PUID>(socket->getID()).string())
+        ZS_LOG_WARNING(Detail, log("did not find socket subscription for socket") + ", socket ID=" + string(socket->getID()))
 
         outFound = false;
         if (outType) *outType = SocketType_Audio;
@@ -2245,11 +2175,6 @@ namespace openpeer
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!transport)
 
-        typedef IICESocket::CandidateList CandidateList;
-        typedef IConversationThreadParser::Dialog::DescriptionList DescriptionList;
-        typedef IConversationThreadParser::Dialog::DescriptionPtr DescriptionPtr;
-        typedef IConversationThreadParser::CandidateLists CandidateLists;
-
         CallPtr outer = mOuter.lock();
         ZS_THROW_INVALID_ASSUMPTION_IF(!outer)
 
@@ -2257,20 +2182,6 @@ namespace openpeer
         for (DescriptionList::iterator iter = descriptions.begin(); iter != descriptions.end(); ++iter)
         {
           DescriptionPtr &description = (*iter);
-
-          CandidateLists::iterator foundRTP = description->mCandidateLists.find(0);
-          CandidateLists::iterator foundRTCP = description->mCandidateLists.find(1);
-          if (foundRTP == description->mCandidateLists.end()) {
-            ZS_LOG_WARNING(Detail, log("missing candidate foundation for RTP"))
-            continue;
-          }
-          if (foundRTCP == description->mCandidateLists.end()) {
-            ZS_LOG_WARNING(Detail, log("missing candidate foundation for RTCP"))
-            continue;
-          }
-
-          CandidateList &rtpCandidates = (*foundRTP).second;
-          CandidateList &rtcpCandidates = (*foundRTCP).second;
 
           bool isAudio = false;
           bool isVideo = false;
@@ -2293,45 +2204,36 @@ namespace openpeer
             continue;
           }
 
-          IICESocketPtr rtpSocket = transport->forCall().getSocket(type, true);
-          IICESocketPtr rtcpSocket = transport->forCall().getSocket(type, false);
-          if ((!rtpSocket) ||
-              (!rtcpSocket)) {
+          IICESocketPtr rtpSocket = transport->forCall().getSocket(type);
+          if (!rtpSocket) {
             ZS_LOG_WARNING(Detail, log("failed to object transport's sockets for media type") + ", type=" + description->mType)
             continue;
           }
 
+          IICESocket::CandidateList tempCandidates;
+          stack::IHelper::convert(description->mCandidates, tempCandidates);
+
           if (isAudio) {
-            if (!mAudioRTPSocketSession)
-              mAudioRTPSocketSession = rtpSocket->createSessionFromRemoteCandidates(mThisWeak.lock(), rtpCandidates, outer->isIncoming() ? IICESocket::ICEControl_Controlled : IICESocket::ICEControl_Controlling);
-            if (!mAudioRTCPSocketSession)
-              mAudioRTCPSocketSession = rtcpSocket->createSessionFromRemoteCandidates(mThisWeak.lock(), rtcpCandidates, outer->isIncoming() ? IICESocket::ICEControl_Controlled : IICESocket::ICEControl_Controlling);
+            if (!mAudioRTPSocketSession) {
+              mAudioRTPSocketSession = rtpSocket->createSessionFromRemoteCandidates(mThisWeak.lock(), description->mICEUsernameFrag, description->mICEPassword, tempCandidates, outer->isIncoming() ? IICESocket::ICEControl_Controlled : IICESocket::ICEControl_Controlling);
+            }
           } else if (isVideo) {
-            if (!mVideoRTPSocketSession)
-              mVideoRTPSocketSession = rtpSocket->createSessionFromRemoteCandidates(mThisWeak.lock(), rtpCandidates, outer->isIncoming() ? IICESocket::ICEControl_Controlled : IICESocket::ICEControl_Controlling);
-            if (!mVideoRTCPSocketSession)
-              mVideoRTCPSocketSession = rtcpSocket->createSessionFromRemoteCandidates(mThisWeak.lock(), rtcpCandidates, outer->isIncoming() ? IICESocket::ICEControl_Controlled : IICESocket::ICEControl_Controlling);
+            if (!mVideoRTPSocketSession) {
+              mVideoRTPSocketSession = rtpSocket->createSessionFromRemoteCandidates(mThisWeak.lock(), description->mICEUsernameFrag, description->mICEPassword, tempCandidates, outer->isIncoming() ? IICESocket::ICEControl_Controlled : IICESocket::ICEControl_Controlling);
+            }
           }
         }
 
         if (mAudioRTPSocketSession) {
           mAudioRTPSocketSession->setKeepAliveProperties(Seconds(OPENPEER_CALL_RTP_ICE_KEEP_ALIVE_INDICATIONS_SENT_IN_SECONDS), Seconds(OPENPEER_CALL_RTP_ICE_EXPECTING_DATA_WITHIN_IN_SECONDS), Seconds(OPENPEER_CALL_RTP_MAX_KEEP_ALIVE_REQUEST_TIMEOUT_IN_SECONDS));
         }
-        if (mAudioRTCPSocketSession) {
-          mAudioRTCPSocketSession->setKeepAliveProperties(Seconds(OPENPEER_CALL_RTCP_ICE_KEEP_ALIVE_INDICATIONS_SENT_IN_SECONDS), Seconds(OPENPEER_CALL_RTCP_ICE_EXPECTING_DATA_WITHIN_IN_SECONDS));
-        }
         if (mVideoRTPSocketSession) {
           mVideoRTPSocketSession->setKeepAliveProperties(Seconds(OPENPEER_CALL_RTP_ICE_KEEP_ALIVE_INDICATIONS_SENT_IN_SECONDS), Seconds(OPENPEER_CALL_RTP_ICE_EXPECTING_DATA_WITHIN_IN_SECONDS), Seconds(OPENPEER_CALL_RTP_MAX_KEEP_ALIVE_REQUEST_TIMEOUT_IN_SECONDS));
         }
-        if (mVideoRTCPSocketSession) {
-          mVideoRTCPSocketSession->setKeepAliveProperties(Seconds(OPENPEER_CALL_RTCP_ICE_KEEP_ALIVE_INDICATIONS_SENT_IN_SECONDS), Seconds(OPENPEER_CALL_RTCP_ICE_EXPECTING_DATA_WITHIN_IN_SECONDS));
-        }
 
         ZS_LOG_DEBUG(log("init completed") +
-                     ", audio RTP session ID=" + Stringize<PUID>(mAudioRTPSocketSession ? mAudioRTPSocketSession->getID() : 0).string() +
-                     ", audio RTCP session ID=" + Stringize<PUID>(mAudioRTCPSocketSession ? mAudioRTCPSocketSession->getID() : 0).string() +
-                     ", video RTP session ID=" + Stringize<PUID>(mVideoRTPSocketSession ? mVideoRTPSocketSession->getID() : 0).string() +
-                     ", video RTCP session ID=" + Stringize<PUID>(mVideoRTCPSocketSession ? mVideoRTCPSocketSession->getID() : 0).string())
+                     ", audio RTP session ID=" + string(mAudioRTPSocketSession ? mAudioRTPSocketSession->getID() : 0) +
+                     ", video RTP session ID=" + string(mVideoRTPSocketSession ? mVideoRTPSocketSession->getID() : 0))
       }
 
       //-----------------------------------------------------------------------
@@ -2434,32 +2336,6 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      bool Call::CallLocation::sendRTCPPacket(
-                                              SocketTypes type,
-                                              const BYTE *packet,
-                                              ULONG packetLengthInBytes
-                                              )
-      {
-        IICESocketSessionPtr session;
-
-        // scope: media
-        {
-          AutoRecursiveLock lock(getMediaLock());
-
-          switch (type) {
-            case SocketType_Audio: session = mAudioRTCPSocketSession; break;
-            case SocketType_Video: session = mVideoRTCPSocketSession; break;
-          }
-        }
-
-        if (!session) {
-          ZS_LOG_WARNING(Trace, log("unable to send RTCP packet as there is no ICE session object"))
-          return false;
-        }
-        return session->sendPacket(packet, packetLengthInBytes);
-      }
-
-      //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -2487,7 +2363,7 @@ namespace openpeer
 
           IICESocketSessionPtr &session = findSession(inSession, found, &type, &wasRTP);
           if (!found) {
-            ZS_LOG_WARNING(Detail, log("ignoring ICE socket session state change on obsolete session") + Stringize<PUID>(inSession->getID()).string())
+            ZS_LOG_WARNING(Detail, log("ignoring ICE socket session state change on obsolete session") + string(inSession->getID()))
             return;
           }
 
@@ -2499,6 +2375,12 @@ namespace openpeer
 
         ZS_LOG_DEBUG(log("ICE socket session state changed thus invoking step"))
         IWakeDelegateProxy::create(getQueue(), mThisWeak.lock())->onWake();
+      }
+
+      //-----------------------------------------------------------------------
+      void Call::CallLocation::onICESocketSessionNominationChanged(IICESocketSessionPtr inSession)
+      {
+        // ignored
       }
 
       //-----------------------------------------------------------------------
@@ -2535,11 +2417,7 @@ namespace openpeer
           }
         }
 
-        if (wasRTP) {
-          outer->notifyReceivedRTPPacket(mID, type, buffer, bufferLengthInBytes);
-        } else {
-          outer->notifyReceivedRTCPPacket(mID, type, buffer, bufferLengthInBytes);
-        }
+        outer->notifyReceivedRTPPacket(mID, type, buffer, bufferLengthInBytes);
       }
 
       //-----------------------------------------------------------------------
@@ -2587,7 +2465,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String Call::CallLocation::log(const char *message) const
       {
-        return String("Call::CallLocation [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("Call::CallLocation [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -2598,7 +2476,7 @@ namespace openpeer
                                                      ) const
       {
         bool firstTime = !includeCallPrefix;
-        String result = Helper::getDebugValue("call location id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        String result = Helper::getDebugValue("call location id", string(mID), firstTime) +
                         Helper::getDebugValue("location id", mLocationID, firstTime) +
                         Helper::getDebugValue("audio", mHasAudio ? String("true") : String(), firstTime) +
                         Helper::getDebugValue("video", mHasAudio ? String("true") : String(), firstTime);
@@ -2611,10 +2489,8 @@ namespace openpeer
         if (media)
         {
           AutoRecursiveLock lock(getMediaLock());
-          result += Helper::getDebugValue("audio rtp socket session", mAudioRTPSocketSession ? Stringize<PUID>(mAudioRTPSocketSession->getID()).string() : String(), firstTime) +
-                    Helper::getDebugValue("audio rtcp socket session", mAudioRTCPSocketSession ? Stringize<PUID>(mAudioRTCPSocketSession->getID()).string() : String(), firstTime) +
-                    Helper::getDebugValue("video rtp socket session", mVideoRTPSocketSession ? Stringize<PUID>(mVideoRTPSocketSession->getID()).string() : String(), firstTime) +
-                    Helper::getDebugValue("video rtcp socket session", mVideoRTCPSocketSession ? Stringize<PUID>(mVideoRTCPSocketSession->getID()).string() : String(), firstTime);
+          result += Helper::getDebugValue("audio rtp socket session", mAudioRTPSocketSession ? string(mAudioRTPSocketSession->getID()) : String(), firstTime) +
+                    Helper::getDebugValue("video rtp socket session", mVideoRTPSocketSession ? string(mVideoRTPSocketSession->getID()) : String(), firstTime);
         }
         return result;
       }
@@ -2645,17 +2521,9 @@ namespace openpeer
             mAudioRTPSocketSession->close();
             mAudioRTPSocketSession.reset();
           }
-          if (mAudioRTCPSocketSession) {
-            mAudioRTCPSocketSession->close();
-            mAudioRTCPSocketSession.reset();
-          }
           if (mVideoRTPSocketSession) {
             mVideoRTPSocketSession->close();
             mVideoRTPSocketSession.reset();
-          }
-          if (mVideoRTCPSocketSession) {
-            mVideoRTCPSocketSession->close();
-            mVideoRTCPSocketSession.reset();
           }
         }
 
@@ -2693,18 +2561,9 @@ namespace openpeer
               ZS_LOG_WARNING(Detail, log("audio RTP socket session is unexpectedly gone"))
               goto cancel;
             }
-            if (!mAudioRTCPSocketSession) {
-              ZS_LOG_WARNING(Detail, log("audio RTCP socket session is unexpectedly gone"))
-              goto cancel;
-            }
 
             if (IICESocketSession::ICESocketSessionState_Nominated != mAudioRTPSocketSession->getState()) {
-              ZS_LOG_DEBUG(log("waiting on audio RTP socket to be nominated...") + ", socket session ID=" + Stringize<PUID>(mAudioRTPSocketSession->getID()).string())
-              return;
-            }
-
-            if (IICESocketSession::ICESocketSessionState_Nominated != mAudioRTCPSocketSession->getState()) {
-              ZS_LOG_DEBUG(log("waiting on audio RTCP socket to be nominated...") + ", socket session ID=" + Stringize<PUID>(mAudioRTCPSocketSession->getID()).string())
+              ZS_LOG_DEBUG(log("waiting on audio RTP socket to be nominated...") + ", socket session ID=" + string(mAudioRTPSocketSession->getID()))
               return;
             }
           }
@@ -2714,21 +2573,9 @@ namespace openpeer
               ZS_LOG_WARNING(Detail, log("video RTP socket session is unexpectedly gone"))
               goto cancel;
             }
-            if (!mVideoRTCPSocketSession) {
-              ZS_LOG_WARNING(Detail, log("video RTCP socket session is unexpectedly gone"))
-              goto cancel;
-            }
-
             if (mVideoRTPSocketSession) {
               if (IICESocketSession::ICESocketSessionState_Nominated != mVideoRTPSocketSession->getState()) {
-                ZS_LOG_DEBUG(log("waiting on video RTP socket to be nominated...") + ", socket session ID=" + Stringize<PUID>(mVideoRTPSocketSession->getID()).string())
-                return;
-              }
-            }
-
-            if (mVideoRTCPSocketSession) {
-              if (IICESocketSession::ICESocketSessionState_Nominated != mVideoRTCPSocketSession->getState()) {
-                ZS_LOG_DEBUG(log("waiting on video RTCP socket to be nominated...") + ", socket session ID=" + Stringize<PUID>(mVideoRTCPSocketSession->getID()).string())
+                ZS_LOG_DEBUG(log("waiting on video RTP socket to be nominated...") + ", socket session ID=" + string(mVideoRTPSocketSession->getID()))
                 return;
               }
             }
@@ -2785,10 +2632,6 @@ namespace openpeer
           if (session == mAudioRTPSocketSession) {
             return mAudioRTPSocketSession;
           }
-          if (session == mAudioRTCPSocketSession) {
-            if (outIsRTP) *outIsRTP = false;
-            return mAudioRTCPSocketSession;
-          }
         }
 
         if (outType) *outType = SocketType_Video;
@@ -2796,13 +2639,9 @@ namespace openpeer
           if (session == mVideoRTPSocketSession) {
             return mVideoRTPSocketSession;
           }
-          if (session == mVideoRTCPSocketSession) {
-            if (outIsRTP) *outIsRTP = false;
-            return mVideoRTCPSocketSession;
-          }
         }
 
-        ZS_LOG_WARNING(Trace, log("did not find socket session thus returning bogus session") + ", socket session ID=" + Stringize<PUID>(session->getID()).string())
+        ZS_LOG_WARNING(Trace, log("did not find socket session thus returning bogus session") + ", socket session ID=" + string(session->getID()))
 
         outFound = false;
         if (outType) *outType = SocketType_Audio;

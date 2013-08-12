@@ -53,7 +53,6 @@ namespace openpeer
     {
       typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
 
-      using zsLib::Stringize;
       using services::IHelper;
 
       //-----------------------------------------------------------------------
@@ -286,7 +285,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String ServiceCertificatesValidateQuery::log(const char *message) const
       {
-        return String("ServiceCertificatesValidateQuery [") + Stringize<PUID>(mID).string() + "] " + message;
+        return String("ServiceCertificatesValidateQuery [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------

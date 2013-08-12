@@ -47,8 +47,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
-
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -216,7 +214,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String MessageIncoming::log(const char *message) const
       {
-        return String("MessageIncoming [" + Stringize<typeof(mID)>(mID).string() + "] " + message);
+        return String("MessageIncoming [" + string(mID) + "] " + message);
       }
 
       //-----------------------------------------------------------------------
@@ -224,7 +222,7 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("message incoming id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("message incoming id", string(mID), firstTime) +
                ILocation::toDebugString(mLocation) +
                Message::toDebugString(mMessage);
       }

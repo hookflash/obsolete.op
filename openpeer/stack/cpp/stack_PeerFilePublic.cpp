@@ -57,8 +57,6 @@ namespace openpeer
     {
       using services::IHelper;
 
-      using zsLib::Stringize;
-
       typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
 
       typedef CryptoPP::SHA256 SHA256;
@@ -354,7 +352,7 @@ namespace openpeer
       String PeerFilePublic::getDebugValueString(bool includeCommaPrefix) const
       {
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("peer file public id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("peer file public id", string(mID), firstTime) +
                Helper::getDebugValue("peer uri", mPeerURI, firstTime) +
                Helper::getDebugValue("created", IHelper::timeToString(getCreated()), firstTime) +
                Helper::getDebugValue("expires", IHelper::timeToString(getExpires()), firstTime) +
@@ -418,7 +416,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String PeerFilePublic::log(const char *message) const
       {
-        return String("PeerFilePublic [") + Stringize<PUID>(mID).string() + "] " + message;
+        return String("PeerFilePublic [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------

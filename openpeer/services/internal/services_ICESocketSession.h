@@ -70,7 +70,10 @@ namespace openpeer
                                           IMessageQueuePtr queue,
                                           IICESocketSessionDelegatePtr delegate,
                                           ICESocketPtr socket,
-                                          ICEControls control
+                                          const char *remoteUsernameFrag,
+                                          const char *remotePassword,
+                                          ICEControls control,
+                                          IICESocketSessionPtr foundation = IICESocketSessionPtr()
                                           );
 
         virtual PUID getID() const = 0;
@@ -78,9 +81,8 @@ namespace openpeer
 
         virtual void updateRemoteCandidates(const CandidateList &remoteCandidates) = 0;
 
-        virtual void timeout() = 0;
-
         virtual bool handleSTUNPacket(
+                                      const IPAddress &viaLocalIP,
                                       IICESocket::Types viaTransport,
                                       const IPAddress &source,
                                       STUNPacketPtr stun,
@@ -88,14 +90,15 @@ namespace openpeer
                                       const String &remoteUsernameFrag
                                       ) = 0;
         virtual bool handlePacket(
+                                  const IPAddress &viaLocalIP,
                                   IICESocket::Types viaTransport,
                                   const IPAddress &source,
                                   const BYTE *packet,
                                   ULONG packetLengthInBytes
                                   ) = 0;
 
-        virtual void notifyLocalWriteReady() = 0;
-        virtual void notifyRelayWriteReady() = 0;
+        virtual void notifyLocalWriteReady(const IPAddress &viaLocalIP) = 0;
+        virtual void notifyRelayWriteReady(const IPAddress &viaLocalIP) = 0;
       };
 
       //-----------------------------------------------------------------------
@@ -117,6 +120,7 @@ namespace openpeer
       {
       public:
         friend interaction IICESocketSessionFactory;
+        friend interaction IICESocketSession;
 
         typedef IICESocketSession::ICEControls ICEControls;
         typedef IICESocketSession::CandidateList CandidateList;
@@ -132,7 +136,7 @@ namespace openpeer
         struct CandidatePair
         {
           static CandidatePairPtr create();
-          CandidatePairPtr clone() const;
+          String toDebugString(bool includeCommaPrefix = true) const;
 
           Candidate mLocal;
           Candidate mRemote;
@@ -151,12 +155,17 @@ namespace openpeer
                          IMessageQueuePtr queue,
                          IICESocketSessionDelegatePtr delegate,
                          ICESocketPtr socket,
-                         ICEControls control
+                         const char *remoteUsernameFrag,
+                         const char *remotePassword,
+                         ICEControls control,
+                         IICESocketSessionPtr foundation = IICESocketSessionPtr()
                          );
-        
+
         ICESocketSession(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
         void init();
+
+        static ICESocketSessionPtr convert(IICESocketSessionPtr session);
 
       public:
         ~ICESocketSession();
@@ -167,17 +176,27 @@ namespace openpeer
         #pragma mark ICESocketSession => IICESocketSession
         #pragma mark
 
+        static String toDebugString(IICESocketSessionPtr socket, bool includeCommaPrefix = true);
+
         virtual PUID getID() const {return mID;}
 
         virtual IICESocketPtr getSocket();
 
-        virtual ICESocketSessionStates getState() const;
-        virtual ICESocketSessionShutdownReasons getShutdownReason() const;
+        virtual ICESocketSessionStates getState(
+                                                WORD *outLastErrorCode = NULL,
+                                                String *outLastErrorReason = NULL
+                                                ) const;
 
         virtual void close();
 
+        virtual String getLocalUsernameFrag() const;
+        virtual String getLocalPassword() const;
+        virtual String getRemoteUsernameFrag() const;
+        virtual String getRemotePassword() const;
+
         virtual void getLocalCandidates(CandidateList &outCandidates);
         virtual void updateRemoteCandidates(const CandidateList &remoteCandidates);
+        virtual void endOfRemoteCandidates();
 
         virtual void setKeepAliveProperties(
                                             Duration sendKeepAliveIndications,
@@ -209,7 +228,10 @@ namespace openpeer
                                           IMessageQueuePtr queue,
                                           IICESocketSessionDelegatePtr delegate,
                                           ICESocketPtr socket,
-                                          ICEControls control
+                                          const char *remoteUsernameFrag,
+                                          const char *remotePassword,
+                                          ICEControls control,
+                                          IICESocketSessionPtr foundation = IICESocketSessionPtr()
                                           );
 
         // (duplicate) virtual PUID getID() const;
@@ -217,9 +239,8 @@ namespace openpeer
 
         // (duplicate) virtual void updateRemoteCandidates(const CandidateList &remoteCandidates);
 
-        virtual void timeout();
-
         virtual bool handleSTUNPacket(
+                                      const IPAddress &viaLocalIP,
                                       IICESocket::Types viaTransport,
                                       const IPAddress &source,
                                       STUNPacketPtr stun,
@@ -227,14 +248,15 @@ namespace openpeer
                                       const String &remoteUsernameFrag
                                       );
         virtual bool handlePacket(
+                                  const IPAddress &viaLocalIP,
                                   IICESocket::Types viaTransport,
                                   const IPAddress &source,
                                   const BYTE *packet,
                                   ULONG packetLengthInBytes
                                   );
 
-        virtual void notifyLocalWriteReady();
-        virtual void notifyRelayWriteReady();
+        virtual void notifyLocalWriteReady(const IPAddress &viaLocalIP);
+        virtual void notifyRelayWriteReady(const IPAddress &viaLocalIP);
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -252,6 +274,7 @@ namespace openpeer
                                              IICESocketPtr socket,
                                              ICESocketStates state
                                              );
+        virtual void onICESocketCandidatesChanged(IICESocketPtr socket);
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -291,22 +314,38 @@ namespace openpeer
         String log(const char *message) const;
         void fix(STUNPacketPtr stun) const;
 
+        virtual String getDebugValueString(bool includeCommaPrefix = true) const;
+
         bool isShutdown() const {return ICESocketSessionState_Shutdown == mCurrentState;}
 
         void cancel();
-        void step();
         void setState(ICESocketSessionStates state);
-        void setShutdownReason(ICESocketSessionShutdownReasons reason);
+        void setError(WORD errorCode, const char *inReason = NULL);
+
+        void step();
+        bool stepSocket();
+        bool stepCandidates();
+        bool stepActivateTimer();
+        bool stepEndSearch();
+        bool stepTimer();
+        bool stepExpectingDataTimer();
+        bool stepKeepAliveTimer();
+        bool stepCancelLowerPriority();
+        bool stepNominate();
+        void stepNotifyNominated();
 
         void switchRole(ICEControls newRole);
 
         bool sendTo(
+                    const IPAddress &viaLocalIP,
                     IICESocket::Types viaTransport,
                     const IPAddress &destination,
                     const BYTE *buffer,
                     ULONG bufferLengthInBytes,
                     bool isUserData
                     );
+
+        bool canUnfreeze(CandidatePairPtr derivedPairing);
 
       protected:
         //---------------------------------------------------------------------
@@ -316,17 +355,25 @@ namespace openpeer
 
         mutable RecursiveLock mBogusLock;
 
+        AutoPUID mID;
         ICESocketSessionWeakPtr mThisWeak;
         ICESocketWeakPtr mICESocketWeak;
-        PUID mID;
 
         ICESocketSessionStates mCurrentState;
-        ICESocketSessionShutdownReasons mShutdownReason;
+        AutoWORD mLastError;
+        String mLastErrorReason;
 
         IICESocketSessionDelegatePtr mDelegate;
-        bool mInformedWriteReady;
+        AutoBool mInformedWriteReady;
 
         IICESocketSubscriptionPtr mSocketSubscription;
+
+        ICESocketSessionPtr mFoundation;
+
+        String mLocalUsernameFrag;
+        String mLocalPassword;
+        String mRemoteUsernameFrag;
+        String mRemotePassword;
 
         TimerPtr mActivateTimer;
         TimerPtr mKeepAliveTimer;
@@ -335,12 +382,14 @@ namespace openpeer
 
         ICEControls mControl;
         QWORD mConflictResolver;
-        Time mStartedSearchAt;
 
         ISTUNRequesterPtr mNominateRequester;
+        CandidatePairPtr mPendingNominatation;
         CandidatePairPtr mNominated;
+
         Time mLastSentData;
         Time mLastActivity;
+        CandidatePairPtr mLastNotifiedNominated;
 
         ISTUNRequesterPtr mAliveCheckRequester;
         Time mLastReceivedDataOrSTUN;
@@ -351,7 +400,12 @@ namespace openpeer
 
         CandidatePairList mCandidatePairs;
 
+        CandidateList mUpdatedLocalCandidates;
+        CandidateList mUpdatedRemoteCandidates;
+
+        CandidateList mLocalCandidates;
         CandidateList mRemoteCandidates;
+        AutoBool mEndOfRemoteCandidatesFlag;
       };
 
       //-----------------------------------------------------------------------
@@ -372,7 +426,10 @@ namespace openpeer
                                            IMessageQueuePtr queue,
                                            IICESocketSessionDelegatePtr delegate,
                                            ICESocketPtr socket,
-                                           ICEControls control
+                                           const char *remoteUsernameFrag,
+                                           const char *remotePassword,
+                                           ICEControls control,
+                                           IICESocketSessionPtr foundation = IICESocketSessionPtr()
                                            );
       };
 

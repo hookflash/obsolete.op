@@ -32,6 +32,8 @@
 #pragma once
 
 #include <openpeer/services/types.h>
+#include <openpeer/services/IHTTP.h>
+
 #include <zsLib/IPAddress.h>
 #include <zsLib/Proxy.h>
 #include <zsLib/String.h>
@@ -62,14 +64,12 @@ namespace openpeer
 
       enum RUDPChannelShutdownReasons
       {
-        RUDPChannelShutdownReason_None,
+        RUDPChannelShutdownReason_None                = IHTTP::HTTPStatusCode_None,
 
-        RUDPChannelShutdownReason_Closed,
-
-        RUDPChannelShutdownReason_OpenFailure,
-        RUDPChannelShutdownReason_DelegateGone,
-        RUDPChannelShutdownReason_Timeout,
-        RUDPChannelShutdownReason_IllegalStreamState,
+        RUDPChannelShutdownReason_OpenFailure         = IHTTP::HTTPStatusCode_NoResponse,
+        RUDPChannelShutdownReason_DelegateGone        = IHTTP::HTTPStatusCode_Gone,
+        RUDPChannelShutdownReason_Timeout             = IHTTP::HTTPStatusCode_RequestTimeout,
+        RUDPChannelShutdownReason_IllegalStreamState  = IHTTP::HTTPStatusCode_InternalServerError,
       };
 
       static const char *toString(RUDPChannelShutdownReasons reason);
@@ -92,10 +92,16 @@ namespace openpeer
 
       static const char *toString(CongestionAlgorithms value);
 
+      //-----------------------------------------------------------------------
+      // PURPOSE: returns a debug string containing internal object state
+      static String toDebugString(IRUDPChannelPtr channel, bool includeCommaPrefix = true);
+
       virtual PUID getID() const = 0;
 
-      virtual RUDPChannelStates getState() const = 0;
-      virtual RUDPChannelShutdownReasons getShutdownReason() const = 0;
+      virtual RUDPChannelStates getState(
+                                         WORD *outLastErrorCode = NULL,
+                                         String *outLastErrorReason = NULL
+                                         ) const = 0;
 
       //-----------------------------------------------------------------------
       // PURPOSE: This closes the session gracefully.

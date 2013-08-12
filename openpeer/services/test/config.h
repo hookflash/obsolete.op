@@ -36,12 +36,13 @@
 
 #define OPENPEER_SERVICE_TEST_FIFO_LOGGING_FILE "/tmp/openpeer.fifo"
 
-#define OPENPEER_SERVICE_TEST_USE_STDOUT_LOGGING     (true)
+#define OPENPEER_SERVICE_TEST_USE_STDOUT_LOGGING     (false)
 #define OPENPEER_SERVICE_TEST_USE_FIFO_LOGGING       (false)
 #define OPENPEER_SERVICE_TEST_USE_TELNET_LOGGING     (true)
 #define OPENPEER_SERVICE_TEST_USE_DEBUGGER_LOGGING   (true)
 
-#define OPENPEER_SERVICE_TEST_TELNET_LOGGING_PORT    (59999)
+#define OPENPEER_SERVICE_TEST_TELNET_LOGGING_PORT         (59999)
+#define OPENPEER_SERVICE_TEST_TELNET_SERVER_LOGGING_PORT  (51999)
 
 #define OPENPEER_SERVICE_TEST_DO_CANONICAL_XML_TEST                    (true)
 #define OPENPEER_SERVICE_TEST_DO_DNS_TEST                              (false)
@@ -50,7 +51,7 @@
 #define OPENPEER_SERVICE_TEST_DO_TURN_TEST                             (false)
 #define OPENPEER_SERVICE_TEST_DO_RUDPICESOCKET_LOOPBACK_TEST           (false)
 #define OPENPEER_SERVICE_TEST_DO_RUDPICESOCKET_CLIENT_TO_SERVER_TEST   (false)
-#define OPENPEER_SERVICE_TEST_DO_TCP_MESSAGING_TEST                    (true)
+#define OPENPEER_SERVICE_TEST_DO_TCP_MESSAGING_TEST                    (false)
 
 #define OPENPEER_SERVICE_TEST_DNS_ZONE "dnstest.hookflash.me"
 
@@ -59,14 +60,17 @@
 #define OPENPEER_SERVICE_TEST_RUDP_SERVER_IP                           "192.168.2.220"
 #define OPENPEER_SERVICE_TEST_RUDP_SERVER_PORT                         50000
 
-#define OPENPEER_SERVICE_TEST_DNS_PROVIDER_RESOLVES_BOGUS_DNS_A_RECORDS    (true)
+#define OPENPEER_SERVICE_TEST_DNS_PROVIDER_RESOLVES_BOGUS_DNS_A_RECORDS    (false)
 #define OPENPEER_SERVICE_TEST_DNS_PROVIDER_RESOLVES_BOGUS_DNS_AAAA_RECORDS (false)
 
 #define OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN   "dnstest.hookflash.me"
 #define OPENPEER_SERVICE_TEST_TURN_USERNAME        "toto"
 #define OPENPEER_SERVICE_TEST_TURN_PASSWORD        "toto"
 
-#define OPENPEER_SERVICE_TEST_STUN_SERVER          "counterpath.com"
+#define OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN_VIA_A_RECORD_1   "turn1.dnstest.hookflash.me"
+#define OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN_VIA_A_RECORD_2   "turn2.dnstest.hookflash.me"
+
+#define OPENPEER_SERVICE_TEST_STUN_SERVER         "stun.vline.com"
 // This should be set to value based on http://www.whatismyip.com/ to get your current IP address
 #define OPENPEER_SERVICE_TEST_WHAT_IS_MY_IP        "99.224.17.234"
 

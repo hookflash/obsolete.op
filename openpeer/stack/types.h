@@ -68,6 +68,7 @@ namespace openpeer
     using zsLib::XML::NodePtr;
     using services::IHTTP;
 
+    using services::IICESocket;
     using services::IRSAPrivateKey;
     using services::IRSAPrivateKeyPtr;
     using services::IRSAPublicKey;
@@ -77,12 +78,43 @@ namespace openpeer
     typedef boost::shared_ptr<SecureByteBlock> SecureByteBlockPtr;
     typedef boost::weak_ptr<SecureByteBlock> SecureByteBlockWeakPtr;
 
-    typedef openpeer::services::IICESocket::CandidateList CandidateList;
-    typedef openpeer::services::IICESocket::Candidate Candidate;
-
     interaction ILocation;
     typedef boost::shared_ptr<ILocation> ILocationPtr;
     typedef boost::weak_ptr<ILocation> ILocationWeakPtr;
+
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    #pragma mark
+    #pragma mark Candidate
+    #pragma mark
+
+    struct Candidate : public IICESocket::Candidate
+    {
+      String mClass;
+      String mTransport;
+
+      String mAccessToken;
+      String mAccessSecretProof;
+
+      Candidate();
+      Candidate(const Candidate &candidate);
+      Candidate(const IICESocket::Candidate &candidate);
+      bool hasData() const;
+      String getDebugValueString(bool includeCommaPrefix = true) const;
+    };
+    typedef boost::shared_ptr<Candidate> CandidatePtr;
+    typedef boost::weak_ptr<Candidate> CandidateWeakPtr;
+    typedef std::list<Candidate> CandidateList;
+
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    //-----------------------------------------------------------------------
+    #pragma mark
+    #pragma mark LocationInfo
+    #pragma mark
 
     struct LocationInfo
     {

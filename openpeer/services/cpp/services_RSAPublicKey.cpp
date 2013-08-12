@@ -52,7 +52,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
       typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
 
       typedef CryptoPP::ByteQueue ByteQueue;
@@ -273,7 +272,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String RSAPublicKey::log(const char *message) const
       {
-        return String("RSAPublicKey [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("RSAPublicKey [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------

@@ -63,19 +63,19 @@
 		000CC06017A570640075E86C /* services_MessageLayerSecurityChannel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_MessageLayerSecurityChannel.cpp; sourceTree = "<group>"; };
 		003BEE0317A6DE3F0002EB47 /* ITransportStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ITransportStream.h; sourceTree = "<group>"; };
 		003BEE0417A6F4CC0002EB47 /* services_TransportStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = services_TransportStream.h; sourceTree = "<group>"; };
-		003BEE0517A6F4F80002EB47 /* services_TransportStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_TransportStream.cpp; sourceTree = "<group>"; };
+		003BEE0517A6F4F80002EB47 /* services_TransportStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = services_TransportStream.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		003BEEE417A7E87B0002EB47 /* ITCPMessaging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ITCPMessaging.h; sourceTree = "<group>"; };
 		0095DC1516CA8802005F53D3 /* libhfservices_ios.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libhfservices_ios.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		0095DC8B16CA8A16005F53D3 /* services_CanonicalXML.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_CanonicalXML.cpp; sourceTree = "<group>"; };
-		0095DC8C16CA8A16005F53D3 /* services_DNS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_DNS.cpp; sourceTree = "<group>"; };
+		0095DC8C16CA8A16005F53D3 /* services_DNS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = services_DNS.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		0095DC8D16CA8A16005F53D3 /* services_DNSMonitor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_DNSMonitor.cpp; sourceTree = "<group>"; };
 		0095DC8E16CA8A16005F53D3 /* services_Factory.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_Factory.cpp; sourceTree = "<group>"; };
 		0095DC8F16CA8A16005F53D3 /* services_Helper.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_Helper.cpp; sourceTree = "<group>"; };
 		0095DC9016CA8A16005F53D3 /* services_HTTP.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_HTTP.cpp; sourceTree = "<group>"; };
 		0095DC9116CA8A16005F53D3 /* services_ICESocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_ICESocket.cpp; sourceTree = "<group>"; };
 		0095DC9216CA8A16005F53D3 /* services_ICESocketSession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_ICESocketSession.cpp; sourceTree = "<group>"; };
-		0095DC9316CA8A16005F53D3 /* services_RUDPChannel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_RUDPChannel.cpp; sourceTree = "<group>"; };
-		0095DC9416CA8A16005F53D3 /* services_RUDPChannelStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_RUDPChannelStream.cpp; sourceTree = "<group>"; };
+		0095DC9316CA8A16005F53D3 /* services_RUDPChannel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = services_RUDPChannel.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
+		0095DC9416CA8A16005F53D3 /* services_RUDPChannelStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = services_RUDPChannelStream.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		0095DC9516CA8A16005F53D3 /* services_RUDPICESocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_RUDPICESocket.cpp; sourceTree = "<group>"; };
 		0095DC9616CA8A16005F53D3 /* services_RUDPICESocketSession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_RUDPICESocketSession.cpp; sourceTree = "<group>"; };
 		0095DC9716CA8A16005F53D3 /* services_RUDPListener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_RUDPListener.cpp; sourceTree = "<group>"; };
@@ -86,7 +86,7 @@
 		0095DC9C16CA8A16005F53D3 /* services_STUNPacket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_STUNPacket.cpp; sourceTree = "<group>"; };
 		0095DC9D16CA8A16005F53D3 /* services_STUNRequester.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_STUNRequester.cpp; sourceTree = "<group>"; };
 		0095DC9E16CA8A16005F53D3 /* services_STUNRequesterManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_STUNRequesterManager.cpp; sourceTree = "<group>"; };
-		0095DC9F16CA8A16005F53D3 /* services_TURNSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_TURNSocket.cpp; sourceTree = "<group>"; };
+		0095DC9F16CA8A16005F53D3 /* services_TURNSocket.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = services_TURNSocket.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		0095DCA016CA8A16005F53D3 /* ICanonicalXML.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ICanonicalXML.h; sourceTree = "<group>"; };
 		0095DCA116CA8A16005F53D3 /* IDNS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IDNS.h; sourceTree = "<group>"; };
 		0095DCA216CA8A16005F53D3 /* IHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IHelper.h; sourceTree = "<group>"; };
@@ -129,7 +129,7 @@
 		0095DCC816CA8A16005F53D3 /* STUNPacket.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = STUNPacket.h; sourceTree = "<group>"; };
 		0095DCD616CA8A16005F53D3 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
 		00ABD40817A7FFA700178078 /* services_TCPMessaging.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = services_TCPMessaging.h; sourceTree = "<group>"; };
-		00ABD40917A7FFE700178078 /* services_TCPMessaging.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = services_TCPMessaging.cpp; sourceTree = "<group>"; };
+		00ABD40917A7FFE700178078 /* services_TCPMessaging.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = services_TCPMessaging.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		00FF147917AABDEC00F5DEB8 /* IWakeDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IWakeDelegate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 

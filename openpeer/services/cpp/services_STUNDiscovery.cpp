@@ -48,8 +48,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
-
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -311,7 +309,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String STUNDiscovery::log(const char *message) const
       {
-        return String("STUNDiscovery [") + Stringize<PUID>(mID).string() + "] " + message;
+        return String("STUNDiscovery [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------

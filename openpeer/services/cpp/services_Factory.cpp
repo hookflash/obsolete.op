@@ -203,10 +203,11 @@ namespace openpeer
                                              const char *turnServerPassword,
                                              const char *stunServer,
                                              WORD port,
-                                             bool firstWORDInAnyPacketWillNotConflictWithTURNChannels
+                                             bool firstWORDInAnyPacketWillNotConflictWithTURNChannels,
+                                             IICESocketPtr foundationSocket
                                              )
       {
-        return internal::ICESocket::create(queue, delegate, turnServer, turnServerUsername, turnServerPassword, stunServer, port, firstWORDInAnyPacketWillNotConflictWithTURNChannels);
+        return internal::ICESocket::create(queue, delegate, turnServer, turnServerUsername, turnServerPassword, stunServer, port, firstWORDInAnyPacketWillNotConflictWithTURNChannels, foundationSocket);
       }
 
       //-----------------------------------------------------------------------
@@ -219,10 +220,11 @@ namespace openpeer
                                              const char *turnServerPassword,
                                              IDNS::SRVResultPtr srvSTUN,
                                              WORD port,
-                                             bool firstWORDInAnyPacketWillNotConflictWithTURNChannels
+                                             bool firstWORDInAnyPacketWillNotConflictWithTURNChannels,
+                                             IICESocketPtr foundationSocket
                                              )
       {
-        return internal::ICESocket::create(queue, delegate, srvTURNUDP, srvTURNTCP, turnServerUsername, turnServerPassword, srvSTUN, port, firstWORDInAnyPacketWillNotConflictWithTURNChannels);
+        return internal::ICESocket::create(queue, delegate, srvTURNUDP, srvTURNTCP, turnServerUsername, turnServerPassword, srvSTUN, port, firstWORDInAnyPacketWillNotConflictWithTURNChannels, foundationSocket);
       }
 
       //-----------------------------------------------------------------------
@@ -244,12 +246,15 @@ namespace openpeer
                                                            IMessageQueuePtr queue,
                                                            IICESocketSessionDelegatePtr delegate,
                                                            ICESocketPtr socket,
-                                                           ICEControls control
+                                                           const char *remoteUsernameFrag,
+                                                           const char *remotePassword,
+                                                           ICEControls control,
+                                                           IICESocketSessionPtr foundation
                                                            )
       {
-        return internal::ICESocketSession::create(queue, delegate, socket, control);
+        return internal::ICESocketSession::create(queue, delegate, socket, remoteUsernameFrag, remotePassword, control, foundation);
       }
-      
+
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -347,14 +352,14 @@ namespace openpeer
                                                                                 const IPAddress &remoteIP,
                                                                                 WORD incomingChannelNumber,
                                                                                 const char *localUserFrag,
-                                                                                const char *remoteUserFrag,
                                                                                 const char *localPassword,
+                                                                                const char *remoteUserFrag,
                                                                                 const char *remotePassword,
                                                                                 STUNPacketPtr channelOpenPacket,
                                                                                 STUNPacketPtr &outResponse
                                                                                 )
       {
-        return RUDPChannel::createForRUDPICESocketSessionIncoming(queue, master, remoteIP, incomingChannelNumber, localUserFrag, remoteUserFrag, localPassword, remotePassword, channelOpenPacket, outResponse);
+        return RUDPChannel::createForRUDPICESocketSessionIncoming(queue, master, remoteIP, incomingChannelNumber, localUserFrag, localPassword, remoteUserFrag, remotePassword, channelOpenPacket, outResponse);
       }
 
       //-----------------------------------------------------------------------
@@ -365,13 +370,13 @@ namespace openpeer
                                                                                 const IPAddress &remoteIP,
                                                                                 WORD incomingChannelNumber,
                                                                                 const char *localUserFrag,
-                                                                                const char *remoteUserFrag,
                                                                                 const char *localPassword,
+                                                                                const char *remoteUserFrag,
                                                                                 const char *remotePassword,
                                                                                 const char *connectionInfo
                                                                                 )
       {
-        return RUDPChannel::createForRUDPICESocketSessionOutgoing(queue, master, delegate, remoteIP, incomingChannelNumber, localUserFrag, remoteUserFrag, localPassword, remotePassword, connectionInfo);
+        return RUDPChannel::createForRUDPICESocketSessionOutgoing(queue, master, delegate, remoteIP, incomingChannelNumber, localUserFrag, localPassword, remoteUserFrag, remotePassword, connectionInfo);
       }
 
       //-----------------------------------------------------------------------
@@ -477,11 +482,13 @@ namespace openpeer
                                                                    IMessageQueuePtr queue,
                                                                    RUDPICESocketPtr parent,
                                                                    IRUDPICESocketSessionDelegatePtr delegate,
+                                                                   const char *remoteUsernameFrag,
+                                                                   const char *remotePassword,
                                                                    const CandidateList &remoteCandidates,
                                                                    ICEControls control
                                                                    )
       {
-        return RUDPICESocketSession::create(queue, parent, delegate, remoteCandidates, control);
+        return RUDPICESocketSession::create(queue, parent, delegate, remoteUsernameFrag, remotePassword, remoteCandidates, control);
       }
 
       //-----------------------------------------------------------------------

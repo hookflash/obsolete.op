@@ -43,8 +43,74 @@ namespace openpeer
   namespace stack
   {
     using internal::Helper;
-    using zsLib::Stringize;
+    using zsLib::string;
 
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark Candidate
+    #pragma mark
+
+    //-------------------------------------------------------------------------
+    Candidate::Candidate() :
+      IICESocket::Candidate()
+    {
+    }
+
+    //-------------------------------------------------------------------------
+    Candidate::Candidate(const Candidate &candidate) :
+      IICESocket::Candidate(candidate)
+    {
+      mClass = candidate.mClass;
+      mTransport = candidate.mTransport;
+
+      mAccessToken = candidate.mAccessToken;
+      mAccessSecretProof = candidate.mAccessSecretProof;
+    }
+
+    //-------------------------------------------------------------------------
+    Candidate::Candidate(const IICESocket::Candidate &candidate) :
+      IICESocket::Candidate(candidate)
+    {
+    }
+
+    //-------------------------------------------------------------------------
+    bool Candidate::hasData() const
+    {
+      bool hasData = IICESocket::Candidate::hasData();
+      if (hasData) return true;
+
+      return ((mClass.hasData()) ||
+              (mTransport.hasData()) ||
+              (mAccessToken.hasData()) ||
+              (mAccessSecretProof.hasData()));
+    }
+
+    //-------------------------------------------------------------------------
+    String Candidate::getDebugValueString(bool includeCommaPrefix) const
+    {
+      bool firstTime = false;
+      String result = IICESocket::Candidate::toDebugString(includeCommaPrefix);
+
+      return
+      result +
+      Helper::getDebugValue("class", mClass, firstTime) +
+      Helper::getDebugValue("transport", mTransport, firstTime) +
+      Helper::getDebugValue("access token", mAccessToken, firstTime) +
+      Helper::getDebugValue("access secret proof", mAccessSecretProof, firstTime);
+    }
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark LocationInfo
+    #pragma mark
+
+    //-------------------------------------------------------------------------
     bool LocationInfo::hasData() const
     {
       return (((bool)mLocation) ||
@@ -57,6 +123,7 @@ namespace openpeer
               (mCandidates.size() > 0));
     }
 
+    //-------------------------------------------------------------------------
     String LocationInfo::getDebugValueString(bool includeCommaPrefix) const
     {
       bool firstTime = false;
@@ -67,7 +134,7 @@ namespace openpeer
              Helper::getDebugValue("os", mOS, firstTime) +
              Helper::getDebugValue("system", mSystem, firstTime) +
              Helper::getDebugValue("host", mHost, firstTime) +
-             Helper::getDebugValue("candidates", mCandidates.size() > 0 ? Stringize<size_t>(mCandidates.size()).string() : String(), firstTime);
+             Helper::getDebugValue("candidates", mCandidates.size() > 0 ? string(mCandidates.size()) : String(), firstTime);
     }
   }
 }

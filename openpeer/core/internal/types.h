@@ -33,6 +33,8 @@
 
 #include <openpeer/core/internal/types.h>
 #include <openpeer/core/types.h>
+#include <openpeer/stack/types.h>
+#include <openpeer/stack/message/types.h>
 #include <openpeer/services/types.h>
 
 namespace openpeer
@@ -41,6 +43,7 @@ namespace openpeer
   {
     namespace internal
     {
+      using zsLib::string;
       using zsLib::Noop;
       using zsLib::BYTE;
       using zsLib::CSTR;
@@ -74,6 +77,8 @@ namespace openpeer
       using zsLib::XML::Generator;
       using zsLib::XML::GeneratorPtr;
 
+      using stack::Candidate;
+      using stack::CandidateList;
       using stack::AutoRecursiveLockPtr;
       using stack::IBootstrappedNetwork;
       using stack::IBootstrappedNetworkPtr;
@@ -123,6 +128,8 @@ namespace openpeer
       using stack::IServiceNamespaceGrantSession;
       using stack::IServiceNamespaceGrantSessionPtr;
       using stack::IServiceNamespaceGrantSessionDelegate;
+
+      using stack::message::IdentityInfo;
 
       using services::IICESocket;
       using services::IICESocketPtr;

@@ -68,6 +68,25 @@ namespace openpeer
                                            String *outFullPublicKey = NULL,
                                            String *outFingerprint = NULL
                                            );
+
+        static void convert(
+                            const CandidateList &input,
+                            IICESocket::CandidateList &output
+                            );
+        static void convert(
+                            const IICESocket::CandidateList &input,
+                            CandidateList &output
+                            );
+
+        static String splitEncrypt(
+                                   SecureByteBlock &key,
+                                   SecureByteBlock &value
+                                   );
+
+        static SecureByteBlockPtr splitDecrypt(
+                                               SecureByteBlock &key,
+                                               const char *hexIVAndBase64EncodedData
+                                               );
       };
     }
   }

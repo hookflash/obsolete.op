@@ -96,6 +96,15 @@ namespace openpeer
                          ElementPtr inRoot,
                          IMessageSourcePtr fromSource
                          );
+
+        static ElementPtr createElement(const Candidate &candidate,
+                                        const char *encryptionPassphrase = NULL
+                                        );
+
+        static Candidate createCandidate(
+                                         ElementPtr elem,
+                                         const char *encryptionPassphrase = NULL
+                                         );
       };
     }
   }

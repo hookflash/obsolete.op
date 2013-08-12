@@ -58,6 +58,8 @@ namespace openpeer
           {
             Method_Invalid = Message::Method_Invalid,
 
+            Method_ChannelMap,
+
             Method_SessionKeepAlive,
             Method_SessionCreate,
             Method_SessionDelete,

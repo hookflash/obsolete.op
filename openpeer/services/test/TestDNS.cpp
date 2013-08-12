@@ -274,6 +274,8 @@ void doTestDNS()
 
   BOOST_INSTALL_LOGGER();
 
+  boost::this_thread::sleep(zsLib::Seconds(1));
+
   TestDNSFactoryPtr overrideFactory(new TestDNSFactory);
 
   openpeer::services::internal::Factory::override(overrideFactory);

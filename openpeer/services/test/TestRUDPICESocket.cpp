@@ -161,9 +161,12 @@ namespace openpeer
 
               mSocketSession = mSocket->createSessionFromRemoteCandidates(
                                                                           mThisWeak.lock(),
+                                                                          "serverUsernameFrag",
+                                                                          NULL,
                                                                           candidates,
                                                                           IICESocket::ICEControl_Controlling
                                                                           );
+              mSocketSession->endOfRemoteCandidates();
               break;
             }
             case IRUDPICESocket::RUDPICESocketState_Shutdown:
@@ -173,6 +176,11 @@ namespace openpeer
             }
             default: break;
           }
+        }
+        
+        virtual void onRUDPICESocketCandidatesChanged(IRUDPICESocketPtr socket)
+        {
+          // ignored
         }
 
         virtual void onRUDPICESocketSessionStateChanged(
@@ -296,7 +304,7 @@ void doTestRUDPICESocket()
       if (totalWait >= (10*60))
         break;
 
-      if ((5*60) == totalWait) {
+      if ((4*60 + 50) == totalWait) {
         testObject1->shutdown();
       }
 

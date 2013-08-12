@@ -81,25 +81,40 @@ namespace openpeer
       struct Candidate
       {
         Types     mType;
+        String    mFoundation;
         IPAddress mIPAddress;
         DWORD     mPriority;
         WORD      mLocalPreference;  // fill with "0" if unknown
-        String    mUsernameFrag;
-        String    mPassword;
-        String    mProtocol;
+
+        IPAddress mRelatedIP;         // if server reflexive, peer reflexive or relayed, the related base IP
 
         Candidate(): mType(Type_Unknown), mPriority(0), mLocalPreference(0) {}
+        bool hasData() const;
         String toDebugString(bool includeCommaPrefix = true) const;
       };
+
+      typedef std::list<Candidate> CandidateList;
+      static void compare(
+                          const CandidateList &inOldCandidatesList,
+                          const CandidateList &inNewCandidatesList,
+                          CandidateList &outAddedCandidates,
+                          CandidateList &outRemovedCandidates
+                          );
 
       enum ICEControls
       {
         ICEControl_Controlling,
-        ICEControl_Controlled
+        ICEControl_Controlled,
       };
 
-      typedef std::list<Candidate> CandidateList;
+      static const char *toString(ICEControls control);
+      
+      //-----------------------------------------------------------------------
+      // PURPOSE: returns a debug string containing internal object state
+      static String toDebugString(IICESocketPtr socket, bool includeCommaPrefix = true);
 
+      //-----------------------------------------------------------------------
+      // PURPOSE: creates a socket and resolves STUN/TURN servers
       static IICESocketPtr create(
                                   IMessageQueuePtr queue,
                                   IICESocketDelegatePtr delegate,
@@ -108,9 +123,13 @@ namespace openpeer
                                   const char *turnServerPassword,
                                   const char *stunServer,
                                   WORD port = 0,
-                                  bool firstWORDInAnyPacketWillNotConflictWithTURNChannels = false
+                                  bool firstWORDInAnyPacketWillNotConflictWithTURNChannels = false,
+                                  IICESocketPtr foundationSocket = IICESocketPtr()
                                   );
 
+      //-----------------------------------------------------------------------
+      // PURPOSE: creates a socket using existing resolved STUN/TURN SRV
+      //          results.
       static IICESocketPtr create(
                                   IMessageQueuePtr queue,
                                   IICESocketDelegatePtr delegate,
@@ -120,18 +139,32 @@ namespace openpeer
                                   const char *turnServerPassword,
                                   IDNS::SRVResultPtr srvSTUN,
                                   WORD port = 0,
-                                  bool firstWORDInAnyPacketWillNotConflictWithTURNChannels = false
+                                  bool firstWORDInAnyPacketWillNotConflictWithTURNChannels = false,
+                                  IICESocketPtr foundationSocket = IICESocketPtr()
                                   );
 
-      virtual PUID getID() const = 0;
-
       //-----------------------------------------------------------------------
-      // PURPOSE: Gets the current state of the object
-      virtual ICESocketStates getState() const = 0;
+      // PURPOSE: returns the unique object ID
+      virtual PUID getID() const = 0;
 
       //-----------------------------------------------------------------------
       // PURPOSE: Subscribe to the current socket state.
       virtual IICESocketSubscriptionPtr subscribe(IICESocketDelegatePtr delegate) = 0;
+
+      //-----------------------------------------------------------------------
+      // PURPOSE: Gets the current state of the object
+      virtual ICESocketStates getState(
+                                       WORD *outLastErrorCode = NULL,
+                                       String *outLastErrorReason = NULL
+                                       ) const = 0;
+
+      //-----------------------------------------------------------------------
+      // PURPOSE: Gets the ICE username fragment
+      virtual String getUsernameFrag() const = 0;
+
+      //-----------------------------------------------------------------------
+      // PURPOSE: Gets the ICE password
+      virtual String getPassword() const = 0;
 
       //-----------------------------------------------------------------------
       // PURPOSE: Close the socket and cause all sessions to become closed.
@@ -148,12 +181,6 @@ namespace openpeer
       virtual void wakeup(Duration minimumTimeCandidatesMustRemainValidWhileNotUsed = Seconds(OPENPEER_SERVICES_IICESOCKET_DEFAULT_HOW_LONG_CANDIDATES_MUST_REMAIN_VALID_IN_SECONDS)) = 0;
 
       //-----------------------------------------------------------------------
-      // PURPOSE: Base all the usernames/passwords upon the foundation socket
-      // NOTE:    Must be called before "getLocalCandidates" or creating
-      //          an ICE socket session to work.
-      virtual void setFoundation(IICESocketPtr foundationSocket) = 0;
-
-      //-----------------------------------------------------------------------
       // PURPOSE: Gets a local list of offered candidates
       virtual void getLocalCandidates(CandidateList &outCandidates) = 0;
 
@@ -162,26 +189,16 @@ namespace openpeer
       //          candidates are already known.
       virtual IICESocketSessionPtr createSessionFromRemoteCandidates(
                                                                      IICESocketSessionDelegatePtr delegate,
+                                                                     const char *remoteUsernameFrag,
+                                                                     const char *remotePassword,
                                                                      const CandidateList &remoteCandidates,
-                                                                     ICEControls control
+                                                                     ICEControls control,
+                                                                     IICESocketSessionPtr foundation = IICESocketSessionPtr()
                                                                      ) = 0;
 
       //-----------------------------------------------------------------------
       // PURPOSE: Enable or disable write ready notifications on all sessions
       virtual void monitorWriteReadyOnAllSessions(bool monitor = true) = 0;
-    };
-
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    //-------------------------------------------------------------------------
-    #pragma mark
-    #pragma mark IICESocketSubscription
-    #pragma mark
-
-    interaction IICESocketSubscription
-    {
-      virtual void cancel() = 0;
     };
 
     //-------------------------------------------------------------------------
@@ -201,10 +218,36 @@ namespace openpeer
                                            IICESocketPtr socket,
                                            ICESocketStates state
                                            ) = 0;
+
+      virtual void onICESocketCandidatesChanged(IICESocketPtr socket) = 0;
     };
+
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
+    #pragma mark
+    #pragma mark IICESocketSubscription
+    #pragma mark
+
+    interaction IICESocketSubscription
+    {
+      virtual PUID getID() const = 0;
+
+      virtual void cancel() = 0;
+
+      virtual void background() = 0;
+    };
+    
   }
 }
 
 ZS_DECLARE_PROXY_BEGIN(openpeer::services::IICESocketDelegate)
 ZS_DECLARE_PROXY_METHOD_2(onICESocketStateChanged, openpeer::services::IICESocketPtr, openpeer::services::IICESocketDelegate::ICESocketStates)
+ZS_DECLARE_PROXY_METHOD_1(onICESocketCandidatesChanged, openpeer::services::IICESocketPtr)
 ZS_DECLARE_PROXY_END()
+
+ZS_DECLARE_PROXY_SUBSCRIPTIONS_BEGIN(openpeer::services::IICESocketDelegate, openpeer::services::IICESocketSubscription)
+ZS_DECLARE_PROXY_SUBSCRIPTIONS_METHOD_2(onICESocketStateChanged, openpeer::services::IICESocketPtr, openpeer::services::IICESocketDelegate::ICESocketStates)
+ZS_DECLARE_PROXY_SUBSCRIPTIONS_METHOD_1(onICESocketCandidatesChanged, openpeer::services::IICESocketPtr)
+ZS_DECLARE_PROXY_SUBSCRIPTIONS_END()

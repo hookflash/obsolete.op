@@ -65,9 +65,9 @@ namespace openpeer
                                                                     IRUDPChannelDelegateForSessionAndListenerPtr master,
                                                                     const IPAddress &remoteIP,
                                                                     WORD incomingChannelNumber,
-                                                                    const char *localUserFrag,
-                                                                    const char *remoteUserFrag,
+                                                                    const char *localUsernameFrag,
                                                                     const char *localPassword,
+                                                                    const char *remoteUsernameFrag,
                                                                     const char *remotePassword,
                                                                     STUNPacketPtr channelOpenPacket,
                                                                     STUNPacketPtr &outResponse
@@ -79,9 +79,9 @@ namespace openpeer
                                                                     IRUDPChannelDelegatePtr delegate,
                                                                     const IPAddress &remoteIP,
                                                                     WORD incomingChannelNumber,
-                                                                    const char *localUserFrag,
-                                                                    const char *remoteUserFrag,
+                                                                    const char *localUsernameFrag,
                                                                     const char *localPassword,
+                                                                    const char *remoteUsernameFrag,
                                                                     const char *remotePassword,
                                                                     const char *connectionInfo
                                                                     );
@@ -175,6 +175,7 @@ namespace openpeer
       {
       public:
         friend interaction IRUDPChannelFactory;
+        friend interaction IRUDPChannel;
 
         typedef PUID ACKRequestID;
         typedef std::map<ACKRequestID, ISTUNRequesterPtr> ACKRequestMap;
@@ -188,8 +189,8 @@ namespace openpeer
                     IRUDPChannelDelegateForSessionAndListenerPtr master,
                     const IPAddress &remoteIP,
                     const char *localUserFrag,
-                    const char *remoteUserFrag,
                     const char *localPassword,
+                    const char *remoteUserFrag,
                     const char *remotePassword,
                     DWORD minimumRTT,
                     DWORD lifetime,
@@ -207,16 +208,22 @@ namespace openpeer
       public:
         ~RUDPChannel();
 
+        static RUDPChannelPtr convert(IRUDPChannelPtr channel);
+
       protected:
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark RUDPChannel => IRUDPChannel
         #pragma mark
 
+        static String toDebugString(IRUDPChannelPtr channel, bool includeCommaPrefix = true);
+
         virtual PUID getID() const {return mID;}
 
-        virtual RUDPChannelStates getState() const;
-        virtual RUDPChannelShutdownReasons getShutdownReason() const;
+        virtual RUDPChannelStates getState(
+                                           WORD *outLastErrorCode = NULL,
+                                           String *outLastErrorReason = NULL
+                                           ) const;
 
         virtual void shutdown();
 
@@ -248,8 +255,8 @@ namespace openpeer
                                                                     const IPAddress &remoteIP,
                                                                     WORD incomingChannelNumber,
                                                                     const char *localUserFrag,
-                                                                    const char *remoteUserFrag,
                                                                     const char *localPassword,
+                                                                    const char *remoteUserFrag,
                                                                     const char *remotePassword,
                                                                     STUNPacketPtr channelOpenPacket,
                                                                     STUNPacketPtr &outResponse
@@ -262,8 +269,8 @@ namespace openpeer
                                                                     const IPAddress &remoteIP,
                                                                     WORD incomingChannelNumber,
                                                                     const char *localUserFrag,
-                                                                    const char *remoteUserFrag,
                                                                     const char *localPassword,
+                                                                    const char *remoteUserFrag,
                                                                     const char *remotePassword,
                                                                     const char *connectionInfo
                                                                     );
@@ -399,11 +406,13 @@ namespace openpeer
         bool isShuttingDown() {return RUDPChannelState_ShuttingDown == mCurrentState;}
         bool isShutdown() {return RUDPChannelState_Shutdown == mCurrentState;}
 
+        virtual String getDebugValueString(bool includeCommaPrefix = true) const;
+
         void cancel(bool waitForAllDataToSend);
         void step();
 
         void setState(RUDPChannelStates state);
-        void setShutdownReason(RUDPChannelShutdownReasons reason);
+        void setError(WORD errorCode, const char *inReason = NULL);
 
         bool isValidIntegrity(STUNPacketPtr stun);
         void fillCredentials(STUNPacketPtr &outSTUN);
@@ -422,26 +431,27 @@ namespace openpeer
         #pragma mark RUDPChannel => (data)
         #pragma mark
 
+        AutoPUID mID;
         mutable RecursiveLock mLock;
         RUDPChannelWeakPtr mThisWeak;
         RUDPChannelPtr mGracefulShutdownReference;
-        PUID mID;
 
-        bool mIncoming;
+        AutoBool mIncoming;
 
         RUDPChannelStates mCurrentState;
-        RUDPChannelShutdownReasons mShutdownReason;
+        AutoWORD mLastError;
+        String mLastErrorReason;
 
         IRUDPChannelDelegatePtr mDelegate;
         IRUDPChannelDelegateForSessionAndListenerPtr mMasterDelegate;
 
-        bool mInformedReadReady;
-        bool mInformedWriteReady;
+        AutoBool mInformedReadReady;
+        AutoBool mInformedWriteReady;
 
         IRUDPChannelStreamPtr mStream;
         ISTUNRequesterPtr mOpenRequest;
         ISTUNRequesterPtr mShutdownRequest;
-        bool mSTUNRequestPreviouslyTimedOut;    // if true then no need issue a "close" STUN request if a STUN request has previously timed out
+        AutoBool mSTUNRequestPreviouslyTimedOut;    // if true then no need issue a "close" STUN request if a STUN request has previously timed out
 
         TimerPtr mTimer;
 
@@ -450,8 +460,8 @@ namespace openpeer
         IPAddress mRemoteIP;
 
         String mLocalUsernameFrag;
-        String mRemoteUsernameFrag;
         String mLocalPassword;
+        String mRemoteUsernameFrag;
         String mRemotePassword;
 
         String mRealm;
@@ -519,8 +529,8 @@ namespace openpeer
                                                                      const IPAddress &remoteIP,
                                                                      WORD incomingChannelNumber,
                                                                      const char *localUserFrag,
-                                                                     const char *remoteUserFrag,
                                                                      const char *localPassword,
+                                                                     const char *remoteUserFrag,
                                                                      const char *remotePassword,
                                                                      STUNPacketPtr channelOpenPacket,
                                                                      STUNPacketPtr &outResponse
@@ -533,8 +543,8 @@ namespace openpeer
                                                                      const IPAddress &remoteIP,
                                                                      WORD incomingChannelNumber,
                                                                      const char *localUserFrag,
-                                                                     const char *remoteUserFrag,
                                                                      const char *localPassword,
+                                                                     const char *remoteUserFrag,
                                                                      const char *remotePassword,
                                                                      const char *connectionInfo
                                                                      );

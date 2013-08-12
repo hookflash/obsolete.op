@@ -83,8 +83,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
-
       using services::IHelper;
       using services::IWakeDelegateProxy;
 
@@ -136,7 +134,6 @@ namespace openpeer
                                    AccountPtr outer
                                    ) :
         MessageQueueAssociator(queue),
-        mID(zsLib::createPUID()),
         mDelegate(IAccountFinderDelegateProxy::createWeak(IStackForInternal::queueStack(), delegate)),
         mOuter(outer),
         mCurrentState(IAccount::AccountState_Pending)
@@ -327,8 +324,17 @@ namespace openpeer
                                                       )
       {
         ZS_LOG_DEBUG(log("notified RUDP ICE socket state changed"))
-        AutoRecursiveLock lock(getLock());
 
+        AutoRecursiveLock lock(getLock());
+        step();
+      }
+
+      //-----------------------------------------------------------------------
+      void AccountFinder::onRUDPICESocketCandidatesChanged(IRUDPICESocketPtr socket)
+      {
+        ZS_LOG_DEBUG(log("notified RUDP ICE socket candidates changed"))
+
+        AutoRecursiveLock lock(getLock());
         step();
       }
 
@@ -695,7 +701,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String AccountFinder::log(const char *message) const
       {
-        return String("AccountFinder [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("AccountFinder [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -703,11 +709,11 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("finder id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("finder id", string(mID), firstTime) +
                Helper::getDebugValue("state", IAccount::toString(mCurrentState), firstTime) +
-               Helper::getDebugValue("rudp ice socket subscription id", mSocketSubscription ? Stringize<typeof(PUID)>(mSocketSubscription->getID()).string() : String(), firstTime) +
-               Helper::getDebugValue("rudp ice socket session id", mSocketSession ? Stringize<typeof(PUID)>(mSocketSession->getID()).string() : String(), firstTime) +
-               Helper::getDebugValue("rudp messagine id", mMessaging ? Stringize<typeof(PUID)>(mMessaging->getID()).string() : String(), firstTime) +
+               Helper::getDebugValue("rudp ice socket subscription id", mSocketSubscription ? string(mSocketSubscription->getID()) : String(), firstTime) +
+               Helper::getDebugValue("rudp ice socket session id", mSocketSession ? string(mSocketSession->getID()) : String(), firstTime) +
+               Helper::getDebugValue("rudp messagine id", mMessaging ? string(mMessaging->getID()) : String(), firstTime) +
                mFinder.getDebugValueString() +
                Helper::getDebugValue("finder IP", !mFinderIP.isAddressEmpty() ? mFinderIP.string() : String(), firstTime) +
                Helper::getDebugValue("server agent", mServerAgent, firstTime) +
@@ -922,13 +928,13 @@ namespace openpeer
 
         // found an IP, put into a candidate structure
 
-        Candidate candidate;
+        IICESocket::Candidate candidate;
         candidate.mType = IICESocket::Type_Unknown;
         candidate.mIPAddress = mFinderIP;
         candidate.mPriority = 0;
         candidate.mLocalPreference = 0;
 
-        CandidateList candidateList;
+        IICESocket::CandidateList candidateList;
         candidateList.push_back(candidate);
 
         // ready for the next time if we need to prepare again...
@@ -936,7 +942,7 @@ namespace openpeer
         ZS_LOG_DEBUG(log("reqesting to connect to server") + ", ip=" + mFinderIP.string())
 
         // create the socket session now
-        mSocketSession =  socket->createSessionFromRemoteCandidates(mThisWeak.lock(), candidateList, IICESocket::ICEControl_Controlling);
+        mSocketSession =  socket->createSessionFromRemoteCandidates(mThisWeak.lock(), IHelper::randomString(32), NULL, candidateList, IICESocket::ICEControl_Controlling);
         // well, this is bad...
         if (!mSocketSession) {
           ZS_LOG_ERROR(Detail, log("cannot create a socket session"))

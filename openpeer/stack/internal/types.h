@@ -34,12 +34,18 @@
 #include <openpeer/stack/types.h>
 #include <openpeer/stack/message/types.h>
 
+#define OPENPEER_STACK_CANDIDATE_CLASS_ICE_CANDIDATES "ice"
+#define OPENPEER_STACK_CANDIDATE_CLASS_FINDER_RELAY   "finder-relay"
+
+#define OPENPEER_STACK_TRANSPORT_JSON_MLS_RUDP "json-mls/rudp"
+
 namespace openpeer
 {
   namespace stack
   {
     namespace internal
     {
+      using zsLib::string;
       using zsLib::Noop;
       using zsLib::CSTR;
       using zsLib::Seconds;
@@ -193,13 +199,13 @@ namespace openpeer
       typedef boost::weak_ptr<IFinderConnectionRelayChannelDelegate> IFinderConnectionRelayChannelDelegateWeakPtr;
       typedef zsLib::Proxy<IFinderConnectionRelayChannelDelegate> IFinderConnectionRelayChannelDelegateProxy;
 
-      class FinderConnectionMultiplexOutgoing;
-      typedef boost::shared_ptr<FinderConnectionMultiplexOutgoing> FinderConnectionMultiplexOutgoingPtr;
-      typedef boost::weak_ptr<FinderConnectionMultiplexOutgoing> FinderConnectionMultiplexOutgoingWeakPtr;
+      class FinderConnection;
+      typedef boost::shared_ptr<FinderConnection> FinderConnectionPtr;
+      typedef boost::weak_ptr<FinderConnection> FinderConnectionWeakPtr;
 
-      class FinderConnectionMultiplexOutgoingManager;
-      typedef boost::shared_ptr<FinderConnectionMultiplexOutgoingManager> FinderConnectionMultiplexOutgoingManagerPtr;
-      typedef boost::weak_ptr<FinderConnectionMultiplexOutgoingManager> FinderConnectionMultiplexOutgoingManagerWeakPtr;
+      class FinderConnectionManager;
+      typedef boost::shared_ptr<FinderConnectionManager> FinderConnectionManagerPtr;
+      typedef boost::weak_ptr<FinderConnectionManager> FinderConnectionManagerWeakPtr;
 
       class Helper;
       typedef boost::shared_ptr<Helper> HelperPtr;

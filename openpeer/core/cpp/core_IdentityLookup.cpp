@@ -55,8 +55,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
-
       typedef stack::message::IdentityInfoList StackIdentityInfoList;
       typedef stack::message::IdentityInfo StackIdentityInfo;
 
@@ -731,35 +729,7 @@ namespace openpeer
           }
 
           IdentityContact info;
-
-          info.mIdentityURI = resultInfo.mURI;
-          info.mIdentityProvider = resultInfo.mProvider;
-          info.mStableID = resultInfo.mStableID;
-
-          info.mPeerFilePublic = resultInfo.mPeerFilePublic;
-          info.mIdentityProofBundleEl = resultInfo.mIdentityProofBundle;
-
-          info.mPriority = resultInfo.mPriority;
-          info.mWeight = resultInfo.mWeight;
-
-          info.mLastUpdated = resultInfo.mUpdated;
-          info.mExpires = resultInfo.mExpires;
-
-          info.mName = resultInfo.mName;
-          info.mProfileURL = resultInfo.mProfile;
-          info.mVProfileURL = resultInfo.mVProfile;
-
-          for (StackIdentityInfo::AvatarList::const_iterator avIter = resultInfo.mAvatars.begin();  avIter != resultInfo.mAvatars.end(); ++avIter)
-          {
-            const StackIdentityInfo::Avatar &resultAvatar = (*avIter);
-            IdentityContact::Avatar avatar;
-
-            avatar.mName = resultAvatar.mName;
-            avatar.mURL = resultAvatar.mURL;
-            avatar.mWidth = resultAvatar.mWidth;
-            avatar.mHeight = resultAvatar.mHeight;
-            info.mAvatars.push_back(avatar);
-          }
+          Helper::convert(resultInfo, info);
 
           mResults.push_back(info);
         }
@@ -813,7 +783,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String IdentityLookup::log(const char *message) const
       {
-        return String("IdentityLookup [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("IdentityLookup [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -821,18 +791,18 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("identity lookup", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("identity lookup", string(mID), firstTime) +
                Helper::getDebugValue("delegate", mDelegate ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("error code", 0 != mErrorCode ? Stringize<typeof(mErrorCode)>(mErrorCode).string() : String(), firstTime) +
+               Helper::getDebugValue("error code", 0 != mErrorCode ? string(mErrorCode) : String(), firstTime) +
                Helper::getDebugValue("error reason", mErrorReason, firstTime) +
                Helper::getDebugValue("identity service domain", mIdentityServiceDomain, firstTime) +
-               Helper::getDebugValue("bootstrapped networks", mBootstrappedNetworks.size() > 0 ? Stringize<size_t>(mBootstrappedNetworks.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("monitors", mMonitors.size() > 0 ? Stringize<size_t>(mMonitors.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("type identifiers", mDomainOrLegacyTypeIdentifiers.size() > 0 ? Stringize<size_t>(mDomainOrLegacyTypeIdentifiers.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("concat domains", mConcatDomains.size() > 0 ? Stringize<size_t>(mConcatDomains.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("safe char domains", mSafeCharDomains.size() > 0 ? Stringize<size_t>(mSafeCharDomains.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("type to domains", mTypeToDomainMap.size() > 0 ? Stringize<size_t>(mTypeToDomainMap.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("results", mResults.size() > 0 ? Stringize<size_t>(mResults.size()).string() : String(), firstTime);
+               Helper::getDebugValue("bootstrapped networks", mBootstrappedNetworks.size() > 0 ? string(mBootstrappedNetworks.size()) : String(), firstTime) +
+               Helper::getDebugValue("monitors", mMonitors.size() > 0 ? string(mMonitors.size()) : String(), firstTime) +
+               Helper::getDebugValue("type identifiers", mDomainOrLegacyTypeIdentifiers.size() > 0 ? string(mDomainOrLegacyTypeIdentifiers.size()) : String(), firstTime) +
+               Helper::getDebugValue("concat domains", mConcatDomains.size() > 0 ? string(mConcatDomains.size()) : String(), firstTime) +
+               Helper::getDebugValue("safe char domains", mSafeCharDomains.size() > 0 ? string(mSafeCharDomains.size()) : String(), firstTime) +
+               Helper::getDebugValue("type to domains", mTypeToDomainMap.size() > 0 ? string(mTypeToDomainMap.size()) : String(), firstTime) +
+               Helper::getDebugValue("results", mResults.size() > 0 ? string(mResults.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -922,7 +892,7 @@ namespace openpeer
         }
 
         if (0 != mErrorCode) {
-          ZS_LOG_ERROR(Detail, log("error already set (thus ignoring new error)") + ", error code=" + Stringize<typeof(errorCode)>(errorCode).string() + ", reason=" + reason + getDebugValueString())
+          ZS_LOG_ERROR(Detail, log("error already set (thus ignoring new error)") + ", error code=" + string(errorCode) + ", reason=" + reason + getDebugValueString())
           return;
         }
 

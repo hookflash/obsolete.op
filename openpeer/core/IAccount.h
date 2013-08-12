@@ -91,6 +91,8 @@ namespace openpeer
 
       virtual ElementPtr getReloginInformation() const = 0;   // NOTE: will return ElementPtr() is relogin information is not available yet
 
+      virtual String getStableID() const = 0;
+
       virtual String getLocationID() const = 0;
 
       virtual void shutdown() = 0;

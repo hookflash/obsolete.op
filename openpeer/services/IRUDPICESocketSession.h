@@ -73,29 +73,31 @@ namespace openpeer
       {
         RUDPICESocketSessionShutdownReason_None                   = IICESocketSession::ICESocketSessionShutdownReason_None,
 
-        RUDPICESocketSessionShutdownReason_Closed                 = IICESocketSession::ICESocketSessionShutdownReason_Closed,
-
         RUDPICESocketSessionShutdownReason_Timeout                = IICESocketSession::ICESocketSessionShutdownReason_Timeout,
         RUDPICESocketSessionShutdownReason_BackgroundingTimeout   = IICESocketSession::ICESocketSessionShutdownReason_BackgroundingTimeout,
         RUDPICESocketSessionShutdownReason_CandidateSearchFailed  = IICESocketSession::ICESocketSessionShutdownReason_CandidateSearchFailed,
 
         RUDPICESocketSessionShutdownReason_DelegateGone           = IICESocketSession::ICESocketSessionShutdownReason_DelegateGone,
-        RUDPICESocketSessionShutdownReason_SocketGone             = IICESocketSession::ICESocketSessionShutdownReason_SocketGone,
       };
 
       static const char *toString(RUDPICESocketSessionShutdownReasons reason);
+
+      static String toDebugString(IRUDPICESocketSessionPtr session, bool includeCommaPrefix = true);
 
       virtual PUID getID() const = 0;
 
       virtual IRUDPICESocketPtr getSocket() = 0;
 
-      virtual RUDPICESocketSessionStates getState() const = 0;
-      virtual RUDPICESocketSessionShutdownReasons getShutdownReason() const = 0;
+      virtual RUDPICESocketSessionStates getState(
+                                                  WORD *outLastErrorCode = NULL,
+                                                  String *outLastErrorReason = NULL
+                                                  ) const = 0;
 
       virtual void shutdown() = 0;
 
       virtual void getLocalCandidates(CandidateList &outCandidates) = 0;
       virtual void updateRemoteCandidates(const CandidateList &remoteCandidates) = 0;
+      virtual void endOfRemoteCandidates() = 0;
 
       virtual void setKeepAliveProperties(
                                           Duration sendKeepAliveIndications,
@@ -158,6 +160,7 @@ namespace openpeer
 
       virtual void onRUDPICESocketSessionChannelWaiting(IRUDPICESocketSessionPtr session) = 0;
     };
+
   }
 }
 

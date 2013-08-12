@@ -64,7 +64,7 @@ using zsLib::SocketPtr;
 using zsLib::ISocketPtr;
 using zsLib::IPAddress;
 using zsLib::String;
-using zsLib::Stringize;
+using zsLib::string;
 using openpeer::services::IDNS;
 using openpeer::services::IDNSQuery;
 using openpeer::services::ITURNSocket;
@@ -124,18 +124,19 @@ namespace openpeer
 
         void init(
                   WORD port,
-                  const char *srvName
+                  const char *srvNameTURN,
+                  const char *srvNameSTUN
                   )
         {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
 
           mRUDPSocket = IRUDPICESocket::create(
                                                getAssociatedMessageQueue(),
                                                mThisWeak.lock(),
-                                               srvName,
+                                               srvNameTURN,
                                                gUsername,
                                                gPassword,
-                                               srvName,
+                                               srvNameSTUN,
                                                port
                                                );
 
@@ -146,7 +147,8 @@ namespace openpeer
         static TestRUDPICESocketLoopbackPtr create(
                                                    zsLib::IMessageQueuePtr queue,
                                                    WORD port,
-                                                   const char *srvName,
+                                                   const char *srvNameTURN,
+                                                   const char *srvNameSTUN,
                                                    bool issueConnect,
                                                    bool expectConnected = true,
                                                    bool expectGracefulShutdown = true,
@@ -167,7 +169,7 @@ namespace openpeer
           pThis->mExpectSessionClosed = expectSessionClosed;
           pThis->mExpectMessagingConnected = expectMessagingConnected;
           pThis->mExpectMessagingShutdown = expectMessagingShutdown;
-          pThis->init(port, srvName);
+          pThis->init(port, srvNameTURN, srvNameSTUN);
           return pThis;
         }
 
@@ -186,7 +188,7 @@ namespace openpeer
                                                  RUDPICESocketStates state
                                                  )
         {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
           switch (state) {
             case IRUDPICESocket::RUDPICESocketState_Ready:
             {
@@ -210,12 +212,26 @@ namespace openpeer
           }
         }
 
+        virtual void onRUDPICESocketCandidatesChanged(IRUDPICESocketPtr socket)
+        {
+          zsLib::AutoRecursiveLock lock(getLock());
+          TestRUDPICESocketLoopbackPtr remote = mRemote.lock();
+          if (!remote) return;
+
+          if (!mRUDPSocket) return;
+
+          IICESocket::CandidateList candidates;
+          socket->getLocalCandidates(candidates);
+
+          remote->updateCandidates(candidates);
+        }
+
         virtual void onRUDPICESocketSessionStateChanged(
                                                         IRUDPICESocketSessionPtr session,
                                                         RUDPICESocketSessionStates state
                                                         )
         {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
 
           switch(state) {
             case IRUDPICESocketSession::RUDPICESocketSessionState_Ready:
@@ -254,8 +270,7 @@ namespace openpeer
 
         virtual void onRUDPICESocketSessionChannelWaiting(IRUDPICESocketSessionPtr session)
         {
-          zsLib::AutoRecursiveLock lock(mLock);
-          BOOST_CHECK(mConnected)
+          zsLib::AutoRecursiveLock lock(getLock());
           BOOST_CHECK(mSessionConnected)
 
           IRUDPMessagingPtr messaging = IRUDPMessaging::acceptChannel(
@@ -274,7 +289,7 @@ namespace openpeer
                                                  RUDPMessagingStates state
                                                  )
         {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
           MessagingList::iterator found = find(mMessaging.begin(), mMessaging.end(), messaging);
           BOOST_CHECK(found != mMessaging.end())
           if (IRUDPMessaging::RUDPMessagingState_Connected == state)
@@ -299,7 +314,7 @@ namespace openpeer
 
         virtual void onRUDPMessagingReadReady(IRUDPMessagingPtr messaging)
         {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
           ULONG size = messaging->getNextReceivedMessageSizeInBytes();
           boost::shared_array<zsLib::BYTE> buffer = messaging->getBufferLargeEnoughForNextMessage();
           if (!buffer) return;
@@ -318,18 +333,21 @@ namespace openpeer
 
         virtual void onRUDPMessagingWriteReady(IRUDPMessagingPtr messaging)
         {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
         }
 
         virtual void onTimer(zsLib::TimerPtr timer)
         {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
           if (timer != mTimer) return;
         }
 
         void shutdown()
         {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
+
+          mRemote.reset();
+
           if (!mRUDPSocket) return;
           if (mShutdownCalled) return;
           mShutdownCalled = true;
@@ -350,7 +368,7 @@ namespace openpeer
 
         bool isComplete()
         {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
           return (mExpectConnected == mConnected) &&
                  (mExpectGracefulShutdown == mGracefulShutdown) &&
                  (mExpectErrorShutdown == mErrorShutdown) &&
@@ -361,7 +379,7 @@ namespace openpeer
         }
 
         void expectationsOkay() {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
           if (mExpectConnected) {
             BOOST_CHECK(mConnected);
           } else {
@@ -405,26 +423,80 @@ namespace openpeer
 
         void getLocalCandidates(IICESocket::CandidateList &outCandidates)
         {
-          zsLib::AutoRecursiveLock lock(mLock);
+          zsLib::AutoRecursiveLock lock(getLock());
           if (!mRUDPSocket) return;
-          BOOST_CHECK(mConnected);
           mRUDPSocket->getLocalCandidates(outCandidates);
         }
 
-        void createSessionFromRemoteCandidates(
-                                               const IICESocket::CandidateList &remoteCandidates,
-                                               IICESocket::ICEControls control
-                                               )
+        String getLocalUsernameFrag()
         {
-          zsLib::AutoRecursiveLock lock(mLock);
-          if (!mRUDPSocket) return;
-          IRUDPICESocketSessionPtr session = mRUDPSocket->createSessionFromRemoteCandidates(mThisWeak.lock(), remoteCandidates, control);
+          zsLib::AutoRecursiveLock lock(getLock());
+          if (!mRUDPSocket) return String();
+          return mRUDPSocket->getUsernameFrag();
+        }
+
+        String getLocalPassword()
+        {
+          zsLib::AutoRecursiveLock lock(getLock());
+          if (!mRUDPSocket) return String();
+          return mRUDPSocket->getPassword();
+        }
+        
+        IRUDPICESocketSessionPtr createSessionFromRemoteCandidates(IICESocket::ICEControls control)
+        {
+          zsLib::AutoRecursiveLock lock(getLock());
+          if (!mRUDPSocket) return IRUDPICESocketSessionPtr();
+
+          TestRUDPICESocketLoopbackPtr remote = mRemote.lock();
+          if (!remote) return IRUDPICESocketSessionPtr();
+
+          String remoteUsernameFrag = remote->getLocalUsernameFrag();
+          String remotePassword = remote->getLocalPassword();
+          IICESocket::CandidateList remoteCandidates;
+          remote->getLocalCandidates(remoteCandidates);
+
+          IRUDPICESocketSessionPtr session = mRUDPSocket->createSessionFromRemoteCandidates(mThisWeak.lock(), remote->getLocalUsernameFrag(), remote->getLocalPassword(), remoteCandidates, control);
           mSessions.push_back(session);
+
+          return session;
+        }
+
+        void setRemote(TestRUDPICESocketLoopbackPtr remote)
+        {
+          zsLib::AutoRecursiveLock lock(getLock());
+          mRemote = remote;
+        }
+
+        void updateCandidates(const IICESocket::CandidateList &candidates)
+        {
+          zsLib::AutoRecursiveLock lock(getLock());
+          for (SessionList::iterator iter = mSessions.begin(); iter != mSessions.end(); ++iter)
+          {
+            IRUDPICESocketSessionPtr session = (*iter);
+            session->updateRemoteCandidates(candidates);
+          }
+        }
+
+        void notifyEndOfCandidates()
+        {
+          zsLib::AutoRecursiveLock lock(getLock());
+          for (SessionList::iterator iter = mSessions.begin(); iter != mSessions.end(); ++iter)
+          {
+            IRUDPICESocketSessionPtr session = (*iter);
+            session->endOfRemoteCandidates();
+          }
+        }
+        
+        RecursiveLock &getLock() const
+        {
+          static RecursiveLock lock;
+          return lock;
         }
 
       private:
-        mutable zsLib::RecursiveLock mLock;
         TestRUDPICESocketLoopbackWeakPtr mThisWeak;
+
+        TestRUDPICESocketLoopbackWeakPtr mRemote;
 
         zsLib::TimerPtr mTimer;
 
@@ -482,27 +554,35 @@ void doTestRUDPICESocketLoopback()
   // check to see if all DNS routines have resolved
   {
     ULONG step = 0;
-    ULONG totalSteps = 2;
 
     do
     {
-      ZS_LOG_BASIC(String("STEP:         ---------->>>>>>>>>> ") + Stringize<ULONG>(step).string() + " <<<<<<<<<<----------")
+      ZS_LOG_BASIC(String("STEP:         ---------->>>>>>>>>> ") + string(step) + " <<<<<<<<<<----------")
 
+      bool quit = false;
       ULONG expecting = 0;
       switch (step) {
         case 0: {
           expecting = 2;
-          testObject1 = TestRUDPICESocketLoopback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, true);
-          testObject2 = TestRUDPICESocketLoopback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, false);
+          testObject1 = TestRUDPICESocketLoopback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, OPENPEER_SERVICE_TEST_STUN_SERVER, true);
+          testObject2 = TestRUDPICESocketLoopback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, OPENPEER_SERVICE_TEST_STUN_SERVER, false);
+
+          testObject1->setRemote(testObject2);
+          testObject2->setRemote(testObject1);
           break;
         }
         case 1: {
           expecting = 2;
-          testObject1 = TestRUDPICESocketLoopback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, true, true, false, false, true, false, true, false);
-          testObject2 = TestRUDPICESocketLoopback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, false, true, false, false, true, false, true, false);
+          testObject1 = TestRUDPICESocketLoopback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, OPENPEER_SERVICE_TEST_STUN_SERVER, true, true, false, false, true, false, true, false);
+          testObject2 = TestRUDPICESocketLoopback::create(thread, 0, OPENPEER_SERVICE_TEST_TURN_SERVER_DOMAIN, OPENPEER_SERVICE_TEST_STUN_SERVER, false, true, false, false, true, false, true, false);
+
+          testObject1->setRemote(testObject2);
+          testObject2->setRemote(testObject1);
           break;
         }
+        default: quit = true; break;
       }
+      if (quit) break;
 
       ULONG found = 0;
       ULONG lastFound = 0;
@@ -519,14 +599,9 @@ void doTestRUDPICESocketLoopback()
 
         switch (step) {
           case 0: {
-            if (10 == totalWait) {
-              testObject1->getLocalCandidates(candidates1);
-              testObject2->getLocalCandidates(candidates2);
-
-              BOOST_CHECK(candidates1.size() > 0);
-              BOOST_CHECK(candidates2.size() > 0);
-              testObject1->createSessionFromRemoteCandidates(candidates2, IICESocket::ICEControl_Controlling);
-              testObject2->createSessionFromRemoteCandidates(candidates1, IICESocket::ICEControl_Controlled);
+            if (1 == totalWait) {
+              testObject1->createSessionFromRemoteCandidates(IICESocket::ICEControl_Controlling);
+              testObject2->createSessionFromRemoteCandidates(IICESocket::ICEControl_Controlled);
             }
 
             if (30 == totalWait) {
@@ -537,12 +612,8 @@ void doTestRUDPICESocketLoopback()
           }
           case 1: {
             if (10 == totalWait) {
-              testObject1->getLocalCandidates(candidates1);
-              testObject2->getLocalCandidates(candidates2);
-              BOOST_CHECK(candidates1.size() > 0);
-              BOOST_CHECK(candidates2.size() > 0);
-              testObject1->createSessionFromRemoteCandidates(candidates2, IICESocket::ICEControl_Controlling);
-              testObject2->createSessionFromRemoteCandidates(candidates1, IICESocket::ICEControl_Controlling);
+              testObject1->createSessionFromRemoteCandidates(IICESocket::ICEControl_Controlling);
+              testObject2->createSessionFromRemoteCandidates(IICESocket::ICEControl_Controlling);
             }
 
             break;
@@ -595,7 +666,7 @@ void doTestRUDPICESocketLoopback()
       testObject4.reset();
 
       ++step;
-    } while (step < totalSteps);
+    } while (true);
   }
 
   ZS_LOG_BASIC("WAITING:      All ICE sockets have finished. Waiting for 'bogus' events to process (10 second wait).");

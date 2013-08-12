@@ -38,6 +38,7 @@
 #include <openpeer/stack/IPeerFiles.h>
 #include <openpeer/stack/IPeerFilePublic.h>
 #include <openpeer/stack/IPeerFilePrivate.h>
+#include <openpeer/stack/IHelper.h>
 
 #include <openpeer/services/IHelper.h>
 
@@ -60,7 +61,6 @@ namespace openpeer
 
       namespace peer_finder
       {
-        using zsLib::Stringize;
         using zsLib::Seconds;
         typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
         using namespace stack::internal;
@@ -134,7 +134,6 @@ namespace openpeer
 
             String findSecretProof = findProofEl->findFirstChildElementChecked("findSecretProof")->getText();
             Time expires = IHelper::stringToTime(findProofEl->findFirstChildElementChecked("findSecretProofExpires")->getText());
-            String peerSecretEncrypted = findProofEl->findFirstChildElementChecked("peerSecretEncrypted")->getText();
 
             String findSecret = peerFilePublic->getFindSecret();
             String calculatedFindSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(findSecret), "proof:" + clientNonce + ":" + IHelper::timeToString(expires)));
@@ -149,16 +148,30 @@ namespace openpeer
               return PeerLocationFindRequestPtr();
             }
 
-            ret->mPeerSecret = peerFilePrivate->decrypt(*IHelper::convertFromBase64(peerSecretEncrypted));
-            if (!ret->mPeerSecret) {
+            ret->mContext = IMessageHelper::getElementTextAndDecode(findProofEl->findFirstChildElementChecked("context"));
+
+            String peerSecretEncrypted = IMessageHelper::getElementTextAndDecode(findProofEl->findFirstChildElement("peerSecretEncrypted"));
+            if (peerSecretEncrypted.hasData()) {
+              ret->mPeerSecret = IHelper::convertToString(*peerFilePrivate->decrypt(*IHelper::convertFromBase64(peerSecretEncrypted)));
+            }
+            if (ret->mPeerSecret.hasData()) {
               ZS_LOG_WARNING(Detail, "PeerLocationFindRequest [] peer secret failed to decrypt")
               return PeerLocationFindRequestPtr();
             }
-            ZS_LOG_TRACE(String("decrypted peer secret") + ", secret=" + IHelper::convertToHex(*ret->mPeerSecret))
+            ZS_LOG_TRACE(String("decrypted peer secret") + ", secret=" + ret->mPeerSecret)
+
+            ret->mICEUsernameFrag = IMessageHelper::getElementTextAndDecode(findProofEl->findFirstChildElementChecked("iceUsernameFrag"));
+            String icePasswordEncrypted = IMessageHelper::getElementTextAndDecode(findProofEl->findFirstChildElementChecked("icePasswordEncrypted"));
+            if (icePasswordEncrypted.hasData()) {
+              SecureByteBlockPtr icePassword = stack::IHelper::splitDecrypt(*IHelper::hash(ret->mPeerSecret, IHelper::HashAlgorthm_SHA256), icePasswordEncrypted);
+              if (icePassword) {
+                ret->mICEPassword = IHelper::convertToString(*icePassword);
+              }
+            }
 
             ElementPtr locationEl = findProofEl->findFirstChildElement("location");
             if (locationEl) {
-              ret->mLocationInfo = internal::MessageHelper::createLocation(locationEl, messageSource, (ret->mPeerSecret).get());
+              ret->mLocationInfo = internal::MessageHelper::createLocation(locationEl, messageSource, ret->mPeerSecret);
             }
 
             LocationPtr location = Location::convert(ret->mLocationInfo.mLocation);
@@ -198,6 +211,9 @@ namespace openpeer
                 return PeerLocationFindRequestPtr();
               }
             }
+
+#define WARNING_REMOVE_ROUTES 1
+#define WARNING_REMOVE_ROUTES 2
 
             ElementPtr routesEl = root->findFirstChildElement("routes");
             if (routesEl) {
@@ -247,7 +263,10 @@ namespace openpeer
           {
             case AttributeType_RequestfindProofBundleDigestValue: return mRequestfindProofBundleDigestValue.hasData();
             case AttributeType_FindPeer:                          return mFindPeer;
-            case AttributeType_PeerSecret:                        return mPeerSecret;
+            case AttributeType_Context:                           return mContext.hasData();
+            case AttributeType_PeerSecret:                        return mPeerSecret.hasData();
+            case AttributeType_ICEUsernameFrag:                   return mICEUsernameFrag.hasData();
+            case AttributeType_ICEPassword:                       return mICEPassword.hasData();
             case AttributeType_LocationInfo:                      return mLocationInfo.hasData();
             case AttributeType_ExcludedLocations:                 return (mExcludedLocations.size() > 0);
             case AttributeType_Routes:                            return (mRoutes.size() != 0);
@@ -302,19 +321,30 @@ namespace openpeer
                 findProofEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("findSecretProofExpires", IHelper::timeToString(expires)));
               }
 
+              if (hasAttribute(AttributeType_Context)) {
+                findProofEl->adoptAsLastChild(IMessageHelper::createElementWithText("context", mContext));
+              }
+
               if (hasAttribute(AttributeType_PeerSecret)) {
 
-                ZS_LOG_TRACE(String("encrypting peer secret") + ", secret=" + IHelper::convertToHex(*mPeerSecret))
+                ZS_LOG_TRACE(String("encrypting peer secret") + ", secret=" + mPeerSecret)
 
-                String peerSecret = IHelper::convertToBase64(*remotePeerFilePublic->encrypt(*mPeerSecret));
+                String peerSecret = IHelper::convertToBase64(*remotePeerFilePublic->encrypt(* IHelper::convertToBuffer(mPeerSecret, false)));
                 findProofEl->adoptAsLastChild(IMessageHelper::createElementWithText("peerSecretEncrypted", peerSecret));
               }
             }
           }
 
-          if (hasAttribute(AttributeType_LocationInfo))
-          {
-            ElementPtr locationEl = internal::MessageHelper::createElement(mLocationInfo, mPeerSecret.get());
+          if (hasAttribute(AttributeType_ICEUsernameFrag)) {
+            findProofEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("iceUsernameFrag", mICEUsernameFrag));
+          }
+          if (hasAttribute(AttributeType_ICEPassword)) {
+            String icePassword = stack::IHelper::splitEncrypt(*IHelper::hash(mPeerSecret, IHelper::HashAlgorthm_SHA256), *IHelper::convertToBuffer(mICEPassword, false));
+            findProofEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("icePassword", icePassword));
+          }
+
+          if (hasAttribute(AttributeType_LocationInfo)) {
+            ElementPtr locationEl = internal::MessageHelper::createElement(mLocationInfo, mPeerSecret);
             findProofEl->adoptAsLastChild(locationEl);
           }
 
@@ -342,6 +372,9 @@ namespace openpeer
               locationsEl->adoptAsLastChild(IMessageHelper::createElementWithID("location", location));
             }
           }
+
+#define WARNING_REMOVE_ROUTES 1
+#define WARNING_REMOVE_ROUTES 2
 
           if (hasAttribute(AttributeType_Routes))
           {

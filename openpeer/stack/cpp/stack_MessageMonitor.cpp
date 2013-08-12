@@ -50,8 +50,6 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
-
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -380,7 +378,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String MessageMonitor::log(const char *message) const
       {
-        return String("MessageMonitor [" + Stringize<typeof(mID)>(mID).string() + "] " + message);
+        return String("MessageMonitor [" + string(mID) + "] " + message);
       }
 
       //-----------------------------------------------------------------------
@@ -388,11 +386,11 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("monitor id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("monitor id", string(mID), firstTime) +
                Helper::getDebugValue("message id", mMessageID, firstTime) +
                Helper::getDebugValue("handled", mWasHandled ? String("true") : String(), firstTime) +
                Helper::getDebugValue("timeout", mTimeoutFired ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("pending", 0 != mPendingHandled ? Stringize<typeof(mPendingHandled)>(mPendingHandled).string() : String(), firstTime) +
+               Helper::getDebugValue("pending", 0 != mPendingHandled ? string(mPendingHandled) : String(), firstTime) +
                Helper::getDebugValue("timer", mTimer ? String("true") : String(), firstTime);
       }
 

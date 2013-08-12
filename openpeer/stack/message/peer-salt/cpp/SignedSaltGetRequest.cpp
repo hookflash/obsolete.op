@@ -44,8 +44,6 @@ namespace openpeer
     {
       namespace peer_salt
       {
-        using zsLib::Stringize;
-
         //---------------------------------------------------------------------
         SignedSaltGetRequestPtr SignedSaltGetRequest::convert(MessagePtr message)
         {
@@ -83,7 +81,7 @@ namespace openpeer
           ElementPtr root = ret->getFirstChildElement();
 
           if (hasAttribute(AttributeType_Salts)) {
-            root->adoptAsLastChild(IMessageHelper::createElementWithNumber("salts", Stringize<UINT>(mSalts)));
+            root->adoptAsLastChild(IMessageHelper::createElementWithNumber("salts", string(mSalts)));
           }
 
           return ret;

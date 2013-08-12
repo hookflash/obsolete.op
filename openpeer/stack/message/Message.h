@@ -54,9 +54,8 @@ namespace openpeer
           MessageType_Request,
           MessageType_Result,
           MessageType_Notify,
-          MessageType_Reply,
 
-          MessageType_Last = MessageType_Reply,
+          MessageType_Last = MessageType_Notify,
         };
 
         static const char *toString(MessageTypes type);
@@ -98,7 +97,6 @@ namespace openpeer
         virtual bool isRequest() const              {return false;}
         virtual bool isResult() const               {return false;}
         virtual bool isNotify() const               {return false;}
-        virtual bool isReply() const                {return false;}
 
         virtual IMessageFactoryPtr factory() const  {return IMessageFactoryPtr();}
 

@@ -67,6 +67,8 @@ namespace openpeer
                                               IMessageQueuePtr queue,
                                               RUDPICESocketPtr parent,
                                               IRUDPICESocketSessionDelegatePtr delegate,
+                                              const char *remoteUsernameFrag,
+                                              const char *remotePassword,
                                               const CandidateList &remoteCandidates,
                                               ICEControls control
                                               );
@@ -93,6 +95,7 @@ namespace openpeer
       {
       public:
         friend interaction IRUDPICESocketSessionFactory;
+        friend interaction IRUDPICESocketSession;
 
         typedef IICESocket::CandidateList CandidateList;
         typedef IICESocket::ICEControls ICEControls;
@@ -112,9 +115,13 @@ namespace openpeer
         RUDPICESocketSession(Noop) : Noop(true), MessageQueueAssociator(IMessageQueuePtr()) {};
 
         void init(
+                  const char *remoteUsernameFrag,
+                  const char *remotePassword,
                   const CandidateList &remoteCandidates,
                   ICEControls control
                   );
+
+        static RUDPICESocketSessionPtr convert(IRUDPICESocketSessionPtr session);
 
       public:
         ~RUDPICESocketSession();
@@ -125,17 +132,22 @@ namespace openpeer
         #pragma mark RUDPICESocketSession => RUDPICESocketSession
         #pragma mark
 
+        static String toDebugString(IRUDPICESocketSessionPtr session, bool includeCommaPrefix = true);
+
         virtual PUID getID() const {return mID;}
 
         virtual IRUDPICESocketPtr getSocket();
 
-        virtual RUDPICESocketSessionStates getState() const;
-        virtual RUDPICESocketSessionShutdownReasons getShutdownReason() const;
+        virtual RUDPICESocketSessionStates getState(
+                                                    WORD *outLastErrorCode = NULL,
+                                                    String *outLastErrorReason = NULL
+                                                    ) const;
 
         virtual void shutdown();
 
         virtual void getLocalCandidates(CandidateList &outCandidates);
         virtual void updateRemoteCandidates(const CandidateList &remoteCandidates);
+        virtual void endOfRemoteCandidates();
 
         virtual void setKeepAliveProperties(
                                             Duration sendKeepAliveIndications,
@@ -169,6 +181,8 @@ namespace openpeer
                                               IMessageQueuePtr queue,
                                               RUDPICESocketPtr parent,
                                               IRUDPICESocketSessionDelegatePtr delegate,
+                                              const char *remoteUsernameFrag,
+                                              const char *remotePassword,
                                               const CandidateList &remoteCandidates,
                                               ICEControls control
                                               );
@@ -182,6 +196,8 @@ namespace openpeer
                                                     IICESocketSessionPtr session,
                                                     ICESocketSessionStates state
                                                     );
+
+        virtual void onICESocketSessionNominationChanged(IICESocketSessionPtr session);
 
         virtual void handleICESocketSessionReceivedPacket(
                                                           IICESocketSessionPtr session,
@@ -232,11 +248,13 @@ namespace openpeer
         bool isShuttingDown() const {return RUDPICESocketSessionState_ShuttingDown == mCurrentState;}
         bool isShutdown() const {return RUDPICESocketSessionState_Shutdown == mCurrentState;}
 
+        virtual String getDebugValueString(bool includeCommaPrefix = true) const;
+
         void cancel();
         void step();
 
         void setState(RUDPICESocketSessionStates state);
-        void setShutdownReason(RUDPICESocketSessionShutdownReasons reason);
+        void setError(WORD errorCode, const char *inReason = NULL);
 
         bool handleUnknownChannel(
                                   STUNPacketPtr &stun,
@@ -253,21 +271,19 @@ namespace openpeer
 
         mutable RecursiveLock mBogusLock;
 
+        AutoPUID mID;
         RUDPICESocketSessionWeakPtr mThisWeak;
         RUDPICESocketWeakPtr mOuter;
 
         RUDPICESocketSessionPtr mGracefulShutdownReference;
 
-        PUID mID;
         RUDPICESocketSessionStates mCurrentState;
-        RUDPICESocketSessionShutdownReasons mShutdownReason;
+        AutoWORD mLastError;
+        String mLastErrorReason;
 
         IRUDPICESocketSessionDelegatePtr mDelegate;
 
         IICESocketSessionPtr mICESession;
-
-        String mLocalUsernameFrag;
-        String mRemoteUsernameFrag;
 
         SessionMap mLocalChannelNumberSessions;   // local channel numbers are the channel numbers we expect to receive from the remote party
         SessionMap mRemoteChannelNumberSessions;  // remote channel numbers are the channel numbers we expect to send to the remote party
@@ -294,6 +310,8 @@ namespace openpeer
                                                IMessageQueuePtr queue,
                                                RUDPICESocketPtr parent,
                                                IRUDPICESocketSessionDelegatePtr delegate,
+                                               const char *remoteUsernameFrag,
+                                               const char *remotePassword,
                                                const CandidateList &remoteCandidates,
                                                ICEControls control
                                                );

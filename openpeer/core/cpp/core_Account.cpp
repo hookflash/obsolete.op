@@ -61,7 +61,7 @@ namespace openpeer
   {
     namespace internal
     {
-      using zsLib::Stringize;
+      using zsLib::string;
       typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
 
       //-----------------------------------------------------------------------
@@ -317,6 +317,14 @@ namespace openpeer
         reloginEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("lockboxKey", services::IHelper::convertToBase64(*lockboxKey)));
 
         return reloginEl;
+      }
+
+      //-----------------------------------------------------------------------
+      String Account::getStableID() const
+      {
+        AutoRecursiveLock lock(getLock());
+        if (!mLockboxSession) return String();
+        return mLockboxSession->getStableID();
       }
 
       //-----------------------------------------------------------------------
@@ -1112,7 +1120,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String Account::log(const char *message) const
       {
-        return String("core::Account [") + Stringize<typeof(mID)>(mID).string() + "] " + message;
+        return String("core::Account [") + string(mID) + "] " + message;
       }
 
       //-----------------------------------------------------------------------
@@ -1120,9 +1128,9 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("core account id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("core account id", string(mID), firstTime) +
                Helper::getDebugValue("state", toString(mCurrentState), firstTime) +
-               Helper::getDebugValue("error code", 0 != mLastErrorCode ? Stringize<typeof(mLastErrorCode)>(mLastErrorCode).string() : String(), firstTime) +
+               Helper::getDebugValue("error code", 0 != mLastErrorCode ? string(mLastErrorCode) : String(), firstTime) +
                Helper::getDebugValue("error reason", mLastErrorReason, firstTime) +
                Helper::getDebugValue("delegate", mDelegate ? String("true") : String(), firstTime) +
                Helper::getDebugValue("conversation thread delegate", mConversationThreadDelegate ? String("true") : String(), firstTime) +
@@ -1131,12 +1139,12 @@ namespace openpeer
                stack::IServiceNamespaceGrantSession::toDebugString(mGrantSession) +
                stack::IServiceLockboxSession::toDebugString(mLockboxSession) +
                Helper::getDebugValue("force new lockbox account", mLockboxForceCreateNewAccount ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("identities", mIdentities.size() > 0 ? Stringize<IdentityMap::size_type>(mIdentities.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("identities", mIdentities.size() > 0 ? string(mIdentities.size()) : String(), firstTime) +
                stack::IPeerSubscription::toDebugString(mPeerSubscription) +
                IContact::toDebugString(mSelfContact) +
-               Helper::getDebugValue("contacts", mContacts.size() > 0 ? Stringize<ContactMap::size_type>(mContacts.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("contact subscription", mContactSubscriptions.size() > 0 ? Stringize<ContactMap::size_type>(mContactSubscriptions.size()).string() : String(), firstTime) +
-               Helper::getDebugValue("conversations", mConversationThreads.size() > 0 ? Stringize<ConversationThreadMap::size_type>(mConversationThreads.size()).string() : String(), firstTime) +
+               Helper::getDebugValue("contacts", mContacts.size() > 0 ? string(mContacts.size()) : String(), firstTime) +
+               Helper::getDebugValue("contact subscription", mContactSubscriptions.size() > 0 ? string(mContactSubscriptions.size()) : String(), firstTime) +
+               Helper::getDebugValue("conversations", mConversationThreads.size() > 0 ? string(mConversationThreads.size()) : String(), firstTime) +
                Helper::getDebugValue("call transport", mCallTransport ? String("true") : String(), firstTime) +
                Helper::getDebugValue("subscribers permission document", mSubscribersPermissionDocument ? String("true") : String(), firstTime);
       }
@@ -1530,7 +1538,7 @@ namespace openpeer
         }
 
         if (0 != mLastErrorCode) {
-          ZS_LOG_WARNING(Detail, log("error was already set (thus ignoring)") + ", new error=" + Stringize<typeof(errorCode)>(errorCode).string() + ", new reason=" + reason + getDebugValueString())
+          ZS_LOG_WARNING(Detail, log("error was already set (thus ignoring)") + ", new error=" + string(errorCode) + ", new reason=" + reason + getDebugValueString())
           return;
         }
 
@@ -1873,7 +1881,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String Account::ContactSubscription::log(const char *message) const
       {
-        return String("openpeer::Account::ContactSubscription [") + Stringize<typeof(mID)>(mID).string() + "] " + message + ", peer URI=" + mContact->forAccount().getPeerURI();
+        return String("openpeer::Account::ContactSubscription [") + string(mID) + "] " + message + ", peer URI=" + mContact->forAccount().getPeerURI();
       }
 
       //-----------------------------------------------------------------------
@@ -1881,12 +1889,12 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("contact subscription id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("contact subscription id", string(mID), firstTime) +
                Helper::getDebugValue("state", toString(mCurrentState), firstTime) +
                IContact::toDebugString(mContact) +
                IPeerSubscription::toDebugString(mPeerSubscription) +
                Helper::getDebugValue("timer", mPeerSubscriptionAutoCloseTimer ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("locations", mLocations.size() > 0 ? Stringize<size_t>(mLocations.size()).string() : String(), firstTime);
+               Helper::getDebugValue("locations", mLocations.size() > 0 ? string(mLocations.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -2205,7 +2213,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       String Account::LocationSubscription::log(const char *message) const
       {
-        return String("openpeer::Account::LocationSubscription [") + Stringize<typeof(mID)>(mID).string() + "] " + message + ", peer URI=" + getPeerURI() + ", location ID=" + getLocationID();
+        return String("openpeer::Account::LocationSubscription [") + string(mID) + "] " + message + ", peer URI=" + getPeerURI() + ", location ID=" + getLocationID();
       }
 
       //-----------------------------------------------------------------------
@@ -2213,11 +2221,11 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("location subscription id", Stringize<typeof(mID)>(mID).string(), firstTime) +
+        return Helper::getDebugValue("location subscription id", string(mID), firstTime) +
                Helper::getDebugValue("state", toString(mCurrentState), firstTime) +
                ILocation::toDebugString(mPeerLocation) +
                IPublicationSubscription::toDebugString(mPublicationSubscription) +
-               Helper::getDebugValue("conversation thread", mConversationThreads.size() > 0 ? Stringize<size_t>(mConversationThreads.size()).string() : String(), firstTime);
+               Helper::getDebugValue("conversation thread", mConversationThreads.size() > 0 ? string(mConversationThreads.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
