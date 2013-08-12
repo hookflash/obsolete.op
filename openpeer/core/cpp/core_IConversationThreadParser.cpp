@@ -65,8 +65,6 @@ namespace openpeer
 
       typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
 
-      typedef services::IICESocket::Candidate Candidate;
-
       typedef IConversationThreadParser::ContactURI ContactURI;
       typedef IConversationThreadParser::ContactURIList ContactURIList;
       typedef IConversationThreadParser::ThreadContactList ThreadContactList;
@@ -82,7 +80,6 @@ namespace openpeer
       typedef IConversationThreadParser::ThreadContactsPtr ThreadContactsPtr;
       typedef IConversationThreadParser::Dialog::Description Description;
       typedef IConversationThreadParser::Dialog::DescriptionPtr DescriptionPtr;
-      typedef IConversationThreadParser::CandidateLists CandidateLists;
       typedef IConversationThreadParser::Details::ConversationThreadStates ConversationThreadStates;
       typedef IConversationThreadParser::DetailsPtr DetailsPtr;
       typedef IConversationThreadParser::ThreadPtr ThreadPtr;
@@ -875,68 +872,6 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      static void mergeInto(CandidateList &final, const CandidateList &source)
-      {
-        for (CandidateList::const_iterator sourceIter = source.begin(); sourceIter != source.end(); ++sourceIter)
-        {
-          const Candidate &sourceCandidate = (*sourceIter);
-
-          bool found = false;
-
-          for (CandidateList::iterator finalIter = final.begin(); finalIter != final.end(); ++finalIter)
-          {
-            Candidate &finalCandidate = (*finalIter);
-            if (finalCandidate.mType != sourceCandidate.mType) continue;
-            if (!finalCandidate.mIPAddress.isAddressEqual(sourceCandidate.mIPAddress)) continue;
-            if (finalCandidate.mPriority != sourceCandidate.mPriority) continue;
-            if (finalCandidate.mLocalPreference != sourceCandidate.mLocalPreference) continue;
-            if (finalCandidate.mUsernameFrag != sourceCandidate.mUsernameFrag) continue;
-            if (finalCandidate.mPassword != sourceCandidate.mPassword) continue;
-            if (finalCandidate.mProtocol != sourceCandidate.mProtocol) continue;
-
-            found = true;
-            break;
-          }
-
-          if (found) continue;
-          Candidate candidate;
-          candidate.mType = sourceCandidate.mType;
-          candidate.mIPAddress = sourceCandidate.mIPAddress;
-          candidate.mIPAddress.setPort(0);
-          candidate.mPriority = sourceCandidate.mPriority;
-          candidate.mLocalPreference = sourceCandidate.mLocalPreference;
-          candidate.mUsernameFrag = sourceCandidate.mUsernameFrag;
-          candidate.mPassword = sourceCandidate.mPassword;
-          candidate.mProtocol = sourceCandidate.mProtocol;
-
-          final.push_back(candidate);
-        }
-      }
-      //-----------------------------------------------------------------------
-      static const Candidate &find(const Candidate &finalCandidate, const CandidateList &source)
-      {
-        ZS_LOG_TRACE(String("Find against candidate") + finalCandidate.toDebugString())
-        for (CandidateList::const_iterator sourceIter = source.begin(); sourceIter != source.end(); ++sourceIter)
-        {
-          const Candidate &sourceCandidate = (*sourceIter);
-          ZS_LOG_TRACE(String("Find comparing against source candidate") + sourceCandidate.toDebugString())
-
-          if (finalCandidate.mType != sourceCandidate.mType) continue;
-          if (!finalCandidate.mIPAddress.isAddressEqual(sourceCandidate.mIPAddress)) continue;
-          if (finalCandidate.mPriority != sourceCandidate.mPriority) continue;
-          if (finalCandidate.mLocalPreference != sourceCandidate.mLocalPreference) continue;
-          if (finalCandidate.mUsernameFrag != sourceCandidate.mUsernameFrag) continue;
-          if (finalCandidate.mPassword != sourceCandidate.mPassword) continue;
-          if (finalCandidate.mProtocol != sourceCandidate.mProtocol) continue;
-          ZS_LOG_TRACE(String("Find is using source candidate") + sourceCandidate.toDebugString())
-          return sourceCandidate;
-        }
-
-        ZS_LOG_WARNING(Detail, String("Find is using FINAL candidate") + finalCandidate.toDebugString())
-        return finalCandidate;
-      }
-
-      //-----------------------------------------------------------------------
       String IConversationThreadParser::Dialog::toDebugString(DialogPtr dialog, bool includeCommaPrefix)
       {
         if (!dialog) return includeCommaPrefix ? String(", dialog=(null)") : String("dialog=(null");
@@ -1042,6 +977,9 @@ namespace openpeer
 
           ElementPtr codecsEl = Element::create("codecs");
 
+          ElementPtr iceUsernameFragEl = IMessageHelper::createElementWithTextAndJSONEncode("iceUsernameFrag", description->mICEUsernameFrag);
+          ElementPtr icePasswordEl = IMessageHelper::createElementWithTextAndJSONEncode("icePassword", description->mICEPassword);
+
           for (CodecList::const_iterator codecIter = description->mCodecs.begin(); codecIter != description->mCodecs.end(); ++codecIter)
           {
             const Codec &codec = (*codecIter);
@@ -1061,50 +999,16 @@ namespace openpeer
             codecsEl->adoptAsLastChild(codecEl);
           }
 
-          CandidateList finalList;
-          for (CandidateLists::const_iterator listsIter = description->mCandidateLists.begin(); listsIter != description->mCandidateLists.end(); ++listsIter)
-          {
-            const CandidateList &sourceList = (*listsIter).second;
-            mergeInto(finalList, sourceList);
-          }
-
           ElementPtr candidatesEl = Element::create("candidates");
 
-          for (CandidateList::iterator finalIter = finalList.begin(); finalIter != finalList.end(); ++finalIter)
+          for (CandidateList::iterator finalIter = description->mCandidates.begin(); finalIter != description->mCandidates.end(); ++finalIter)
           {
             Candidate &finalCandidate = (*finalIter);
 
-            ElementPtr candidateEl = Element::create("candidate");
-
-            ElementPtr ipEl = createElementWithText("ip", finalCandidate.mIPAddress.string(false));
-            ipEl->setAttribute("format", finalCandidate.mIPAddress.isIPv4() ? "ipv4" : "ipv6");
-
-            ElementPtr portsEl = Element::create("ports");
-
-            for (CandidateLists::const_iterator listsIter = description->mCandidateLists.begin(); listsIter != description->mCandidateLists.end(); ++listsIter)
-            {
-              const CandidateList &sourceList = (*listsIter).second;
-              const Candidate &found = find(finalCandidate, sourceList);
-
-              ElementPtr portEl = createElementWithText("port", string(found.mIPAddress.getPort()));
-              portsEl->adoptAsLastChild(portEl);
+            ElementPtr candidateEl = IMessageHelper::createElement(finalCandidate);
+            if (candidateEl) {
+              candidatesEl->adoptAsLastChild(candidateEl);
             }
-
-            ElementPtr usernameEl = createElementWithText("username", finalCandidate.mUsernameFrag);
-            ElementPtr passwordEl = createElementWithText("password", finalCandidate.mPassword);
-            ElementPtr transportEl = createElementWithText("transport", "udp");
-            ElementPtr protocolEl = createElementWithText("protocol", (finalCandidate.mProtocol.isEmpty() ? "rtp/avp" : ""));
-            ElementPtr priorityEl = createElementWithText("priority", string(finalCandidate.mPriority));
-
-            candidateEl->adoptAsLastChild(ipEl);
-            candidateEl->adoptAsLastChild(portsEl);
-            candidateEl->adoptAsLastChild(usernameEl);
-            candidateEl->adoptAsLastChild(passwordEl);
-            candidateEl->adoptAsLastChild(transportEl);
-            candidateEl->adoptAsLastChild(protocolEl);
-            candidateEl->adoptAsLastChild(priorityEl);
-
-            candidatesEl->adoptAsLastChild(candidateEl);
           }
 
           securityEl->adoptAsLastChild(saltEl);
@@ -1113,6 +1017,8 @@ namespace openpeer
           descriptionEl->adoptAsLastChild(ssrcEl);
           descriptionEl->adoptAsLastChild(securityEl);
           descriptionEl->adoptAsLastChild(codecsEl);
+          descriptionEl->adoptAsLastChild(iceUsernameFragEl);
+          descriptionEl->adoptAsLastChild(icePasswordEl);
           descriptionEl->adoptAsLastChild(candidatesEl);
 
           descriptionsEl->adoptAsLastChild(descriptionEl);
@@ -1187,7 +1093,7 @@ namespace openpeer
             description->mVersion = getVersion(descriptionEl);
 
             ElementPtr ssrcEl = descriptionEl->findFirstChildElementChecked("ssrc");
-            description->mSSRC = Numeric<ULONG>(ssrcEl->getText());
+            description->mSSRC = Numeric<typeof(description->mSSRC)>(ssrcEl->getText());
 
             ElementPtr securityEl = descriptionEl->findFirstChildElementChecked("security");
             ElementPtr secretEl = securityEl->findFirstChildElementChecked("secret");
@@ -1203,43 +1109,25 @@ namespace openpeer
             while (codecEl)
             {
               Codec codec;
-              codec.mCodecID = Numeric<UINT>(codecEl->getAttributeValue("id"));
+              codec.mCodecID = Numeric<typeof(codec.mCodecID)>(codecEl->getAttributeValue("id"));
               codec.mName = codecEl->findFirstChildElementChecked("name")->getText();
-              codec.mPTime = Numeric<UINT>(codecEl->findFirstChildElementChecked("ptime")->getText());
-              codec.mRate = Numeric<UINT>(codecEl->findFirstChildElementChecked("rate")->getText());
-              codec.mChannels = Numeric<UINT>(codecEl->findFirstChildElementChecked("channels")->getText());
+              codec.mPTime = Numeric<typeof(codec.mPTime)>(codecEl->findFirstChildElementChecked("ptime")->getText());
+              codec.mRate = Numeric<typeof(codec.mRate)>(codecEl->findFirstChildElementChecked("rate")->getText());
+              codec.mChannels = Numeric<typeof(codec.mChannels)>(codecEl->findFirstChildElementChecked("channels")->getText());
               description->mCodecs.push_back(codec);
             }
 
+            description->mICEUsernameFrag = IMessageHelper::getElementTextAndDecode(descriptionEl->findFirstChildElementChecked("iceUsernameFrag"));
+            description->mICEPassword = IMessageHelper::getElementTextAndDecode(descriptionEl->findFirstChildElementChecked("icePassword"));
+
             ElementPtr candidatesEl = descriptionEl->findFirstChildElement("candidates");
             ElementPtr candidateEl = candidatesEl->findFirstChildElement("candidate");
+
             while (candidateEl)
             {
-              Candidate candidate;
-              candidate.mIPAddress = IPAddress(candidateEl->findFirstChildElementChecked("ip")->getText());
-              candidate.mUsernameFrag = candidateEl->findFirstChildElementChecked("username")->getText();
-              candidate.mPassword = candidateEl->findFirstChildElementChecked("password")->getText();
-              candidate.mProtocol = candidateEl->findFirstChildElementChecked("protocol")->getText();
-              candidate.mPriority = Numeric<DWORD>(candidateEl->findFirstChildElementChecked("priority")->getText());
-
-              ElementPtr portsEl = candidateEl->findFirstChildElement("ports");
-              ElementPtr portEl = (portsEl ? portsEl->findFirstChildElement("port") : candidateEl->findFirstChildElement("port"));
-              for (UINT index = 0; portEl; ++index)
-              {
-                WORD port = Numeric<WORD>(portEl->getText());
-                if (0 != port) {
-                  candidate.mIPAddress.setPort(port);
-                  CandidateLists::iterator found = description->mCandidateLists.find(index);
-                  if (found == description->mCandidateLists.end()) {
-                    CandidateList candidates;
-                    candidates.push_back(candidate);
-                    description->mCandidateLists[index] = candidates;
-                  } else {
-                    CandidateList &list = (*found).second;
-                    list.push_back(candidate);
-                  }
-                }
-                portEl = portEl->findNextSiblingElement("port");
+              Candidate candidate = IMessageHelper::createCandidate(candidateEl);
+              if (candidate.hasData()) {
+                description->mCandidates.push_back(candidate);
               }
 
               candidateEl = candidateEl->findNextSiblingElement("candidate");
@@ -1252,16 +1140,13 @@ namespace openpeer
         } catch(CheckFailed &) {
           ZS_LOG_ERROR(Detail, "dialog XML element parse check failed")
           return DialogPtr();
+        } catch (Numeric<BYTE>::ValueOutOfRange &) {
+          ZS_LOG_ERROR(Detail, "dialog parse value out of range")
+          return DialogPtr();
         } catch (Numeric<WORD>::ValueOutOfRange &) {
           ZS_LOG_ERROR(Detail, "dialog parse value out of range")
           return DialogPtr();
         } catch (Numeric<DWORD>::ValueOutOfRange &) {
-          ZS_LOG_ERROR(Detail, "dialog parse value out of range")
-          return DialogPtr();
-        } catch (Numeric<ULONG>::ValueOutOfRange &) {
-          ZS_LOG_ERROR(Detail, "dialog parse value out of range")
-          return DialogPtr();
-        } catch (Numeric<UINT>::ValueOutOfRange &) {
           ZS_LOG_ERROR(Detail, "dialog parse value out of range")
           return DialogPtr();
         } catch (IPAddress::Exceptions::ParseError &) {
@@ -1332,7 +1217,7 @@ namespace openpeer
                Helper::getDebugValue("secret", mSecuritySecret, firstTime) +
                Helper::getDebugValue("salt", mSecuritySalt, firstTime) +
                Helper::getDebugValue("codecs", mCodecs.size() > 0 ? string(mCodecs.size()) : String(), firstTime) +
-               Helper::getDebugValue("codecs", mCandidateLists.size() > 0 ? string(mCandidateLists.size()) : String(), firstTime);
+               Helper::getDebugValue("candidates", mCandidates.size() > 0 ? string(mCandidates.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------

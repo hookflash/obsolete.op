@@ -336,17 +336,14 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      IICESocketPtr CallTransport::getSocket(
-                                             SocketTypes type,
-                                             bool forRTP
-                                             ) const
+      IICESocketPtr CallTransport::getSocket(SocketTypes type) const
       {
         AutoRecursiveLock lock(getLock());
         ZS_THROW_BAD_STATE_IF(mTotalCalls < 1)
 
         switch (type) {
-          case SocketType_Audio:  return (forRTP ? mAudioSocket->getRTPSocket() : mAudioSocket->getRTCPSocket());
-          case SocketType_Video:  return (forRTP ? mVideoSocket->getRTPSocket() : mVideoSocket->getRTCPSocket());
+          case SocketType_Audio:  return mAudioSocket->getRTPSocket();
+          case SocketType_Video:  return mVideoSocket->getRTPSocket();
         }
 
         ZS_THROW_INVALID_ASSUMPTION(log("what type of socket is this?"))
@@ -367,38 +364,40 @@ namespace openpeer
         if (bufferLengthInBytes < (sizeof(BYTE)*2)) return;
 
         BYTE payloadType = buffer[1];
+        BYTE filterType = (payloadType & 0x7F);
+        bool isRTP = ((filterType < 64) || (filterType > 96));
 
-        ZS_LOG_TRACE(log("notified of RTP packet") + ", from call ID=" + string(callID) + ", from location ID=" + string(locationID) + ", type=" + ICallTransportForCall::toString(type) + ", payload type=" + string(payloadType) + ", length=" + string(bufferLengthInBytes))
+        ZS_LOG_TRACE(log("notified of packet") + (isRTP ? ", type=RTP" : ", type=RTCP") + ", from call ID=" + string(callID) + ", from location ID=" + string(locationID) + ", type=" + ICallTransportForCall::toString(type) + ", payload type=" + string(payloadType) + ", length=" + string(bufferLengthInBytes))
 
         // scope - get locked variable
         {
           AutoRecursiveLock lock(getLock());
 
           if (0 != mBlockUntilStartStopCompleted) {
-            ZS_LOG_WARNING(Debug, log("ignoring RTP packet as media is blocked until the start/stop routine complete") + ", blocked count=" + string(mBlockUntilStartStopCompleted))
+            ZS_LOG_WARNING(Debug, log("ignoring RTP/RTCP packet as media is blocked until the start/stop routine complete") + ", blocked count=" + string(mBlockUntilStartStopCompleted))
             return;
           }
 
           if (!mStarted) {
-            ZS_LOG_TRACE(log("ignoring RTP packet as media is not started"))
+            ZS_LOG_TRACE(log("ignoring RTP/RTCP packet as media is not started"))
             return;
           }
 
           if ((callID != mFocusCallID) ||
               (locationID != mFocusLocationID)) {
-            ZS_LOG_TRACE(log("ignoring RTP packet as not from call/location ID in focus") + ", focus call ID=" + string(mFocusCallID) + ", focus location ID=" + string(mFocusLocationID))
+            ZS_LOG_TRACE(log("ignoring RTP/RTCP packet as not from call/location ID in focus") + ", focus call ID=" + string(mFocusCallID) + ", focus location ID=" + string(mFocusLocationID))
             return;
           }
 
           if ((SocketType_Audio == type) &&
               (!mHasAudio)) {
-            ZS_LOG_TRACE(log("ignoring RTP packet as audio was not started for this call"))
+            ZS_LOG_TRACE(log("ignoring RTP/RTCP packet as audio was not started for this call"))
             return;
           }
 
           if ((SocketType_Video == type) &&
               (!mHasVideo)) {
-            ZS_LOG_TRACE(log("ignoring RTP packet as video was not started for this call"))
+            ZS_LOG_TRACE(log("ignoring RTP/RTCP packet as video was not started for this call"))
             return;
           }
         }
@@ -406,67 +405,17 @@ namespace openpeer
         MediaEnginePtr engine = IMediaEngineForCallTransport::singleton();
 
         if (SocketType_Audio == type) {
-          engine->forCallTransport().receivedVoiceRTPPacket(buffer, bufferLengthInBytes);
+          if (isRTP) {
+            engine->forCallTransport().receivedVoiceRTPPacket(buffer, bufferLengthInBytes);
+          } else {
+            engine->forCallTransport().receivedVoiceRTCPPacket(buffer, bufferLengthInBytes);
+          }
         } else {
-          engine->forCallTransport().receivedVideoRTPPacket(buffer, bufferLengthInBytes);
-        }
-      }
-
-      //-----------------------------------------------------------------------
-      void CallTransport::notifyReceivedRTCPPacket(
-                                                   PUID callID,
-                                                   PUID locationID,
-                                                   SocketTypes type,
-                                                   const BYTE *buffer,
-                                                   ULONG bufferLengthInBytes
-                                                   )
-      {
-        ZS_THROW_INVALID_ARGUMENT_IF(!buffer)
-
-        if (bufferLengthInBytes < (sizeof(BYTE)*2)) return;
-
-        BYTE payloadType = buffer[1];
-
-        ZS_LOG_TRACE(log("notified of RTCP packet") + ", from call ID=" + string(callID) + ", from location ID=" + string(locationID) + ", type=" + ICallTransportForCall::toString(type) + ", payload type=" + string(payloadType) + ", length=" + string(bufferLengthInBytes))
-
-        // scope - get locked variable
-        {
-          AutoRecursiveLock lock(getLock());
-
-          if (0 != mBlockUntilStartStopCompleted) {
-            ZS_LOG_WARNING(Debug, log("ignoring RTCP packet as media is blocked until the start/stop routine complete") + ", blocked count=" + string(mBlockUntilStartStopCompleted))
-            return;
+          if (isRTP) {
+            engine->forCallTransport().receivedVideoRTPPacket(buffer, bufferLengthInBytes);
+          } else {
+            engine->forCallTransport().receivedVideoRTCPPacket(buffer, bufferLengthInBytes);
           }
-
-          if (!mStarted) {
-            ZS_LOG_WARNING(Trace, log("ignoring RTCP packet as media is not started"))
-            return;
-          }
-
-          if ((callID != mFocusCallID) ||
-              (locationID != mFocusLocationID)) {
-            ZS_LOG_TRACE(log("ignoring RTCP packet as not from call/location ID in focus") + ", focus call ID=" + string(mFocusCallID) + ", focus location ID=" + string(mFocusLocationID))
-            return;
-          }
-
-          if ((SocketType_Audio == type) &&
-              (!mHasAudio)) {
-            ZS_LOG_WARNING(Trace, log("ignoring RTCP packet as audio was not started for this call"))
-            return;
-          }
-          if ((SocketType_Video == type) &&
-              (!mHasVideo)) {
-            ZS_LOG_WARNING(Trace, log("ignoring RTCP packet as video was not started for this call"))
-            return;
-          }
-        }
-
-        MediaEnginePtr engine = IMediaEngineForCallTransport::singleton();
-
-        if (SocketType_Audio == type) {
-          engine->forCallTransport().receivedVoiceRTCPPacket(buffer, bufferLengthInBytes);
-        } else {
-          engine->forCallTransport().receivedVideoRTCPPacket(buffer, bufferLengthInBytes);
         }
       }
 
@@ -536,45 +485,6 @@ namespace openpeer
         }
 
         return (call->forCallTransport().sendRTPPacket(locationID, type, (const BYTE *)data, (ULONG)len) ? len : 0);
-      }
-
-      //-----------------------------------------------------------------------
-      int CallTransport::sendRTCPPacket(PUID socketID, const void *data, int len)
-      {
-        CallPtr call;
-        PUID locationID = 0;
-
-        ICallForCallTransport::SocketTypes type = ICallForCallTransport::SocketType_Audio;
-
-        // scope - find the call
-        {
-          AutoRecursiveLock lock(getLock());
-          if (0 != mBlockUntilStartStopCompleted) {
-            ZS_LOG_WARNING(Debug, log("ignoring request to send RTCP packet as media is blocked until the start/stop routine complete") + ", blocked count=" + string(mBlockUntilStartStopCompleted))
-            return 0;
-          }
-
-          if ((0 == mFocusCallID) ||
-              (!mStarted)) {
-            ZS_LOG_WARNING(Trace, log("unable to send RTCP packet media isn't start or there is no focus object") + ", started=" + (mStarted ? "true" : "false") + ", focus ID=" + string(mFocusCallID))
-            return 0;
-          }
-
-          call = mFocus.lock();
-          locationID = mFocusLocationID;
-          if (!call) {
-            ZS_LOG_WARNING(Trace, log("unable to send RTCP packet as focused call object is gone"))
-            return 0;
-          }
-
-          if (socketID == mAudioSocketID) {
-            type = ICallForCallTransport::SocketType_Audio;
-          } else {
-            type = ICallForCallTransport::SocketType_Video;
-          }
-        }
-
-        return (call->forCallTransport().sendRTCPPacket(locationID, type, (const BYTE *)data, (ULONG)len) ? len : 0);
       }
 
       //-----------------------------------------------------------------------
@@ -946,10 +856,7 @@ namespace openpeer
                                                 const char *stunServer
                                                 )
       {
-        mRTPSocket = IICESocket::create(getAssociatedMessageQueue(), mThisWeak.lock(), turnServer, turnServerUsername, turnServerPassword, stunServer);
-        mRTCPSocket = IICESocket::create(getAssociatedMessageQueue(), mThisWeak.lock(), turnServer, turnServerUsername, turnServerPassword, stunServer);
-
-        mRTCPSocket->setFoundation(mRTPSocket);
+        mRTPSocket = IICESocket::create(getAssociatedMessageQueue(), mThisWeak.lock(), turnServer, turnServerUsername, turnServerPassword, stunServer, 0, true);
       }
 
       //-----------------------------------------------------------------------
@@ -959,10 +866,6 @@ namespace openpeer
         if (mRTPSocket) {
           mRTPSocket->shutdown();
           mRTPSocket.reset();
-        }
-        if (mRTCPSocket) {
-          mRTCPSocket->shutdown();
-          mRTCPSocket.reset();
         }
       }
 
@@ -1005,22 +908,14 @@ namespace openpeer
             mRTPSocket.reset();
           }
         }
-        if (mRTCPSocket) {
-          mRTCPSocket->shutdown();
-          if (IICESocket::ICESocketState_Shutdown == mRTCPSocket->getState()) {
-            mRTCPSocket.reset();
-          }
-        }
       }
 
       //-----------------------------------------------------------------------
       bool CallTransport::TransportSocket::isReady() const
       {
         if (!mRTPSocket) return false;
-        if (!mRTCPSocket) return false;
 
         if (IICESocket::ICESocketState_Ready != mRTPSocket->getState()) return false;
-        if (IICESocket::ICESocketState_Ready != mRTCPSocket->getState()) return false;
         return true;
       }
 
@@ -1029,9 +924,6 @@ namespace openpeer
       {
         if (mRTPSocket) {
           if (IICESocket::ICESocketState_Shutdown != mRTPSocket->getState()) return false;
-        }
-        if (mRTCPSocket) {
-          if (IICESocket::ICESocketState_Shutdown != mRTCPSocket->getState()) return false;
         }
         return true;
       }
@@ -1056,9 +948,23 @@ namespace openpeer
           return;
         }
 
+        ZS_LOG_DEBUG(log("on ice socket state changed"))
         IWakeDelegateProxy::create(outer)->onWake();
       }
 
+      //-----------------------------------------------------------------------
+      void CallTransport::TransportSocket::onICESocketCandidatesChanged(IICESocketPtr socket)
+      {
+        CallTransportPtr outer = mOuter.lock();
+        if (!outer) {
+          ZS_LOG_WARNING(Detail, log("ICE candidates change ignored as call transport object is gone"))
+          return;
+        }
+
+        ZS_LOG_DEBUG(log("on ice socket candidates changed"))
+        IWakeDelegateProxy::create(outer)->onWake();
+      }
+      
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -1098,7 +1004,7 @@ namespace openpeer
           return 0;
         }
 
-        return outer->sendRTCPPacket(mID, data, len);
+        return outer->sendRTPPacket(mID, data, len);
       }
 
       //-----------------------------------------------------------------------
@@ -1120,8 +1026,7 @@ namespace openpeer
       {
         bool firstTime = !includeCommaPrefix;
         return Helper::getDebugValue("transport socket id", string(mID), firstTime) +
-               Helper::getDebugValue("rtp socket id", mRTPSocket ? string(mRTPSocket->getID()) : String(), firstTime) +
-               Helper::getDebugValue("rtcp socket id", mRTCPSocket ? string(mRTCPSocket->getID()) : String(), firstTime);
+               Helper::getDebugValue("rtp socket id", mRTPSocket ? string(mRTPSocket->getID()) : String(), firstTime);
       }
     }
   }

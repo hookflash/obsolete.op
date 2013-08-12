@@ -335,6 +335,24 @@ namespace openpeer
         }
       }
 
+      //-----------------------------------------------------------------------
+      ElementPtr IMessageHelper::createElement(
+                                               const Candidate &candidate,
+                                               const char *encryptionPassphrase
+                                               )
+      {
+        return internal::MessageHelper::createElement(candidate, encryptionPassphrase);
+      }
+
+      //-----------------------------------------------------------------------
+      Candidate IMessageHelper::createCandidate(
+                                                ElementPtr elem,
+                                                const char *encryptionPassphrase
+                                                )
+      {
+        return internal::MessageHelper::createCandidate(elem, encryptionPassphrase);
+      }
+
       namespace internal
       {
         //---------------------------------------------------------------------

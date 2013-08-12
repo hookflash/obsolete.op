@@ -48,8 +48,6 @@ namespace openpeer
     {
       typedef zsLib::Exceptions::InvalidArgument InvalidArgument;
 
-      typedef services::IICESocket::CandidateList CandidateList;
-
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -102,9 +100,7 @@ namespace openpeer
         typedef std::list<ContactURI> ContactURIList;
         typedef std::map<ContactURI, ThreadContactPtr> ThreadContactMap;
 
-        typedef UINT FoundationIndex;
-        typedef services::IICESocket::CandidateList CandidateList;
-        typedef std::map<FoundationIndex, CandidateList> CandidateLists;
+        typedef stack::CandidateList CandidateList;
 
         typedef String DialogID;
         typedef std::map<DialogID, DialogPtr> DialogMap;
@@ -337,12 +333,12 @@ namespace openpeer
 
           struct Codec
           {
-            UINT mCodecID;
+            BYTE mCodecID;
 
             String mName;
-            UINT mPTime;
-            UINT mRate;
-            UINT mChannels;
+            DWORD mPTime;
+            DWORD mRate;
+            DWORD mChannels;
 
             Codec() : mCodecID(0), mPTime(0), mRate(0), mChannels(0) {}
             String getDebugValueString(bool includeCommaPrefix = true) const;
@@ -361,14 +357,17 @@ namespace openpeer
             UINT mVersion;
             String mDescriptionID;
             String mType;
-            ULONG mSSRC;
+            DWORD mSSRC;
 
             String mSecurityCipher;
             String mSecuritySecret;
             String mSecuritySalt;
 
             CodecList mCodecs;
-            CandidateLists mCandidateLists;
+
+            String mICEUsernameFrag;
+            String mICEPassword;
+            CandidateList mCandidates;
 
             Description() : mVersion(0), mSSRC(0) {}
             String getDebugValueString(bool includeCommaPrefix = true) const;

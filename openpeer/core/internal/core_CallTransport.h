@@ -150,10 +150,7 @@ namespace openpeer
                            ) = 0;
         virtual void loseFocus(PUID callID) = 0;
 
-        virtual IICESocketPtr getSocket(
-                                        SocketTypes type,
-                                        bool forRTP
-                                        ) const = 0;
+        virtual IICESocketPtr getSocket(SocketTypes type) const = 0;
 
         virtual void notifyReceivedRTPPacket(
                                              PUID callID,
@@ -162,14 +159,6 @@ namespace openpeer
                                              const BYTE *buffer,
                                              ULONG bufferLengthInBytes
                                              ) = 0;
-
-        virtual void notifyReceivedRTCPPacket(
-                                              PUID callID,
-                                              PUID locationID,
-                                              SocketTypes type,
-                                              const BYTE *buffer,
-                                              ULONG bufferLengthInBytes
-                                              ) = 0;
       };
 
       //-----------------------------------------------------------------------
@@ -276,10 +265,7 @@ namespace openpeer
                            );
         virtual void loseFocus(PUID callID);
 
-        virtual IICESocketPtr getSocket(
-                                        SocketTypes type,
-                                        bool forRTP
-                                        ) const;
+        virtual IICESocketPtr getSocket(SocketTypes type) const;
 
         virtual void notifyReceivedRTPPacket(
                                              PUID callID,
@@ -288,14 +274,6 @@ namespace openpeer
                                              const BYTE *buffer,
                                              ULONG bufferLengthInBytes
                                              );
-
-        virtual void notifyReceivedRTCPPacket(
-                                              PUID callID,
-                                              PUID locationID,
-                                              SocketTypes type,
-                                              const BYTE *buffer,
-                                              ULONG bufferLengthInBytes
-                                              );
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -325,7 +303,6 @@ namespace openpeer
         #pragma mark
 
         int sendRTPPacket(PUID socketID, const void *data, int len);
-        int sendRTCPPacket(PUID socketID, const void *data, int len);
 
       protected:
         String log(const char *message) const;
@@ -393,7 +370,6 @@ namespace openpeer
           PUID getID() const {return mID;}
 
           IICESocketPtr getRTPSocket() const {return mRTPSocket;}
-          IICESocketPtr getRTCPSocket() const {return mRTCPSocket;}
 
           void shutdown();
           bool isReady() const;
@@ -406,6 +382,7 @@ namespace openpeer
                                                IICESocketPtr socket,
                                                ICESocketStates state
                                                );
+          virtual void onICESocketCandidatesChanged(IICESocketPtr socket);
 
           //-------------------------------------------------------------------
           #pragma mark CallTransport::TransportSocket => webrtc::Transport
@@ -429,7 +406,6 @@ namespace openpeer
           CallTransportWeakPtr mOuter;
 
           IICESocketPtr mRTPSocket;
-          IICESocketPtr mRTCPSocket;
         };
 
       protected:

@@ -114,13 +114,6 @@ namespace openpeer
                                    const BYTE *packet,
                                    ULONG packetLengthInBytes
                                    ) = 0;
-
-        virtual bool sendRTCPPacket(
-                                    PUID toLocationID,
-                                    SocketTypes type,
-                                    const BYTE *packet,
-                                    ULONG packetLengthInBytes
-                                    ) = 0;
       };
 
       //-----------------------------------------------------------------------
@@ -267,13 +260,6 @@ namespace openpeer
                                    ULONG packetLengthInBytes
                                    );
 
-        virtual bool sendRTCPPacket(
-                                    PUID toLocationID,
-                                    SocketTypes type,
-                                    const BYTE *packet,
-                                    ULONG packetLengthInBytes
-                                    );
-
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark Call => ICallForConversationThread
@@ -318,6 +304,7 @@ namespace openpeer
                                              IICESocketPtr socket,
                                              ICESocketStates state
                                              );
+        virtual void onICESocketCandidatesChanged(IICESocketPtr socket);
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -342,13 +329,6 @@ namespace openpeer
                                              const BYTE *buffer,
                                              ULONG bufferLengthInBytes
                                              );
-
-        virtual void notifyReceivedRTCPPacket(
-                                              PUID locationID,
-                                              SocketTypes type,
-                                              const BYTE *buffer,
-                                              ULONG bufferLengthInBytes
-                                              );
 
         void notifyStateChanged(
                                 CallLocationPtr location,
@@ -402,18 +382,22 @@ namespace openpeer
 
         bool stepIsMediaReady(
                               bool needCandidates,
+                              String &outAudioICEUsernameFrag,
+                              String &outAudioICEPassword,
                               CandidateList &outAudioRTPCandidates,
-                              CandidateList &outAudioRTCPCandidates,
-                              CandidateList &outVideoRTPCandidates,
-                              CandidateList &outVideoRTCPCandidates
+                              String &outVideoICEUsernameFrag,
+                              String &outVideoICEPassword,
+                              CandidateList &outVideoRTPCandidates
                               ) throw (Exceptions::StepFailure);
 
         bool stepPrepareCallFirstTime(
                                       CallLocationPtr &picked,
+                                      const String &audioICEUsernameFrag,
+                                      const String &audioICEPassword,
                                       const CandidateList &audioRTPCandidates,
-                                      const CandidateList &audioRTCPCandidates,
-                                      const CandidateList &videoRTPCandidates,
-                                      const CandidateList &videoRTCPCandidates
+                                      const String &videoICEUsernameFrag,
+                                      const String &videoICEPassword,
+                                      const CandidateList &videoRTPCandidates
                                       ) throw (Exceptions::StepFailure);
 
         bool stepPrepareCallLocations(
@@ -535,12 +519,6 @@ namespace openpeer
                              ULONG packetLengthInBytes
                              );
 
-          bool sendRTCPPacket(
-                              SocketTypes type,
-                              const BYTE *packet,
-                              ULONG packetLengthInBytes
-                              );
-
           //-------------------------------------------------------------------
           #pragma mark
           #pragma mark Call::CallLocation => IICESocketSessionDelegate
@@ -550,6 +528,8 @@ namespace openpeer
                                                       IICESocketSessionPtr session,
                                                       ICESocketSessionStates state
                                                       );
+
+          virtual void onICESocketSessionNominationChanged(IICESocketSessionPtr session);
 
           virtual void handleICESocketSessionReceivedPacket(
                                                             IICESocketSessionPtr session,
@@ -636,10 +616,7 @@ namespace openpeer
           //-------------------------------------------------------------------
           // variables protected with media lock
           IICESocketSessionPtr mAudioRTPSocketSession;
-          IICESocketSessionPtr mAudioRTCPSocketSession;
-
           IICESocketSessionPtr mVideoRTPSocketSession;
-          IICESocketSessionPtr mVideoRTCPSocketSession;
         };
 
       private:
@@ -708,10 +685,7 @@ namespace openpeer
         // variables protected with media lock
 
         IICESocketSubscriptionPtr mAudioRTPSocketSubscription;
-        IICESocketSubscriptionPtr mAudioRTCPSocketSubscription;
-
         IICESocketSubscriptionPtr mVideoRTPSocketSubscription;
-        IICESocketSubscriptionPtr mVideoRTCPSocketSubscription;
 
         bool mMediaHolding;
         CallLocationPtr mPickedLocation;

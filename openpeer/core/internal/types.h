@@ -75,6 +75,8 @@ namespace openpeer
       using zsLib::XML::Generator;
       using zsLib::XML::GeneratorPtr;
 
+      using stack::Candidate;
+      using stack::CandidateList;
       using stack::AutoRecursiveLockPtr;
       using stack::IBootstrappedNetwork;
       using stack::IBootstrappedNetworkPtr;

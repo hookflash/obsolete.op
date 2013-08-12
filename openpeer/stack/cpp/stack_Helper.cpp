@@ -121,6 +121,30 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      void Helper::convert(
+                           const CandidateList &input,
+                           IICESocket::CandidateList &output
+                           )
+      {
+        for (CandidateList::const_iterator iter = input.begin(); iter != input.end(); ++iter)
+        {
+          output.push_back(*iter);
+        }
+      }
+
+      //-----------------------------------------------------------------------
+      void Helper::convert(
+                           const IICESocket::CandidateList &input,
+                           CandidateList &output
+                           )
+      {
+        for (IICESocket::CandidateList::const_iterator iter = input.begin(); iter != input.end(); ++iter)
+        {
+          output.push_back(*iter);
+        }
+      }
+
+      //-----------------------------------------------------------------------
       String Helper::splitEncrypt(
                                   SecureByteBlock &key,
                                   SecureByteBlock &value
@@ -185,6 +209,25 @@ namespace openpeer
       return internal::Helper::getSignatureInfo(signedEl, outSignatureEl, outPeerURI, outKeyID, outKeyDomain, outService, outFullPublicKey, outFingerprint);
     }
 
+    //-------------------------------------------------------------------------
+    void IHelper::convert(
+                          const CandidateList &input,
+                          IICESocket::CandidateList &output
+                          )
+    {
+      return internal::Helper::convert(input, output);
+    }
+
+    //-------------------------------------------------------------------------
+    void IHelper::convert(
+                          const IICESocket::CandidateList &input,
+                          CandidateList &output
+                          )
+    {
+      return internal::Helper::convert(input, output);
+    }
+    
+    //-------------------------------------------------------------------------
     String IHelper::splitEncrypt(
                                  SecureByteBlock &key,
                                  SecureByteBlock &value
@@ -193,6 +236,7 @@ namespace openpeer
       return internal::Helper::splitEncrypt(key, value);
     }
 
+    //-------------------------------------------------------------------------
     SecureByteBlockPtr IHelper::splitDecrypt(
                                            SecureByteBlock &key,
                                            const char *hexIVAndBase64EncodedData
