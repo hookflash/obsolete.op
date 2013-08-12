@@ -608,6 +608,7 @@ namespace openpeer
       void ServiceIdentitySession::notifyBrowserWindowVisible()
       {
         AutoRecursiveLock lock(getLock());
+        ZS_LOG_DEBUG(log("browser window visible"))
         mBrowserWindowVisible = true;
         step();
       }
@@ -616,6 +617,7 @@ namespace openpeer
       void ServiceIdentitySession::notifyBrowserWindowClosed()
       {
         AutoRecursiveLock lock(getLock());
+        ZS_LOG_DEBUG(log("browser window close called"))
         mBrowserWindowClosed = true;
         step();
       }
@@ -1625,6 +1627,7 @@ namespace openpeer
         }
 
         if (!stepBootstrapper()) return;
+        if (!stepGrantCheck()) return;
         if (!stepLoadBrowserWindow()) return;
         if (!stepIdentityAccessStartNotification()) return;
         if (!stepMakeBrowserWindowVisible()) return;
@@ -2017,6 +2020,13 @@ namespace openpeer
         switch (state) {
           case IServiceLockboxSession::SessionState_Pending:
           case IServiceLockboxSession::SessionState_PendingPeerFilesGeneration: {
+
+            LockboxInfo lockboxInfo = lockbox->forServiceIdentity().getLockboxInfo();
+            if (lockboxInfo.mAccessToken.hasData()) {
+              ZS_LOG_DEBUG(log("lockbox is still pending but safe to proceed because lockbox has been granted access"))
+              return true;
+            }
+
             ZS_LOG_DEBUG(log("waiting for lockbox to ready"))
             return false;
           }
@@ -2053,8 +2063,8 @@ namespace openpeer
         }
 
         if (!mBrowserWindowReady) {
-#define TODO_how_to_update_lockbox_info 1
-#define TODO_how_to_update_lockbox_info 2
+#define WARNING_HOW_TO_UPDATE_LOCKBOX_INFO 1
+#define WARNING_HOW_TO_UPDATE_LOCKBOX_INFO 2
           ZS_LOG_DEBUG(log("never loaded browser window so no need to perform lockbox update"))
           return true;
         }

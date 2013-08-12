@@ -399,9 +399,7 @@ namespace openpeer
       #pragma mark
 
       //-----------------------------------------------------------------------
-      IServiceNamespaceGrantSessionForServicesWaitPtr ServiceNamespaceGrantSession::obtainWaitToProceed(
-                                                                                                        IServiceNamespaceGrantSessionForServicesWaitForWaitDelegatePtr waitForWaitUponFailingToObtainDelegate
-                                                                                                        )
+      IServiceNamespaceGrantSessionForServicesWaitPtr ServiceNamespaceGrantSession::obtainWaitToProceed(IServiceNamespaceGrantSessionForServicesWaitForWaitDelegatePtr waitForWaitUponFailingToObtainDelegate)
       {
         AutoRecursiveLock lock(getLock());
 
@@ -425,6 +423,8 @@ namespace openpeer
 
           WaitPtr wait = Wait::create(mThisWeak.lock());
           ++mTotalWaits;
+
+          ZS_LOG_DEBUG(log("obtained grant wait") + ", total waits=" + string(mTotalWaits))
           return wait;
         }
 
@@ -573,9 +573,9 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void ServiceNamespaceGrantSession::notifyWaitGone(PUID waitID)
       {
-        ZS_LOG_DEBUG(log("removing wait") + ", wait ID=" + string(waitID))
-
         AutoRecursiveLock lock(getLock());
+
+        ZS_LOG_DEBUG(log("removing wait") + ", wait ID=" + string(waitID) + ", total waits=" + string(mTotalWaits))
 
         ZS_THROW_BAD_STATE_IF(0 == mTotalWaits)
 

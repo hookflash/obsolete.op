@@ -656,6 +656,8 @@ namespace openpeer
           return false;
         }
 
+        ZS_LOG_DEBUG(log("handle lockbox access result"))
+
         mLockboxAccessMonitor->cancel();
         mLockboxAccessMonitor.reset();
 
@@ -1092,13 +1094,22 @@ namespace openpeer
           return true;
         }
 
+        // NOTE: While the lockbox service itself doesn't load a browser window
+        // and thus does not need to obtain a grant wait directly, it can cause
+        // a namespace grant challenge at the same time the rolodex causes a
+        // grant challenge, so it's better to cause all namespace grants to
+        // happen at once rather than asking the user to issue a grant
+        // permission twice.
+
         mGrantWait = mGrantSession->forServices().obtainWaitToProceed(mThisWeak.lock());
 
         if (!mGrantWait) {
           ZS_LOG_DEBUG(log("waiting to obtain grant wait lock"))
           return false;
         }
-        
+
+        ZS_LOG_DEBUG(log("obtained grant lock"))
+
         mObtainedLock = true;
         return true;
       }
@@ -1291,7 +1302,7 @@ namespace openpeer
         mLockboxNamespaceGrantChallengeValidateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<LockboxNamespaceGrantChallengeValidateResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS));
         mBootstrappedNetwork->forServices().sendServiceMessage("identity-lockbox", "lockbox-namespace-grant-challenge-validate", request);
 
-        return true;
+        return false;
       }
 
       //-----------------------------------------------------------------------

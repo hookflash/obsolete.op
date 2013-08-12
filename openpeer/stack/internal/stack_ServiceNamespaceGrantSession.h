@@ -254,9 +254,7 @@ namespace openpeer
 
         // (duplicate) virtual String getGrantID() const;
 
-        virtual IServiceNamespaceGrantSessionForServicesWaitPtr obtainWaitToProceed(
-                                                                                    IServiceNamespaceGrantSessionForServicesWaitForWaitDelegatePtr waitForWaitUponFailingToObtainDelegate = IServiceNamespaceGrantSessionForServicesWaitForWaitDelegatePtr()
-                                                                                    );
+        virtual IServiceNamespaceGrantSessionForServicesWaitPtr obtainWaitToProceed(IServiceNamespaceGrantSessionForServicesWaitForWaitDelegatePtr waitForWaitUponFailingToObtainDelegate = IServiceNamespaceGrantSessionForServicesWaitForWaitDelegatePtr());
 
         virtual IServiceNamespaceGrantSessionForServicesQueryPtr query(
                                                                        IServiceNamespaceGrantSessionForServicesQueryDelegatePtr delegate,
