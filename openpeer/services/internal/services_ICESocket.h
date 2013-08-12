@@ -125,6 +125,7 @@ namespace openpeer
           Candidate         mRelay;
 
           LocalSocket(
+                      WORD componentID,
                       ULONG nextLocalPreference,
                       const String &usernameFrag,
                       const String &password
@@ -382,6 +383,7 @@ namespace openpeer
         String              mLastErrorReason;
 
         ICESocketPtr        mFoundation;
+        AutoWORD            mComponentID;
 
         WORD                mBindPort;
         String              mUsernameFrag;

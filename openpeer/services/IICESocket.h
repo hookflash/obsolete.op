@@ -82,13 +82,14 @@ namespace openpeer
       {
         Types     mType;
         String    mFoundation;
+        WORD      mComponentID;
         IPAddress mIPAddress;
         DWORD     mPriority;
         WORD      mLocalPreference;  // fill with "0" if unknown
 
         IPAddress mRelatedIP;         // if server reflexive, peer reflexive or relayed, the related base IP
 
-        Candidate(): mType(Type_Unknown), mPriority(0), mLocalPreference(0) {}
+        Candidate(): mType(Type_Unknown), mComponentID(0), mPriority(0), mLocalPreference(0) {}
         bool hasData() const;
         String toDebugString(bool includeCommaPrefix = true) const;
       };

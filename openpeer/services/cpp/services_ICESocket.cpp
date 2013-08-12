@@ -115,6 +115,7 @@ namespace openpeer
         if (candidate1.mPriority != candidate2.mPriority) return false;
         if (candidate1.mIPAddress != candidate2.mIPAddress) return false;
         if (candidate1.mFoundation != candidate2.mFoundation) return false;
+        if (candidate1.mComponentID != candidate2.mComponentID) return false;
 
         return true;
       }
@@ -183,6 +184,12 @@ namespace openpeer
         ZS_LOG_BASIC(log("created"))
 
         mDefaultSubscription = mSubscriptions.subscribe(delegate, queue);
+
+        if (mFoundation) {
+          get(mComponentID) = get(mFoundation->mComponentID) + 1;
+        } else {
+          get(mComponentID) = 1;
+        }
 
         // calculate the empty list CRC value
         CRC32 crc;
@@ -1179,7 +1186,7 @@ namespace openpeer
 
           ZS_LOG_DEBUG(log("bind successful"))
 
-          LocalSocketPtr localSocket(new LocalSocket(mNextLocalPreference, mUsernameFrag, mPassword));
+          LocalSocketPtr localSocket(new LocalSocket(mComponentID, mNextLocalPreference, mUsernameFrag, mPassword));
 
           mNextLocalPreference -= 0xF;
           if (mNextLocalPreference > 0xFFFF) {
@@ -1821,6 +1828,7 @@ namespace openpeer
 
       //-----------------------------------------------------------------------
       ICESocket::LocalSocket::LocalSocket(
+                                          WORD componentID,
                                           ULONG nextLocalPreference,
                                           const String &usernameFrag,
                                           const String &password
@@ -1828,15 +1836,18 @@ namespace openpeer
       {
         mLocal.mLocalPreference = nextLocalPreference;
         mLocal.mType = ICESocket::Type_Local;
-        mLocal.mPriority = ((1 << 24)*(static_cast<DWORD>(mLocal.mType))) + ((1 << 8)*(static_cast<DWORD>(mLocal.mLocalPreference))) + (256 - 0);
+        mLocal.mComponentID = componentID;
+        mLocal.mPriority = ((1 << 24)*(static_cast<DWORD>(mLocal.mType))) + ((1 << 8)*(static_cast<DWORD>(mLocal.mLocalPreference))) + (256 - mLocal.mComponentID);
 
         mReflexive.mLocalPreference = nextLocalPreference;
         mReflexive.mType = ICESocket::Type_ServerReflexive;
-        mReflexive.mPriority = ((1 << 24)*(static_cast<DWORD>(mReflexive.mType))) + ((1 << 8)*(static_cast<DWORD>(mReflexive.mLocalPreference))) + (256 - 0);
+        mReflexive.mComponentID = componentID;
+        mReflexive.mPriority = ((1 << 24)*(static_cast<DWORD>(mReflexive.mType))) + ((1 << 8)*(static_cast<DWORD>(mReflexive.mLocalPreference))) + (256 - mReflexive.mComponentID);
 
         mRelay.mLocalPreference = nextLocalPreference;
         mRelay.mType = ICESocket::Type_Relayed;
-        mRelay.mPriority = ((1 << 24)*(static_cast<DWORD>(mRelay.mType))) + ((1 << 8)*(static_cast<DWORD>(mRelay.mLocalPreference))) + (256 - 0);
+        mRelay.mComponentID = componentID;
+        mRelay.mPriority = ((1 << 24)*(static_cast<DWORD>(mRelay.mType))) + ((1 << 8)*(static_cast<DWORD>(mRelay.mLocalPreference))) + (256 - mRelay.mComponentID);
       }
     }
 
@@ -2024,6 +2035,7 @@ namespace openpeer
       bool firstTime = !includeCommaPrefix;
       return internal::Helper::getDebugValue("type", IICESocket::toString(mType), firstTime) +
              internal::Helper::getDebugValue("foundation", mFoundation, firstTime) +
+             internal::Helper::getDebugValue("component", 0 != mComponentID ? string(mComponentID) : String(), firstTime) +
              internal::Helper::getDebugValue("ip", mIPAddress.string(), firstTime) +
              internal::Helper::getDebugValue("priority", 0 != mPriority ? string(mPriority) : String(), firstTime) +
              internal::Helper::getDebugValue("preference", 0 != mLocalPreference ? string(mLocalPreference) : String(), firstTime) +

@@ -392,6 +392,10 @@ namespace openpeer
             candidateEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("foundation", candidate.mFoundation));
           }
 
+          if (0 != candidate.mComponentID) {
+            candidateEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("component", string(candidate.mIPAddress.getPort())));
+          }
+
           if (!candidate.mIPAddress.isEmpty()) {
             if (candidate.mAccessToken.hasData()) {
               candidateEl->adoptAsLastChild(IMessageHelper::createElementWithText("host", candidate.mIPAddress.string(false)));
@@ -1560,6 +1564,7 @@ namespace openpeer
           ElementPtr transportEl = elem->findFirstChildElement("transport");
           ElementPtr typeEl = elem->findFirstChildElement("type");
           ElementPtr foundationEl = elem->findFirstChildElement("foundation");
+          ElementPtr componentEl = elem->findFirstChildElement("component");
           ElementPtr hostEl = elem->findFirstChildElement("host");
           ElementPtr ipEl = elem->findFirstChildElement("ip");
           ElementPtr portEl = elem->findFirstChildElement("port");
@@ -1589,6 +1594,13 @@ namespace openpeer
           }
 
           ret.mFoundation = IMessageHelper::getElementTextAndDecode(foundationEl);
+
+          if (componentEl) {
+            try {
+              ret.mComponentID = Numeric<typeof(ret.mComponentID)>(IMessageHelper::getElementText(componentEl));
+            } catch(Numeric<typeof(ret.mComponentID)>::ValueOutOfRange &) {
+            }
+          }
 
           if ((ipEl) ||
               (hostEl))
