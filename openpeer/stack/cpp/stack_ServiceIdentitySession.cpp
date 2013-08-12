@@ -658,7 +658,9 @@ namespace openpeer
         if (ZS_GET_LOG_LEVEL() >= zsLib::Log::Trace) {
           GeneratorPtr generator = Generator::createJSONGenerator();
           boost::shared_array<char> jsonText = generator->write(unparsedMessage);
+          ZS_LOG_BASIC(log("<<<<<<<<<<<<< MESSAGE FROM INNER FRAME (START) <<<<<<<<<<<<<"))
           ZS_LOG_TRACE(log("handling message from inner frame") + ", message=" + (CSTR)(jsonText.get()))
+          ZS_LOG_BASIC(log("<<<<<<<<<<<<<  MESSAGE FROM INNER FRAME (END)  <<<<<<<<<<<<<"))
         }
 
         MessagePtr message = Message::create(unparsedMessage, mThisWeak.lock());
@@ -668,14 +670,6 @@ namespace openpeer
         }
 
         AutoRecursiveLock lock(getLock());
-
-        if (ZS_GET_LOG_LEVEL() >= zsLib::Log::Trace) {
-          GeneratorPtr generator = Generator::createJSONGenerator();
-          boost::shared_array<char> jsonText = generator->write(unparsedMessage);
-          ZS_LOG_BASIC(log("<<<<<<<<<<<<< MESSAGE FROM INNER FRAME (START) <<<<<<<<<<<<<"))
-          ZS_LOG_BASIC(log("sending inner frame message") + ", message=" + (CSTR)(jsonText.get()))
-          ZS_LOG_BASIC(log("<<<<<<<<<<<<<  MESSAGE FROM INNER FRAME (END)  <<<<<<<<<<<<<"))
-        }
 
         if (isShutdown()) {
           ZS_LOG_WARNING(Detail, log("cannot handle message when shutdown"))
