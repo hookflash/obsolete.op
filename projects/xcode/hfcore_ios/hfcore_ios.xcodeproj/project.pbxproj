@@ -97,8 +97,6 @@
 		E279D62D17ABE6B800A7D32E /* IMediaEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IMediaEngine.h; sourceTree = "<group>"; };
 		E279D62E17ABE74000A7D32E /* core_MediaEngine.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = core_MediaEngine.h; sourceTree = "<group>"; };
 		E279D62F17ABE77A00A7D32E /* core_MediaEngineObsolete.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_MediaEngineObsolete.cpp; sourceTree = "<group>"; };
-		E2C93DC917B46ED400F8DDE1 /* IMediaStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IMediaStream.h; sourceTree = "<group>"; };
-		E2C93DCA17B46EEA00F8DDE1 /* IMediaSession.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IMediaSession.h; sourceTree = "<group>"; };
 		E2C93DCB17B46F1000F8DDE1 /* core_MediaStream.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = core_MediaStream.h; sourceTree = "<group>"; };
 		E2C93DCC17B46F2200F8DDE1 /* core_MediaSession.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = core_MediaSession.h; sourceTree = "<group>"; };
 		E2C93DCD17B46F4B00F8DDE1 /* core_MediaStream.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = core_MediaStream.cpp; sourceTree = "<group>"; };
@@ -160,8 +158,6 @@
 				0063BF8716CA9B6900E6DB4D /* IStack.h */,
 				0063BF7216CA9B6900E6DB4D /* IMediaEngineObsolete.h */,
 				E279D62D17ABE6B800A7D32E /* IMediaEngine.h */,
-				E2C93DC917B46ED400F8DDE1 /* IMediaStream.h */,
-				E2C93DCA17B46EEA00F8DDE1 /* IMediaSession.h */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -188,8 +184,8 @@
 				0063BF6816CA9B6900E6DB4D /* core_Stack.cpp */,
 				E279D62F17ABE77A00A7D32E /* core_MediaEngineObsolete.cpp */,
 				0063BF6716CA9B6900E6DB4D /* core_MediaEngine.cpp */,
-				E2C93DCD17B46F4B00F8DDE1 /* core_MediaStream.cpp */,
 				E2C93DD017B46F5C00F8DDE1 /* core_MediaSession.cpp */,
+				E2C93DCD17B46F4B00F8DDE1 /* core_MediaStream.cpp */,
 			);
 			path = cpp;
 			sourceTree = "<group>";
@@ -217,8 +213,8 @@
 				0063BF8516CA9B6900E6DB4D /* core_Stack.h */,
 				0063BF8416CA9B6900E6DB4D /* core_MediaEngineObsolete.h */,
 				E279D62E17ABE74000A7D32E /* core_MediaEngine.h */,
-				E2C93DCB17B46F1000F8DDE1 /* core_MediaStream.h */,
 				E2C93DCC17B46F2200F8DDE1 /* core_MediaSession.h */,
+				E2C93DCB17B46F1000F8DDE1 /* core_MediaStream.h */,
 			);
 			path = internal;
 			sourceTree = "<group>";
@@ -289,10 +285,10 @@
 				0063C12216CA9B6A00E6DB4D /* core_Identity.cpp in Sources */,
 				0063C12316CA9B6A00E6DB4D /* core_IdentityLookup.cpp in Sources */,
 				0063C12416CA9B6A00E6DB4D /* core_Logger.cpp in Sources */,
-				0063C12516CA9B6A00E6DB4D /* core_MediaEngine.cpp in Sources */,
 				0063C12616CA9B6A00E6DB4D /* core_Stack.cpp in Sources */,
 				005F60B61756B7DB00BC3DD6 /* core_Cache.cpp in Sources */,
 				E279D63117ABE77A00A7D32E /* core_MediaEngineObsolete.cpp in Sources */,
+				0063C12516CA9B6A00E6DB4D /* core_MediaEngine.cpp in Sources */,
 				E2C93DCF17B46F4B00F8DDE1 /* core_MediaStream.cpp in Sources */,
 				E2C93DD217B46F5C00F8DDE1 /* core_MediaSession.cpp in Sources */,
 			);

@@ -32,7 +32,7 @@
 #pragma once
 
 #include <openpeer/core/internal/types.h>
-#include <openpeer/core/IMediaSession.h>
+#include <openpeer/core/internal/core_MediaStream.h>
 
 namespace openpeer
 {
@@ -46,6 +46,44 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IMediaSession
+      #pragma mark
+      
+      interaction IMediaSession
+      {
+        virtual MediaStreamListPtr getAudioStreams() = 0;
+        virtual MediaStreamListPtr getVideoStreams() = 0;
+        
+        virtual String getCNAME() = 0;
+        
+        virtual void addStream(IMediaStreamPtr stream) = 0;
+        virtual void removeStream(IMediaStreamPtr stream) = 0;
+      };
+   
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IMediaSessionForCall
+      #pragma mark
+      
+      interaction IMediaSessionForCall
+      {
+        IMediaSessionForCall &forCall() {return *this;}
+        const IMediaSessionForCall &forCall() const {return *this;}
+
+        virtual bool getImmutable() = 0;
+        
+        virtual void setVoiceRecordFile(String fileName) = 0;
+        virtual String getVoiceRecordFile() const = 0;
+      };
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark IMediaSessionForCallTransport
       #pragma mark
       
@@ -53,17 +91,22 @@ namespace openpeer
       {
         IMediaSessionForCallTransport &forCallTransport() {return *this;}
         const IMediaSessionForCallTransport &forCallTransport() const {return *this;}
-        
-        virtual MediaStreamListPtr getAudioStreams() = 0;
-        virtual MediaStreamListPtr getVideoStreams() = 0;
-        
-        virtual String getCNAME() = 0;
-        
-        virtual void addAudioStream(IMediaStreamPtr stream) = 0;
-        virtual void removeAudioStream(IMediaStreamPtr stream) = 0;
-        virtual void addVideoStream(IMediaStreamPtr stream) = 0;
-        virtual void removeVideoStream(IMediaStreamPtr stream) = 0;
       };
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IMediaSessionAsync
+      #pragma mark
+
+      interaction IMediaSessionAsync
+      {
+        virtual void onMediaSessionStreamAdded(IMediaStreamPtr track) = 0;
+        virtual void onMediaSessionStreamRemoved(IMediaStreamPtr track) = 0;
+      };
+
       
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -74,11 +117,12 @@ namespace openpeer
       #pragma mark
       
       class MediaSession : public MessageQueueAssociator,
-                           public virtual IMediaSession,
+                           public virtual IMediaSessionForCall,
                            public virtual IMediaSessionForCallTransport
       {
       public:
         friend interaction IMediaSession;
+        friend interaction IMediaSessionForCall;
         friend interaction IMediaSessionForCallTransport;
         
       protected:
@@ -100,14 +144,21 @@ namespace openpeer
         virtual MediaStreamListPtr getVideoStreams();
         
         virtual String getCNAME();
-        virtual bool getImmutable();
         virtual IMediaSessionPtr clone();
-
-        virtual void addAudioStream(IMediaStreamPtr stream);
-        virtual void removeAudioStream(IMediaStreamPtr stream);
-        virtual void addVideoStream(IMediaStreamPtr stream);
-        virtual void removeVideoStream(IMediaStreamPtr stream);
         
+        virtual void addStream(IMediaStreamPtr stream);
+        virtual void removeStream(IMediaStreamPtr stream);
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark MediaSession => IMediaSessionForCall
+        #pragma mark
+        
+        virtual bool getImmutable();
+        
+        virtual void setVoiceRecordFile(String fileName);
+        virtual String getVoiceRecordFile() const;
+
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark MediaSession => IMediaSessionForCallTransport
@@ -117,3 +168,9 @@ namespace openpeer
     }
   }
 }
+
+ZS_DECLARE_PROXY_BEGIN(openpeer::core::internal::IMediaSessionAsync)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::core::internal::IMediaStreamPtr, IMediaStreamPtr)
+ZS_DECLARE_PROXY_METHOD_1(onMediaSessionStreamAdded, IMediaStreamPtr)
+ZS_DECLARE_PROXY_METHOD_1(onMediaSessionStreamRemoved, IMediaStreamPtr)
+ZS_DECLARE_PROXY_END()

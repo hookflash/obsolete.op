@@ -105,11 +105,6 @@ namespace openpeer
 
         virtual bool hasAudio() const = 0;
         virtual bool hasVideo() const = 0;
-        
-        virtual MediaSessionList getReceiveMediaSessions() = 0;
-        virtual MediaSessionList getSendMediaSessions() = 0;
-        virtual void addMediaSession(IMediaSessionPtr session, bool mergeAudioStreams = true) = 0;
-        virtual void removeMediaSession(IMediaSessionPtr session) = 0;
 
         virtual void notifyLostFocus() = 0;
 

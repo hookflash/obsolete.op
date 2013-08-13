@@ -81,6 +81,30 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IMediaEngineForCall
+      #pragma mark
+      
+      interaction IMediaEngineForCall
+      {
+        IMediaEngineForCall &forCall() {return *this;}
+        const IMediaEngineForCall &forCall() const {return *this;}
+        
+        static MediaEnginePtr singleton();
+        
+        virtual MediaSessionList getReceiveMediaSessions() = 0;
+        virtual MediaSessionList getSendMediaSessions() = 0;
+        virtual void addMediaSession(IMediaSessionPtr session, bool mergeAudioStreams = true) = 0;
+        virtual void removeMediaSession(IMediaSessionPtr session) = 0;
+        
+        virtual IMediaStreamForCallTransport::MediaConstraintList getVideoConstraints(ILocalSendVideoStreamForCall::CameraTypes cameraType) = 0;
+        virtual IMediaStreamForCallTransport::MediaConstraintList getAudioConstraints() = 0;
+      };
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark IMediaEngineForCallTransport
       #pragma mark
       
@@ -92,11 +116,14 @@ namespace openpeer
         const IMediaEngineForCallTransport &forCallTransport() const {return *this;}
         
         static MediaEnginePtr singleton();
-        
-        virtual IMediaStreamForCallTransport::MediaConstraintList getVideoConstraints(ILocalSendVideoStream::CameraTypes cameraType) = 0;
-        virtual IMediaStreamForCallTransport::MediaConstraintList getAudioConstraints() = 0;
       };
       
+      interaction IMediaEngineAsync
+      {
+        virtual void onMediaEngineSessionAdded(IMediaSessionPtr session) = 0;
+        virtual void onMediaEngineSessionRemoved(IMediaSessionPtr session) = 0;
+      };
+
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -154,7 +181,7 @@ namespace openpeer
         
         void init();
         
-        static MediaEngineObsoletePtr create(IMediaEngineDelegateObsoletePtr delegate);
+        static MediaEnginePtr create(IMediaEngineDelegatePtr delegate);
         
         void destroyMediaEngine();
         virtual void setLogLevel();
@@ -191,11 +218,21 @@ namespace openpeer
         
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark MediaEngine => IMediaEngineForCallTransport
+        #pragma mark MediaEngine => IMediaEngineForCall
         #pragma mark
         
-        virtual IMediaStreamForCallTransport::MediaConstraintList getVideoConstraints(ILocalSendVideoStream::CameraTypes cameraType);
+        virtual MediaSessionList getReceiveMediaSessions();
+        virtual MediaSessionList getSendMediaSessions();
+        virtual void addMediaSession(IMediaSessionPtr session, bool mergeAudioStreams = true);
+        virtual void removeMediaSession(IMediaSessionPtr session);
+        
+        virtual IMediaStreamForCallTransport::MediaConstraintList getVideoConstraints(ILocalSendVideoStreamForCall::CameraTypes cameraType);
         virtual IMediaStreamForCallTransport::MediaConstraintList getAudioConstraints();
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark MediaEngine => IMediaEngineForCallTransport
+        #pragma mark
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -225,3 +262,9 @@ namespace openpeer
     }
   }
 }
+
+ZS_DECLARE_PROXY_BEGIN(openpeer::core::internal::IMediaEngineAsync)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::core::internal::IMediaSessionPtr, IMediaSessionPtr)
+ZS_DECLARE_PROXY_METHOD_1(onMediaEngineSessionAdded, IMediaSessionPtr)
+ZS_DECLARE_PROXY_METHOD_1(onMediaEngineSessionRemoved, IMediaSessionPtr)
+ZS_DECLARE_PROXY_END()

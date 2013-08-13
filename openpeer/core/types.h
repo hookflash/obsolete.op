@@ -249,56 +249,6 @@ namespace openpeer
     typedef boost::shared_ptr<IMediaEngineDelegateObsolete> IMediaEngineDelegateObsoletePtr;
     typedef boost::weak_ptr<IMediaEngineDelegateObsolete> IMediaEngineDelegateObsoleteWeakPtr;
     typedef zsLib::Proxy<IMediaEngineDelegateObsolete> IMediaEngineDelegateObsoleteProxy;
-    
-    interaction IMediaSession;
-    typedef boost::shared_ptr<IMediaSession> IMediaSessionPtr;
-    typedef boost::weak_ptr<IMediaSession> IMediaSessionWeakPtr;
-    
-    interaction IMediaSessionDelegate;
-    typedef boost::shared_ptr<IMediaSessionDelegate> IMediaSessionDelegatePtr;
-    typedef boost::weak_ptr<IMediaSessionDelegate> IMediaSessionDelegateWeakPtr;
-    typedef zsLib::Proxy<IMediaSessionDelegate> IMediaSessionelegateProxy;
-    
-    typedef std::list<IMediaSessionPtr> MediaSessionList;
-    typedef boost::shared_ptr<MediaSessionList> MediaSessionListPtr;
-    typedef boost::weak_ptr<MediaSessionList> MediaSessionListWeakPtr;
-
-    interaction IMediaStream;
-    typedef boost::shared_ptr<IMediaStream> IMediaStreamPtr;
-    typedef boost::weak_ptr<IMediaStream> IMediaStreamWeakPtr;
-    
-    interaction ILocalSendAudioStream;
-    typedef boost::shared_ptr<ILocalSendAudioStream> ILocalSendAudioStreamPtr;
-    typedef boost::weak_ptr<ILocalSendAudioStream> ILocalSendAudioStreamWeakPtr;
-    
-    interaction IRemoteReceiveAudioStream;
-    typedef boost::shared_ptr<IRemoteReceiveAudioStream> IRemoteReceiveAudioStreamPtr;
-    typedef boost::weak_ptr<IRemoteReceiveAudioStream> IRemoteReceiveAudioStreamWeakPtr;
-    
-    interaction IRemoteSendAudioStream;
-    typedef boost::shared_ptr<IRemoteSendAudioStream> IRemoteSendAudioStreamPtr;
-    typedef boost::weak_ptr<IRemoteSendAudioStream> IRemoteSendAudioStreamWeakPtr;
-    
-    interaction ILocalSendVideoStream;
-    typedef boost::shared_ptr<ILocalSendVideoStream> ILocalSendVideoStreamPtr;
-    typedef boost::weak_ptr<ILocalSendVideoStream> ILocalSendVideoStreamWeakPtr;
-    
-    interaction IRemoteReceiveVideoStream;
-    typedef boost::shared_ptr<IRemoteReceiveVideoStream> IRemoteReceiveVideoStreamPtr;
-    typedef boost::weak_ptr<IRemoteReceiveVideoStream> IRemoteReceiveVideoStreamWeakPtr;
-    
-    interaction IRemoteSendVideoStream;
-    typedef boost::shared_ptr<IRemoteSendVideoStream> IRemoteSendVideoStreamPtr;
-    typedef boost::weak_ptr<IRemoteSendVideoStream> IRemoteSendVideoStreamWeakPtr;
-
-    interaction IMediaStreamDelegate;
-    typedef boost::shared_ptr<IMediaStreamDelegate> IMediaStreamDelegatePtr;
-    typedef boost::weak_ptr<IMediaStreamDelegate> IMediaStreamDelegateWeakPtr;
-    typedef zsLib::Proxy<IMediaStreamDelegate> IMediaStreamDelegateProxy;
-    
-    typedef std::list<IMediaStreamPtr> MediaStreamList;
-    typedef boost::shared_ptr<MediaStreamList> MediaStreamListPtr;
-    typedef boost::weak_ptr<MediaStreamList> MediaStreamListWeakPtr;
 
     interaction IStack;
     typedef boost::shared_ptr<IStack> IStackPtr;
