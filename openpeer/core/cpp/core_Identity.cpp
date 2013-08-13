@@ -319,7 +319,7 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      void Identity::getIdentityContact(IdentityContact &outIdentityContact) const
+      void Identity::getSelfIdentityContact(IdentityContact &outIdentityContact) const
       {
         IdentityInfo identityInfo;
         mSession->getIdentityInfo(identityInfo);
