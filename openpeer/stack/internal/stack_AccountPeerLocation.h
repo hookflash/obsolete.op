@@ -39,6 +39,7 @@
 #include <openpeer/services/IRUDPICESocket.h>
 #include <openpeer/services/IRUDPICESocketSession.h>
 #include <openpeer/services/IRUDPMessaging.h>
+#include <openpeer/services/ITransportStream.h>
 
 #include <openpeer/stack/message/peer-to-peer/PeerIdentifyResult.h>
 #include <openpeer/stack/message/peer-to-peer/PeerKeepAliveResult.h>
@@ -140,6 +141,8 @@ namespace openpeer
                                   public services::IRUDPICESocketDelegate,
                                   public services::IRUDPICESocketSessionDelegate,
                                   public services::IRUDPMessagingDelegate,
+                                  public services::ITransportStreamWriterDelegate,
+                                  public services::ITransportStreamReaderDelegate,
                                   public IMessageMonitorResultDelegate<PeerIdentifyResult>,
                                   public IMessageMonitorResultDelegate<PeerKeepAliveResult>
       {
@@ -253,8 +256,19 @@ namespace openpeer
                                                  RUDPMessagingStates state
                                                  );
 
-        virtual void onRUDPMessagingReadReady(IRUDPMessagingPtr session);
-        virtual void onRUDPMessagingWriteReady(IRUDPMessagingPtr session);
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark AccountPeerLocation => ITransportStreamWriterDelegate
+        #pragma mark
+
+        virtual void onTransportStreamWriterReady(ITransportStreamWriterPtr writer);
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark AccountPeerLocation => ITransportStreamWriterDelegate
+        #pragma mark
+
+        virtual void onTransportStreamReaderReady(ITransportStreamReaderPtr reader);
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -349,6 +363,8 @@ namespace openpeer
         IRUDPICESocketSubscriptionPtr mSocketSubscription;
         IRUDPICESocketSessionPtr mSocketSession;   // this will only become valid when a connection is establishing
         IRUDPMessagingPtr mMessaging;
+        ITransportStreamReaderPtr mReceiveStream;
+        ITransportStreamWriterPtr mSendStream;
 
         bool mIncoming;
         Time mIdentifyTime;

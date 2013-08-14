@@ -32,8 +32,10 @@
 #pragma once
 
 #include <openpeer/services/internal/types.h>
+
 #include <openpeer/services/IRUDPMessaging.h>
 #include <openpeer/services/IRUDPChannel.h>
+#include <openpeer/services/ITransportStream.h>
 
 #include <boost/shared_array.hpp>
 
@@ -54,20 +56,20 @@ namespace openpeer
       class RUDPMessaging : public Noop,
                             public MessageQueueAssociator,
                             public IRUDPMessaging,
-                            public IRUDPChannelDelegate
+                            public IRUDPChannelDelegate,
+                            public ITransportStreamWriterDelegate,
+                            public ITransportStreamReaderDelegate
       {
       public:
         friend interaction IRUDPMessagingFactory;
         friend interaction IRUDPMessaging;
         
-        typedef IRUDPMessaging::MessageBuffer MessageBuffer;
-        typedef boost::shared_array<BYTE> RecycledPacketBuffer;
-        typedef std::list<RecycledPacketBuffer> RecycledPacketBufferList;
-
       protected:
         RUDPMessaging(
                      IMessageQueuePtr queue,
                      IRUDPMessagingDelegatePtr delegate,
+                      ITransportStreamPtr receiveStream,
+                      ITransportStreamPtr sendStream,
                       ULONG maxMessageSizeInBytes
                      );
         
@@ -92,6 +94,8 @@ namespace openpeer
                                               IMessageQueuePtr queue,
                                               IRUDPListenerPtr listener,
                                               IRUDPMessagingDelegatePtr delegate,
+                                              ITransportStreamPtr receiveStream,
+                                              ITransportStreamPtr sendStream,
                                               ULONG maxMessageSizeInBytes
                                               );
 
@@ -99,6 +103,8 @@ namespace openpeer
                                               IMessageQueuePtr queue,
                                               IRUDPICESocketSessionPtr session,
                                               IRUDPMessagingDelegatePtr delegate,
+                                              ITransportStreamPtr receiveStream,
+                                              ITransportStreamPtr sendStream,
                                               ULONG maxMessageSizeInBytes
                                               );
 
@@ -107,6 +113,8 @@ namespace openpeer
                                             IRUDPICESocketSessionPtr session,
                                             IRUDPMessagingDelegatePtr delegate,
                                             const char *connectionInfo,
+                                            ITransportStreamPtr receiveStream,
+                                            ITransportStreamPtr sendStream,
                                             ULONG maxMessageSizeInBytes
                                             );
 
@@ -121,18 +129,9 @@ namespace openpeer
 
         virtual void shutdownDirection(Shutdown state);
 
-        virtual bool send(
-                          const BYTE *message,
-                          ULONG messsageLengthInBytes
-                          );
-
         virtual void setMaxMessageSizeInBytes(ULONG maxMessageSizeInBytes);
 
-        virtual MessageBuffer getBufferLargeEnoughForNextMessage();
-
-        virtual ULONG getNextReceivedMessageSizeInBytes();
-
-        virtual ULONG receive(BYTE *outBuffer);
+        virtual void setAutoNulTerminateReceiveBuffers(bool nulTerminate = true);
 
         virtual IPAddress getConnectedRemoteIP();
 
@@ -148,8 +147,19 @@ namespace openpeer
                                                RUDPChannelStates state
                                                );
 
-        virtual void onRUDPChannelReadReady(IRUDPChannelPtr session);
-        virtual void onRUDPChannelWriteReady(IRUDPChannelPtr session);
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPMessaging => ITransportStreamWriterDelegate
+        #pragma mark
+
+        virtual void onTransportStreamWriterReady(ITransportStreamWriterPtr reader);
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPMessaging => ITransportStreamReaderDelegate
+        #pragma mark
+
+        virtual void onTransportStreamReaderReady(ITransportStreamReaderPtr reader);
 
       protected:
         //---------------------------------------------------------------------
@@ -164,32 +174,15 @@ namespace openpeer
 
         virtual String getDebugValueString(bool includeCommaPrefix = true) const;
 
+        void step();
+        bool stepSendData();
+        bool stepReceiveData();
+
         void cancel();
         void setState(RUDPMessagingStates state);
         void setError(WORD errorCode, const char *inReason = NULL);
 
         IRUDPChannelPtr getChannel() const;
-
-        void obtainNextMessageSize();
-        void notifyReadReady();
-
-        void getBuffer(RecycledPacketBuffer &outBuffer);
-        void recycleBuffer(RecycledPacketBuffer &buffer);
-
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark RUDPMessaging::AutoRecycleBuffer
-        #pragma mark
-
-        class AutoRecycleBuffer
-        {
-        public:
-          AutoRecycleBuffer(RUDPMessaging &outer, RecycledPacketBuffer &buffer) : mOuter(outer), mBuffer(buffer) {}
-          ~AutoRecycleBuffer() {mOuter.recycleBuffer(mBuffer);}
-        private:
-          RUDPMessaging &mOuter;
-          RecycledPacketBuffer &mBuffer;
-        };
 
       protected:
         //---------------------------------------------------------------------
@@ -206,8 +199,22 @@ namespace openpeer
         String mLastErrorReason;
 
         IRUDPMessagingDelegatePtr mDelegate;
-        AutoBool mInformedReadReady;
-        AutoBool mInformedWriteReady;
+        bool mNulTerminateBuffers;
+
+        ITransportStreamWriterPtr mOuterReceiveStream;
+        ITransportStreamReaderPtr mOuterSendStream;
+
+        ITransportStreamReaderPtr mWireReceiveStream;
+        ITransportStreamWriterPtr mWireSendStream;
+
+        ITransportStreamWriterSubscriptionPtr mOuterReceiveStreamSubscription;
+        ITransportStreamReaderSubscriptionPtr mOuterSendStreamSubscription;
+
+        ITransportStreamReaderSubscriptionPtr mWireReceiveStreamSubscription;
+        ITransportStreamWriterSubscriptionPtr mWireSendStreamSubscription;
+
+        AutoBool mInformedOuterReceiveReady;
+        AutoBool mInformedWireSendReady;
 
         RUDPMessagingPtr mGracefulShutdownReference;
 
@@ -216,8 +223,6 @@ namespace openpeer
         AutoDWORD mNextMessageSizeInBytes;
 
         ULONG mMaxMessageSizeInBytes;
-
-        RecycledPacketBufferList mRecycledBuffers;
       };
 
       //-----------------------------------------------------------------------
@@ -236,6 +241,8 @@ namespace openpeer
                                                IMessageQueuePtr queue,
                                                IRUDPListenerPtr listener,
                                                IRUDPMessagingDelegatePtr delegate,
+                                               ITransportStreamPtr receiveStream,
+                                               ITransportStreamPtr sendStream,
                                                ULONG maxMessageSizeInBytes
                                                );
 
@@ -243,6 +250,8 @@ namespace openpeer
                                                IMessageQueuePtr queue,
                                                IRUDPICESocketSessionPtr session,
                                                IRUDPMessagingDelegatePtr delegate,
+                                               ITransportStreamPtr receiveStream,
+                                               ITransportStreamPtr sendStream,
                                                ULONG maxMessageSizeInBytes
                                                );
 
@@ -251,6 +260,8 @@ namespace openpeer
                                              IRUDPICESocketSessionPtr session,
                                              IRUDPMessagingDelegatePtr delegate,
                                              const char *connectionInfo,
+                                             ITransportStreamPtr receiveStream,
+                                             ITransportStreamPtr sendStream,
                                              ULONG maxMessageSizeInBytes
                                              );
       };

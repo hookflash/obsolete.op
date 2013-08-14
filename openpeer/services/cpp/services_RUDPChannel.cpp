@@ -105,10 +105,12 @@ namespace openpeer
                                                                                                 const char *localPassword,
                                                                                                 const char *remoteUsernameFrag,
                                                                                                 const char *remotePassword,
-                                                                                                const char *connectionInfo
+                                                                                                const char *connectionInfo,
+                                                                                                ITransportStreamPtr receiveStream,
+                                                                                                ITransportStreamPtr sendStream
                                                                                                 )
       {
-        return IRUDPChannelFactory::singleton().createForRUDPICESocketSessionOutgoing(queue, master, delegate, remoteIP, incomingChannelNumber, localUsernameFrag, localPassword, remoteUsernameFrag, remotePassword, connectionInfo);
+        return IRUDPChannelFactory::singleton().createForRUDPICESocketSessionOutgoing(queue, master, delegate, remoteIP, incomingChannelNumber, localUsernameFrag, localPassword, remoteUsernameFrag, remotePassword, connectionInfo, receiveStream, sendStream);
       }
 
       //-----------------------------------------------------------------------
@@ -251,66 +253,6 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      bool RUDPChannel::send(
-                             const BYTE *data,
-                             ULONG dataLengthInBytes
-                             )
-      {
-        ZS_LOG_DEBUG(log("send called") + ", data length=" + string(dataLengthInBytes))
-
-        {
-          AutoRecursiveLock lock(mLock);
-          get(mInformedWriteReady) = false;  // if the send was called in response to a write-ready event then the write-ready event flag needs to be cleared off so the event can fire again
-        }
-
-        sendPendingNow();
-
-        if (0 == dataLengthInBytes) return true;
-
-        IRUDPChannelStreamPtr stream;
-
-        // scope: hold the buffers temporarily if there isn't a stream yet
-        {
-          AutoRecursiveLock lock(mLock);
-
-          if ((isShuttingDown()) ||
-              (isShutdown())) return false;
-
-          if (!mStream) {
-            boost::shared_array<BYTE> buffer(new BYTE[dataLengthInBytes]);
-            PendingSendBuffer temp(buffer, dataLengthInBytes);
-            mPendingBuffers.push_back(temp);
-            return true;
-          }
-          stream = mStream;
-        }
-        return stream->send(data, dataLengthInBytes);
-      }
-
-      ULONG RUDPChannel::getReceiveSizeAvailableInBytes()
-      {
-        AutoRecursiveLock lock(mLock);
-        get(mInformedReadReady) = false; // if this peak ahead size was called in response to a read-ready event then the read-ready event must be cleared so the event can fire again
-
-        if (!mStream) return 0;
-        return mStream->getReceiveSizeAvailableInBytes();
-      }
-
-      //-----------------------------------------------------------------------
-      ULONG RUDPChannel::receive(
-                                 BYTE *outBuffer,
-                                 ULONG bufferLengthInBytes
-                                 )
-      {
-        AutoRecursiveLock lock(mLock);
-        get(mInformedReadReady) = false; // if the receive was called in response to a read-ready event then the read-ready event must be cleared so the event can fire again
-
-        if (!mStream) return 0;
-        ZS_LOG_DEBUG(log("receive called") + ", buffer size=" + string(bufferLengthInBytes))
-        return mStream->receive(outBuffer, bufferLengthInBytes);
-      }
-
-      //-----------------------------------------------------------------------
       IPAddress RUDPChannel::getConnectedRemoteIP()
       {
         AutoRecursiveLock lock(mLock);
@@ -418,7 +360,9 @@ namespace openpeer
                                                                         const char *localPassword,
                                                                         const char *remoteUsernameFrag,
                                                                         const char *remotePassword,
-                                                                        const char *connectionInfo
+                                                                        const char *connectionInfo,
+                                                                        ITransportStreamPtr receiveStream,
+                                                                        ITransportStreamPtr sendStream
                                                                         )
       {
         QWORD sequenceNumber = 0;
@@ -444,6 +388,8 @@ namespace openpeer
 
         pThis->mThisWeak = pThis;
         pThis->mDelegate = IRUDPChannelDelegateProxy::createWeak(queue, delegate);
+        pThis->mReceiveStream = receiveStream;
+        pThis->mSendStream = sendStream;
         pThis->init();
         // do not allow sending to the remote party until we receive an ACK or data
         ZS_LOG_DETAIL(pThis->log("created for socket session outgoing") + ", localUserFrag=" + localUsernameFrag + ", remoteUsernameFrag=" + remoteUsernameFrag + ", local password=" + localPassword + ", remote password=" + remotePassword + ", incoming channel=" + string(incomingChannelNumber))
@@ -465,27 +411,31 @@ namespace openpeer
             ZS_LOG_DEBUG(log("delegate notified of channel state change"))
             mDelegate->onRDUPChannelStateChanged(mThisWeak.lock(), mCurrentState);
           }
-
-          if (mStream) {
-            if (0 != mStream->getReceiveSizeAvailableInBytes()) {
-              ZS_LOG_DEBUG(log("delegate notified of channel read ready"))
-              if (!mInformedReadReady) {
-                mDelegate->onRUDPChannelReadReady(mThisWeak.lock());
-                get(mInformedReadReady) = true;
-              }
-            }
-
-            ZS_LOG_DEBUG(log("delegate notified of channel write ready"))
-            if (!mInformedWriteReady) {
-              mDelegate->onRUDPChannelWriteReady(mThisWeak.lock());
-              get(mInformedWriteReady) = true;
-            }
-          }
         } catch(IRUDPChannelDelegateProxy::Exceptions::DelegateGone &) {
           ZS_LOG_ERROR(Basic, log("delegate destroyed during the set"))
           setError(RUDPChannelShutdownReason_DelegateGone, "delegate gone");
           cancel(false);
           return;
+        }
+      }
+
+      //-----------------------------------------------------------------------
+      void RUDPChannel::setStreams(
+                                   ITransportStreamPtr receiveStream,
+                                   ITransportStreamPtr sendStream
+                                   )
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(!receiveStream)
+        ZS_THROW_INVALID_ARGUMENT_IF(!sendStream)
+
+        ZS_LOG_DEBUG(log("set streams called"))
+        AutoRecursiveLock lock(mLock);
+
+        mReceiveStream = receiveStream;
+        mSendStream = sendStream;
+
+        if (mStream) {
+          mStream->setStreams(receiveStream, sendStream);
         }
       }
 
@@ -985,49 +935,6 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      void RUDPChannel::onRUDPChannelStreamReadReady(IRUDPChannelStreamPtr stream)
-      {
-        AutoRecursiveLock lock(mLock);
-        ZS_LOG_DEBUG(log("notify channel stream read ready") + ", stream ID=" + string(stream->getID()))
-        if (!mDelegate) {
-          ZS_LOG_DEBUG(log("delegate not present thus not notifying of read ready"))
-          return;
-        }
-        if (mInformedReadReady) {
-          ZS_LOG_DEBUG(log("ignoring stream read ready as already notified read ready to channel's delegate"))
-          return;
-        }
-
-        try {
-          ZS_LOG_DEBUG(log("notifying that the channel is read ready to delegate"))
-          mDelegate->onRUDPChannelReadReady(mThisWeak.lock());
-          get(mInformedReadReady) = true;
-        } catch(IRUDPChannelDelegateProxy::Exceptions::DelegateGone &) {
-          ZS_LOG_WARNING(Detail, log("delegate gone"))
-          setError(RUDPChannelShutdownReason_DelegateGone, "delegate gone");
-          cancel(false);
-        }
-      }
-
-      //-----------------------------------------------------------------------
-      void RUDPChannel::onRUDPChannelStreamWriteReady(IRUDPChannelStreamPtr stream)
-      {
-        AutoRecursiveLock lock(mLock);
-        ZS_LOG_DEBUG(log("notify channel stream write ready") + ", stream ID=" + string(stream->getID()))
-        if (!mDelegate) return;
-        if (mInformedWriteReady) return;
-
-        try {
-          mDelegate->onRUDPChannelWriteReady(mThisWeak.lock());
-          get(mInformedWriteReady) = true;
-        } catch(IRUDPChannelDelegateProxy::Exceptions::DelegateGone &) {
-          ZS_LOG_WARNING(Detail, log("delegate gone"))
-          setError(RUDPChannelShutdownReason_DelegateGone, "delegate gone");
-          cancel(false);
-        }
-      }
-
-      //-----------------------------------------------------------------------
       bool RUDPChannel::notifyRUDPChannelStreamSendPacket(
                                                           IRUDPChannelStreamPtr stream,
                                                           const BYTE *packet,
@@ -1295,6 +1202,11 @@ namespace openpeer
                                                mMinimumRTT
                                                );
 
+          if ((mReceiveStream) &&
+              (mSendStream)) {
+            mStream->setStreams(mReceiveStream, mSendStream);
+          }
+
           if (IRUDPChannel::Shutdown_None != mShutdownDirection)
             mStream->shutdownDirection(mShutdownDirection);
 
@@ -1376,8 +1288,6 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void RUDPChannel::onTimer(TimerPtr timer)
       {
-        sendPendingNow();
-
         AutoRecursiveLock lock(mLock);
         if (!mStream) return;
 
@@ -1442,9 +1352,6 @@ namespace openpeer
         Helper::getDebugValue("delegate", mDelegate ? String("true") : String(), firstTime) +
         Helper::getDebugValue("master delegate", mMasterDelegate ? String("true") : String(), firstTime) +
 
-        Helper::getDebugValue("informed read ready", mInformedReadReady ? String("true") : String(), firstTime) +
-        Helper::getDebugValue("informed write ready", mInformedWriteReady ? String("true") : String(), firstTime) +
-
         Helper::getDebugValue("stream", mStream ? String("true") : String(), firstTime) +
         Helper::getDebugValue("open request", mOpenRequest ? String("true") : String(), firstTime) +
         Helper::getDebugValue("shutdown request", mShutdownRequest ? String("true") : String(), firstTime) +
@@ -1479,8 +1386,7 @@ namespace openpeer
         Helper::getDebugValue("last sent data", Time() != mLastSentData ? IHelper::timeToString(mLastSentData) : String(), firstTime) +
         Helper::getDebugValue("last received data", Time() != mLastReceivedData ? IHelper::timeToString(mLastReceivedData) : String(), firstTime) +
 
-        Helper::getDebugValue("outstanding acks", mOutstandingACKs.size() > 0 ? string(mOutstandingACKs.size()) : String(), firstTime) +
-        Helper::getDebugValue("pending buffers", mPendingBuffers.size() > 0 ? string(mPendingBuffers.size()) : String(), firstTime);
+        Helper::getDebugValue("outstanding acks", mOutstandingACKs.size() > 0 ? string(mOutstandingACKs.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -1582,7 +1488,6 @@ namespace openpeer
           mStream->shutdown(false);
           mStream.reset();
         }
-        mPendingBuffers.clear();
 
         ZS_LOG_DEBUG(log("cancel complete"))
       }
@@ -1790,29 +1695,6 @@ namespace openpeer
 
         originalRequestVariable = ISTUNRequester::create(getAssociatedMessageQueue(), mThisWeak.lock(), mRemoteIP, stun, STUNPacket::RFC_draft_RUDP);
         return true;
-      }
-
-      //-----------------------------------------------------------------------
-      void RUDPChannel::sendPendingNow()
-      {
-        IRUDPChannelStreamPtr stream;
-        PendingSendBufferList pending;
-
-        // scope: check if there is anything to send
-        {
-          AutoRecursiveLock lock(mLock);
-          if (!mStream) return;
-          if (mPendingBuffers.size() < 1) return;
-          stream = mStream;
-          pending = mPendingBuffers;
-          mPendingBuffers.clear();
-
-          ZS_LOG_TRACE(log("send pending now") + ", stream ID=" + string(stream->getID()))
-        }
-        for (PendingSendBufferList::iterator iter = pending.begin(); iter != pending.end(); ++iter) {
-          stream->send((*iter).first.get(), (*iter).second);
-        }
-        pending.clear();
       }
 
       //-----------------------------------------------------------------------

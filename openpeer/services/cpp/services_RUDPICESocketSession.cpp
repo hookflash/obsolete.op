@@ -264,7 +264,9 @@ namespace openpeer
       //-----------------------------------------------------------------------
       IRUDPChannelPtr RUDPICESocketSession::openChannel(
                                                         IRUDPChannelDelegatePtr delegate,
-                                                        const char *connectionInfo
+                                                        const char *connectionInfo,
+                                                        ITransportStreamPtr receiveStream,
+                                                        ITransportStreamPtr sendStream
                                                         )
       {
         AutoRecursiveLock lock(getLock());
@@ -322,7 +324,9 @@ namespace openpeer
                                                                                                             iceSession->getLocalPassword(),
                                                                                                             iceSession->getRemoteUsernameFrag(),
                                                                                                             iceSession->getRemotePassword(),
-                                                                                                            connectionInfo
+                                                                                                            connectionInfo,
+                                                                                                            receiveStream,
+                                                                                                            sendStream
                                                                                                             );
 
         mLocalChannelNumberSessions[channelNumber] = session;
@@ -331,14 +335,22 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      IRUDPChannelPtr RUDPICESocketSession::acceptChannel(IRUDPChannelDelegatePtr delegate)
+      IRUDPChannelPtr RUDPICESocketSession::acceptChannel(
+                                                          IRUDPChannelDelegatePtr delegate,
+                                                          ITransportStreamPtr receiveStream,
+                                                          ITransportStreamPtr sendStream
+                                                          )
       {
+        ZS_THROW_INVALID_ARGUMENT_IF(!receiveStream)
+        ZS_THROW_INVALID_ARGUMENT_IF(!sendStream)
+
         AutoRecursiveLock lock(getLock());
 
         if (mPendingSessions.size() < 1) return IRUDPChannelPtr();
 
         RUDPChannelPtr found = mPendingSessions.front();
         found->forSession().setDelegate(delegate);
+        found->forSession().setStreams(receiveStream, sendStream);
         mPendingSessions.pop_front();
         return found;
       }

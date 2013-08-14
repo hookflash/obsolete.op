@@ -55,6 +55,14 @@ namespace openpeer
       typedef boost::weak_ptr<StreamHeader> StreamHeaderWeakPtr;
       typedef ULONG BufferLength;
 
+      enum Endians
+      {
+        Endian_Big = true,
+        Endian_Little = false,
+      };
+
+      static const char *toString(Endians endian);
+
       static String toDebugString(ITransportStreamPtr stream, bool includeCommaPrefix = true);
 
       static ITransportStreamPtr create(
@@ -83,6 +91,7 @@ namespace openpeer
       typedef ITransportStream::StreamHeader StreamHeader;
       typedef ITransportStream::StreamHeaderPtr StreamHeaderPtr;
       typedef ITransportStream::StreamHeaderWeakPtr StreamHeaderWeakPtr;
+      typedef ITransportStream::Endians Endians;
 
       virtual PUID getID() const = 0; // returns the same ID as the stream
 
@@ -114,6 +123,33 @@ namespace openpeer
                          SecureByteBlockPtr bufferToAdopt,
                          StreamHeaderPtr header = StreamHeaderPtr()   // not always needed
                          ) = 0;
+
+      //-----------------------------------------------------------------------
+      // PURPOSE: Write a WORD value into the stream
+      virtual void write(
+                         WORD value,
+                         StreamHeaderPtr header = StreamHeaderPtr(),  // not always needed
+                         Endians endian = ITransportStream::Endian_Big
+                         ) = 0;
+
+      //-----------------------------------------------------------------------
+      // PURPOSE: Write a WORD value into the stream
+      virtual void write(
+                         DWORD value,
+                         StreamHeaderPtr header = StreamHeaderPtr(),  // not always needed
+                         Endians endian = ITransportStream::Endian_Big
+                         ) = 0;
+
+      //-----------------------------------------------------------------------
+      // PURPOSE: Cause the send stream to backlog all the data being written
+      //          and not allow it to be notified to the reader (until the
+      //          block is removed).
+      // NOTE:    When blocking, the blocking mode "header" will be the first
+      //          header written while blocking and all other headers will
+      //          be ignored. When the block is removed, all blocked data
+      //          will be written as "one large buffer" combining all data
+      //          written into a single written buffer.
+      virtual void block(bool block = true) = 0;
     };
 
     //-------------------------------------------------------------------------
@@ -126,6 +162,10 @@ namespace openpeer
 
     interaction ITransportStreamWriterDelegate
     {
+      //-----------------------------------------------------------------------
+      // PURPOSE: Notification that the writer's data buffers are empty thus
+      //          more data can be written at this time (without causing an
+      //          overflow of data).
       virtual void onTransportStreamWriterReady(ITransportStreamWriterPtr writer) = 0;
     };
 
@@ -159,6 +199,7 @@ namespace openpeer
       typedef ITransportStream::StreamHeader StreamHeader;
       typedef ITransportStream::StreamHeaderPtr StreamHeaderPtr;
       typedef ITransportStream::StreamHeaderWeakPtr StreamHeaderWeakPtr;
+      typedef ITransportStream::Endians Endians;
 
       virtual PUID getID() const = 0; // returns the same ID as the stream
 
@@ -249,6 +290,67 @@ namespace openpeer
       virtual SecureByteBlockPtr read(
                                       StreamHeaderPtr *outHeader = NULL
                                       ) = 0;
+
+      //-----------------------------------------------------------------------
+      // PURPOSE: Reads a WORD of buffered data written to the stream.
+      // NOTE:    returns sizeof(WORD) if successful
+      virtual ULONG read(
+                         WORD &outResult,
+                         StreamHeaderPtr *outHeader = NULL,
+                         Endians endian = ITransportStream::Endian_Big
+                         ) = 0;
+
+      //-----------------------------------------------------------------------
+      // PURPOSE: Reads buffered data written to the stream.
+      // NOTE:    returns sizeof(DWORD) if successful
+      virtual ULONG read(
+                         DWORD &outResult,
+                         StreamHeaderPtr *outHeader = NULL,
+                         Endians endian = ITransportStream::Endian_Big
+                         ) = 0;
+
+      //-----------------------------------------------------------------------
+      // PURPOSE: Peeks ahead at the buffered data written to the stream
+      //          but still allows it to be read later.
+      virtual ULONG peek(
+                         BYTE *outBuffer,
+                         ULONG bufferLengthInBytes,
+                         StreamHeaderPtr *outHeader = NULL,
+                         ULONG offsetInBytes = 0
+                         ) = 0;
+
+      //-----------------------------------------------------------------------
+      // PURPOSE: Peeks ahead at the buffered data written to the stream
+      //          but still allows it to be read later.
+      virtual SecureByteBlockPtr peek(
+                                      ULONG bufferLengthInBytes = 0,
+                                      StreamHeaderPtr *outHeader = NULL,
+                                      ULONG offsetInBytes = 0
+                                      ) = 0;
+
+      //-----------------------------------------------------------------------
+      // PURPOSE: Peeks a WORD of buffered data written to the stream.
+      // NOTE:    returns sizeof(WORD) if successful
+      virtual ULONG peek(
+                         WORD &outResult,
+                         StreamHeaderPtr *outHeader = NULL,
+                         ULONG offsetInBytes = 0,
+                         Endians endian = ITransportStream::Endian_Big
+                         ) = 0;
+
+      //-----------------------------------------------------------------------
+      // PURPOSE: Peeks buffered data written to the stream.
+      // NOTE:    returns sizeof(DWORD) if successful
+      virtual ULONG peek(
+                         DWORD &outResult,
+                         StreamHeaderPtr *outHeader = NULL,
+                         ULONG offsetInBytes = 0,
+                         Endians endian = ITransportStream::Endian_Big
+                         ) = 0;
+
+      //-----------------------------------------------------------------------
+      // PURPOSE: Flushes the FIFO by the data offset specified.
+      virtual ULONG skip(ULONG offsetInBytes) = 0;
     };
 
     //-------------------------------------------------------------------------
@@ -261,6 +363,9 @@ namespace openpeer
 
     interaction ITransportStreamReaderDelegate
     {
+      //-----------------------------------------------------------------------
+      // PURPOSE: Notification every time more data was either written to the
+      //          stream or after ever read where data is still present.
       virtual void onTransportStreamReaderReady(ITransportStreamReaderPtr reader) = 0;
     };
 

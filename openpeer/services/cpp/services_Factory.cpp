@@ -373,10 +373,12 @@ namespace openpeer
                                                                                 const char *localPassword,
                                                                                 const char *remoteUserFrag,
                                                                                 const char *remotePassword,
-                                                                                const char *connectionInfo
+                                                                                const char *connectionInfo,
+                                                                                ITransportStreamPtr receiveStream,
+                                                                                ITransportStreamPtr sendStream
                                                                                 )
       {
-        return RUDPChannel::createForRUDPICESocketSessionOutgoing(queue, master, delegate, remoteIP, incomingChannelNumber, localUserFrag, localPassword, remoteUserFrag, remotePassword, connectionInfo);
+        return RUDPChannel::createForRUDPICESocketSessionOutgoing(queue, master, delegate, remoteIP, incomingChannelNumber, localUserFrag, localPassword, remoteUserFrag, remotePassword, connectionInfo, receiveStream, sendStream);
       }
 
       //-----------------------------------------------------------------------
@@ -535,10 +537,12 @@ namespace openpeer
                                                             IMessageQueuePtr queue,
                                                             IRUDPListenerPtr listener,
                                                             IRUDPMessagingDelegatePtr delegate,
+                                                            ITransportStreamPtr receiveStream,
+                                                            ITransportStreamPtr sendStream,
                                                             ULONG maxMessageSizeInBytes
                                                             )
       {
-        return RUDPMessaging::acceptChannel(queue, listener, delegate, maxMessageSizeInBytes);
+        return RUDPMessaging::acceptChannel(queue, listener, delegate, receiveStream, sendStream, maxMessageSizeInBytes);
       }
 
       //-----------------------------------------------------------------------
@@ -546,10 +550,12 @@ namespace openpeer
                                                             IMessageQueuePtr queue,
                                                             IRUDPICESocketSessionPtr session,
                                                             IRUDPMessagingDelegatePtr delegate,
+                                                            ITransportStreamPtr receiveStream,
+                                                            ITransportStreamPtr sendStream,
                                                             ULONG maxMessageSizeInBytes
                                                             )
       {
-        return RUDPMessaging::acceptChannel(queue, session, delegate, maxMessageSizeInBytes);
+        return RUDPMessaging::acceptChannel(queue, session, delegate, receiveStream, sendStream, maxMessageSizeInBytes);
       }
 
       //-----------------------------------------------------------------------
@@ -558,12 +564,14 @@ namespace openpeer
                                                           IRUDPICESocketSessionPtr session,
                                                           IRUDPMessagingDelegatePtr delegate,
                                                           const char *connectionInfo,
+                                                          ITransportStreamPtr receiveStream,
+                                                          ITransportStreamPtr sendStream,
                                                           ULONG maxMessageSizeInBytes
                                                           )
       {
-        return RUDPMessaging::openChannel(queue, session, delegate, connectionInfo, maxMessageSizeInBytes);
+        return RUDPMessaging::openChannel(queue, session, delegate, connectionInfo, receiveStream, sendStream, maxMessageSizeInBytes);
       }
-      
+
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------

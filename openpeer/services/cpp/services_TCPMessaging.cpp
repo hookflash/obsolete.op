@@ -79,6 +79,7 @@ namespace openpeer
                                  ULONG maxMessageSizeInBytes
                                  ) :
         zsLib::MessageQueueAssociator(queue),
+        mNulTerminateBuffers(true),
         mCurrentState(SessionState_Pending),
         mReceiveStream(receiveStream->getWriter()),
         mSendStream(sendStream->getReader()),
@@ -273,6 +274,13 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      void TCPMessaging::setAutoNulTerminateReceiveBuffers(bool nulTerminate)
+      {
+        AutoRecursiveLock lock(getLock());
+        mNulTerminateBuffers = nulTerminate;
+      }
+
+      //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -389,7 +397,8 @@ namespace openpeer
           // skip over the peeked value
           mReceivingQueue->Skip(sizeof(bufferSize));
 
-          SecureByteBlockPtr message(new SecureByteBlock(bufferSize));
+          SecureByteBlockPtr message(new SecureByteBlock);
+          message->CleanNew(bufferSize + (mNulTerminateBuffers ? sizeof(char) : 0));
           if (bufferSize > 0) {
             mReceivingQueue->Get(message->BytePtr(), bufferSize);
           }

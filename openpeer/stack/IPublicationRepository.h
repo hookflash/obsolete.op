@@ -55,6 +55,8 @@ namespace openpeer
 
       static IPublicationRepositoryPtr getFromAccount(IAccountPtr account);
 
+      virtual PUID getID() const = 0;
+
       virtual IPublicationPublisherPtr publish(
                                                IPublicationPublisherDelegatePtr delegate,
                                                IPublicationPtr publication

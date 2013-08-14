@@ -37,6 +37,7 @@
 #include <openpeer/services/IRUDPICESocket.h>
 #include <openpeer/services/IRUDPICESocketSession.h>
 #include <openpeer/services/IRUDPMessaging.h>
+#include <openpeer/services/ITransportStream.h>
 #include <openpeer/services/IHelper.h>
 
 
@@ -83,14 +84,19 @@ namespace openpeer
       class TestRUDPICESocketCallback : public zsLib::MessageQueueAssociator,
                                         public IRUDPICESocketDelegate,
                                         public IRUDPICESocketSessionDelegate,
-                                        public IRUDPMessagingDelegate
+                                        public IRUDPMessagingDelegate,
+                                        public ITransportStreamWriterDelegate,
+                                        public ITransportStreamReaderDelegate
       {
       private:
+        //---------------------------------------------------------------------
         TestRUDPICESocketCallback(
                                   zsLib::IMessageQueuePtr queue,
                                   const zsLib::IPAddress &serverIP
                                   ) :
           zsLib::MessageQueueAssociator(queue),
+          mReceiveStream(ITransportStream::create()->getReader()),
+          mSendStream(ITransportStream::create()->getWriter()),
           mServerIP(serverIP),
           mSocketShutdown(false),
           mSessionShutdown(false),
@@ -98,9 +104,14 @@ namespace openpeer
         {
         }
 
+        //---------------------------------------------------------------------
         void init()
         {
           zsLib::AutoRecursiveLock lock(mLock);
+
+          mReceiveStreamSubscription = mReceiveStream->subscribe(mThisWeak.lock());
+          mReceiveStream->notifyReaderReadyToRead();
+
           mSocket = IRUDPICESocket::create(
                                              getAssociatedMessageQueue(),
                                              mThisWeak.lock(),
@@ -112,6 +123,7 @@ namespace openpeer
         }
 
       public:
+        //---------------------------------------------------------------------
         static TestRUDPICESocketCallbackPtr create(
                                                    zsLib::IMessageQueuePtr queue,
                                                    zsLib::IPAddress serverIP
@@ -123,22 +135,26 @@ namespace openpeer
           return pThis;
         }
 
+        //---------------------------------------------------------------------
         ~TestRUDPICESocketCallback()
         {
         }
 
+        //---------------------------------------------------------------------
         void shutdown()
         {
           zsLib::AutoRecursiveLock lock(mLock);
           mSocket->shutdown();
         }
 
+        //---------------------------------------------------------------------
         bool isShutdown()
         {
           zsLib::AutoRecursiveLock lock(mLock);
           return mSocketShutdown && mSessionShutdown && mMessagingShutdown;
         }
 
+        //---------------------------------------------------------------------
         virtual void onRUDPICESocketStateChanged(
                                                  IRUDPICESocketPtr socket,
                                                  RUDPICESocketStates state
@@ -178,11 +194,13 @@ namespace openpeer
           }
         }
         
+        //---------------------------------------------------------------------
         virtual void onRUDPICESocketCandidatesChanged(IRUDPICESocketPtr socket)
         {
           // ignored
         }
 
+        //---------------------------------------------------------------------
         virtual void onRUDPICESocketSessionStateChanged(
                                                         IRUDPICESocketSessionPtr session,
                                                         RUDPICESocketSessionStates state
@@ -194,7 +212,9 @@ namespace openpeer
                                                      getAssociatedMessageQueue(),
                                                      mSocketSession,
                                                      mThisWeak.lock(),
-                                                     "bogus/text-bogus"
+                                                     "bogus/text-bogus",
+                                                     mReceiveStream->getStream(),
+                                                     mSendStream->getStream()
                                                      );
           }
           if (IRUDPICESocketSession::RUDPICESocketSessionState_Shutdown == state) {
@@ -202,37 +222,40 @@ namespace openpeer
           }
         }
 
+        //---------------------------------------------------------------------
         virtual void onRUDPICESocketSessionChannelWaiting(IRUDPICESocketSessionPtr session)
         {
         }
 
+        //---------------------------------------------------------------------
         virtual void onRUDPMessagingStateChanged(
                                                  IRUDPMessagingPtr session,
                                                  RUDPMessagingStates state
                                                  )
         {
           zsLib::AutoRecursiveLock lock(mLock);
+
           if (IRUDPMessaging::RUDPMessagingState_Connected == state) {
-            mMessaging->send((const BYTE *)"*HELLO*", strlen("*HELLO*"));
+            mSendStream->write((const BYTE *)"*HELLO*", strlen("*HELLO*"));
           }
           if (IRUDPMessaging::RUDPMessagingState_Shutdown == state) {
             mMessagingShutdown = true;
           }
         }
 
-        virtual void onRUDPMessagingReadReady(IRUDPMessagingPtr session)
+        //---------------------------------------------------------------------
+        virtual void onTransportStreamReaderReady(ITransportStreamReaderPtr reader)
         {
           zsLib::AutoRecursiveLock lock(mLock);
-          if (session != mMessaging) return;
+          if (reader != mReceiveStream) return;
 
           while (true) {
-            zsLib::ULONG messageSize = mMessaging->getNextReceivedMessageSizeInBytes();
-            boost::shared_array<BYTE> buffer = mMessaging->getBufferLargeEnoughForNextMessage();
+            SecureByteBlockPtr buffer = mReceiveStream->read();
             if (!buffer) return;
 
-            mMessaging->receive(buffer.get());
+            zsLib::ULONG messageSize = buffer->SizeInBytes() - sizeof(char);
 
-            zsLib::String str = (CSTR)(buffer.get());
+            zsLib::String str = (CSTR)(buffer->BytePtr());
             ZS_LOG_BASIC("-------------------------------------------------------------------------------")
             ZS_LOG_BASIC("-------------------------------------------------------------------------------")
             ZS_LOG_BASIC("-------------------------------------------------------------------------------")
@@ -244,22 +267,29 @@ namespace openpeer
             zsLib::String add = "<SOCKET->" + IHelper::randomString(1000) + ">";
 
             zsLib::ULONG newMessageSize = messageSize + add.length();
-            boost::shared_array<BYTE> newBuffer(new BYTE[newMessageSize]);
+            SecureByteBlockPtr newBuffer(new SecureByteBlock(newMessageSize));
 
-            memcpy(newBuffer.get(), buffer.get(), messageSize);
-            memcpy(newBuffer.get() + messageSize, (const zsLib::BYTE *)(add.c_str()), add.length());
-
-            mMessaging->send(newBuffer.get(), newMessageSize);
+            memcpy(newBuffer->BytePtr(), buffer->BytePtr(), messageSize);
+            memcpy(newBuffer->BytePtr() + messageSize, (const zsLib::BYTE *)(add.c_str()), add.length());
+            
+            mSendStream->write(newBuffer);
           }
         }
 
-        virtual void onRUDPMessagingWriteReady(IRUDPMessagingPtr session)
+        //---------------------------------------------------------------------
+        virtual void onTransportStreamWriterReady(ITransportStreamWriterPtr reader)
         {
+          // IGNORED
         }
 
       private:
         mutable zsLib::RecursiveLock mLock;
         TestRUDPICESocketCallbackWeakPtr mThisWeak;
+
+        ITransportStreamReaderPtr mReceiveStream;
+        ITransportStreamWriterPtr mSendStream;
+
+        ITransportStreamReaderSubscriptionPtr mReceiveStreamSubscription;
 
         zsLib::IPAddress mServerIP;
 

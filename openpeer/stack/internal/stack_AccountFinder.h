@@ -42,6 +42,7 @@
 #include <openpeer/services/IRUDPICESocket.h>
 #include <openpeer/services/IRUDPICESocketSession.h>
 #include <openpeer/services/IRUDPMessaging.h>
+#include <openpeer/services/ITransportStream.h>
 #include <openpeer/services/IWakeDelegate.h>
 
 #include <zsLib/MessageQueueAssociator.h>
@@ -116,6 +117,8 @@ namespace openpeer
                             public IRUDPICESocketDelegate,
                             public IRUDPICESocketSessionDelegate,
                             public IRUDPMessagingDelegate,
+                            public services::ITransportStreamWriterDelegate,
+                            public services::ITransportStreamReaderDelegate,
                             public IMessageMonitorResultDelegate<SessionCreateResult>,
                             public IMessageMonitorResultDelegate<SessionKeepAliveResult>,
                             public IMessageMonitorResultDelegate<SessionDeleteResult>,
@@ -213,8 +216,19 @@ namespace openpeer
                                                  RUDPMessagingStates state
                                                  );
 
-        virtual void onRUDPMessagingReadReady(IRUDPMessagingPtr session);
-        virtual void onRUDPMessagingWriteReady(IRUDPMessagingPtr session);
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark AccountFinder => ITransportStreamWriterDelegate
+        #pragma mark
+
+        virtual void onTransportStreamWriterReady(ITransportStreamWriterPtr writer);
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark AccountFinder => ITransportStreamWriterDelegate
+        #pragma mark
+
+        virtual void onTransportStreamReaderReady(ITransportStreamReaderPtr reader);
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -321,6 +335,8 @@ namespace openpeer
         IRUDPICESocketSubscriptionPtr mSocketSubscription;
         IRUDPICESocketSessionPtr mSocketSession;
         IRUDPMessagingPtr mMessaging;
+        ITransportStreamReaderPtr mReceiveStream;
+        ITransportStreamWriterPtr mSendStream;
 
         IMessageMonitorPtr mSessionCreateMonitor;
         IMessageMonitorPtr mSessionKeepAliveMonitor;

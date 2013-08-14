@@ -38,6 +38,7 @@
 #include <openpeer/services/IRUDPMessaging.h>
 #include <openpeer/services/IHelper.h>
 #include <openpeer/services/IDNS.h>
+#include <openpeer/services/ITransportStream.h>
 
 
 #include "config.h"
@@ -75,21 +76,31 @@ namespace openpeer
 
       class TestRUDPListenerCallback : public zsLib::MessageQueueAssociator,
                                        public IRUDPListenerDelegate,
-                                       public IRUDPMessagingDelegate
+                                       public IRUDPMessagingDelegate,
+                                       public ITransportStreamWriterDelegate,
+                                       public ITransportStreamReaderDelegate
       {
       private:
+        //---------------------------------------------------------------------
         TestRUDPListenerCallback(zsLib::IMessageQueuePtr queue) :
-          zsLib::MessageQueueAssociator(queue)
+          zsLib::MessageQueueAssociator(queue),
+          mReceiveStream(ITransportStream::create()->getReader()),
+          mSendStream(ITransportStream::create()->getWriter())
         {
         }
 
+        //---------------------------------------------------------------------
         void init(WORD port)
         {
           AutoRecursiveLock lock(mLock);
           mListener = IRUDPListener::create(getAssociatedMessageQueue(), mThisWeak.lock(), port);
+
+          mReceiveStream->notifyReaderReadyToRead();
+          mReceiveStreamSubscription = mReceiveStream->subscribe(mThisWeak.lock());
         }
 
       public:
+        //---------------------------------------------------------------------
         static TestRUDPListenerCallbackPtr create(
                                                   zsLib::IMessageQueuePtr queue,
                                                   WORD port
@@ -101,10 +112,12 @@ namespace openpeer
           return pThis;
         }
 
+        //---------------------------------------------------------------------
         ~TestRUDPListenerCallback()
         {
         }
 
+        //---------------------------------------------------------------------
         virtual void onRUDPListenerStateChanged(
                                                 IRUDPListenerPtr listener,
                                                 RUDPListenerStates state
@@ -113,17 +126,21 @@ namespace openpeer
           AutoRecursiveLock lock(mLock);
         }
 
+        //---------------------------------------------------------------------
         virtual void onRUDPListenerChannelWaiting(IRUDPListenerPtr listener)
         {
           zsLib::AutoRecursiveLock lock(mLock);
           mMessaging = IRUDPMessaging::acceptChannel(
                                                      getAssociatedMessageQueue(),
                                                      mListener,
-                                                     mThisWeak.lock()
+                                                     mThisWeak.lock(),
+                                                     mReceiveStream->getStream(),
+                                                     mSendStream->getStream()
                                                      );
 
         }
 
+        //---------------------------------------------------------------------
         virtual void onRUDPMessagingStateChanged(
                                                  IRUDPMessagingPtr session,
                                                  RUDPMessagingStates state
@@ -131,18 +148,17 @@ namespace openpeer
         {
         }
 
-        virtual void onRUDPMessagingReadReady(IRUDPMessagingPtr session)
+        //---------------------------------------------------------------------
+        virtual void onTransportStreamReaderReady(ITransportStreamReaderPtr reader)
         {
           AutoRecursiveLock lock(mLock);
-          if (session != mMessaging) return;
+          if (reader != mReceiveStream) return;
+
           while (true) {
-            zsLib::ULONG messageSize = mMessaging->getNextReceivedMessageSizeInBytes();
-            boost::shared_array<BYTE> buffer = mMessaging->getBufferLargeEnoughForNextMessage();
+            SecureByteBlockPtr buffer = mReceiveStream->read();
             if (!buffer) return;
 
-            mMessaging->receive(buffer.get());
-
-            zsLib::String str = (CSTR)(buffer.get());
+            zsLib::String str = (CSTR)(buffer->BytePtr());
             ZS_LOG_BASIC("-------------------------------------------------------------------------------")
             ZS_LOG_BASIC("-------------------------------------------------------------------------------")
             ZS_LOG_BASIC("-------------------------------------------------------------------------------")
@@ -153,18 +169,22 @@ namespace openpeer
 
             zsLib::String add = "(SERVER->" + IHelper::randomString(10) + ")";
 
+            ULONG messageSize = buffer->SizeInBytes() - sizeof(char);
+
             zsLib::ULONG newMessageSize = messageSize + add.length();
-            boost::shared_array<BYTE> newBuffer(new BYTE[newMessageSize]);
+            SecureByteBlockPtr newBuffer(new SecureByteBlock(newMessageSize));
 
-            memcpy(newBuffer.get(), buffer.get(), messageSize);
-            memcpy(newBuffer.get() + messageSize, (const zsLib::BYTE *)(add.c_str()), add.length());
+            memcpy(newBuffer->BytePtr(), buffer->BytePtr(), messageSize);
+            memcpy(newBuffer->BytePtr() + messageSize, (const zsLib::BYTE *)(add.c_str()), add.length());
 
-            mMessaging->send(newBuffer.get(), newMessageSize);
+            mSendStream->write(newBuffer);
           }
         }
 
-        virtual void onRUDPMessagingWriteReady(IRUDPMessagingPtr session)
+        //---------------------------------------------------------------------
+        virtual void onTransportStreamWriterReady(ITransportStreamWriterPtr writer)
         {
+          // IGNORED
         }
 
       private:
@@ -173,6 +193,11 @@ namespace openpeer
 
         IRUDPMessagingPtr mMessaging;
         IRUDPListenerPtr mListener;
+
+        ITransportStreamReaderPtr mReceiveStream;
+        ITransportStreamWriterPtr mSendStream;
+
+        ITransportStreamReaderSubscriptionPtr mReceiveStreamSubscription;
       };
     }
   }

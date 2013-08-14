@@ -410,6 +410,9 @@ namespace openpeer
         bool                mFirstWORDInAnyPacketWillNotConflictWithTURNChannels;
         Time                mTURNLastUsed;                    // when was the TURN server last used to transport any data
         Duration            mTURNShutdownIfNotUsedBy;         // when will TURN be shutdown if it is not used by this time
+        Time                mTURNRetryAfter;
+        Duration            mTURNRetryDuration;
+        TimerPtr            mTURNRetryTimer;
 
         IDNS::SRVResultPtr  mSTUNSRVResult;
         String              mSTUNServer;

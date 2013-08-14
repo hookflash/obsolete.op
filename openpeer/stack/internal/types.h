@@ -104,6 +104,10 @@ namespace openpeer
       using services::ITransportStreamReaderDelegatePtr;
       using services::ITransportStreamWriterDelegate;
       using services::ITransportStreamWriterDelegatePtr;
+      using services::ITransportStreamReaderSubscription;
+      using services::ITransportStreamReaderSubscriptionPtr;
+      using services::ITransportStreamWriterSubscription;
+      using services::ITransportStreamWriterSubscriptionPtr;
 
       using services::IWakeDelegate;
       using services::IWakeDelegatePtr;

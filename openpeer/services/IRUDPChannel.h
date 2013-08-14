@@ -113,17 +113,6 @@ namespace openpeer
       //          channel fully.
       virtual void shutdownDirection(Shutdown state) = 0;
 
-      virtual bool send(
-                        const BYTE *buffer,
-                        ULONG bufferLengthInBytes
-                        ) = 0;
-
-      virtual ULONG getReceiveSizeAvailableInBytes() = 0;
-      virtual ULONG receive(
-                            BYTE *outBuffer,
-                            ULONG bufferLengthInBytes
-                            ) = 0;
-
       virtual IPAddress getConnectedRemoteIP() = 0;
 
       //-----------------------------------------------------------------------
@@ -149,9 +138,6 @@ namespace openpeer
                                              IRUDPChannelPtr session,
                                              RUDPChannelStates state
                                              ) = 0;
-
-      virtual void onRUDPChannelReadReady(IRUDPChannelPtr session) = 0;
-      virtual void onRUDPChannelWriteReady(IRUDPChannelPtr session) = 0;
     };
   }
 }
@@ -160,6 +146,4 @@ ZS_DECLARE_PROXY_BEGIN(openpeer::services::IRUDPChannelDelegate)
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::IRUDPChannelPtr, IRUDPChannelPtr)
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::IRUDPChannelDelegate::RUDPChannelStates, RUDPChannelStates)
 ZS_DECLARE_PROXY_METHOD_2(onRDUPChannelStateChanged, IRUDPChannelPtr, RUDPChannelStates)
-ZS_DECLARE_PROXY_METHOD_1(onRUDPChannelReadReady, IRUDPChannelPtr)
-ZS_DECLARE_PROXY_METHOD_1(onRUDPChannelWriteReady, IRUDPChannelPtr)
 ZS_DECLARE_PROXY_END()

@@ -115,7 +115,11 @@ namespace openpeer
 
         virtual void shutdown();
 
-        virtual IRUDPChannelPtr acceptChannel(IRUDPChannelDelegatePtr delegate);
+        virtual IRUDPChannelPtr acceptChannel(
+                                              IRUDPChannelDelegatePtr delegate,
+                                              ITransportStreamPtr receiveStream,
+                                              ITransportStreamPtr sendStream
+                                              );
 
         //---------------------------------------------------------------------
         #pragma mark

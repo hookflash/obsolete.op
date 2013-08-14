@@ -32,6 +32,8 @@
 #include <openpeer/services/internal/services_TransportStream.h>
 #include <openpeer/services/internal/services_Helper.h>
 
+#include <cryptopp/queue.h>
+
 #include <zsLib/Log.h>
 #include <zsLib/helpers.h>
 
@@ -216,6 +218,17 @@ namespace openpeer
           return;
         }
 
+        if (mBlockQueue) {
+          ZS_LOG_TRACE(log("write blocked thus putting buffer into block queue") + ", size=" + string(bufferLengthInBytes) + ", header=" + (header ? "true":"false"))
+          if (!mBlockHeader) {
+            mBlockHeader = header;
+          }
+          if (bufferLengthInBytes > 0) {
+            mBlockQueue->Put(inBuffer, bufferLengthInBytes);
+          }
+          return;
+        }
+
         write(IHelper::convertToBuffer(inBuffer, bufferLengthInBytes), header);
       }
 
@@ -234,6 +247,17 @@ namespace openpeer
           return;
         }
 
+        if (mBlockQueue) {
+          ZS_LOG_TRACE(log("write blocked thus putting buffer into block queue") + ", size=" + string(bufferToAdopt->SizeInBytes()) + ", header=" + (header ? "true":"false"))
+          if (!mBlockHeader) {
+            mBlockHeader = header;
+          }
+          if (bufferToAdopt->SizeInBytes() > 0) {
+            mBlockQueue->Put(bufferToAdopt->BytePtr(), bufferToAdopt->SizeInBytes());
+          }
+          return;
+        }
+
         Buffer buffer;
         buffer.mBuffer = bufferToAdopt;
         buffer.mHeader = header;
@@ -243,6 +267,101 @@ namespace openpeer
         mBuffers.push_back(buffer);
 
         notifySubscribers(false, true);
+      }
+
+      //-----------------------------------------------------------------------
+      void TransportStream::write(
+                                  WORD value,
+                                  StreamHeaderPtr header,
+                                  Endians endian
+                                  )
+      {
+        BYTE buffer[sizeof(WORD)] = {0,0};
+        if (endian == Endian_Big)
+        {
+          buffer[0] = ((value & 0xFF00) >> 8);
+          buffer[1] = (value & 0xFF);
+        } else {
+          buffer[1] = ((value & 0xFF00) >> 8);
+          buffer[0] = (value & 0xFF);
+        }
+        write(&(buffer[0]), sizeof(buffer), header);
+      }
+
+      //-----------------------------------------------------------------------
+      void TransportStream::write(
+                                  DWORD value,
+                                  StreamHeaderPtr header,
+                                  Endians endian
+                                  )
+      {
+        BYTE buffer[sizeof(DWORD)] = {0,0,0,0};
+        if (endian == Endian_Big)
+        {
+          buffer[0] = ((value & 0xFF000000) >> 24);
+          buffer[1] = ((value & 0xFF0000) >> 16);
+          buffer[2] = ((value & 0xFF00) >> 8);
+          buffer[3] = (value & 0xFF);
+        } else {
+          buffer[3] = ((value & 0xFF000000) >> 24);
+          buffer[2] = ((value & 0xFF0000) >> 16);
+          buffer[1] = ((value & 0xFF00) >> 8);
+          buffer[0] = (value & 0xFF);
+        }
+        write(&(buffer[0]), sizeof(buffer), header);
+      }
+
+      //-----------------------------------------------------------------------
+      void TransportStream::block(bool block)
+      {
+        AutoRecursiveLock lock(getLock());
+
+        if (isShutdown()) {
+          ZS_LOG_WARNING(Detail, log("cannot write as already shutdown"))
+          return;
+        }
+
+        if (block) {
+          if (mBlockQueue) {
+            ZS_LOG_WARNING(Detail, log("already blocking thus nothing to do"))
+            return;
+          }
+
+          ZS_LOG_DEBUG(log("blocking enabled"))
+
+          mBlockQueue = ByteQueuePtr(new ByteQueue);
+          mBlockHeader.reset();
+          return;
+        }
+
+        // unblocking
+        if (!mBlockQueue) {
+          ZS_LOG_WARNING(Detail, log("was not blocking thus nothing to do"))
+          return;
+        }
+
+        size_t size = static_cast<size_t>(mBlockQueue->CurrentSize());
+        if ((size < 1) &&
+            (!mBlockHeader)) {
+
+          ZS_LOG_DEBUG(log("no data written during block thus nothing to do"))
+
+          mBlockQueue.reset();
+          mBlockHeader.reset();
+          return;
+        }
+
+        SecureByteBlockPtr buffer(new SecureByteBlock(size));
+        if (size > 0) {
+          mBlockQueue->Get(buffer->BytePtr(), size);
+        }
+
+        StreamHeaderPtr header = mBlockHeader;
+
+        mBlockQueue.reset();
+        mBlockHeader.reset();
+
+        write(buffer, header);
       }
 
       //-----------------------------------------------------------------------
@@ -492,6 +611,275 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      ULONG TransportStream::read(
+                                  WORD &outResult,
+                                  StreamHeaderPtr *outHeader,
+                                  Endians endian
+                                  )
+      {
+        outResult = 0;
+
+        BYTE buffer[sizeof(WORD)] = {0,0};
+        ULONG totalRead = read((&(buffer[0])), sizeof(buffer), outHeader);
+
+        if (Endian_Big == endian)
+          outResult = (((WORD)buffer[0]) << 8) | buffer[1];
+        else
+          outResult = (((WORD)buffer[1]) << 8) | buffer[0];
+
+        return totalRead;
+      }
+
+      //-----------------------------------------------------------------------
+      ULONG TransportStream::read(
+                                  DWORD &outResult,
+                                  StreamHeaderPtr *outHeader,
+                                  Endians endian
+                                  )
+      {
+        outResult = 0;
+
+        BYTE buffer[sizeof(DWORD)] = {0,0,0,0};
+        ULONG totalRead = read((&(buffer[0])), sizeof(buffer), outHeader);
+
+        if (Endian_Big == endian)
+          outResult = (((DWORD)buffer[0]) << 24) | (((DWORD)buffer[1]) << 16) | (((DWORD)buffer[2]) << 8) | buffer[3];
+        else
+          outResult = (((DWORD)buffer[3]) << 24) | (((DWORD)buffer[2]) << 16) | (((DWORD)buffer[1]) << 8) | buffer[0];
+
+        return totalRead;
+      }
+
+      //-----------------------------------------------------------------------
+      ULONG TransportStream::peek(
+                                  BYTE *outBuffer,
+                                  ULONG bufferLengthInBytes,
+                                  StreamHeaderPtr *outHeader,
+                                  ULONG offsetInBytes
+                                  )
+      {
+        if (0 != bufferLengthInBytes) {
+          ZS_THROW_INVALID_ARGUMENT_IF(!outBuffer)
+        }
+
+        if (outHeader) {
+          *outHeader = StreamHeaderPtr();
+        }
+
+        ZS_LOG_TRACE(log("peek") + ", size=" + string(bufferLengthInBytes) + ", offset=" + string(offsetInBytes))
+
+        AutoRecursiveLock lock(getLock());
+
+        if (isShutdown()) {
+          ZS_LOG_WARNING(Detail, log("cannot peek as already shutdown"))
+          return 0;
+        }
+
+        if (mBuffers.size() < 1) return 0;
+
+        bool didHeader = false;
+
+        ULONG totalRead = 0;
+        BYTE *dest = outBuffer;
+
+        BufferList::iterator iter = mBuffers.begin();
+
+        while (true)
+        {
+          if (iter == mBuffers.end()) {
+            ZS_LOG_TRACE(log("no more buffers available to peek"))
+            break;
+          }
+
+          Buffer &buffer = (*iter);
+
+          ULONG read = buffer.mRead;
+          ULONG available = buffer.mBuffer->SizeInBytes() - buffer.mRead;
+
+          ZS_LOG_TRACE(log("next peek buffer found") + ", size=" + string(buffer.mBuffer->SizeInBytes()) + ", read=" + string(read) + ", available=" + string(available))
+
+          if (offsetInBytes > 0) {
+            // first consume the offset
+            ULONG consume = offsetInBytes > available ? available : offsetInBytes;
+            offsetInBytes -= consume;
+            read += consume;
+            available -= consume;
+
+            ZS_LOG_TRACE(log("skipping over bytes") + ", size=" + string(consume) + ", remaining offset=" + string(offsetInBytes) + ", available=" + string(available) + ", read=" + string(read))
+          }
+
+          if (0 == available) {
+            ++iter;
+            continue;
+          }
+
+          ZS_THROW_BAD_STATE_IF(offsetInBytes > 0)
+
+          if (!didHeader) {
+            if (outHeader) {
+              *outHeader = buffer.mHeader;
+            }
+            didHeader = true;
+          }
+
+          if (0 == bufferLengthInBytes) break;
+
+          ULONG consume = bufferLengthInBytes > available ? available : bufferLengthInBytes;
+
+          memcpy(dest, buffer.mBuffer->BytePtr() + read, consume);
+
+          dest += consume;
+          read += consume;
+          available -= consume;
+          bufferLengthInBytes -= consume;
+          totalRead += consume;
+
+          ZS_LOG_TRACE(log("peeking buffer") + ", size=" + string(consume) + ", read=" + string(read) + ", available=" + string(available) + ", remainging data to peek=" + string(bufferLengthInBytes))
+
+          if (0 == bufferLengthInBytes) {
+            ZS_LOG_TRACE(log("peeked all requested"))
+            break;
+          }
+
+          ZS_THROW_BAD_STATE_IF(0 != available)
+          ++iter;
+        }
+
+        return totalRead;
+      }
+
+      //-----------------------------------------------------------------------
+      SecureByteBlockPtr TransportStream::peek(
+                                               ULONG bufferLengthInBytes,
+                                               StreamHeaderPtr *outHeader,
+                                               ULONG offsetInBytes
+                                               )
+      {
+        if (0 == bufferLengthInBytes) {
+          // peeking next buffer
+          if (mBuffers.size() > 0) {
+            Buffer &buffer = mBuffers.front();
+            bufferLengthInBytes = buffer.mBuffer->SizeInBytes() - buffer.mRead;
+          }
+        }
+
+        SecureByteBlockPtr result(new SecureByteBlock(bufferLengthInBytes));
+
+        ULONG read = peek(0 != bufferLengthInBytes ? result->BytePtr() : NULL, bufferLengthInBytes, outHeader);
+
+        if (0 == read) {
+          ZS_LOG_TRACE(log("peek found no buffered data so returning NULL buffer"))
+          return SecureByteBlockPtr();
+        }
+
+        if (read < result->SizeInBytes()) {
+          ZS_LOG_TRACE(log("peek completed but read less than expecting / hoping to read") + ", read=" + string(read) + ", expecting=" + string(result->SizeInBytes()))
+
+          // read less than the expected size
+          SecureByteBlockPtr newResult(new SecureByteBlock(read));
+
+          memcpy(newResult->BytePtr(), result->BytePtr(), read);
+          return newResult;
+        }
+
+        ZS_LOG_TRACE(log("peek completed") + ", read=" + string(read))
+        return result;
+      }
+
+      //-----------------------------------------------------------------------
+      ULONG TransportStream::peek(
+                                  WORD &outResult,
+                                  StreamHeaderPtr *outHeader,
+                                  ULONG offsetInBytes,
+                                  Endians endian
+                                  )
+      {
+        outResult = 0;
+
+        BYTE buffer[sizeof(WORD)] = {0,0};
+        ULONG totalRead = peek((&(buffer[0])), sizeof(buffer), outHeader, offsetInBytes);
+
+        if (Endian_Big == endian)
+          outResult = (((WORD)buffer[0]) << 8) | buffer[1];
+        else
+          outResult = (((WORD)buffer[1]) << 8) | buffer[0];
+
+        return totalRead;
+      }
+
+      //-----------------------------------------------------------------------
+      ULONG TransportStream::peek(
+                                  DWORD &outResult,
+                                  StreamHeaderPtr *outHeader,
+                                  ULONG offsetInBytes,
+                                  Endians endian
+                                  )
+      {
+        outResult = 0;
+
+        BYTE buffer[sizeof(DWORD)] = {0,0,0,0};
+        ULONG totalRead = peek((&(buffer[0])), sizeof(buffer), outHeader, offsetInBytes);
+
+        if (Endian_Big == endian)
+          outResult = (((DWORD)buffer[0]) << 24) | (((DWORD)buffer[1]) << 16) | (((DWORD)buffer[2]) << 8) | buffer[3];
+        else
+          outResult = (((DWORD)buffer[3]) << 24) | (((DWORD)buffer[2]) << 16) | (((DWORD)buffer[1]) << 8) | buffer[0];
+        
+        return totalRead;
+      }
+      
+      //-----------------------------------------------------------------------
+      ULONG TransportStream::skip(ULONG offsetInBytes)
+      {
+        ZS_LOG_TRACE(log("skip called") + ", skip=" + string(offsetInBytes))
+
+        AutoRecursiveLock lock(getLock());
+
+        if (isShutdown()) {
+          ZS_LOG_WARNING(Detail, log("cannot read as already shutdown"))
+          return 0;
+        }
+
+        if (0 == offsetInBytes) {
+          ZS_LOG_TRACE(log("nothing to skip"))
+          return 0;
+        }
+
+        ULONG totalRead = 0;
+
+        while (0 != offsetInBytes)
+        {
+          if (mBuffers.size() < 1) {
+            ZS_LOG_TRACE(log("no more buffered data available to skip"))
+            break;
+          }
+
+          Buffer &buffer = mBuffers.front();
+
+          ULONG available = (buffer.mBuffer->SizeInBytes() - buffer.mRead);
+
+          ULONG consume = (offsetInBytes > available ? available : offsetInBytes);
+
+          buffer.mRead += consume;
+          totalRead += consume;
+          offsetInBytes -= consume;
+
+          ZS_LOG_TRACE(log("buffer read") + ", read=" + string(consume) + ", buffer available=" + string(available) + ", remaining to skip=" + string(offsetInBytes))
+
+          if (buffer.mRead == buffer.mBuffer->SizeInBytes()) {
+            // entire buffer has not been consumed, remove it
+            ZS_LOG_TRACE(log("entire buffer consumed") + ", buffer size=" + string(buffer.mRead))
+            mBuffers.pop_front();
+            continue;
+          }
+        }
+        
+        notifySubscribers(true, false);
+        
+        return totalRead;
+      }
+
+      //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -516,16 +904,19 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("transport stream id", string(mID), firstTime) +
-               Helper::getDebugValue("shutdown", mShutdown ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("reader ready", mReaderReady ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("read ready notified", mReadReadyNotified ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("write ready notified", mWriteReadyNotified ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("writer subscriptions", mWriterSubscriptions.size() > 0 ? string(mWriterSubscriptions.size()) : String(), firstTime) +
-               Helper::getDebugValue("default writer subscription", mDefaultWriterSubscription ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("reader subscriptions", mReaderSubscriptions.size() > 0 ? string(mReaderSubscriptions.size()) : String(), firstTime) +
-               Helper::getDebugValue("default reader subscription", mDefaultReaderSubscription ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("buffers", mBuffers.size() > 0 ? string(mBuffers.size()) : String(), firstTime);
+        return
+        Helper::getDebugValue("transport stream id", string(mID), firstTime) +
+        Helper::getDebugValue("shutdown", mShutdown ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("reader ready", mReaderReady ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("read ready notified", mReadReadyNotified ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("write ready notified", mWriteReadyNotified ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("writer subscriptions", mWriterSubscriptions.size() > 0 ? string(mWriterSubscriptions.size()) : String(), firstTime) +
+        Helper::getDebugValue("default writer subscription", mDefaultWriterSubscription ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("reader subscriptions", mReaderSubscriptions.size() > 0 ? string(mReaderSubscriptions.size()) : String(), firstTime) +
+        Helper::getDebugValue("default reader subscription", mDefaultReaderSubscription ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("buffers", mBuffers.size() > 0 ? string(mBuffers.size()) : String(), firstTime) +
+        Helper::getDebugValue("block queue", mBlockQueue ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("block header", mBlockHeader ? String("true") : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -540,6 +931,7 @@ namespace openpeer
         }
 
         if (afterWrite) {
+          get(mReadReadyNotified) = false;   // after every write operation, a new read notification should fire (if applicable)
           get(mWriteReadyNotified) = false;  // after data is written, the notification will have to fire again later when buffer is emptied
         }
 
@@ -579,6 +971,16 @@ namespace openpeer
     #pragma mark
     #pragma mark IStreamTransport
     #pragma mark
+
+    //-----------------------------------------------------------------------
+    const char *ITransportStream::toString(Endians endian)
+    {
+      switch (endian) {
+        case Endian_Big:    return "big";
+        case Endian_Little: return "little";
+      }
+      return "UNDEFINED";
+    }
 
     //-----------------------------------------------------------------------
     String ITransportStream::toDebugString(ITransportStreamPtr stream, bool includeCommaPrefix)

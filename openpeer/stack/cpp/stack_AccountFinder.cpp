@@ -230,8 +230,8 @@ namespace openpeer
           }
         }
 
-        if (!mMessaging) {
-          ZS_LOG_WARNING(Detail, log("requested to send a message but messaging is not ready"))
+        if (!mSendStream) {
+          ZS_LOG_WARNING(Detail, log("requested to send a message but send stream is not ready"))
           return false;
         }
 
@@ -249,7 +249,8 @@ namespace openpeer
         ZS_LOG_DETAIL(log(">> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >> >"))
         ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
 
-        return mMessaging->send((const BYTE *)(output.get()), length);
+        mSendStream->write((const BYTE *)(output.get()), length);
+        return true;
       }
 
       //---------------------------------------------------------------------
@@ -410,15 +411,35 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      void AccountFinder::onRUDPMessagingReadReady(IRUDPMessagingPtr session)
-      {
-        typedef IRUDPMessaging::MessageBuffer MessageBuffer;
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark AccountFinder => ITransportStreamWriterDelegate
+      #pragma mark
 
+      //-----------------------------------------------------------------------
+      void AccountFinder::onTransportStreamWriterReady(ITransportStreamWriterPtr writer)
+      {
+        ZS_LOG_TRACE(log("send stream write ready (ignored)"))
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark AccountFinder => ITransportStreamWriterDelegate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      void AccountFinder::onTransportStreamReaderReady(ITransportStreamReaderPtr reader)
+      {
         ZS_LOG_TRACE(log("RUDP messaging read ready"))
 
         AutoRecursiveLock lock(getLock());
 
-        if (session != mMessaging) {
+        if (reader != mReceiveStream) {
           ZS_LOG_DEBUG(log("RUDP messaging ready came in about obsolete messaging"))
           return;
         }
@@ -435,15 +456,16 @@ namespace openpeer
         }
 
         while (true) {
-          MessageBuffer buffer = mMessaging->getBufferLargeEnoughForNextMessage();
-          if (!buffer) return;
-
-          mMessaging->receive(buffer.get());
+          SecureByteBlockPtr buffer = mReceiveStream->read();
+          if (!buffer) {
+            ZS_LOG_TRACE(log("no data read"))
+            return;
+          }
 
           ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
           ZS_LOG_DETAIL(log("< < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < <"))
           ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
-          ZS_LOG_DETAIL(log("FINDER RECEIVED MESSAGE=") + "\n" + ((CSTR)(buffer.get())) + "\n")
+          ZS_LOG_DETAIL(log("FINDER RECEIVED MESSAGE=") + "\n" + ((CSTR)(buffer->BytePtr())) + "\n")
           ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
           ZS_LOG_DETAIL(log("< < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < <"))
           ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
@@ -471,12 +493,6 @@ namespace openpeer
             ZS_LOG_WARNING(Detail, log("delegate gone"))
           }
         }
-      }
-
-      //-----------------------------------------------------------------------
-      void AccountFinder::onRUDPMessagingWriteReady(IRUDPMessagingPtr session)
-      {
-        ZS_LOG_TRACE(log("RUDP messaging write ready (ignored)"))
       }
 
       //-----------------------------------------------------------------------
@@ -713,7 +729,9 @@ namespace openpeer
                Helper::getDebugValue("state", IAccount::toString(mCurrentState), firstTime) +
                Helper::getDebugValue("rudp ice socket subscription id", mSocketSubscription ? string(mSocketSubscription->getID()) : String(), firstTime) +
                Helper::getDebugValue("rudp ice socket session id", mSocketSession ? string(mSocketSession->getID()) : String(), firstTime) +
-               Helper::getDebugValue("rudp messagine id", mMessaging ? string(mMessaging->getID()) : String(), firstTime) +
+               Helper::getDebugValue("rudp messaging id", mMessaging ? string(mMessaging->getID()) : String(), firstTime) +
+               Helper::getDebugValue("receive stream id", mReceiveStream ? string(mReceiveStream->getID()) : String(), firstTime) +
+               Helper::getDebugValue("send stream id", mSendStream ? string(mSendStream->getID()) : String(), firstTime) +
                mFinder.getDebugValueString() +
                Helper::getDebugValue("finder IP", !mFinderIP.isAddressEmpty() ? mFinderIP.string() : String(), firstTime) +
                Helper::getDebugValue("server agent", mServerAgent, firstTime) +
@@ -849,13 +867,13 @@ namespace openpeer
         ZS_LOG_DEBUG(log("step") + getDebugValueString())
 
         if (isReady()) {
-          ZS_LOG_DEBUG(log("finder is already ready"))
+          ZS_LOG_TRACE(log("finder is already ready"))
           return;
         }
 
         AccountPtr outer = mOuter.lock();
         if (!outer) {
-          ZS_LOG_DEBUG(log("account object is gone thus shutting down"))
+          ZS_LOG_WARNING(Detail, log("account object is gone thus shutting down"))
           cancel();
           return;
         }
@@ -874,7 +892,7 @@ namespace openpeer
 
         setState(IAccount::AccountState_Ready);
 
-        ZS_LOG_DEBUG(log("step complete") + getDebugValueString())
+        ZS_LOG_TRACE(log("step complete") + getDebugValueString())
       }
 
       //-----------------------------------------------------------------------
@@ -884,15 +902,16 @@ namespace openpeer
           socket->wakeup();
 
           if (IRUDPICESocket::RUDPICESocketState_Ready != socket->getState()) {
-            ZS_LOG_DEBUG(log("waiting for RUDP ICE socket to wake up"))
-            return false;
+            ZS_LOG_TRACE(log("waiting for RUDP ICE socket to wake up"))
+            return true;
           }
 
-          ZS_LOG_DEBUG(log("RUDP socket is awake"))
+          ZS_LOG_TRACE(log("RUDP socket is awake"))
           return true;
         }
 
         ZS_LOG_DEBUG(log("subscribing to the socket state"))
+
         mSocketSubscription = socket->subscribe(mThisWeak.lock());
         if (!mSocketSubscription) {
           ZS_LOG_ERROR(Detail, log("failed to subscribe to socket"))
@@ -910,11 +929,11 @@ namespace openpeer
       {
         if (mSocketSession) {
           if (IRUDPICESocketSession::RUDPICESocketSessionState_Ready == mSocketSession->getState()) {
-            ZS_LOG_DEBUG(log("RUDP ICE socket socket is ready"))
+            ZS_LOG_TRACE(log("RUDP ICE socket socket is ready"))
             return true;
           }
 
-          ZS_LOG_DEBUG(log("waiting for the RUDP ICE socket socket session to be ready"))
+          ZS_LOG_TRACE(log("waiting for the RUDP ICE socket socket session to be ready"))
           return false;
         }
 
@@ -922,7 +941,7 @@ namespace openpeer
         ZS_THROW_BAD_STATE_IF(!outer)
 
         if (!outer->forAccountFinder().extractNextFinder(mFinder, mFinderIP)) {
-          ZS_LOG_DEBUG(log("waiting for account to obtain a finder"))
+          ZS_LOG_TRACE(log("waiting for account to obtain a finder"))
           return false;
         }
 
@@ -966,19 +985,27 @@ namespace openpeer
       {
         if (mMessaging) {
           if (IRUDPMessaging::RUDPMessagingState_Connected != mMessaging->getState()) {
-            ZS_LOG_DEBUG(log("waiting for RUDP messaging to be connected"))
+            ZS_LOG_TRACE(log("waiting for RUDP messaging to be connected"))
             return false;
           }
-          ZS_LOG_DEBUG(log("RUDP messaging is connected"))
+          ZS_LOG_TRACE(log("RUDP messaging is connected"))
           return true;
         }
 
-        mMessaging = IRUDPMessaging::openChannel(IStackForInternal::queueServices(), mSocketSession, mThisWeak.lock(), "text/x-openpeer-xml-plain");
+        ITransportStreamPtr receiveStream = ITransportStream::create(ITransportStreamWriterDelegatePtr(), mThisWeak.lock());
+        ITransportStreamPtr sendStream = ITransportStream::create(mThisWeak.lock(), ITransportStreamReaderDelegatePtr());
+
+        mMessaging = IRUDPMessaging::openChannel(IStackForInternal::queueServices(), mSocketSession, mThisWeak.lock(), "text/x-openpeer-xml-plain", receiveStream, sendStream);
         if (!mMessaging) {
           ZS_LOG_WARNING(Detail, log("failed to open messaging channel"))
           cancel();
           return false;
         }
+
+        mReceiveStream = receiveStream->getReader();
+        mSendStream = sendStream->getWriter();
+
+        mReceiveStream->notifyReaderReadyToRead();
 
         ZS_LOG_DEBUG(log("RUDP messaging object created"))
         return false;
@@ -988,12 +1015,12 @@ namespace openpeer
       bool AccountFinder::stepCreateSession()
       {
         if (mSessionCreateMonitor) {
-          ZS_LOG_DEBUG(log("waiting for session create request to complete"))
+          ZS_LOG_TRACE(log("waiting for session create request to complete"))
           return false;
         }
 
         if (Time() != mSessionCreatedTime) {
-          ZS_LOG_DEBUG(log("session already created"))
+          ZS_LOG_TRACE(log("session already created"))
           return true;
         }
 

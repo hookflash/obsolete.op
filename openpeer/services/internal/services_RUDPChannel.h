@@ -83,12 +83,18 @@ namespace openpeer
                                                                     const char *localPassword,
                                                                     const char *remoteUsernameFrag,
                                                                     const char *remotePassword,
-                                                                    const char *connectionInfo
+                                                                    const char *connectionInfo,
+                                                                    ITransportStreamPtr receiveStream,
+                                                                    ITransportStreamPtr sendStream
                                                                     );
 
         virtual PUID getID() const = 0;
 
         virtual void setDelegate(IRUDPChannelDelegatePtr delegate) = 0;
+        virtual void setStreams(
+                                ITransportStreamPtr receiveStream,
+                                ITransportStreamPtr sendStream
+                                ) = 0;
 
         virtual bool handleSTUN(
                                 STUNPacketPtr stun,
@@ -136,6 +142,10 @@ namespace openpeer
                                                 );
 
         virtual void setDelegate(IRUDPChannelDelegatePtr delegate) = 0;
+        virtual void setStreams(
+                                ITransportStreamPtr receiveStream,
+                                ITransportStreamPtr sendStream
+                                ) = 0;
 
         virtual bool handleSTUN(
                                 STUNPacketPtr stun,
@@ -229,17 +239,6 @@ namespace openpeer
 
         virtual void shutdownDirection(Shutdown state);
 
-        virtual bool send(
-                          const BYTE *buffer,
-                          ULONG bufferLengthInBytes
-                          );
-
-        virtual ULONG getReceiveSizeAvailableInBytes();
-        virtual ULONG receive(
-                                     BYTE *outBuffer,
-                                     ULONG bufferLengthInBytes
-                                     );
-
         virtual IPAddress getConnectedRemoteIP();
 
         virtual String getRemoteConnectionInfo();
@@ -272,12 +271,18 @@ namespace openpeer
                                                                     const char *localPassword,
                                                                     const char *remoteUserFrag,
                                                                     const char *remotePassword,
-                                                                    const char *connectionInfo
+                                                                    const char *connectionInfo,
+                                                                    ITransportStreamPtr receiveStream,
+                                                                    ITransportStreamPtr sendStream
                                                                     );
 
         // (duplicate) virtual PUID getID() const;
 
         virtual void setDelegate(IRUDPChannelDelegatePtr delegate);
+        virtual void setStreams(
+                                ITransportStreamPtr receiveStream,
+                                ITransportStreamPtr sendStream
+                                );
 
         virtual bool handleSTUN(
                                 STUNPacketPtr stun,
@@ -317,6 +322,10 @@ namespace openpeer
                                                 );
 
         // (duplicate) virtual void setDelegate(IRUDPChannelDelegatePtr delegate);
+        // virtual void setStreams(
+        //                         ITransportStreamPtr receiveStream,
+        //                         ITransportStreamPtr sendStream
+        //                         );
 
         // (duplicate) virtual bool handleSTUN(
         //                                     STUNPacketPtr stun,
@@ -351,9 +360,6 @@ namespace openpeer
                                                      IRUDPChannelStreamPtr stream,
                                                      RUDPChannelStreamStates state
                                                      );
-
-        virtual void onRUDPChannelStreamReadReady(IRUDPChannelStreamPtr stream);
-        virtual void onRUDPChannelStreamWriteReady(IRUDPChannelStreamPtr stream);
 
         virtual bool notifyRUDPChannelStreamSendPacket(
                                                        IRUDPChannelStreamPtr stream,
@@ -423,8 +429,6 @@ namespace openpeer
                               STUNPacketPtr response
                               );
 
-        void sendPendingNow();
-
       protected:
         //---------------------------------------------------------------------
         #pragma mark
@@ -445,8 +449,8 @@ namespace openpeer
         IRUDPChannelDelegatePtr mDelegate;
         IRUDPChannelDelegateForSessionAndListenerPtr mMasterDelegate;
 
-        AutoBool mInformedReadReady;
-        AutoBool mInformedWriteReady;
+        ITransportStreamPtr mReceiveStream;
+        ITransportStreamPtr mSendStream;
 
         IRUDPChannelStreamPtr mStream;
         ISTUNRequesterPtr mOpenRequest;
@@ -483,8 +487,6 @@ namespace openpeer
         Time mLastReceivedData;
 
         ACKRequestMap mOutstandingACKs;
-
-        PendingSendBufferList mPendingBuffers;
       };
 
       //-----------------------------------------------------------------------
@@ -546,7 +548,9 @@ namespace openpeer
                                                                      const char *localPassword,
                                                                      const char *remoteUserFrag,
                                                                      const char *remotePassword,
-                                                                     const char *connectionInfo
+                                                                     const char *connectionInfo,
+                                                                     ITransportStreamPtr receiveStream,
+                                                                     ITransportStreamPtr sendStream
                                                                      );
 
         virtual RUDPChannelPtr createForListener(

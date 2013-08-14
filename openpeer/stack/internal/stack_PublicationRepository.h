@@ -61,6 +61,8 @@ namespace openpeer
 
         static PublicationRepositoryPtr create(AccountPtr account);
 
+        virtual PUID getID() const = 0;
+
         virtual void cancel() = 0;
       };
 
@@ -191,6 +193,8 @@ namespace openpeer
 
         static PublicationRepositoryPtr create(AccountPtr account);
 
+        // (duplicate) virtual PUID getID() const;
+
         // (duplicate) virtual void cancel();
 
         //---------------------------------------------------------------------
@@ -201,6 +205,8 @@ namespace openpeer
         static String toDebugString(IPublicationRepositoryPtr repository, bool includeCommaPrefix = true);
 
         static PublicationRepositoryPtr getFromAccount(IAccountPtr account);
+
+        virtual PUID getID() const {return mID;}
 
         virtual IPublicationPublisherPtr publish(
                                                  IPublicationPublisherDelegatePtr delegate,
@@ -1162,7 +1168,7 @@ namespace openpeer
         #pragma mark PublicationRepository::PeerSubscriptionOutgoing => (data)
         #pragma mark
 
-        PUID mID;
+        AutoPUID mID;
         mutable RecursiveLock mLock;
         PublicationRepositoryWeakPtr mThisWeak;
 

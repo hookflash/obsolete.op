@@ -144,7 +144,6 @@ namespace openpeer
                                                    AccountPtr account
                                                    ) :
         MessageQueueAssociator(queue),
-        mID(zsLib::createPUID()),
         mAccount(account)
       {
         ZS_LOG_DEBUG(log("created"))

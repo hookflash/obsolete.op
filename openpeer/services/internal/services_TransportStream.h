@@ -64,6 +64,7 @@ namespace openpeer
         typedef ITransportStream::StreamHeader StreamHeader;
         typedef ITransportStream::StreamHeaderPtr StreamHeaderPtr;
         typedef ITransportStream::StreamHeaderWeakPtr StreamHeaderWeakPtr;
+        typedef ITransportStream::Endians Endians;
 
         struct Buffer
         {
@@ -136,6 +137,20 @@ namespace openpeer
                            StreamHeaderPtr header = StreamHeaderPtr()   // not always needed
                            );
 
+        virtual void write(
+                           WORD value,
+                           StreamHeaderPtr header = StreamHeaderPtr(),  // not always needed
+                           Endians endian = ITransportStream::Endian_Big
+                           );
+
+        virtual void write(
+                           DWORD value,
+                           StreamHeaderPtr header = StreamHeaderPtr(),  // not always needed
+                           Endians endian = ITransportStream::Endian_Big
+                           );
+
+        virtual void block(bool block = true);
+
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark TransportStream => ITransportStreamReader
@@ -164,6 +179,47 @@ namespace openpeer
                           );
 
         virtual SecureByteBlockPtr read(StreamHeaderPtr *outHeader = NULL);
+
+        virtual ULONG read(
+                           WORD &outResult,
+                           StreamHeaderPtr *outHeader = NULL,
+                           Endians endian = ITransportStream::Endian_Big
+                           );
+
+        virtual ULONG read(
+                           DWORD &outResult,
+                           StreamHeaderPtr *outHeader = NULL,
+                           Endians endian = ITransportStream::Endian_Big
+                           );
+
+        virtual ULONG peek(
+                           BYTE *outBuffer,
+                           ULONG bufferLengthInBytes,
+                           StreamHeaderPtr *outHeader = NULL,
+                           ULONG offsetInBytes = 0
+                           );
+
+        virtual SecureByteBlockPtr peek(
+                                        ULONG bufferLengthInBytes = 0,
+                                        StreamHeaderPtr *outHeader = NULL,
+                                        ULONG offsetInBytes = 0
+                                        );
+
+        virtual ULONG peek(
+                           WORD &outResult,
+                           StreamHeaderPtr *outHeader = NULL,
+                           ULONG offsetInBytes = 0,
+                           Endians endian = ITransportStream::Endian_Big
+                           );
+
+        virtual ULONG peek(
+                           DWORD &outResult,
+                           StreamHeaderPtr *outHeader = NULL,
+                           ULONG offsetInBytes = 0,
+                           Endians endian = ITransportStream::Endian_Big
+                           );
+
+        virtual ULONG skip(ULONG offsetInBytes);
 
       protected:
         //---------------------------------------------------------------------
@@ -206,6 +262,9 @@ namespace openpeer
         ITransportStreamReaderSubscriptionPtr mDefaultReaderSubscription;
 
         BufferList mBuffers;
+
+        ByteQueuePtr mBlockQueue;
+        StreamHeaderPtr mBlockHeader;
       };
 
       //-----------------------------------------------------------------------

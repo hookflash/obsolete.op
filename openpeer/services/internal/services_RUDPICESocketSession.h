@@ -167,10 +167,16 @@ namespace openpeer
 
         virtual IRUDPChannelPtr openChannel(
                                             IRUDPChannelDelegatePtr delegate,
-                                            const char *connectionInfo
+                                            const char *connectionInfo,
+                                            ITransportStreamPtr receiveStream,
+                                            ITransportStreamPtr sendStream
                                             );
 
-        virtual IRUDPChannelPtr acceptChannel(IRUDPChannelDelegatePtr delegate);
+        virtual IRUDPChannelPtr acceptChannel(
+                                              IRUDPChannelDelegatePtr delegate,
+                                              ITransportStreamPtr receiveStream,
+                                              ITransportStreamPtr sendStream
+                                              );
 
         //---------------------------------------------------------------------
         #pragma mark

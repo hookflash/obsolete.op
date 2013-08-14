@@ -77,7 +77,11 @@ namespace openpeer
       // PURPOSE: Close the socket and cause all sessions to become closed.
       virtual void shutdown() = 0;
 
-      virtual IRUDPChannelPtr acceptChannel(IRUDPChannelDelegatePtr delegate) = 0;
+      virtual IRUDPChannelPtr acceptChannel(
+                                            IRUDPChannelDelegatePtr delegate,
+                                            ITransportStreamPtr receiveStream,
+                                            ITransportStreamPtr sendStream
+                                            ) = 0;
     };
 
     //-------------------------------------------------------------------------

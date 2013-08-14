@@ -285,14 +285,22 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      IRUDPChannelPtr RUDPListener::acceptChannel(IRUDPChannelDelegatePtr delegate)
+      IRUDPChannelPtr RUDPListener::acceptChannel(
+                                                  IRUDPChannelDelegatePtr delegate,
+                                                  ITransportStreamPtr receiveStream,
+                                                  ITransportStreamPtr sendStream
+                                                  )
       {
+        ZS_THROW_INVALID_ARGUMENT_IF(!receiveStream)
+        ZS_THROW_INVALID_ARGUMENT_IF(!sendStream)
+
         AutoRecursiveLock lock(mLock);
         if (mPendingSessions.size() < 1) return IRUDPChannelPtr();
 
         RUDPChannelPtr session = mPendingSessions.front();
         mPendingSessions.pop_front();
         session->forListener().setDelegate(delegate);
+        session->forListener().setStreams(receiveStream, sendStream);
         return session;
       }
 

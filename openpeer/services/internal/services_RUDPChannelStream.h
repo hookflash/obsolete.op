@@ -33,6 +33,9 @@
 
 #include <openpeer/services/internal/types.h>
 #include <openpeer/services/internal/services_IRUDPChannelStream.h>
+
+#include <openpeer/services/ITransportStream.h>
+
 #include <zsLib/Timer.h>
 #include <zsLib/Exception.h>
 
@@ -75,7 +78,8 @@ namespace openpeer
                                 public MessageQueueAssociator,
                                 public IRUDPChannelStream,
                                 public ITimerDelegate,
-                                public IRUDPChannelStreamAsync
+                                public IRUDPChannelStreamAsync,
+                                public ITransportStreamReaderDelegate
       {
       public:
         friend interaction IRUDPChannelStreamFactory;
@@ -87,11 +91,6 @@ namespace openpeer
         typedef boost::shared_ptr<BufferedPacket> BufferedPacketPtr;
 
         typedef std::map<QWORD, BufferedPacketPtr> BufferedPacketMap;
-
-        struct BufferedData;
-        typedef boost::shared_ptr<BufferedData> BufferedDataPtr;
-
-        typedef std::list<BufferedDataPtr> BufferedDataList;
 
         struct Exceptions
         {
@@ -143,27 +142,16 @@ namespace openpeer
                                                  String *outLastErrorReason = NULL
                                                  ) const;
 
+        virtual void setStreams(
+                                ITransportStreamPtr receiveStream,
+                                ITransportStreamPtr sendStream
+                                );
+
         virtual void shutdown(bool shutdownOnlyOnceAllDataSent = false);
 
         virtual void shutdownDirection(Shutdown state);
 
         virtual void holdSendingUntilReceiveSequenceNumber(QWORD sequenceNumber);
-
-        virtual ULONG receive(
-                              BYTE *outBuffer,
-                              ULONG bufferSizeAvailableInBytes
-                              );
-
-        virtual bool doesReceiveHaveMoreDataAvailable();
-
-        virtual ULONG getReceiveSizeAvailableInBytes();
-
-        virtual bool send(
-                          const BYTE *buffer,
-                          ULONG bufferLengthInBytes
-                          );
-
-        virtual ULONG getSendSize();
 
         virtual bool handlePacket(
                                   RUDPPacketPtr packet,
@@ -218,6 +206,13 @@ namespace openpeer
 
         virtual void onSendNow();
 
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RUDPChannelStream => ITransportStreamReaderDelegate
+        #pragma mark
+
+        virtual void onTransportStreamReaderReady(ITransportStreamReaderPtr reader);
+
       protected:
         //---------------------------------------------------------------------
         #pragma mark
@@ -264,9 +259,6 @@ namespace openpeer
                                  BYTE *outBuffer,
                                  ULONG maxFillSize
                                  );
-
-        void notifyReadReadyAgainIfData();
-        void notifyWriteReadyAgainIfSpace();
 
         void getBuffer(
                        RecycleBuffer &outBuffer,
@@ -318,22 +310,6 @@ namespace openpeer
           bool mFlagForResendingInNextBurst;    // this packet needs to be resent at the next possible burst window
         };
 
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark RUDPChannelStream::BufferedData
-        #pragma mark
-
-        struct BufferedData
-        {
-          static BufferedDataPtr create();
-
-          boost::shared_array<BYTE> mBuffer;
-          ULONG mBufferLengthInBytes;  // how large is the buffer in bytes
-          ULONG mAllocSizeInBytes;     // how large was the buffer when it was allocated
-
-          ULONG mConsumed;             // how much of the buffer has been consumed
-        };
-
       protected:
         //---------------------------------------------------------------------
         #pragma mark
@@ -351,8 +327,12 @@ namespace openpeer
         AutoWORD mLastError;
         String mLastErrorReason;
 
-        AutoBool mInformedReadReady;
-        AutoBool mInformedWriteReady;
+        ITransportStreamWriterPtr mReceiveStream;
+        ITransportStreamReaderPtr mSendStream;
+
+        ITransportStreamReaderSubscriptionPtr mSendStreamSubscription;
+
+        ByteQueuePtr mPendingReceiveData;
 
         bool mDidReceiveWriteReady;
 
@@ -382,9 +362,6 @@ namespace openpeer
 
         BufferedPacketMap mSendingPackets;
         BufferedPacketMap mReceivedPackets;
-
-        BufferedDataList mReadData;
-        BufferedDataList mWriteData;
 
         RecycleBufferList mRecycleBuffers;
 

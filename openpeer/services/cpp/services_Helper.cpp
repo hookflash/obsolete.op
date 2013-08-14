@@ -429,7 +429,7 @@ namespace openpeer
         SecureByteBlockPtr output(new SecureByteBlock);
 
         ULONG finalLength = bufferLengthInBytes;
-        if (bufferLengthInBytes) {
+        if (appendNULIfMissing) {
           if (0 != finalLength) {
             if (0 != buffer[bufferLengthInBytes-1]) {
               finalLength += sizeof(char);

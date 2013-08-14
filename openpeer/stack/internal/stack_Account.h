@@ -358,7 +358,7 @@ namespace openpeer
                                        String *outLastErrorReason = NULL
                                        ) const;
 
-        virtual IServiceLockboxSessionPtr getPeerContactSession() const;
+        virtual IServiceLockboxSessionPtr getLockboxSession() const;
 
         virtual void getNATServers(
                                    String &outTURNServer,
@@ -591,7 +591,7 @@ namespace openpeer
         void step();
         bool stepTimer();
         bool stepRepository();
-        bool stepPeerContactSession();
+        bool stepLockboxSession();
         bool stepLocations();
         bool stepSocket();
         bool stepFinder();
@@ -715,7 +715,7 @@ namespace openpeer
         Time mLastTimerFired;
         Time mBlockLocationShutdownsUntil;
 
-        ServiceLockboxSessionPtr mPeerContactSession;
+        ServiceLockboxSessionPtr mLockboxSession;
         Service::MethodPtr mTURN;
         Service::MethodPtr mSTUN;
 

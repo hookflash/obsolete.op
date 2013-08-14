@@ -54,7 +54,6 @@ namespace openpeer
 
     interaction IRUDPMessaging
     {
-      typedef boost::shared_array<BYTE> MessageBuffer;
       typedef IRUDPChannel::Shutdown Shutdown;
 
       enum RUDPMessagingStates
@@ -92,6 +91,8 @@ namespace openpeer
                                              IMessageQueuePtr queue,
                                              IRUDPListenerPtr listener,
                                              IRUDPMessagingDelegatePtr delegate,
+                                             ITransportStreamPtr receiveStream,
+                                             ITransportStreamPtr sendStream,
                                              ULONG maxMessageSizeInBytes = OPENPEER_SERVICES_IRDUPMESSAGING_MAX_MESSAGE_SIZE_IN_BYTES
                                              );
 
@@ -104,6 +105,8 @@ namespace openpeer
                                              IMessageQueuePtr queue,
                                              IRUDPICESocketSessionPtr session,
                                              IRUDPMessagingDelegatePtr delegate,
+                                             ITransportStreamPtr receiveStream,
+                                             ITransportStreamPtr sendStream,
                                              ULONG maxMessageSizeInBytes = OPENPEER_SERVICES_IRDUPMESSAGING_MAX_MESSAGE_SIZE_IN_BYTES
                                              );
 
@@ -117,6 +120,8 @@ namespace openpeer
                                            IRUDPICESocketSessionPtr session,
                                            IRUDPMessagingDelegatePtr delegate,
                                            const char *connectionInfo,
+                                           ITransportStreamPtr receiveStream,
+                                           ITransportStreamPtr sendStream,
                                            ULONG maxMessageSizeInBytes = OPENPEER_SERVICES_IRDUPMESSAGING_MAX_MESSAGE_SIZE_IN_BYTES
                                            );
 
@@ -140,32 +145,13 @@ namespace openpeer
       virtual void shutdownDirection(Shutdown state) = 0;
 
       //-----------------------------------------------------------------------
-      // PURPOSE: Send a message over the channel.
-      virtual bool send(
-                        const BYTE *message,
-                        ULONG messsageLengthInBytes
-                        ) = 0;
-
-      //-----------------------------------------------------------------------
       // PURPOSE: Set the maximum size of a message expecting to receive
       virtual void setMaxMessageSizeInBytes(ULONG maxMessageSizeInBytes) = 0;
 
       //-----------------------------------------------------------------------
-      // PURPOSE: Allocate a buffer large enough to hold the next message
-      //          available.
-      // NOTE:    Will return NULL if no buffer available.
-      virtual MessageBuffer getBufferLargeEnoughForNextMessage() = 0;
-
-      //-----------------------------------------------------------------------
-      // PURPOSE: Obtains how big the next message in the channel will be.
-      // NOTE:    Will return "0" if there is no message available yet.
-      virtual ULONG getNextReceivedMessageSizeInBytes() = 0;
-
-      //-----------------------------------------------------------------------
-      // PURPOSE: Obtains the next message to process from the channel.
-      // WARNING: The buffer must be as large as returned by
-      //          "getNextReceivedMessageSizeInBytes()"
-      virtual ULONG receive(BYTE *outBuffer) = 0;
+      // PURPOSE: Make sure all received buffers are guarenteed to be NUL
+      //          terminated (or not)
+      virtual void setAutoNulTerminateReceiveBuffers(bool nulTerminate = true) = 0;
 
       //-----------------------------------------------------------------------
       // PURPOSE: Get the IP address of the connected remote party.
@@ -195,9 +181,6 @@ namespace openpeer
                                                IRUDPMessagingPtr messaging,
                                                RUDPMessagingStates state
                                                ) = 0;
-
-      virtual void onRUDPMessagingReadReady(IRUDPMessagingPtr messaging) = 0;
-      virtual void onRUDPMessagingWriteReady(IRUDPMessagingPtr messaging) = 0;
     };
   }
 }
@@ -206,6 +189,4 @@ ZS_DECLARE_PROXY_BEGIN(openpeer::services::IRUDPMessagingDelegate)
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::IRUDPMessagingPtr, IRUDPMessagingPtr)
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::IRUDPMessagingDelegate::RUDPMessagingStates, RUDPMessagingStates)
 ZS_DECLARE_PROXY_METHOD_2(onRUDPMessagingStateChanged, IRUDPMessagingPtr, RUDPMessagingStates)
-ZS_DECLARE_PROXY_METHOD_1(onRUDPMessagingReadReady, IRUDPMessagingPtr)
-ZS_DECLARE_PROXY_METHOD_1(onRUDPMessagingWriteReady, IRUDPMessagingPtr)
 ZS_DECLARE_PROXY_END()

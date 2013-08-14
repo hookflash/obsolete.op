@@ -327,7 +327,7 @@ namespace openpeer
           }
         }
 
-        if (!mMessaging) {
+        if (!mSendStream) {
           ZS_LOG_WARNING(Detail, log("requested to send a message but messaging is not ready"))
           return false;
         }
@@ -351,7 +351,7 @@ namespace openpeer
         ZS_LOG_DETAIL(log("^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^"))
 
         mLastActivity = zsLib::now();
-        mMessaging->send((const BYTE *)(output.get()), length);
+        mSendStream->write((const BYTE *)(output.get()), length);
         return true;
       }
 
@@ -511,7 +511,11 @@ namespace openpeer
           {
             ZS_LOG_WARNING(Debug, log("incoming RUDP session replacing existing RUDP session since the outgoing RUDP session was not connected"))
             // out messaging was not connected so use this one instead since it is connected
-            IRUDPMessagingPtr messaging = IRUDPMessaging::acceptChannel(IStackForInternal::queueServices(), mSocketSession, mThisWeak.lock());
+
+            ITransportStreamPtr receiveStream = ITransportStream::create(ITransportStreamWriterDelegatePtr(), mThisWeak.lock());
+            ITransportStreamPtr sendStream = ITransportStream::create(mThisWeak.lock(), ITransportStreamReaderDelegatePtr());
+
+            IRUDPMessagingPtr messaging = IRUDPMessaging::acceptChannel(IStackForInternal::queueServices(), mSocketSession, mThisWeak.lock(), receiveStream, sendStream);
             if (!messaging) return;
 
             if (OPENPEER_STACK_PEER_TO_PEER_RUDP_CONNECTION_INFO != messaging->getRemoteConnectionInfo()) {
@@ -525,10 +529,21 @@ namespace openpeer
               mIdentifyMonitor.reset();
             }
 
+            mReceiveStream->cancel();
+            mReceiveStream.reset();
+
+            mSendStream->cancel();
+            mSendStream.reset();
+
             mMessaging->shutdown();
             mMessaging.reset();
 
             mMessaging = messaging;
+            mReceiveStream = receiveStream->getReader();
+            mSendStream = sendStream->getWriter();
+
+            mReceiveStream->notifyReaderReadyToRead();
+
             mIncoming = true;
 
             step();
@@ -537,9 +552,15 @@ namespace openpeer
 
           ZS_LOG_WARNING(Detail, log("incoming RUDP session ignored since an outgoing RUDP session is already established"))
 
+          ITransportStreamPtr receiveStream = ITransportStream::create();
+          ITransportStreamPtr sendStream = ITransportStream::create();
+
           // we already have a connected channel, so dump this one...
-          IRUDPMessagingPtr messaging = IRUDPMessaging::acceptChannel(IStackForInternal::queueServices(), mSocketSession, mThisWeak.lock());
+          IRUDPMessagingPtr messaging = IRUDPMessaging::acceptChannel(IStackForInternal::queueServices(), mSocketSession, mThisWeak.lock(), receiveStream, sendStream);
           messaging->shutdown();
+
+          receiveStream->cancel();
+          sendStream->cancel();
 
           ZS_LOG_WARNING(Detail, log("sending keep alive as it is likely the remote party connection request is valid and our current session is stale"))
           sendKeepAlive();
@@ -548,9 +569,17 @@ namespace openpeer
 
         ZS_LOG_DEBUG(log("incoming RUDP session being answered"))
 
+        ITransportStreamPtr receiveStream = ITransportStream::create(ITransportStreamWriterDelegatePtr(), mThisWeak.lock());
+        ITransportStreamPtr sendStream = ITransportStream::create(mThisWeak.lock(), ITransportStreamReaderDelegatePtr());
+
         // no messaging present, accept this incoming channel
-        mMessaging = IRUDPMessaging::acceptChannel(IStackForInternal::queueServices(), mSocketSession, mThisWeak.lock());
+        mMessaging = IRUDPMessaging::acceptChannel(IStackForInternal::queueServices(), mSocketSession, mThisWeak.lock(), receiveStream, sendStream);
         mIncoming = true;
+
+        mReceiveStream = receiveStream->getReader();
+        mSendStream = sendStream->getWriter();
+
+        mReceiveStream->notifyReaderReadyToRead();
 
         if (OPENPEER_STACK_PEER_TO_PEER_RUDP_CONNECTION_INFO != mMessaging->getRemoteConnectionInfo()) {
           ZS_LOG_WARNING(Detail, log("received unknown incoming connection type thus shutting down incoming connection") + ", type=" + mMessaging->getRemoteConnectionInfo())
@@ -603,31 +632,51 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      void AccountPeerLocation::onRUDPMessagingReadReady(IRUDPMessagingPtr session)
-      {
-        typedef IRUDPMessaging::MessageBuffer MessageBuffer;
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark AccountPeerLocation => ITransportStreamWriterDelegate
+      #pragma mark
 
+      //-----------------------------------------------------------------------
+      void AccountPeerLocation::onTransportStreamWriterReady(ITransportStreamWriterPtr writer)
+      {
+        ZS_LOG_TRACE(log("on stream write ready (ignored)"))
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark AccountPeerLocation => ITransportStreamWriterDelegate
+      #pragma mark
+
+      void AccountPeerLocation::onTransportStreamReaderReady(ITransportStreamReaderPtr reader)
+      {
         AutoRecursiveLock lock(getLock());
 
         if (isShutdown()) return;
 
-        if (session != mMessaging) {
-          ZS_LOG_WARNING(Debug, log("messaging ready ready arrived for obsolete messaging"))
+        if (reader != mReceiveStream) {
+          ZS_LOG_WARNING(Debug, log("messaging ready ready arrived for obsolete stream"))
           return;
         }
 
         while (true) {
-          MessageBuffer buffer = mMessaging->getBufferLargeEnoughForNextMessage();
-          if (!buffer) return;
-
-          mMessaging->receive(buffer.get());
+          SecureByteBlockPtr buffer = mReceiveStream->read();
+          if (!buffer) {
+            ZS_LOG_TRACE(log("no data to read"))
+            return;
+          }
 
           bool hasPeerFile = mPeer->forAccount().getPeerFilePublic();
 
           ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
           ZS_LOG_DETAIL(log("< < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < <"))
           ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
-          ZS_LOG_DETAIL(log("PEER RECEIVED MESSAGE=") + "\n" + ((CSTR)(buffer.get())) + "\n")
+          ZS_LOG_DETAIL(log("PEER RECEIVED MESSAGE=") + "\n" + ((CSTR)(buffer->BytePtr())) + "\n")
           ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
           ZS_LOG_DETAIL(log("< < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < <"))
           ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
@@ -661,7 +710,7 @@ namespace openpeer
           // can't process requests until the incoming is received, drop the message
           if (((!hasPeerFile) ||
                (mIncoming)) &&
-               (Time() == mIdentifyTime)) {
+              (Time() == mIdentifyTime)) {
 
             // scope: handle identify request
             {
@@ -736,7 +785,7 @@ namespace openpeer
           }
 
           ZS_LOG_DEBUG(log("unknown message, will forward message to account"))
-
+          
           // send the message to the outer (asynchronously)
           try {
             mDelegate->onAccountPeerLocationMessageIncoming(mThisWeak.lock(), message);
@@ -744,12 +793,6 @@ namespace openpeer
             ZS_LOG_WARNING(Detail, log("delegate gone"))
           }
         }
-      }
-
-      //-----------------------------------------------------------------------
-      void AccountPeerLocation::onRUDPMessagingWriteReady(IRUDPMessagingPtr session)
-      {
-        ZS_LOG_TRACE(log("RUDP messaging write ready (ignored)"))
       }
 
       //-----------------------------------------------------------------------
@@ -905,6 +948,8 @@ namespace openpeer
         Helper::getDebugValue("rudp ice socket subscription id", mSocketSubscription ? string(mSocketSubscription->getID()) : String(), firstTime) +
         Helper::getDebugValue("rudp ice socket session id", mSocketSession ? string(mSocketSession->getID()) : String(), firstTime) +
         Helper::getDebugValue("rudp messagine id", mMessaging ? string(mMessaging->getID()) : String(), firstTime) +
+        Helper::getDebugValue("receive stream id", mReceiveStream ? string(mReceiveStream->getID()) : String(), firstTime) +
+        Helper::getDebugValue("send stream id", mSendStream ? string(mSendStream->getID()) : String(), firstTime) +
         Helper::getDebugValue("incoming", mIncoming ? String("true") : String(), firstTime) +
         Helper::getDebugValue("identify time", Time() != mIdentifyTime ? IHelper::timeToString(mIdentifyTime) : String(), firstTime) +
         Helper::getDebugValue("identity monitor", mIdentifyMonitor ? String("true") : String(), firstTime) +
@@ -1022,7 +1067,7 @@ namespace openpeer
 
         setState(IAccount::AccountState_Ready);
 
-        ZS_LOG_DEBUG(log("step complete") + getDebugValueString())
+        ZS_LOG_TRACE(log("step complete") + getDebugValueString())
       }
 
       //-----------------------------------------------------------------------
@@ -1032,11 +1077,11 @@ namespace openpeer
           socket->wakeup();
 
           if (IRUDPICESocket::RUDPICESocketState_Ready != socket->getState()) {
-            ZS_LOG_DEBUG(log("waiting for RUDP ICE socket to wake up"))
+            ZS_LOG_TRACE(log("waiting for RUDP ICE socket to wake up"))
             return false;
           }
 
-          ZS_LOG_DEBUG(log("RUDP socket is awake"))
+          ZS_LOG_TRACE(log("RUDP socket is awake"))
           return true;
         }
 
@@ -1057,7 +1102,7 @@ namespace openpeer
       bool AccountPeerLocation::stepPendingRequests(IRUDPICESocketPtr socket)
       {
         if (mPendingRequests.size() < 1) {
-          ZS_LOG_DEBUG(log("no pending requests"))
+          ZS_LOG_TRACE(log("no pending requests"))
           return true;
         }
 
@@ -1107,16 +1152,16 @@ namespace openpeer
       bool AccountPeerLocation::stepSocketSession()
       {
         if (!mSocketSession) {
-          ZS_LOG_DEBUG(log("waiting for a RUDP ICE socket session connection"))
+          ZS_LOG_TRACE(log("waiting for a RUDP ICE socket session connection"))
           return false;
         }
 
         if (IRUDPICESocketSession::RUDPICESocketSessionState_Ready != mSocketSession->getState()) {
-          ZS_LOG_DEBUG(log("waiting for RUDP ICE socket session to complete"))
+          ZS_LOG_TRACE(log("waiting for RUDP ICE socket session to complete"))
           return false;
         }
 
-        ZS_LOG_DEBUG(log("socket session is ready"))
+        ZS_LOG_TRACE(log("socket session is ready"))
         return true;
       }
 
@@ -1124,17 +1169,17 @@ namespace openpeer
       bool AccountPeerLocation::stepIncomingIdentify()
       {
         if (!mIncoming) {
-          ZS_LOG_DEBUG(log("session is outgoing"))
+          ZS_LOG_TRACE(log("session is outgoing"))
           return true;
         }
 
         if ((Time() != mIdentifyTime) &&
             (mPeer->forAccount().getPeerFilePublic())) {
-          ZS_LOG_DEBUG(log("already received identify request"))
+          ZS_LOG_TRACE(log("already received identify request"))
           return true;
         }
 
-        ZS_LOG_DEBUG(log("waiting for an incoming connection and identification"))
+        ZS_LOG_TRACE(log("waiting for an incoming connection and identification"))
         return false;
       }
 
@@ -1143,28 +1188,36 @@ namespace openpeer
       {
         if (mMessaging) {
           if (IRUDPMessaging::RUDPMessagingState_Connected != mMessaging->getState()) {
-            ZS_LOG_DEBUG(log("waiting for the RUDP messaging to connect"))
+            ZS_LOG_TRACE(log("waiting for the RUDP messaging to connect"))
             return false;
           }
-          ZS_LOG_DEBUG(log("messaging is ready"))
+          ZS_LOG_TRACE(log("messaging is ready"))
           return true;
         }
 
         if (mIncoming) {
-          ZS_LOG_DEBUG(log("no need to create messaging since incoming"))
+          ZS_LOG_TRACE(log("no need to create messaging since incoming"))
           return true;
         }
 
-        ZS_LOG_DEBUG(log("requesting messaging channel open"))
-        mMessaging = IRUDPMessaging::openChannel(IStackForInternal::queueServices(), mSocketSession, mThisWeak.lock(), OPENPEER_STACK_PEER_TO_PEER_RUDP_CONNECTION_INFO);
+        ZS_LOG_TRACE(log("requesting messaging channel open"))
+        ITransportStreamPtr receiveStream = ITransportStream::create(ITransportStreamWriterDelegatePtr(), mThisWeak.lock());
+        ITransportStreamPtr sendStream = ITransportStream::create(mThisWeak.lock(), ITransportStreamReaderDelegatePtr());
+
+        mMessaging = IRUDPMessaging::openChannel(IStackForInternal::queueServices(), mSocketSession, mThisWeak.lock(), OPENPEER_STACK_PEER_TO_PEER_RUDP_CONNECTION_INFO, receiveStream, sendStream);
 
         if (!mMessaging) {
-          ZS_LOG_DEBUG(log("unable to open a messaging channel to remote peer thus shutting down"))
+          ZS_LOG_WARNING(Detail, log("unable to open a messaging channel to remote peer thus shutting down"))
           cancel();
           return false;
         }
 
-        ZS_LOG_DEBUG(log("waiting for messaging to complete"))
+        mReceiveStream = receiveStream->getReader();
+        mSendStream = sendStream->getWriter();
+
+        mReceiveStream->notifyReaderReadyToRead();
+
+        ZS_LOG_TRACE(log("waiting for messaging to complete"))
         return false;
       }
 
@@ -1172,17 +1225,17 @@ namespace openpeer
       bool AccountPeerLocation::stepIdentify()
       {
         if (mIncoming) {
-          ZS_LOG_DEBUG(log("no need to identify"))
+          ZS_LOG_TRACE(log("no need to identify"))
           return true;
         }
 
         if (mIdentifyMonitor) {
-          ZS_LOG_DEBUG(log("waiting for identify to complete"))
+          ZS_LOG_TRACE(log("waiting for identify to complete"))
           return false;
         }
 
         if (Time() != mIdentifyTime) {
-          ZS_LOG_DEBUG(log("identify already complete"))
+          ZS_LOG_TRACE(log("identify already complete"))
           return true;
         }
 

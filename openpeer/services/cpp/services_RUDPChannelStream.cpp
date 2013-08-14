@@ -39,6 +39,7 @@
 #include <zsLib/Stringize.h>
 
 #include <cryptopp/osrng.h>
+#include <cryptopp/queue.h>
 
 #include <algorithm>
 
@@ -235,6 +236,7 @@ namespace openpeer
                                            ) :
         MessageQueueAssociator(queue),
         mDelegate(IRUDPChannelStreamDelegateProxy::createWeak(queue, delegate)),
+        mPendingReceiveData(new ByteQueue),
         mDidReceiveWriteReady(true),
         mCurrentState(RUDPChannelStreamState_Connected),
         mSendingChannelNumber(sendingChannelNumber),
@@ -265,8 +267,6 @@ namespace openpeer
       void RUDPChannelStream::init()
       {
         AutoRecursiveLock lock(mLock);
-
-        notifyWriteReadyAgainIfSpace();
       }
 
       //-----------------------------------------------------------------------
@@ -340,6 +340,45 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      void RUDPChannelStream::setStreams(
+                                         ITransportStreamPtr receiveStream,
+                                         ITransportStreamPtr sendStream
+                                         )
+      {
+        ZS_LOG_DEBUG(log("set streams called"))
+
+        ZS_THROW_INVALID_ARGUMENT_IF(!receiveStream)
+        ZS_THROW_INVALID_ARGUMENT_IF(!sendStream)
+
+        AutoRecursiveLock lock(mLock);
+
+        mReceiveStream = receiveStream->getWriter();
+        mSendStream = sendStream->getReader();
+        mSendStream->notifyReaderReadyToRead();
+
+        mSendStreamSubscription = mSendStream->subscribe(mThisWeak.lock());
+
+        if (0 != (IRUDPChannel::Shutdown_Receive & mShutdownState)) {
+          ZS_LOG_DEBUG(log("cancelling receive stream since that direction is shutdown"))
+          mReceiveStream->cancel();
+        } else {
+          if (mPendingReceiveData) {
+            size_t size = static_cast<size_t>(mPendingReceiveData->CurrentSize());
+            if (size > 0) {
+              ZS_LOG_DEBUG(log("buffered received data written to transport stream") + ", size=" + string(size))
+
+              SecureByteBlockPtr buffer(new SecureByteBlock(size));
+              mPendingReceiveData->Get(buffer->BytePtr(), size);
+
+              mReceiveStream->write(buffer);
+            }
+          }
+        }
+
+        mPendingReceiveData.reset();
+      }
+
+      //-----------------------------------------------------------------------
       void RUDPChannelStream::shutdown(bool shutdownOnlyOnceAllDataSent)
       {
         ZS_LOG_DETAIL(log("shutdown called") + ", only when data sent=" + (shutdownOnlyOnceAllDataSent ? "true" : "false"))
@@ -370,7 +409,10 @@ namespace openpeer
         mShutdownState = static_cast<Shutdown>(mShutdownState | state);  // you cannot stop shutting down what has already been shutting down
         if (0 != (IRUDPChannel::Shutdown_Receive & mShutdownState)) {
           // clear out the read data entirely - effectively acts as an ignore filter on the received data
-          mReadData.clear();
+          if (mReceiveStream) {
+            ZS_LOG_DEBUG(log("cancelling receive stream since that direction is shutdown"))
+            mReceiveStream->cancel();
+          }
         }
         if (isShutdown()) return;
         if (isShuttingDown()) return;
@@ -389,167 +431,6 @@ namespace openpeer
           // the hold was manually removed, try to deliver data now...
           (IRUDPChannelStreamAsyncProxy::create(mThisWeak.lock()))->onSendNow();
         }
-      }
-
-      //-----------------------------------------------------------------------
-      ULONG RUDPChannelStream::receive(
-                                       BYTE *outBuffer,
-                                       ULONG bufferSizeAvailableInBytes
-                                       )
-      {
-        ZS_LOG_DEBUG(log("receive called") + ", buffer size=" + string(bufferSizeAvailableInBytes))
-
-        AutoRecursiveLock lock(mLock);
-        get(mInformedReadReady) = false; // if this method was called in response to a read-ready event then clear the read-ready flag so the event can fire again
-
-        if (0 == bufferSizeAvailableInBytes) {
-          notifyReadReadyAgainIfData();
-          return 0;
-        }
-
-        ZS_THROW_INVALID_USAGE_IF(!outBuffer)
-
-        ULONG bytesRead = 0;
-
-        for (BufferedDataList::iterator readIter = mReadData.begin(); readIter != mReadData.end(); )
-        {
-          BufferedDataList::iterator current = readIter;
-          ++readIter;
-
-          BufferedDataPtr buffer = (*current);
-          ULONG available = (buffer->mBufferLengthInBytes - buffer->mConsumed);
-          ULONG fillSize = (available > bufferSizeAvailableInBytes ? bufferSizeAvailableInBytes : available);
-          memcpy(outBuffer, buffer->mBuffer.get() + buffer->mConsumed, fillSize);
-          outBuffer += fillSize;
-          bufferSizeAvailableInBytes -= fillSize;
-          buffer->mConsumed += fillSize;
-          bytesRead += fillSize;
-
-          if (buffer->mConsumed == buffer->mBufferLengthInBytes) {
-            freeBuffer(buffer->mBuffer, buffer->mAllocSizeInBytes);  // recyle the buffer for later
-            mReadData.erase(current);  // the buffer is exhasted so drop it
-          }
-          if (0 == bufferSizeAvailableInBytes) {
-            notifyReadReadyAgainIfData();
-            return bytesRead;
-          }
-        }
-
-        notifyReadReadyAgainIfData();
-        return bytesRead;
-      }
-
-      //-----------------------------------------------------------------------
-      bool RUDPChannelStream::doesReceiveHaveMoreDataAvailable()
-      {
-        AutoRecursiveLock lock(mLock);
-        get(mInformedReadReady) = false;  // if this method was called in response to a read-ready event then clear the read-ready flag so the event can fire again
-
-        for (BufferedDataList::iterator iter = mReadData.begin(); iter != mReadData.end(); ++iter)
-        {
-          BufferedDataPtr &buffer = (*iter);
-          ULONG available = (buffer->mBufferLengthInBytes - buffer->mConsumed);
-          if (0 != available)
-            return true;
-        }
-        return false;
-      }
-
-      //-----------------------------------------------------------------------
-      ULONG RUDPChannelStream::getReceiveSizeAvailableInBytes()
-      {
-        AutoRecursiveLock lock(mLock);
-        get(mInformedReadReady) = false;  // if this method was called in response to a read-ready event then clear the read-ready flag so the event can fire again
-
-        ULONG totalAvailable = 0;
-
-        for (BufferedDataList::iterator iter = mReadData.begin(); iter != mReadData.end(); ++iter)
-        {
-          BufferedDataPtr &buffer = (*iter);
-          ULONG available = (buffer->mBufferLengthInBytes - buffer->mConsumed);
-          totalAvailable += available;
-        }
-
-        ZS_LOG_DEBUG(log("receive get size called") + ", result size=" + string(totalAvailable))
-        return totalAvailable;
-      }
-
-      //-----------------------------------------------------------------------
-      bool RUDPChannelStream::send(
-                                   const BYTE *buffer,
-                                   ULONG bufferLengthInBytes
-                                   )
-      {
-        ZS_LOG_DEBUG(log("send called") + ", size=" + string(bufferLengthInBytes))
-
-        ZS_THROW_INVALID_USAGE_IF(!buffer)
-
-        AutoRecursiveLock lock(mLock);
-        get(mInformedWriteReady) = false;  // if this method was called in response to a write-ready event then clear the write-ready flag so the event can fire again
-
-        if (isShutdown()) return false;
-
-        if (0 != (IRUDPChannel::Shutdown_Send & mShutdownState)) return false;
-
-        if (0 == bufferLengthInBytes) {
-          notifyWriteReadyAgainIfSpace();
-          return true;
-        }
-
-        if (mWriteData.size() > 0) {
-          // try to put the buffer into the tail end of the previous buffer (if room allows)
-          BufferedDataPtr last = mWriteData.back();
-          ULONG available = last->mAllocSizeInBytes - last->mBufferLengthInBytes;
-          available = (available > bufferLengthInBytes ? bufferLengthInBytes : available);
-          if (0 != available) {
-            ZS_LOG_DEBUG(log("adding to existing buffer") + ", available=" + string(available))
-            memcpy(&((last->mBuffer.get())[last->mBufferLengthInBytes]), buffer, available);
-
-            last->mBufferLengthInBytes += available;
-
-            buffer += available;
-            bufferLengthInBytes -= available;
-
-            if (0 == bufferLengthInBytes) {
-              (IRUDPChannelStreamAsyncProxy::create(mThisWeak.lock()))->onSendNow();
-              return true;
-            }
-          }
-        }
-
-        ZS_LOG_DEBUG(log("adding to new buffer") + ", size=" + string(bufferLengthInBytes))
-
-        // we have data that cannot fit into the last buffer, create a new data buffer
-        BufferedDataPtr data = BufferedData::create();
-
-        ULONG allocSize = bufferLengthInBytes;
-        getBuffer(data->mBuffer, allocSize);
-
-        data->mBufferLengthInBytes = bufferLengthInBytes;
-        data->mAllocSizeInBytes = allocSize;
-
-        memcpy(data->mBuffer.get(), buffer, bufferLengthInBytes);
-        mWriteData.push_back(data);
-
-        (IRUDPChannelStreamAsyncProxy::create(mThisWeak.lock()))->onSendNow();
-        return true;
-      }
-
-      //-----------------------------------------------------------------------
-      ULONG RUDPChannelStream::getSendSize()
-      {
-        AutoRecursiveLock lock(mLock);
-        ULONG totalSending = 0;
-
-        for (BufferedDataList::iterator iter = mWriteData.begin(); iter != mWriteData.end(); ++iter)
-        {
-          BufferedDataPtr &buffer = (*iter);
-          ULONG sending = (buffer->mBufferLengthInBytes - buffer->mConsumed);
-          totalSending += sending;
-        }
-
-        ZS_LOG_DEBUG(log("get send size called") + ", result=" + string(totalSending))
-        return totalSending;
       }
 
       //-----------------------------------------------------------------------
@@ -676,7 +557,6 @@ namespace openpeer
         // because we have possible new ACKs the window might have progressed, attempt to send more data now
         bool sent = sendNow();  // WARNING: this method cannot be called from within a lock
         if (sent) {
-          notifyWriteReadyAgainIfSpace();
           return true;
         }
         if (!fireExternalACKIfNotSent) return true;
@@ -978,7 +858,21 @@ namespace openpeer
       {
         ZS_LOG_TRACE(log("on send now called"))
         sendNow();  // do NOT call from within a lock
-        notifyWriteReadyAgainIfSpace();
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPChannelStream => ITransportStreamReaderDelegate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      void RUDPChannelStream::onTransportStreamReaderReady(ITransportStreamReaderPtr reader)
+      {
+        ZS_LOG_DEBUG(log("on transport stream reader ready"))
+        sendNow();  // do NOT call from within a lock
       }
 
       //-----------------------------------------------------------------------
@@ -1010,8 +904,12 @@ namespace openpeer
         Helper::getDebugValue("last error", 0 != mLastError ? string(mLastError) : String(), firstTime) +
         Helper::getDebugValue("last reason", mLastErrorReason, firstTime) +
 
-        Helper::getDebugValue("informed read ready", mInformedReadReady ? String("true") : String(), firstTime) +
-        Helper::getDebugValue("informed write ready", mInformedWriteReady ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("receive stream", mReceiveStream ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("send stream", mSendStream ? String("true") : String(), firstTime) +
+
+        Helper::getDebugValue("send stream subscription", mSendStreamSubscription ? String("true") : String(), firstTime) +
+
+        Helper::getDebugValue("pending receive data", mPendingReceiveData ? String("true") : String(), firstTime) +
 
         Helper::getDebugValue("did receive write ready", mDidReceiveWriteReady ? String("true") : String(), firstTime) +
 
@@ -1044,9 +942,6 @@ namespace openpeer
 
         Helper::getDebugValue("sending packets", mSendingPackets.size() > 0 ? string(mSendingPackets.size()) : String(), firstTime) +
         Helper::getDebugValue("received packets", mReceivedPackets.size() > 0 ? string(mReceivedPackets.size()) : String(), firstTime) +
-
-        Helper::getDebugValue("read data", mReadData.size() > 0 ? string(mReadData.size()) : String(), firstTime) +
-        Helper::getDebugValue("write data", mWriteData.size() > 0 ? string(mWriteData.size()) : String(), firstTime) +
 
         Helper::getDebugValue("recycled buffers", mRecycleBuffers.size() > 0 ? string(mRecycleBuffers.size()) : String(), firstTime) +
 
@@ -1094,8 +989,12 @@ namespace openpeer
         mSendingPackets.clear();
         mReceivedPackets.clear();
 
-        mReadData.clear();
-        mWriteData.clear();
+        if (mReceiveStream) {
+          mReceiveStream->cancel();
+        }
+        if (mSendStream) {
+          mSendStream->cancel();
+        }
 
         mRecycleBuffers.clear();
 
@@ -1221,7 +1120,7 @@ namespace openpeer
                             ", packets per burst=" + string(mPacketsPerBurst) +
                             ", resend=" + string(mTotalPacketsToResend) +
                             ", send size=" + string(mSendingPackets.size()) +
-                            ", write data=" + string(mWriteData.size()))
+                            ", write data=" + (mSendStream ? string(mSendStream->getTotalReadBuffersAvailable()) : String("0")))
 
           if (isShutdown()) {
             ZS_LOG_TRACE(log("already shutdown thus aborting send now"))
@@ -1302,8 +1201,8 @@ namespace openpeer
 
               // there are no packets to be resent so attempt to create a new packet to send...
 
-              if (mWriteData.size() < 1)
-                goto sendNowQuickExit;
+              if (!mSendStream) goto sendNowQuickExit;
+              if (mSendStream->getTotalReadBuffersAvailable() < 1) goto sendNowQuickExit;
 
               // we need to start breaking up new packets immediately that will be sent over the wire
               RUDPPacketPtr newPacket = RUDPPacket::create();
@@ -1387,7 +1286,7 @@ namespace openpeer
               newPacket->mData = &(temp[0]);
               newPacket->mDataLengthInBytes = static_cast<WORD>(bytesRead);
 
-              if ((mWriteData.size() < 1) ||
+              if ((mSendStream->getTotalReadBuffersAvailable() < 1) ||
                   (1 == packetsToSend)) {
                 newPacket->setFlag(RUDPPacket::Flag_AR_ACKRequired);
                 if (mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer) {
@@ -1501,11 +1400,13 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void RUDPChannelStream::sendNowCleanup()
       {
+        ULONG writeBuffers = mSendStream ? mSendStream->getTotalReadBuffersAvailable() : 0;
+
         ZS_LOG_TRACE(log("starting send now cleaup routine") +
                             ", packets to resend=" + string(mTotalPacketsToResend) +
                             ", available batons=" + string(mAvailableBurstBatons) +
                             ", packets per burst=" + string(mPacketsPerBurst) +
-                            ", write size=" + string(mWriteData.size()) +
+                            ", write size=" + string(writeBuffers) +
                             ", sending size=" + string(mSendingPackets.size()) +
                             ", force ACK next time possible=" + (mForceACKNextTimePossible ? "true" : "false") +
                             ", force ACK ID=" + string(mForceACKOfSentPacketsRequestID) +
@@ -1520,13 +1421,13 @@ namespace openpeer
         bool burstTimerRequired = false;
         bool forceACKOfSentPacketsRequired = false;
         bool ensureDataHasArrivedTimer = false;
-        bool addBatonsTimer = (!mBandwidthIncreaseFrozen) && (0 == mTotalPacketsToResend) && ((mSendingPackets.size() > 0) || (mWriteData.size() > 0));
+        bool addBatonsTimer = (!mBandwidthIncreaseFrozen) && (0 == mTotalPacketsToResend) && ((mSendingPackets.size() > 0) || (writeBuffers > 0));
 
         if (0 != mAvailableBurstBatons)
         {
           // there is available batons so the burst timer should be alive if there is data ready to send
           burstTimerRequired = ((mSendingPackets.size() > 0) && (0 != mTotalPacketsToResend)) ||
-                                (mWriteData.size() > 0);
+                                (writeBuffers > 0);
         }
 
         if (mSendingPackets.size() > 0) {
@@ -1539,7 +1440,7 @@ namespace openpeer
           forceACKOfSentPacketsRequired = true;
 
           if ((0 != mAvailableBurstBatons) &&
-              (mWriteData.size() > 0)) {
+              (writeBuffers > 0)) {
 
             // but if there is available batons and write data outstanding then
             // there's no need to setup a timer to ensure the data to be acked
@@ -1607,11 +1508,11 @@ namespace openpeer
               burstDuration = Milliseconds(OPENPEER_SERVICES_RUDP_MINIMUM_BURST_TIMER_IN_MILLISECONDS);
             }
 
-            ZS_LOG_TRACE(log("creating a burst timer since there is data to send and available batons to send it") + ", timer ID=" + string(mBurstTimer->getID()) + ", available batons=" + string(mAvailableBurstBatons) + ", write size=" + string(mWriteData.size()) + ", sending size=" + string(mSendingPackets.size()) + ", burst duration=" + string(burstDuration.total_milliseconds()) + ", calculated RTT=" + string(mCalculatedRTT.total_milliseconds()))
+            ZS_LOG_TRACE(log("creating a burst timer since there is data to send and available batons to send it") + ", timer ID=" + string(mBurstTimer->getID()) + ", available batons=" + string(mAvailableBurstBatons) + ", write size=" + string(writeBuffers) + ", sending size=" + string(mSendingPackets.size()) + ", burst duration=" + string(burstDuration.total_milliseconds()) + ", calculated RTT=" + string(mCalculatedRTT.total_milliseconds()))
           }
         } else {
           if (mBurstTimer) {
-            ZS_LOG_TRACE(log("cancelling the burst timer since there are no batons available or there is no more data to send") + ", timer ID=" + string(mBurstTimer->getID()) + ", available batons=" + string(mAvailableBurstBatons) + ", write size=" + string(mWriteData.size()) + ", sending size=" + string(mSendingPackets.size()))
+            ZS_LOG_TRACE(log("cancelling the burst timer since there are no batons available or there is no more data to send") + ", timer ID=" + string(mBurstTimer->getID()) + ", available batons=" + string(mAvailableBurstBatons) + ", write size=" + string(writeBuffers) + ", sending size=" + string(mSendingPackets.size()))
 
             mBurstTimer->cancel();
             mBurstTimer.reset();
@@ -1625,11 +1526,11 @@ namespace openpeer
             // The timer is set to fire at 1.5 x calculated RTT
             mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer = Timer::create(mThisWeak.lock(), ensureDuration, false);
 
-            ZS_LOG_TRACE(log("starting ensure timer to make sure packets get acked") + ", timer ID=" + string(mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer->getID()) + ", available batons=" + string(mAvailableBurstBatons) + ", write size=" + string(mWriteData.size()) + ", sending size=" + string(mSendingPackets.size()) + ", ensure duration=" + string(ensureDuration.total_milliseconds()) + ", calculated RTT=" + string(mCalculatedRTT.total_milliseconds()))
+            ZS_LOG_TRACE(log("starting ensure timer to make sure packets get acked") + ", timer ID=" + string(mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer->getID()) + ", available batons=" + string(mAvailableBurstBatons) + ", write size=" + string(writeBuffers) + ", sending size=" + string(mSendingPackets.size()) + ", ensure duration=" + string(ensureDuration.total_milliseconds()) + ", calculated RTT=" + string(mCalculatedRTT.total_milliseconds()))
           }
         } else {
           if (mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer) {
-            ZS_LOG_TRACE(log("stopping ensure timer as batons available for sending still and there is outstanding unacked send data in the buffer") + ", timer ID=" + string(mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer->getID()) + ", available batons=" + string(mAvailableBurstBatons) + ", write size=" + string(mWriteData.size()) + ", sending size=" + string(mSendingPackets.size()))
+            ZS_LOG_TRACE(log("stopping ensure timer as batons available for sending still and there is outstanding unacked send data in the buffer") + ", timer ID=" + string(mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer->getID()) + ", available batons=" + string(mAvailableBurstBatons) + ", write size=" + string(writeBuffers) + ", sending size=" + string(mSendingPackets.size()))
             mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer->cancel();
             mEnsureDataHasArrivedWhenNoMoreBurstBatonsAvailableTimer.reset();
           }
@@ -1640,7 +1541,7 @@ namespace openpeer
           get(mForceACKOfSentPacketsAtSendingSequnceNumber) = mNextSequenceNumber - 1;
           get(mForceACKNextTimePossible) = false;
 
-          ZS_LOG_TRACE(log("forcing an ACK immediately") + ", ack ID=" + string(mForceACKOfSentPacketsRequestID) + ", forced sequence number=" + sequenceToString(mForceACKOfSentPacketsAtSendingSequnceNumber) + ", available batons=" + string(mAvailableBurstBatons) + ", write size=" + string(mWriteData.size()) + ", sending size=" + string(mSendingPackets.size()))
+          ZS_LOG_TRACE(log("forcing an ACK immediately") + ", ack ID=" + string(mForceACKOfSentPacketsRequestID) + ", forced sequence number=" + sequenceToString(mForceACKOfSentPacketsAtSendingSequnceNumber) + ", available batons=" + string(mAvailableBurstBatons) + ", write size=" + string(writeBuffers) + ", sending size=" + string(mSendingPackets.size()))
 
           try {
             mDelegate->onRUDPChannelStreamSendExternalACKNow(mThisWeak.lock(), true, mForceACKOfSentPacketsRequestID);
@@ -1654,18 +1555,17 @@ namespace openpeer
         if (addBatonsTimer) {
           if (!mAddToAvailableBurstBatonsTimer) {
             mAddToAvailableBurstBatonsTimer = Timer::create(mThisWeak.lock(), mAddToAvailableBurstBatonsDuation);
-            ZS_LOG_TRACE(log("creating a new add to available batons timer") + ", timer ID=" + string(mAddToAvailableBurstBatonsTimer->getID()) + ", frozen=" + (mBandwidthIncreaseFrozen ? "true" : "false") + ", available batons=" + string(mAvailableBurstBatons) + ", write size=" + string(mWriteData.size()) + ", sending size=" + string(mSendingPackets.size()))
+            ZS_LOG_TRACE(log("creating a new add to available batons timer") + ", timer ID=" + string(mAddToAvailableBurstBatonsTimer->getID()) + ", frozen=" + (mBandwidthIncreaseFrozen ? "true" : "false") + ", available batons=" + string(mAvailableBurstBatons) + ", write size=" + string(writeBuffers) + ", sending size=" + string(mSendingPackets.size()))
           }
         } else {
           if (mAddToAvailableBurstBatonsTimer) {
-            ZS_LOG_TRACE(log("cancelling add to available batons timer") + ", timer ID=" + string(mAddToAvailableBurstBatonsTimer->getID()) + ", frozen=" + (mBandwidthIncreaseFrozen ? "true" : "false") + ", available batons=" + string(mAvailableBurstBatons) + ", write size=" + string(mWriteData.size()) + ", sending size=" + string(mSendingPackets.size()))
+            ZS_LOG_TRACE(log("cancelling add to available batons timer") + ", timer ID=" + string(mAddToAvailableBurstBatonsTimer->getID()) + ", frozen=" + (mBandwidthIncreaseFrozen ? "true" : "false") + ", available batons=" + string(mAvailableBurstBatons) + ", write size=" + string(writeBuffers) + ", sending size=" + string(mSendingPackets.size()))
             mAddToAvailableBurstBatonsTimer->cancel();
             mAddToAvailableBurstBatonsTimer.reset();
           }
         }
 
         closeOnAllDataSent();
-        notifyWriteReadyAgainIfSpace();
 
         ZS_LOG_TRACE(log("completed send now cleanup routine") +
                             ", burst timer=" + (burstTimerRequired ? "true" : "false") +
@@ -2036,6 +1936,8 @@ namespace openpeer
       void RUDPChannelStream::deliverReadPackets()
       {
         bool delivered = false;
+        ULONG totalDelivered = 0;
+
         // see how many packets we can confirm as received
         while (mReceivedPackets.size() > 0) {
           BufferedPacketMap::iterator iter = mReceivedPackets.begin();
@@ -2057,37 +1959,17 @@ namespace openpeer
           // shutdown otherwise the data will be ignored and dropped)
           if ((bufferedPacket->mRUDPPacket->mDataLengthInBytes > 0) &&
               (0 == (IRUDPChannel::Shutdown_Receive & mShutdownState))) {
+
             const BYTE *pos = bufferedPacket->mRUDPPacket->mData;
             ULONG bytes = bufferedPacket->mRUDPPacket->mDataLengthInBytes;
 
-            if (mReadData.size() > 0) {
-              BufferedDataPtr last = mReadData.back();
-              // see how much space is available in the last packet
-              ULONG available = last->mAllocSizeInBytes - last->mBufferLengthInBytes;
-              available = (available > bytes ? bytes : available);
-              if (0 != available) {
-                memcpy(&((last->mBuffer.get())[last->mBufferLengthInBytes]), pos, available);
-              }
+            totalDelivered += bytes;
 
-              pos += available;
-              bytes -= available;
-
-              last->mBufferLengthInBytes += available;
-            }
-
-            if (0 != bytes) {
-              // still more data available, create another data buffer in the series
-              BufferedDataPtr data = BufferedData::create();
-
-              ULONG allocSize = bytes;
-              getBuffer(data->mBuffer, allocSize);
-              data->mAllocSizeInBytes = allocSize;
-              data->mBufferLengthInBytes = bytes;
-
-              memcpy(data->mBuffer.get(), pos, bytes);
-
-              // remember the read data
-              mReadData.push_back(data);
+            if (mReceiveStream) {
+              mReceiveStream->write(pos, bytes);
+            } else {
+              ZS_THROW_BAD_STATE_IF(!mPendingReceiveData)
+              mPendingReceiveData->Put(pos, bytes);
             }
           }
 
@@ -2100,8 +1982,7 @@ namespace openpeer
         }
 
         if (delivered) {
-          ZS_LOG_TRACE(log("delivering notify read ready") + ", size=" + string(mReadData.size()))
-          notifyReadReadyAgainIfData();
+          ZS_LOG_TRACE(log("delivering read packets read ready") + ", size=" + string(totalDelivered))
         }
       }
 
@@ -2112,73 +1993,13 @@ namespace openpeer
                                                   )
       {
         ZS_LOG_TRACE(log("get from write buffer") + ", max size=" + string(maxFillSize))
-        ULONG readBytes = 0;
 
-        while ((maxFillSize > 0) &&
-               (mWriteData.size() > 0)) {
-          BufferedDataPtr buffer = mWriteData.front();
+        if (!mSendStream) return 0;
 
-          ULONG available = buffer->mBufferLengthInBytes - buffer->mConsumed;
-          available = (available > maxFillSize ? maxFillSize : available);
+        ULONG read = mSendStream->read(outBuffer, maxFillSize);
 
-          memcpy(outBuffer, &((buffer->mBuffer.get())[buffer->mConsumed]), available);
-          outBuffer += available;
-          maxFillSize -= available;
-          readBytes += available;
-          buffer->mConsumed += available;
-
-          if (buffer->mConsumed == buffer->mBufferLengthInBytes) {
-            // the entire buffer is exhasted, pop it off now
-            mWriteData.pop_front();
-          }
-        }
-
-        ZS_LOG_TRACE(log("get from write buffer") + ", max size=" + string(maxFillSize) + ", read size=" + string(readBytes))
-        return readBytes;
-      }
-
-      //-----------------------------------------------------------------------
-      void RUDPChannelStream::notifyReadReadyAgainIfData()
-      {
-        if (mReadData.size() < 1) {
-          ZS_LOG_DEBUG(log("no data to read thus no need to notify about read ready"))
-          return;
-        }
-        if (mInformedReadReady) {
-          ZS_LOG_DEBUG(log("already notified that the read is ready thus no need to do it again"))
-          return;
-        }
-
-        try {
-          ZS_LOG_TRACE(log("notify more read data available"))
-          mDelegate->onRUDPChannelStreamReadReady(mThisWeak.lock());
-          get(mInformedReadReady) = true;
-        } catch(IRUDPChannelStreamDelegateProxy::Exceptions::DelegateGone &) {
-          setError(RUDPChannelStreamShutdownReason_DelegateGone, "delegate gone");
-          cancel();
-          return;
-        }
-      }
-
-      //-----------------------------------------------------------------------
-      void RUDPChannelStream::notifyWriteReadyAgainIfSpace()
-      {
-        AutoRecursiveLock lock(mLock);
-
-        if (!mDelegate) return;
-        if (mInformedWriteReady) return;
-
-        if (mWriteData.size() > 1) return;  // already have two buffers so don't advertise that there is more room
-
-        try {
-          ZS_LOG_TRACE(log("notify more write space available"))
-          mDelegate->onRUDPChannelStreamWriteReady(mThisWeak.lock());
-          get(mInformedWriteReady) = true;
-        } catch(IRUDPChannelStreamDelegateProxy::Exceptions::DelegateGone &) {
-          setError(RUDPChannelStreamShutdownReason_DelegateGone, "delegate gone");
-          cancel();
-          return;
-        }
+        ZS_LOG_TRACE(log("get from write buffer") + ", max size=" + string(maxFillSize) + ", read size=" + string(read))
+        return read;
       }
 
       //-----------------------------------------------------------------------
@@ -2237,7 +2058,9 @@ namespace openpeer
         if (isShutdown()) return;       // already closed?
         if (!isShuttingDown()) return;  // do we want to close if all data is sent?
 
-        if ((0 != mWriteData.size()) || (0 != mSendingPackets.size())) return;
+        ULONG totalWriteBuffers = mSendStream ? mSendStream->getTotalReadBuffersAvailable() : 0;
+
+        if ((0 != totalWriteBuffers) || (0 != mSendingPackets.size())) return;
 
         ZS_LOG_TRACE(log("all data sent and now will close stream"))
 
@@ -2312,24 +2135,6 @@ namespace openpeer
         if (!mHoldsBaton) return;
         mHoldsBaton = false;
         ++ioAvailableBatons;
-      }
-
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark RUDPChannelStream::BufferedData
-      #pragma mark
-
-      //-----------------------------------------------------------------------
-      RUDPChannelStream::BufferedDataPtr RUDPChannelStream::BufferedData::create()
-      {
-        BufferedDataPtr pThis(new BufferedData);
-        pThis->mBufferLengthInBytes = 0;
-        pThis->mConsumed = 0;
-        pThis->mAllocSizeInBytes = 0;
-        return pThis;
       }
 
       //-----------------------------------------------------------------------

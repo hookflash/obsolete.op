@@ -76,7 +76,7 @@ namespace openpeer
                                      String *outLastErrorReason = NULL
                                      ) const = 0;
 
-      virtual IServiceLockboxSessionPtr getPeerContactSession() const = 0;
+      virtual IServiceLockboxSessionPtr getLockboxSession() const = 0;
 
       virtual void getNATServers(
                                  String &outTURNServer,

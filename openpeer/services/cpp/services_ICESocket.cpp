@@ -65,6 +65,9 @@
 
 #define OPENPEER_SERVICES_ICESOCKET_MINIMUM_TURN_KEEP_ALIVE_TIME_IN_SECONDS  OPENPEER_SERVICES_IICESOCKET_DEFAULT_HOW_LONG_CANDIDATES_MUST_REMAIN_VALID_IN_SECONDS
 
+#define OPENPEER_SERVICES_TURN_DEFAULT_RETRY_AFTER_DURATION_IN_MILLISECONDS (500)
+#define OPENPEER_SERVICES_TURN_MAX_RETRY_AFTER_DURATION_IN_SECONDS (60*60)
+
 #define OPENPEER_SERVICES_MAX_REBIND_ATTEMPT_DURATION_IN_SECONDS (10)
 
 #define OPENPEER_SERVICES_REBIND_TIMER_WHEN_NO_SOCKETS_IN_SECONDS (1)
@@ -175,6 +178,7 @@ namespace openpeer
         mFirstWORDInAnyPacketWillNotConflictWithTURNChannels(firstWORDInAnyPacketWillNotConflictWithTURNChannels),
         mTURNLastUsed(zsLib::now()),
         mTURNShutdownIfNotUsedBy(Seconds(OPENPEER_SERVICES_ICESOCKET_MINIMUM_TURN_KEEP_ALIVE_TIME_IN_SECONDS)),
+        mTURNRetryDuration(Milliseconds(OPENPEER_SERVICES_TURN_DEFAULT_RETRY_AFTER_DURATION_IN_MILLISECONDS)),
 
         mSTUNSRVResult(srvSTUN),
         mSTUNServer(stunServer ? stunServer : ""),
@@ -875,6 +879,15 @@ namespace openpeer
         ZS_LOG_DEBUG(log("on timer"))
 
         AutoRecursiveLock lock(mLock);
+        if (timer == mTURNRetryTimer) {
+          ZS_LOG_DEBUG(log("retry TURN timer"))
+
+          mTURNRetryTimer->cancel();
+          mTURNRetryTimer.reset();
+
+          step();
+          return;
+        }
         if (timer != mRebindTimer) {
           ZS_LOG_WARNING(Detail, log("received timer notification on obsolete timer") + ", timer ID=" + string(timer->getID()))
           return;
@@ -945,6 +958,9 @@ namespace openpeer
         Helper::getDebugValue("turn first WORD safe", mFirstWORDInAnyPacketWillNotConflictWithTURNChannels ? String("true") : String(), firstTime) +
         Helper::getDebugValue("turn last used", Time() != mTURNLastUsed ? IHelper::timeToString(mTURNLastUsed) : String(), firstTime) +
         Helper::getDebugValue("turn stutdown duration (s)", Duration() != mTURNShutdownIfNotUsedBy ? string(mTURNShutdownIfNotUsedBy.seconds()) : String(), firstTime) +
+        Helper::getDebugValue("turn retry after", Time() != mTURNRetryAfter ? IHelper::timeToString(mTURNRetryAfter) : String(), firstTime) +
+        Helper::getDebugValue("turn retry duration (ms)", Duration() != mTURNRetryDuration ? string(mTURNRetryDuration.total_milliseconds()) : String(), firstTime) +
+        Helper::getDebugValue("turn retry timer", mTURNRetryTimer ? String("true") : String(), firstTime) +
 
         Helper::getDebugValue("stun srv udp result", mSTUNSRVResult ? String("true") : String(), firstTime) +
         Helper::getDebugValue("stun server", mSTUNServer, firstTime) +
@@ -976,6 +992,11 @@ namespace openpeer
         if (mRebindTimer) {
           mRebindTimer->cancel();
           mRebindTimer.reset();
+        }
+
+        if (mTURNRetryTimer) {
+          mTURNRetryTimer->cancel();
+          mTURNRetryTimer.reset();
         }
 
         for (SocketMap::iterator iter = mSockets.begin(); iter != mSockets.end(); )
@@ -1306,7 +1327,7 @@ namespace openpeer
           shouldSleep = true;
         }
 
-        ZS_LOG_TRACE(log("step TURN") + ", should sleep=" + (shouldSleep ? "true" : "false"))
+        ZS_LOG_TRACE(log("step TURN") + ", should sleep=" + (shouldSleep ? "true" : "false") + ", tick=" + IHelper::timeToString(tick))
 
         bool allConnected = true;
         bool allSleeping = true;
@@ -1339,6 +1360,11 @@ namespace openpeer
                   break;
                 }
                 case ITURNSocket::TURNSocketState_Ready:      {
+
+                  // reset the retry for TURN since it connected just fine
+                  mTURNRetryAfter = Time();
+                  mTURNRetryDuration = Milliseconds(OPENPEER_SERVICES_TURN_DEFAULT_RETRY_AFTER_DURATION_IN_MILLISECONDS);
+
                   if (localSocket->mRelay.mIPAddress.isAddressEmpty()) {
                     localSocket->mRelay.mIPAddress = localSocket->mTURNSocket->getRelayedIP();
 
@@ -1354,11 +1380,22 @@ namespace openpeer
                   break;
                 }
                 case ITURNSocket::TURNSocketState_Shutdown:   {
+
                   allConnected = false;
                   clearTURN(localSocket->mTURNSocket);
                   localSocket->mRelay.mIPAddress.clear();
                   localSocket->mRelay.mFoundation.clear();
                   localSocket->mTURNSocket.reset();
+
+                  mTURNRetryAfter = tick + mTURNRetryDuration;
+
+                  ZS_LOG_WARNING(Detail, log("turn socket shutdown") + ", retry duration (ms)=" + string(mTURNRetryDuration.total_milliseconds()) + ", retry after=" + IHelper::timeToString(mTURNRetryAfter))
+
+                  mTURNRetryDuration = mTURNRetryDuration + mTURNRetryDuration;
+                  if (mTURNRetryDuration > Seconds(OPENPEER_SERVICES_TURN_MAX_RETRY_AFTER_DURATION_IN_SECONDS)) {
+                    mTURNRetryDuration = Seconds(OPENPEER_SERVICES_TURN_MAX_RETRY_AFTER_DURATION_IN_SECONDS);
+                  }
+
                   break;
                 }
               }
@@ -1406,30 +1443,50 @@ namespace openpeer
 
               allConnected = false;
 
-              if (!mTURNServer.isEmpty()) {
-                localSocket->mTURNSocket = ITURNSocket::create(
-                                                               getAssociatedMessageQueue(),
-                                                               mThisWeak.lock(),
-                                                               mTURNServer,
-                                                               mTURNUsername,
-                                                               mTURNPassword,
-                                                               mFirstWORDInAnyPacketWillNotConflictWithTURNChannels
-                                                               );
-              } else {
-                localSocket->mTURNSocket = ITURNSocket::create(
-                                                               getAssociatedMessageQueue(),
-                                                               mThisWeak.lock(),
-                                                               mTURNSRVUDPResult,
-                                                               mTURNSRVTCPResult,
-                                                               mTURNUsername,
-                                                               mTURNPassword,
-                                                               mFirstWORDInAnyPacketWillNotConflictWithTURNChannels
-                                                               );
+              bool okayToContactTURN = true;
+
+              if (Time() != mTURNRetryAfter) {
+                okayToContactTURN = (tick > mTURNRetryAfter);
               }
 
-              mSocketTURNs[localSocket->mTURNSocket] = localSocket;
+              if (okayToContactTURN) {
+                if (!mTURNServer.isEmpty()) {
+                  localSocket->mTURNSocket = ITURNSocket::create(
+                                                                 getAssociatedMessageQueue(),
+                                                                 mThisWeak.lock(),
+                                                                 mTURNServer,
+                                                                 mTURNUsername,
+                                                                 mTURNPassword,
+                                                                 mFirstWORDInAnyPacketWillNotConflictWithTURNChannels
+                                                                 );
+                } else {
+                  localSocket->mTURNSocket = ITURNSocket::create(
+                                                                 getAssociatedMessageQueue(),
+                                                                 mThisWeak.lock(),
+                                                                 mTURNSRVUDPResult,
+                                                                 mTURNSRVTCPResult,
+                                                                 mTURNUsername,
+                                                                 mTURNPassword,
+                                                                 mFirstWORDInAnyPacketWillNotConflictWithTURNChannels
+                                                                 );
+                }
 
-              ZS_LOG_DEBUG(log("TURN socket created") + ", base IP=" + string(localSocket->mLocal.mIPAddress) + ", TURN socket ID=" + string(localSocket->mTURNSocket->getID()))
+                mSocketTURNs[localSocket->mTURNSocket] = localSocket;
+
+                ZS_LOG_DEBUG(log("TURN socket created") + ", base IP=" + string(localSocket->mLocal.mIPAddress) + ", TURN socket ID=" + string(localSocket->mTURNSocket->getID()))
+              } else {
+                if (!mTURNRetryTimer) {
+                  Duration waitTime;
+                  if (tick < mTURNRetryAfter) {
+                    waitTime = mTURNRetryAfter - tick;
+                  } else {
+                    waitTime = Milliseconds(1);
+                  }
+
+                  ZS_LOG_DEBUG(log("must wait to retry logging into TURN server") + ", wait time (ms)=" + string(waitTime.total_milliseconds()) + ", retry duration (ms)=" + string(mTURNRetryDuration.total_milliseconds()) + ", retry after=" + IHelper::timeToString(mTURNRetryAfter))
+                  mTURNRetryTimer = Timer::create(mThisWeak.lock(), waitTime, false);
+                }
+              }
             }
           }
         }

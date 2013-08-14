@@ -133,11 +133,17 @@ namespace openpeer
       // NOTE: Will return NULL if no channel can be open at this time.
       virtual IRUDPChannelPtr openChannel(
                                           IRUDPChannelDelegatePtr delegate,
-                                          const char *connectionInfo
+                                          const char *connectionInfo,
+                                          ITransportStreamPtr receiveStream,
+                                          ITransportStreamPtr sendStream
                                           ) = 0;
 
       // NOTE: Will return NULL if no channel can be accepted at this time.
-      virtual IRUDPChannelPtr acceptChannel(IRUDPChannelDelegatePtr delegate) = 0;
+      virtual IRUDPChannelPtr acceptChannel(
+                                            IRUDPChannelDelegatePtr delegate,
+                                            ITransportStreamPtr receiveStream,
+                                            ITransportStreamPtr sendStream
+                                            ) = 0;
     };
 
     //-------------------------------------------------------------------------

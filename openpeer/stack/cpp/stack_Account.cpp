@@ -157,7 +157,7 @@ namespace openpeer
       Account::Account(
                        IMessageQueuePtr queue,
                        IAccountDelegatePtr delegate,
-                       ServiceLockboxSessionPtr peerContactSession
+                       ServiceLockboxSessionPtr lockboxSession
                        ) :
         MessageQueueAssociator(queue),
         mLocationID(IHelper::randomString(32)),
@@ -165,7 +165,7 @@ namespace openpeer
         mLastError(0),
         mDelegate(IAccountDelegateProxy::createWeak(IStackForInternal::queueDelegate(), delegate)),
         mBlockLocationShutdownsUntil(zsLib::now()),
-        mPeerContactSession(peerContactSession),
+        mLockboxSession(lockboxSession),
         mMasterPeerSecret(IHelper::randomString(32*8/5)),
         mFinderRetryAfter(zsLib::now()),
         mLastRetryFinderAfterDuration(Seconds(OPENPEER_STACK_ACCOUNT_FINDER_STARTING_RETRY_AFTER_IN_SECONDS))
@@ -245,10 +245,10 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      IServiceLockboxSessionPtr Account::getPeerContactSession() const
+      IServiceLockboxSessionPtr Account::getLockboxSession() const
       {
         AutoRecursiveLock lock(getLock());
-        return mPeerContactSession;
+        return mLockboxSession;
       }
 
       //-----------------------------------------------------------------------
@@ -287,9 +287,9 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
 
-        ZS_THROW_BAD_STATE_IF(!mPeerContactSession)
+        ZS_THROW_BAD_STATE_IF(!mLockboxSession)
 
-        BootstrappedNetworkPtr network = mPeerContactSession->forAccount().getBootstrappedNetwork();
+        BootstrappedNetworkPtr network = mLockboxSession->forAccount().getBootstrappedNetwork();
 
         ZS_THROW_BAD_STATE_IF(!network)
 
@@ -710,12 +710,12 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
 
-        if (!mPeerContactSession) {
+        if (!mLockboxSession) {
           ZS_LOG_WARNING(Detail, log("peer files are not available on account as peer contact session does not exist") + getDebugValueString())
           return IPeerFilesPtr();
         }
 
-        return mPeerContactSession->forAccount().getPeerFiles();
+        return mLockboxSession->forAccount().getPeerFiles();
       }
 
       //-----------------------------------------------------------------------
@@ -1762,8 +1762,8 @@ namespace openpeer
           mSocket.reset();
         }
 
-        ZS_LOG_DEBUG(log("service peer contact disconnected"))
-        mPeerContactSession.reset();
+        ZS_LOG_DEBUG(log("service lockbox disconnected"))
+        mLockboxSession.reset();
 
         ZS_LOG_DEBUG(log("shutdown complete"))
       }
@@ -1782,7 +1782,7 @@ namespace openpeer
 
         if (!stepTimer()) return;
         if (!stepRepository()) return;
-        if (!stepPeerContactSession()) return;
+        if (!stepLockboxSession()) return;
         if (!stepLocations()) return;
         if (!stepSocket()) return;
         if (!stepFinder()) return;
@@ -1797,58 +1797,70 @@ namespace openpeer
       //-----------------------------------------------------------------------
       bool Account::stepTimer()
       {
-        if (mTimer) return true;
+        if (mTimer) {
+          ZS_LOG_TRACE(log("already have timer"))
+          return true;
+        }
 
         mLastTimerFired = zsLib::now();
         mTimer = Timer::create(mThisWeak.lock(), Seconds(OPENPEER_STACK_ACCOUNT_TIMER_FIRES_IN_SECONDS));
+        ZS_LOG_TRACE(log("created timer") + ", timer ID=" + string(mTimer->getID()))
         return true;
       }
 
       //-----------------------------------------------------------------------
       bool Account::stepRepository()
       {
-        if (mRepository) return true;
+        if (mRepository) {
+          ZS_LOG_TRACE(log("already have repository"))
+          return true;
+        }
 
         mRepository = IPublicationRepositoryForAccount::create(mThisWeak.lock());
+        ZS_LOG_TRACE(log("repository created") + ", respository ID=" + string(mRepository->forAccount().getID()))
         return true;
       }
 
       //-----------------------------------------------------------------------
-      bool Account::stepPeerContactSession()
+      bool Account::stepLockboxSession()
       {
-        ZS_THROW_BAD_STATE_IF(!mPeerContactSession)
+        ZS_THROW_BAD_STATE_IF(!mLockboxSession)
 
         if ((mSTUN) ||
             (mTURN)) {
-          ZS_LOG_DEBUG(log("peer contact session is already setup"))
+          ZS_LOG_TRACE(log("lockbox session is already setup"))
           return true;
         }
 
-        IServiceLockboxSession::SessionStates state = mPeerContactSession->forAccount().getState();
+        IServiceLockboxSession::SessionStates state = mLockboxSession->forAccount().getState();
         switch (state) {
           case IServiceLockboxSession::SessionState_Pending:
           case IServiceLockboxSession::SessionState_PendingPeerFilesGeneration:
           {
-            ZS_LOG_DEBUG(log("contact session pending"))
+            ZS_LOG_TRACE(log("lockbox session pending"))
             return false;
           }
           case IServiceLockboxSession::SessionState_Shutdown:
           {
-            ZS_LOG_ERROR(Detail, log("peer contact session is shutdown thus account must shutdown"))
+            ZS_LOG_ERROR(Detail, log("lockbox session is shutdown thus account must shutdown"))
             WORD errorCode = 0;
             String reason;
-            mPeerContactSession->forAccount().getState(&errorCode, &reason);
+            mLockboxSession->forAccount().getState(&errorCode, &reason);
             setError(errorCode, reason);
             return false;
           }
-          case IServiceLockboxSession::SessionState_Ready:  break;
+          case IServiceLockboxSession::SessionState_Ready:  {
+            ZS_LOG_TRACE(log("lockbox session is ready"))
+            break;
+          }
         }
 
         if (!mTURN) {
-          mTURN = mPeerContactSession->forAccount().findServiceMethod("turn", "turn");
+          ZS_LOG_DEBUG(log("creating TURN session"))
+          mTURN = mLockboxSession->forAccount().findServiceMethod("turn", "turn");
         }
         if (!mSTUN) {
-          mSTUN = mPeerContactSession->forAccount().findServiceMethod("stun", "stun");
+          mSTUN = mLockboxSession->forAccount().findServiceMethod("stun", "stun");
         }
 
         return true;
@@ -1858,18 +1870,21 @@ namespace openpeer
       bool Account::stepLocations()
       {
         if (mSelfPeer) {
+          ZS_LOG_TRACE(log("already have a self peer"))
           ZS_THROW_BAD_STATE_IF(!mSelfLocation)
           ZS_THROW_BAD_STATE_IF(!mFinderLocation)
           return true;
         }
 
-        IPeerFilesPtr peerFiles = mPeerContactSession->forAccount().getPeerFiles();
+        IPeerFilesPtr peerFiles = mLockboxSession->forAccount().getPeerFiles();
         if (!peerFiles) {
           ZS_LOG_ERROR(Detail, log("peer files are missing"))
           setError(IHTTP::HTTPStatusCode_PreconditionFailed, "Peer files are missing");
           cancel();
           return false;
         }
+
+        ZS_LOG_TRACE(log("peer files are ready"))
 
         IPeerFilePublicPtr peerFilePublic = peerFiles->getPeerFilePublic();
         IPeerFilePrivatePtr peerFilePrivate = peerFiles->getPeerFilePrivate();
@@ -1898,11 +1913,11 @@ namespace openpeer
 
           if ((IRUDPICESocket::RUDPICESocketState_Ready != socketState) &&
               (IRUDPICESocket::RUDPICESocketState_Sleeping != socketState)) {
-            ZS_LOG_DEBUG(log("waiting for the socket to wake up or to go to sleep"))
-            return false;
+            ZS_LOG_TRACE(log("waiting for the socket to wake up or to go to sleep"))
+            return true;
           }
 
-          ZS_LOG_DEBUG(log("sockets are ready"))
+          ZS_LOG_TRACE(log("sockets are ready"))
           return true;
         }
 
@@ -1923,8 +1938,8 @@ namespace openpeer
                                          stunServer
                                          );
         if (mSocket) {
-          ZS_LOG_DEBUG(log("waiting for socket to be ready"))
-          return false;
+          ZS_LOG_TRACE(log("socket created thus need to wait for socket to be ready"))
+          return true;
         }
 
         ZS_LOG_ERROR(Detail, log("failed to create RUDP ICE socket thus shutting down"))
@@ -1937,35 +1952,35 @@ namespace openpeer
       bool Account::stepFinder()
       {
         if (mFindersGetMonitor) {
-          ZS_LOG_DEBUG(log("waiting for finders get monitor to complete"))
+          ZS_LOG_TRACE(log("waiting for finders get monitor to complete"))
           return false;
         }
 
         if (mFinderDNSLookup) {
-          ZS_LOG_DEBUG(log("waiting for finder DNS lookup to complete"))
+          ZS_LOG_TRACE(log("waiting for finder DNS lookup to complete"))
           return false;
         }
 
         if (mFinder) {
           if (IAccount::AccountState_Ready != mFinder->forAccount().getState()) {
-            ZS_LOG_DEBUG(log("waiting for the finder to connect"))
+            ZS_LOG_TRACE(log("waiting for the finder to connect"))
             return false;
           }
-          ZS_LOG_DEBUG(log("finder already created"))
+          ZS_LOG_TRACE(log("finder already created"))
           return true;
         }
 
         Time tick = zsLib::now();
 
         if (mFinderRetryAfter > tick) {
-          ZS_LOG_DEBUG(log("waiting a bit before retrying finder connection..."))
+          ZS_LOG_TRACE(log("waiting a bit before retrying finder connection..."))
           return false;
         }
 
         if (mAvailableFinders.size() < 1) {
-          ZS_THROW_BAD_STATE_IF(!mPeerContactSession)
+          ZS_THROW_BAD_STATE_IF(!mLockboxSession)
 
-          BootstrappedNetworkPtr network = mPeerContactSession->forAccount().getBootstrappedNetwork();
+          BootstrappedNetworkPtr network = mLockboxSession->forAccount().getBootstrappedNetwork();
 
           ZS_THROW_BAD_STATE_IF(!network)
 
@@ -1975,7 +1990,7 @@ namespace openpeer
 
           mFindersGetMonitor = IMessageMonitor::monitorAndSendToService(mThisWeak.lock(), network, "bootstrapped-finders", "finders-get", request, Seconds(OPENPEER_STACK_FINDERS_GET_TIMEOUT_IN_SECONDS));
 
-          ZS_LOG_DEBUG(log("attempting to get finders"))
+          ZS_LOG_TRACE(log("attempting to get finders"))
           return false;
         }
 
@@ -1990,15 +2005,15 @@ namespace openpeer
           }
 
           mFinderDNSLookup = IDNS::lookupSRV(mThisWeak.lock(), srv, "_finder", "_udp");
-          ZS_LOG_DEBUG(log("performing DNS lookup on finder"))
+          ZS_LOG_TRACE(log("performing DNS lookup on finder"))
           return false;
         }
 
-        ZS_LOG_DEBUG(log("creating finder instance"))
+        ZS_LOG_TRACE(log("creating finder instance"))
         mFinder = IAccountFinderForAccount::create(mThisWeak.lock(), mThisWeak.lock());
 
         if (mFinder) {
-          ZS_LOG_DEBUG(log("waiting for finder to be ready"))
+          ZS_LOG_TRACE(log("waiting for finder to be ready"))
           return false;
         }
 
@@ -2011,7 +2026,10 @@ namespace openpeer
       //-----------------------------------------------------------------------
       bool Account::stepPeers()
       {
-        if (mPeerInfos.size() < 1) return true;
+        if (mPeerInfos.size() < 1) {
+          ZS_LOG_TRACE(log("step peers complete as no peers exist"))
+          return true;
+        }
 
         for (PeerInfoMap::iterator peerIter = mPeerInfos.begin(); peerIter != mPeerInfos.end(); )
         {
@@ -2041,6 +2059,7 @@ namespace openpeer
           performPeerFind(peerURI, peerInfo);
         }
 
+        ZS_LOG_TRACE(log("step peers complete"))
         return true;
       }
 
@@ -2254,7 +2273,7 @@ namespace openpeer
                                     PeerInfoPtr &peerInfo
                                     )
       {
-        IPeerFilesPtr peerFiles = mPeerContactSession->forAccount().getPeerFiles();
+        IPeerFilesPtr peerFiles = mLockboxSession->forAccount().getPeerFiles();
         ZS_THROW_BAD_STATE_IF(!peerFiles)
 
         if (!shouldFind(peerURI, peerInfo)) {

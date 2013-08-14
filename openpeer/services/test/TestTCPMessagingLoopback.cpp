@@ -122,6 +122,7 @@ namespace openpeer
           mTimer = zsLib::Timer::create(mThisWeak.lock(), zsLib::Milliseconds(rand()%400+200));
 
           mClientMessaging = ITCPMessaging::connect(mThisWeak.lock(), mClientReceiveStream->getStream(), mClientSendStream->getStream(), mHasChannelNumbers, serverIP);
+          mClientMessaging->setAutoNulTerminateReceiveBuffers(false);
         }
 
       public:
@@ -238,6 +239,15 @@ namespace openpeer
           AutoRecursiveLock lock(mLock);
           Message info;
 
+          ITransportStream::StreamHeaderPtr header;
+
+          SecureByteBlockPtr buffer = reader->read(&header);
+          ITCPMessaging::ChannelHeaderPtr channelHeader = boost::dynamic_pointer_cast<ITCPMessaging::ChannelHeader>(header);
+
+          if (!buffer) {
+            return;
+          }
+
           const char *type = NULL;
 
           if (reader == mServerReceiveStream) {
@@ -258,16 +268,6 @@ namespace openpeer
           }
 
           if (!type) return;
-
-          ITransportStream::StreamHeaderPtr header;
-
-          SecureByteBlockPtr buffer = reader->read(&header);
-          ITCPMessaging::ChannelHeaderPtr channelHeader = boost::dynamic_pointer_cast<ITCPMessaging::ChannelHeader>(header);
-
-          if (!buffer) {
-            BOOST_CHECK(Time() != mShutdownTime)
-            return;
-          }
 
           if (mHasChannelNumbers) {
             BOOST_CHECK(((bool)header))
@@ -300,6 +300,7 @@ namespace openpeer
           mAcceptTime = zsLib::now();
 
           mServerMessaging = ITCPMessaging::accept(mThisWeak.lock(), mServerReceiveStream->getStream(), mServerSendStream->getStream(), mHasChannelNumbers, mListenSocket);
+          mServerMessaging->setAutoNulTerminateReceiveBuffers(false);
         }
 
         //---------------------------------------------------------------------

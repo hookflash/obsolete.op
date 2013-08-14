@@ -35,6 +35,8 @@
 #include <openpeer/services/IRUDPListener.h>
 #include <openpeer/services/IRUDPICESocketSession.h>
 
+#include <cryptopp/queue.h>
+
 #include <zsLib/Exception.h>
 #include <zsLib/helpers.h>
 #include <zsLib/Log.h>
@@ -51,8 +53,6 @@ namespace openpeer
   {
     namespace internal
     {
-      typedef RUDPMessaging::MessageBuffer MessageBuffer;
-
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -65,12 +65,19 @@ namespace openpeer
       RUDPMessaging::RUDPMessaging(
                                    IMessageQueuePtr queue,
                                    IRUDPMessagingDelegatePtr delegate,
+                                   ITransportStreamPtr receiveStream,
+                                   ITransportStreamPtr sendStream,
                                    ULONG maxMessageSizeInBytes
                                    ) :
         MessageQueueAssociator(queue),
-        mDelegate(IRUDPMessagingDelegateProxy::createWeak(queue, delegate)),
         mCurrentState(RUDPMessagingState_Connecting),
-        mMaxMessageSizeInBytes(maxMessageSizeInBytes)
+        mDelegate(IRUDPMessagingDelegateProxy::createWeak(queue, delegate)),
+        mNulTerminateBuffers(true),
+        mMaxMessageSizeInBytes(maxMessageSizeInBytes),
+        mOuterReceiveStream(receiveStream->getWriter()),
+        mOuterSendStream(sendStream->getReader()),
+        mWireReceiveStream(ITransportStream::create()->getReader()),
+        mWireSendStream(ITransportStream::create()->getWriter())
       {
         ZS_LOG_BASIC(log("created"))
       }
@@ -78,6 +85,12 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void RUDPMessaging::init()
       {
+        AutoRecursiveLock lock(mLock);
+        mWireReceiveStreamSubscription = mWireReceiveStream->subscribe(mThisWeak.lock());
+        mWireSendStreamSubscription = mWireSendStream->subscribe(mThisWeak.lock());
+
+        mOuterReceiveStreamSubscription = mOuterReceiveStream->subscribe(mThisWeak.lock());
+        mOuterSendStreamSubscription = mOuterSendStream->subscribe(mThisWeak.lock());
       }
 
       //-----------------------------------------------------------------------
@@ -117,14 +130,19 @@ namespace openpeer
                                                     IMessageQueuePtr queue,
                                                     IRUDPListenerPtr listener,
                                                     IRUDPMessagingDelegatePtr delegate,
+                                                    ITransportStreamPtr receiveStream,
+                                                    ITransportStreamPtr sendStream,
                                                     ULONG maxMessageSizeInBytes
                                                     )
       {
-        ZS_THROW_INVALID_USAGE_IF(!listener)
-        ZS_THROW_INVALID_USAGE_IF(!delegate)
-        RUDPMessagingPtr pThis(new RUDPMessaging(queue, delegate, maxMessageSizeInBytes));
+        ZS_THROW_INVALID_ARGUMENT_IF(!listener)
+        ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
+        ZS_THROW_INVALID_ARGUMENT_IF(!receiveStream)
+        ZS_THROW_INVALID_ARGUMENT_IF(!sendStream)
+
+        RUDPMessagingPtr pThis(new RUDPMessaging(queue, delegate, receiveStream, sendStream, maxMessageSizeInBytes));
         pThis->mThisWeak = pThis;
-        pThis->mChannel = listener->acceptChannel(pThis);
+        pThis->mChannel = listener->acceptChannel(pThis, pThis->mWireReceiveStream->getStream(), pThis->mWireSendStream->getStream());
         pThis->init();
         if (!pThis->mChannel) {
           ZS_LOG_ERROR(Detail, pThis->log("listener failed to accept channel"))
@@ -141,14 +159,19 @@ namespace openpeer
                                                     IMessageQueuePtr queue,
                                                     IRUDPICESocketSessionPtr session,
                                                     IRUDPMessagingDelegatePtr delegate,
+                                                    ITransportStreamPtr receiveStream,
+                                                    ITransportStreamPtr sendStream,
                                                     ULONG maxMessageSizeInBytes
                                                     )
       {
-        ZS_THROW_INVALID_USAGE_IF(!session)
-        ZS_THROW_INVALID_USAGE_IF(!delegate)
-        RUDPMessagingPtr pThis(new RUDPMessaging(queue, delegate, maxMessageSizeInBytes));
+        ZS_THROW_INVALID_ARGUMENT_IF(!session)
+        ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
+        ZS_THROW_INVALID_ARGUMENT_IF(!receiveStream)
+        ZS_THROW_INVALID_ARGUMENT_IF(!sendStream)
+
+        RUDPMessagingPtr pThis(new RUDPMessaging(queue, delegate, receiveStream, sendStream, maxMessageSizeInBytes));
         pThis->mThisWeak = pThis;
-        pThis->mChannel = session->acceptChannel(pThis);
+        pThis->mChannel = session->acceptChannel(pThis, pThis->mWireReceiveStream->getStream(), pThis->mWireSendStream->getStream());
         pThis->init();
         if (!pThis->mChannel) {
           ZS_LOG_ERROR(Detail, pThis->log("session failed to accept channel"))
@@ -166,14 +189,19 @@ namespace openpeer
                                                   IRUDPICESocketSessionPtr session,
                                                   IRUDPMessagingDelegatePtr delegate,
                                                   const char *connectionInfo,
+                                                  ITransportStreamPtr receiveStream,
+                                                  ITransportStreamPtr sendStream,
                                                   ULONG maxMessageSizeInBytes
                                                   )
       {
-        ZS_THROW_INVALID_USAGE_IF(!session)
-        ZS_THROW_INVALID_USAGE_IF(!delegate)
-        RUDPMessagingPtr pThis(new RUDPMessaging(queue, delegate, maxMessageSizeInBytes));
+        ZS_THROW_INVALID_ARGUMENT_IF(!session)
+        ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
+        ZS_THROW_INVALID_ARGUMENT_IF(!receiveStream)
+        ZS_THROW_INVALID_ARGUMENT_IF(!sendStream)
+
+        RUDPMessagingPtr pThis(new RUDPMessaging(queue, delegate, receiveStream, sendStream, maxMessageSizeInBytes));
         pThis->mThisWeak = pThis;
-        pThis->mChannel = session->openChannel(pThis, connectionInfo);
+        pThis->mChannel = session->openChannel(pThis, connectionInfo, pThis->mWireReceiveStream->getStream(), pThis->mWireSendStream->getStream());
         pThis->init();
         if (!pThis->mChannel) {
           ZS_LOG_ERROR(Detail, pThis->log("session failed to open channel"))
@@ -213,61 +241,6 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      bool RUDPMessaging::send(
-                               const BYTE *message,
-                               ULONG messsageLengthInBytes
-                               )
-      {
-        {
-          AutoRecursiveLock lock(mLock);
-          get(mInformedWriteReady) = false;  // if the send was called in response to a write-ready event then the write-ready flag must be cleared so the event can be fired again
-          ZS_LOG_DEBUG(log("send called") + ", message length=" + string(messsageLengthInBytes))
-        }
-
-        if ((NULL == message) ||
-            (0 == messsageLengthInBytes)) return true;
-
-        IRUDPChannelPtr channel = getChannel();
-        if (!channel) return false;
-
-        boost::shared_array<BYTE> recycleBuffer;
-        boost::shared_array<BYTE> buffer;
-
-        AutoRecycleBuffer recycle(*this, recycleBuffer);
-
-        if (messsageLengthInBytes < OPENPEER_SERVICES_RUDPMESSAGING_RECYCLE_BUFFER_SIZE - sizeof(DWORD)) {
-          // this buffer can fit inside the recycle buffer, great!
-          getBuffer(buffer);
-          recycleBuffer = buffer;
-        } else {
-          // does not fit, so allocate a custom size
-          buffer = boost::shared_array<BYTE>(new BYTE[messsageLengthInBytes + sizeof(DWORD)]);
-        }
-
-        // put the size of the message at the front
-        BYTE *dest = buffer.get();
-        ((DWORD *)dest)[0] = htonl(messsageLengthInBytes);
-        memcpy(&(dest[sizeof(DWORD)]), message, messsageLengthInBytes);
-
-        return channel->send(dest, sizeof(DWORD) + messsageLengthInBytes);
-      }
-
-      //-----------------------------------------------------------------------
-      MessageBuffer RUDPMessaging::getBufferLargeEnoughForNextMessage()
-      {
-        ULONG size = getNextReceivedMessageSizeInBytes();
-        if (0 == size) {
-          ZS_LOG_DEBUG(log("no data available thus get buffer large enough is returning NULL buffer"))
-          return boost::shared_array<BYTE>();
-        }
-
-        boost::shared_array<BYTE> buffer(new BYTE[size+sizeof(char)]);
-        memset(buffer.get(), 0, size+sizeof(char)); // force the memory to be NUL filled (including one extra char at the end)
-
-        return buffer;
-      }
-
-      //-----------------------------------------------------------------------
       void RUDPMessaging::setMaxMessageSizeInBytes(ULONG maxMessageSizeInBytes)
       {
         AutoRecursiveLock lock(mLock);
@@ -275,63 +248,10 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      ULONG RUDPMessaging::getNextReceivedMessageSizeInBytes()
+      void RUDPMessaging::setAutoNulTerminateReceiveBuffers(bool nulTerminate)
       {
         AutoRecursiveLock lock(mLock);
-        if (!mChannel) {
-          ZS_LOG_WARNING(Debug, log("no channel associated with messaging thus returning message size of 0"))
-          return 0;
-        }
-
-        obtainNextMessageSize();
-        if (0 == mNextMessageSizeInBytes) {
-          ZS_LOG_DEBUG(log("no data available at this time"))
-          return 0;
-        }
-
-        ULONG available = mChannel->getReceiveSizeAvailableInBytes();
-        if (available < mNextMessageSizeInBytes) {
-          ZS_LOG_DEBUG(log("not enough data received to deliver message to delegate") + ", available= " + string(available) + ", next message size=" + string(mNextMessageSizeInBytes))
-          return 0;
-        }
-
-        notifyReadReady();
-
-        return mNextMessageSizeInBytes;
-      }
-
-      //-----------------------------------------------------------------------
-      ULONG RUDPMessaging::receive(BYTE *outBuffer)
-      {
-        AutoRecursiveLock lock(mLock);
-
-        if (!mChannel) return 0;
-        ULONG nextMessageSize = getNextReceivedMessageSizeInBytes();
-        if (0 == nextMessageSize) return 0;
-
-        ULONG received = mChannel->receive(outBuffer, nextMessageSize);
-        ZS_LOG_DEBUG(log("channel data received") + ", size=" + string(received))
-
-        if (0 == received) return 0;
-        get(mInformedReadReady) = false; // if the receive was called in response to a read-ready event then the read-ready event flag must be cleared so the event can fire again
-
-        if (received != nextMessageSize) {
-          ZS_LOG_ERROR(Detail, log("failed to obtain data from the channel in the exact size as indicated in the stream") + ", received=" + string(received) + ", next message size=" + string(nextMessageSize))
-          // this should not happen
-          mChannel->shutdown();
-          mChannel.reset();
-
-          setError(RUDPMessagingShutdownReason_IllegalStreamState, "received size does not equal next expecting message size");
-          cancel();
-          return 0;
-        }
-
-        // reset the next message size since we have received it
-        get(mNextMessageSizeInBytes) = 0;
-
-        // cause a read ready notification if there is enough data available for a message
-        getNextReceivedMessageSizeInBytes();
-        return received;
+        mNulTerminateBuffers = nulTerminate;
       }
 
       //-----------------------------------------------------------------------
@@ -403,29 +323,43 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      void RUDPMessaging::onRUDPChannelReadReady(IRUDPChannelPtr session)
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPMessaging => ITransportStreamWriterDelegate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      void RUDPMessaging::onTransportStreamWriterReady(ITransportStreamWriterPtr writer)
       {
         AutoRecursiveLock lock(mLock);
-        ZS_LOG_DEBUG(log("notify ready to read more data"))
-        // cause a read ready notification if there is enough data available for a message
-        getNextReceivedMessageSizeInBytes();
+        if (writer == mOuterReceiveStream) {
+          ZS_LOG_TRACE(log("on transport stream outer receive ready"))
+          mWireReceiveStream->notifyReaderReadyToRead();
+          get(mInformedOuterReceiveReady) = true;
+        } else if (writer == mWireSendStream) {
+          ZS_LOG_TRACE(log("on transport stream wire send ready"))
+          mOuterSendStream->notifyReaderReadyToRead();
+          get(mInformedWireSendReady) = true;
+        }
+        step();
       }
 
       //-----------------------------------------------------------------------
-      void RUDPMessaging::onRUDPChannelWriteReady(IRUDPChannelPtr session)
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RUDPMessaging => ITransportStreamReaderDelegate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      void RUDPMessaging::onTransportStreamReaderReady(ITransportStreamReaderPtr reader)
       {
         AutoRecursiveLock lock(mLock);
-        if (!mDelegate) return;
-        if (mInformedWriteReady) return;
-
-        try {
-          ZS_LOG_DEBUG(log("notify write ready"))
-          mDelegate->onRUDPMessagingWriteReady(mThisWeak.lock());
-          get(mInformedWriteReady) = true;
-        } catch(IRUDPMessagingDelegateProxy::Exceptions::DelegateGone &) {
-          setError(RUDPMessagingShutdownReason_DelegateGone, "delegate gone");
-          cancel();
-        }
+        ZS_LOG_TRACE(log("on transport stream reader ready"))
+        step();
       }
 
       //-----------------------------------------------------------------------
@@ -457,8 +391,22 @@ namespace openpeer
 
         Helper::getDebugValue("delegate", mDelegate ? String("true") : String(), firstTime) +
 
-        Helper::getDebugValue("informed read ready", mInformedReadReady ? String("true") : String(), firstTime) +
-        Helper::getDebugValue("informed write ready", mInformedWriteReady ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("nul terminate", mNulTerminateBuffers ? String("true") : String(), firstTime) +
+
+        Helper::getDebugValue("outer receive stream", mOuterReceiveStream ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("outer send stream", mOuterSendStream ? String("true") : String(), firstTime) +
+
+        Helper::getDebugValue("wire receive stream", mWireReceiveStream ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("wire send stream", mWireSendStream ? String("true") : String(), firstTime) +
+
+        Helper::getDebugValue("outer receive stream subscription", mOuterReceiveStreamSubscription ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("outer send stream subscription", mOuterSendStreamSubscription ? String("true") : String(), firstTime) +
+
+        Helper::getDebugValue("wire receive stream subscription", mWireReceiveStreamSubscription ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("wire send stream subscription", mWireSendStreamSubscription ? String("true") : String(), firstTime) +
+
+        Helper::getDebugValue("informed outer receive ready", mInformedOuterReceiveReady ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("informed wire send ready", mInformedWireSendReady ? String("true") : String(), firstTime) +
 
         Helper::getDebugValue("graceful shutdown reference", mGracefulShutdownReference ? String("true") : String(), firstTime) +
 
@@ -466,9 +414,93 @@ namespace openpeer
 
         Helper::getDebugValue("next message size (bytes)", 0 != mNextMessageSizeInBytes ? string(mNextMessageSizeInBytes) : String(), firstTime) +
 
-        Helper::getDebugValue("max message size (bytes)", 0 != mMaxMessageSizeInBytes ? string(mNextMessageSizeInBytes) : String(), firstTime) +
+        Helper::getDebugValue("max message size (bytes)", 0 != mMaxMessageSizeInBytes ? string(mNextMessageSizeInBytes) : String(), firstTime);
+      }
 
-        Helper::getDebugValue("recycled buffers", mRecycledBuffers.size() > 0 ? string(mRecycledBuffers.size()) : String(), firstTime);
+      //-----------------------------------------------------------------------
+      void RUDPMessaging::step()
+      {
+        if (isShutdown()) {
+          ZS_LOG_DEBUG(log("step forwarding to cancel"))
+          return;
+        }
+
+        ZS_LOG_DEBUG(log("step"))
+
+        if (!stepSendData()) return;
+        if (!stepReceiveData()) return;
+
+        ZS_LOG_TRACE(log("step complete"))
+      }
+
+      //-----------------------------------------------------------------------
+      bool RUDPMessaging::stepSendData()
+      {
+        if (!mInformedWireSendReady) {
+          ZS_LOG_TRACE(log("wire has not informed it's ready to send data"))
+          return true;
+        }
+
+        while (mOuterSendStream->getTotalReadBuffersAvailable() > 0) {
+          SecureByteBlockPtr message = mOuterSendStream->read();
+
+          SecureByteBlockPtr buffer(new SecureByteBlock(message->SizeInBytes() + sizeof(DWORD)));
+
+          // put the size of the message at the front
+          BYTE *dest = buffer->BytePtr();
+          ((DWORD *)dest)[0] = htonl(message->SizeInBytes());
+          memcpy(&(dest[sizeof(DWORD)]), message->BytePtr(), message->SizeInBytes());
+
+          ZS_LOG_TRACE(log("sending buffer") + ", message size=" + string(message->SizeInBytes()))
+          mWireSendStream->write(buffer);
+        }
+
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
+      bool RUDPMessaging::stepReceiveData()
+      {
+        if (!mInformedOuterReceiveReady) {
+          ZS_LOG_TRACE(log("outer has not informed it's ready to receive data"))
+          return true;
+        }
+
+        // read all data available
+
+        while (mWireReceiveStream->getTotalReadBuffersAvailable() > 0) {
+
+          DWORD bufferSize = 0;
+
+          ULONG read = mWireReceiveStream->peek(bufferSize);
+          if (read != sizeof(bufferSize)) {
+            ZS_LOG_TRACE(log("not enough data available to read"))
+            break;
+          }
+
+          ULONG available = mWireReceiveStream->getTotalReadSizeAvailableInBytes();
+
+          if (available < sizeof(DWORD) + bufferSize) {
+            ZS_LOG_TRACE(log("not enough data available to read") + ", available=" + string(available) + ", buffer size=" + string(bufferSize))
+            break;
+          }
+
+          mWireReceiveStream->skip(sizeof(DWORD));
+
+          SecureByteBlockPtr message(new SecureByteBlock);
+          message->CleanNew(bufferSize + (mNulTerminateBuffers ? sizeof(char) : 0));
+          if (bufferSize > 0) {
+            mWireReceiveStream->read(message->BytePtr(), bufferSize);
+          }
+
+          ZS_LOG_TRACE(log("message is read") + ", size=" + string(bufferSize))
+
+          if (bufferSize > 0) {
+            mOuterReceiveStream->write(message);
+          }
+        }
+
+        return true;
       }
 
       //-----------------------------------------------------------------------
@@ -560,87 +592,6 @@ namespace openpeer
         return mChannel;
       }
 
-      //-----------------------------------------------------------------------
-      void RUDPMessaging::obtainNextMessageSize()
-      {
-        if (!mChannel) return;
-        if (0 != mNextMessageSizeInBytes) return;
-
-        ULONG available = mChannel->getReceiveSizeAvailableInBytes();
-        if (available < sizeof(DWORD)) return;
-
-        BYTE buffer[sizeof(DWORD)];
-        available = mChannel->receive(&(buffer[0]), sizeof(buffer));
-        if (0 == available) return;
-
-        if (sizeof(buffer) != available) {
-          mChannel->shutdown();
-          mChannel.reset();
-
-          setError(RUDPMessagingShutdownReason_IllegalStreamState, "buffer size should equal available size");
-          cancel();
-          return;
-        }
-        get(mNextMessageSizeInBytes) = ntohl(*((DWORD *)&(buffer[0])));
-        if (mNextMessageSizeInBytes > mMaxMessageSizeInBytes) {
-          mChannel->shutdown();
-          mChannel.reset();
-
-          setError(RUDPMessagingShutdownReason_IllegalStreamState, "buffer size exceeds maximum message size");
-          cancel();
-          return;
-        }
-      }
-
-      //-----------------------------------------------------------------------
-      void RUDPMessaging::notifyReadReady()
-      {
-        AutoRecursiveLock lock(mLock);
-        if (!mDelegate) {
-          ZS_LOG_DEBUG(log("delegate is not attached thus read ready is ignored"))
-          return;
-        }
-        if (mInformedReadReady) {
-          ZS_LOG_DEBUG(log("already informed ready ready"))
-          return;
-        }
-
-        try {
-          ZS_LOG_DEBUG(log("notify read ready"))
-          mDelegate->onRUDPMessagingReadReady(mThisWeak.lock());
-          get(mInformedReadReady) = true;
-        } catch(IRUDPMessagingDelegateProxy::Exceptions::DelegateGone &) {
-          setError(RUDPMessagingShutdownReason_DelegateGone, "delegate gone");
-          cancel();
-        }
-      }
-
-      //-----------------------------------------------------------------------
-      void RUDPMessaging::getBuffer(RecycledPacketBuffer &outBuffer)
-      {
-        AutoRecursiveLock lock(mLock);
-        if (mRecycledBuffers.size() < 1) {
-          outBuffer = RecycledPacketBuffer(new BYTE[OPENPEER_SERVICES_RUDPMESSAGING_RECYCLE_BUFFER_SIZE]);
-          return;
-        }
-
-        outBuffer = mRecycledBuffers.front();
-        mRecycledBuffers.pop_front();
-      }
-
-      //-----------------------------------------------------------------------
-      void RUDPMessaging::recycleBuffer(RecycledPacketBuffer &buffer)
-      {
-        AutoRecursiveLock lock(mLock);
-        if (!buffer) return;
-
-        if (mRecycledBuffers.size() >= OPENPEER_SERVICES_RUDPMESSAGING_MAX_RECYLCE_BUFFERS) {
-          buffer.reset();
-          return;
-        }
-        mRecycledBuffers.push_back(buffer);
-        buffer.reset();
-      }
     }
 
     //-------------------------------------------------------------------------
@@ -680,10 +631,12 @@ namespace openpeer
                                                     IMessageQueuePtr queue,
                                                     IRUDPListenerPtr listener,
                                                     IRUDPMessagingDelegatePtr delegate,
+                                                    ITransportStreamPtr receiveStream,
+                                                    ITransportStreamPtr sendStream,
                                                     ULONG maxMessageSizeInBytes
                                                     )
     {
-      return internal::IRUDPMessagingFactory::singleton().acceptChannel(queue, listener, delegate, maxMessageSizeInBytes);
+      return internal::IRUDPMessagingFactory::singleton().acceptChannel(queue, listener, delegate, receiveStream, sendStream, maxMessageSizeInBytes);
     }
 
     //-------------------------------------------------------------------------
@@ -691,10 +644,12 @@ namespace openpeer
                                                     IMessageQueuePtr queue,
                                                     IRUDPICESocketSessionPtr session,
                                                     IRUDPMessagingDelegatePtr delegate,
+                                                    ITransportStreamPtr receiveStream,
+                                                    ITransportStreamPtr sendStream,
                                                     ULONG maxMessageSizeInBytes
                                                     )
     {
-      return internal::IRUDPMessagingFactory::singleton().acceptChannel(queue, session, delegate, maxMessageSizeInBytes);
+      return internal::IRUDPMessagingFactory::singleton().acceptChannel(queue, session, delegate, receiveStream, sendStream, maxMessageSizeInBytes);
     }
 
     //-------------------------------------------------------------------------
@@ -703,10 +658,12 @@ namespace openpeer
                                                   IRUDPICESocketSessionPtr session,
                                                   IRUDPMessagingDelegatePtr delegate,
                                                   const char *connectionInfo,
+                                                  ITransportStreamPtr receiveStream,
+                                                  ITransportStreamPtr sendStream,
                                                   ULONG maxMessageSizeInBytes
                                                   )
     {
-      return internal::IRUDPMessagingFactory::singleton().openChannel(queue, session, delegate, connectionInfo, maxMessageSizeInBytes);
+      return internal::IRUDPMessagingFactory::singleton().openChannel(queue, session, delegate, connectionInfo, receiveStream, sendStream, maxMessageSizeInBytes);
     }
   }
 }

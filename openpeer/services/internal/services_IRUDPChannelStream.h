@@ -129,6 +129,13 @@ namespace openpeer
                                                  ) const = 0;
 
         //-----------------------------------------------------------------------
+        // PURPOSE: Sets the associated send/receive stream
+        virtual void setStreams(
+                                ITransportStreamPtr receiveStream,
+                                ITransportStreamPtr sendStream
+                                ) = 0;
+
+        //-----------------------------------------------------------------------
         // PURPOSE: Close the stream down to prevent further usage.
         // NOTE:    A stream has no capacity to time out the connection. However,
         //          a stream will require external ACKs to be delivered if the
@@ -156,43 +163,6 @@ namespace openpeer
         // NOTE:    Passing in a sequence number of "0" will cause the hold to be
         //          removed immediately.
         virtual void holdSendingUntilReceiveSequenceNumber(QWORD sequenceNumber) = 0;
-
-        //-----------------------------------------------------------------------
-        // PURPOSE: Call to read data from the stream.
-        // RETURNS: The total number of bytes read from the stream.
-        // NOTE:    If the caller fails to read the entire amount from the stream
-        //          an onRUDPChannelStreamReadReady(...) is notified to the delegate.
-        virtual ULONG receive(
-                              BYTE *outBuffer,
-                              ULONG bufferSizeAvailableInBytes
-                              ) = 0;
-
-        //-----------------------------------------------------------------------
-        // PURPOSE: Call to obtain how much data is available for reading from
-        //          the stream.
-        virtual bool doesReceiveHaveMoreDataAvailable() = 0;
-
-        //-----------------------------------------------------------------------
-        // PURPOSE: Call to obtain how much data is available for reading from
-        //          the stream.
-        virtual ULONG getReceiveSizeAvailableInBytes() = 0;
-
-        //-----------------------------------------------------------------------
-        // PURPOSE: Call to buffer data into the stream ready to send.
-        // NOTE:    All data sent in will be buffered at infinum even if the
-        //          buffer is considered "full". Be careful to pace the data
-        //          being sent in to prevent flooding the socket.
-        //          Use getSendSize() and the onRUDPChannelStreamWriteReady(...) to
-        //          help control flooding the stream.
-        virtual bool send(
-                          const BYTE *buffer,
-                          ULONG bufferLengthInBytes
-                          ) = 0;
-
-        //-----------------------------------------------------------------------
-        // PURPOSE: Call to obtain how much space is available in the outgoing
-        //          buffer.
-        virtual ULONG getSendSize() = 0;
 
         //-----------------------------------------------------------------------
         // PURPOSE: Cause the RUDP stream to handle an incoming packet.
@@ -269,14 +239,6 @@ namespace openpeer
                                                      ) = 0;
 
         //-----------------------------------------------------------------------
-        // PURPOSE: Notifies that data is available for reading in the stream.
-        virtual void onRUDPChannelStreamReadReady(IRUDPChannelStreamPtr stream) = 0;
-
-        //-----------------------------------------------------------------------
-        // PURPOSE: Notifies that space is available for writing to the stream.
-        virtual void onRUDPChannelStreamWriteReady(IRUDPChannelStreamPtr stream) = 0;
-
-        //-----------------------------------------------------------------------
         // PURPOSE: Send a packet over the socket interface to the remote party.
         virtual bool notifyRUDPChannelStreamSendPacket(
                                                        IRUDPChannelStreamPtr stream,
@@ -298,8 +260,6 @@ namespace openpeer
 
 ZS_DECLARE_PROXY_BEGIN(openpeer::services::internal::IRUDPChannelStreamDelegate)
 ZS_DECLARE_PROXY_METHOD_2(onRUDPChannelStreamStateChanged, openpeer::services::internal::IRUDPChannelStreamPtr, openpeer::services::internal::IRUDPChannelStreamDelegate::RUDPChannelStreamStates)
-ZS_DECLARE_PROXY_METHOD_1(onRUDPChannelStreamReadReady, openpeer::services::internal::IRUDPChannelStreamPtr)
-ZS_DECLARE_PROXY_METHOD_1(onRUDPChannelStreamWriteReady, openpeer::services::internal::IRUDPChannelStreamPtr)
 ZS_DECLARE_PROXY_METHOD_SYNC_RETURN_3(notifyRUDPChannelStreamSendPacket, bool, openpeer::services::internal::IRUDPChannelStreamPtr, const zsLib::BYTE *, zsLib::ULONG)
 ZS_DECLARE_PROXY_METHOD_3(onRUDPChannelStreamSendExternalACKNow, openpeer::services::internal::IRUDPChannelStreamPtr, bool, zsLib::PUID)
 ZS_DECLARE_PROXY_END()
