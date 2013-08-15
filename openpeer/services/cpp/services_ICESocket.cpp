@@ -178,7 +178,6 @@ namespace openpeer
         mFirstWORDInAnyPacketWillNotConflictWithTURNChannels(firstWORDInAnyPacketWillNotConflictWithTURNChannels),
         mTURNLastUsed(zsLib::now()),
         mTURNShutdownIfNotUsedBy(Seconds(OPENPEER_SERVICES_ICESOCKET_MINIMUM_TURN_KEEP_ALIVE_TIME_IN_SECONDS)),
-        mTURNRetryDuration(Milliseconds(OPENPEER_SERVICES_TURN_DEFAULT_RETRY_AFTER_DURATION_IN_MILLISECONDS)),
 
         mSTUNSRVResult(srvSTUN),
         mSTUNServer(stunServer ? stunServer : ""),
@@ -879,22 +878,30 @@ namespace openpeer
         ZS_LOG_DEBUG(log("on timer"))
 
         AutoRecursiveLock lock(mLock);
-        if (timer == mTURNRetryTimer) {
-          ZS_LOG_DEBUG(log("retry TURN timer"))
 
-          mTURNRetryTimer->cancel();
-          mTURNRetryTimer.reset();
-
+        if (timer == mRebindTimer) {
+          get(mRebindCheckNow) = true;
           step();
           return;
         }
-        if (timer != mRebindTimer) {
-          ZS_LOG_WARNING(Detail, log("received timer notification on obsolete timer") + ", timer ID=" + string(timer->getID()))
-          return;
-        }
-        get(mRebindCheckNow) = true;
 
-        step();
+        for (SocketLocalIPMap::iterator iter = mSocketLocalIPs.begin(); iter != mSocketLocalIPs.end(); ++iter)
+        {
+          LocalSocketPtr &localSocket = (*iter).second;
+
+          if (timer == localSocket->mTURNRetryTimer) {
+            ZS_LOG_DEBUG(log("retry TURN timer"))
+
+            localSocket->mTURNRetryTimer->cancel();
+            localSocket->mTURNRetryTimer.reset();
+
+            step();
+            return;
+          }
+          
+        }
+
+        ZS_LOG_WARNING(Detail, log("received timer notification on obsolete timer") + ", timer ID=" + string(timer->getID()))
       }
 
       //-----------------------------------------------------------------------
@@ -958,9 +965,6 @@ namespace openpeer
         Helper::getDebugValue("turn first WORD safe", mFirstWORDInAnyPacketWillNotConflictWithTURNChannels ? String("true") : String(), firstTime) +
         Helper::getDebugValue("turn last used", Time() != mTURNLastUsed ? IHelper::timeToString(mTURNLastUsed) : String(), firstTime) +
         Helper::getDebugValue("turn stutdown duration (s)", Duration() != mTURNShutdownIfNotUsedBy ? string(mTURNShutdownIfNotUsedBy.seconds()) : String(), firstTime) +
-        Helper::getDebugValue("turn retry after", Time() != mTURNRetryAfter ? IHelper::timeToString(mTURNRetryAfter) : String(), firstTime) +
-        Helper::getDebugValue("turn retry duration (ms)", Duration() != mTURNRetryDuration ? string(mTURNRetryDuration.total_milliseconds()) : String(), firstTime) +
-        Helper::getDebugValue("turn retry timer", mTURNRetryTimer ? String("true") : String(), firstTime) +
 
         Helper::getDebugValue("stun srv udp result", mSTUNSRVResult ? String("true") : String(), firstTime) +
         Helper::getDebugValue("stun server", mSTUNServer, firstTime) +
@@ -994,17 +998,17 @@ namespace openpeer
           mRebindTimer.reset();
         }
 
-        if (mTURNRetryTimer) {
-          mTURNRetryTimer->cancel();
-          mTURNRetryTimer.reset();
-        }
-
         for (SocketMap::iterator iter = mSockets.begin(); iter != mSockets.end(); )
         {
           SocketMap::iterator current = iter;
           ++iter;
 
           LocalSocketPtr &localSocket = (*current).second;
+
+          if (localSocket->mTURNRetryTimer) {
+            localSocket->mTURNRetryTimer->cancel();
+            localSocket->mTURNRetryTimer.reset();
+          }
 
           if (localSocket->mSTUNDiscovery) {
             clearSTUN(localSocket->mSTUNDiscovery);
@@ -1362,8 +1366,8 @@ namespace openpeer
                 case ITURNSocket::TURNSocketState_Ready:      {
 
                   // reset the retry for TURN since it connected just fine
-                  mTURNRetryAfter = Time();
-                  mTURNRetryDuration = Milliseconds(OPENPEER_SERVICES_TURN_DEFAULT_RETRY_AFTER_DURATION_IN_MILLISECONDS);
+                  localSocket->mTURNRetryAfter = Time();
+                  localSocket->mTURNRetryDuration = Milliseconds(OPENPEER_SERVICES_TURN_DEFAULT_RETRY_AFTER_DURATION_IN_MILLISECONDS);
 
                   if (localSocket->mRelay.mIPAddress.isAddressEmpty()) {
                     localSocket->mRelay.mIPAddress = localSocket->mTURNSocket->getRelayedIP();
@@ -1387,13 +1391,13 @@ namespace openpeer
                   localSocket->mRelay.mFoundation.clear();
                   localSocket->mTURNSocket.reset();
 
-                  mTURNRetryAfter = tick + mTURNRetryDuration;
+                  localSocket->mTURNRetryAfter = tick + localSocket->mTURNRetryDuration;
 
-                  ZS_LOG_WARNING(Detail, log("turn socket shutdown") + ", retry duration (ms)=" + string(mTURNRetryDuration.total_milliseconds()) + ", retry after=" + IHelper::timeToString(mTURNRetryAfter))
+                  ZS_LOG_WARNING(Detail, log("turn socket shutdown") + ", retry duration (ms)=" + string(localSocket->mTURNRetryDuration.total_milliseconds()) + ", retry after=" + IHelper::timeToString(localSocket->mTURNRetryAfter))
 
-                  mTURNRetryDuration = mTURNRetryDuration + mTURNRetryDuration;
-                  if (mTURNRetryDuration > Seconds(OPENPEER_SERVICES_TURN_MAX_RETRY_AFTER_DURATION_IN_SECONDS)) {
-                    mTURNRetryDuration = Seconds(OPENPEER_SERVICES_TURN_MAX_RETRY_AFTER_DURATION_IN_SECONDS);
+                  localSocket->mTURNRetryDuration = localSocket->mTURNRetryDuration + localSocket->mTURNRetryDuration;
+                  if (localSocket->mTURNRetryDuration > Seconds(OPENPEER_SERVICES_TURN_MAX_RETRY_AFTER_DURATION_IN_SECONDS)) {
+                    localSocket->mTURNRetryDuration = Seconds(OPENPEER_SERVICES_TURN_MAX_RETRY_AFTER_DURATION_IN_SECONDS);
                   }
 
                   break;
@@ -1445,8 +1449,8 @@ namespace openpeer
 
               bool okayToContactTURN = true;
 
-              if (Time() != mTURNRetryAfter) {
-                okayToContactTURN = (tick > mTURNRetryAfter);
+              if (Time() != localSocket->mTURNRetryAfter) {
+                okayToContactTURN = (tick > localSocket->mTURNRetryAfter);
               }
 
               if (okayToContactTURN) {
@@ -1475,16 +1479,16 @@ namespace openpeer
 
                 ZS_LOG_DEBUG(log("TURN socket created") + ", base IP=" + string(localSocket->mLocal.mIPAddress) + ", TURN socket ID=" + string(localSocket->mTURNSocket->getID()))
               } else {
-                if (!mTURNRetryTimer) {
+                if (!localSocket->mTURNRetryTimer) {
                   Duration waitTime;
-                  if (tick < mTURNRetryAfter) {
-                    waitTime = mTURNRetryAfter - tick;
+                  if (tick < localSocket->mTURNRetryAfter) {
+                    waitTime = localSocket->mTURNRetryAfter - tick;
                   } else {
                     waitTime = Milliseconds(1);
                   }
 
-                  ZS_LOG_DEBUG(log("must wait to retry logging into TURN server") + ", wait time (ms)=" + string(waitTime.total_milliseconds()) + ", retry duration (ms)=" + string(mTURNRetryDuration.total_milliseconds()) + ", retry after=" + IHelper::timeToString(mTURNRetryAfter))
-                  mTURNRetryTimer = Timer::create(mThisWeak.lock(), waitTime, false);
+                  ZS_LOG_DEBUG(log("must wait to retry logging into TURN server") + ", wait time (ms)=" + string(waitTime.total_milliseconds()) + ", retry duration (ms)=" + string(localSocket->mTURNRetryDuration.total_milliseconds()) + ", retry after=" + IHelper::timeToString(localSocket->mTURNRetryAfter))
+                  localSocket->mTURNRetryTimer = Timer::create(mThisWeak.lock(), waitTime, false);
                 }
               }
             }
@@ -1889,7 +1893,8 @@ namespace openpeer
                                           ULONG nextLocalPreference,
                                           const String &usernameFrag,
                                           const String &password
-                                          )
+                                          ) :
+        mTURNRetryDuration(Milliseconds(OPENPEER_SERVICES_TURN_DEFAULT_RETRY_AFTER_DURATION_IN_MILLISECONDS))
       {
         mLocal.mLocalPreference = nextLocalPreference;
         mLocal.mType = ICESocket::Type_Local;
