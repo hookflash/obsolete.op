@@ -114,6 +114,7 @@ namespace openpeer
 
           LockboxInfo lockboxInfo;
 
+          lockboxInfo.mDomain = mLockboxInfo.mDomain;
           lockboxInfo.mAccessToken = mLockboxInfo.mAccessToken;
           if (mLockboxInfo.mAccessSecret.hasData()) {
             lockboxInfo.mAccessSecretProofExpires = zsLib::now() + Seconds(OPENPEER_STACK_MESSAGE_IDENTITY_ACCESS_LOCKBOX_UPDATE_EXPIRES_TIME_IN_SECONDS);
