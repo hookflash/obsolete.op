@@ -286,7 +286,13 @@ namespace openpeer
         ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
         ZS_THROW_INVALID_ARGUMENT_IF(!outerFrameURLUponReload)
 
-        mDelegate = IIdentityDelegateProxy::createWeak(IStackForInternal::queueApplication(), delegate);
+        ZS_LOG_DEBUG(log("delegate attach called"))
+
+        // scope: set delegate
+        {
+          AutoRecursiveLock lock(mLock);
+          mDelegate = IIdentityDelegateProxy::createWeak(IStackForInternal::queueApplication(), delegate);
+        }
         mSession->attachDelegate(mThisWeak.lock(), outerFrameURLUponReload);
       }
 
@@ -302,7 +308,13 @@ namespace openpeer
         ZS_THROW_INVALID_ARGUMENT_IF(!identityAccessToken)
         ZS_THROW_INVALID_ARGUMENT_IF(!identityAccessSecret)
 
-        mDelegate = IIdentityDelegateProxy::createWeak(IStackForInternal::queueApplication(), delegate);
+        ZS_LOG_DEBUG(log("delegate attach and preauthorize login called"))
+
+        // scope: set delegate
+        {
+          AutoRecursiveLock lock(mLock);
+          mDelegate = IIdentityDelegateProxy::createWeak(IStackForInternal::queueApplication(), delegate);
+        }
         mSession->attachDelegateAndPreauthorizeLogin(mThisWeak.lock(), identityAccessToken, identityAccessSecret, identityAccessSecretExpires);
       }
 

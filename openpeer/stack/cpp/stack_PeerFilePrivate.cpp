@@ -633,6 +633,8 @@ namespace openpeer
             String secretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase((const char *)((const BYTE *)(*mPassword))), "proof:" + contactID, IHelper::HashAlgorthm_SHA256));
             sectionEl->adoptAsLastChild(message::IMessageHelper::createElementWithText("secretProof", secretProof));
 
+            ZS_LOG_DEBUG(log("calculated secret proof with inputs") + ", password=" + ((const char *)((const BYTE *)(*mPassword))) + ", contact ID=" + contactID + ", result=" + secretProof)
+
             sectionBundleEl->adoptAsLastChild(sectionEl);
             privatePeerEl->adoptAsLastChild(sectionBundleEl);
 
@@ -730,6 +732,7 @@ namespace openpeer
           }
 
           String calculatedSecretProof = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase((const char *)((const BYTE *)(*mPassword))), "proof:" + contactID, IHelper::HashAlgorthm_SHA256));
+          ZS_LOG_DEBUG(log("recalculated secret proof with inputs") + ", password=" + ((const char *)((const BYTE *)(*mPassword))) + ", contact ID=" + contactID + ", result=" + secretProof)
 
           if (calculatedSecretProof != secretProof) {
             ZS_LOG_ERROR(Detail, log("private peer file password appears to be incorrect, secret proof calculated=") + calculatedSecretProof + ", expecting=" + secretProof)

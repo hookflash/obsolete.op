@@ -454,12 +454,13 @@ namespace openpeer
         bool stepRolodexAccess();
         bool stepLockboxAssociation();
         bool stepIdentityLookup();
-        bool stepLockboxReady();
+        bool stepLockboxAccessToken();
         bool stepLockboxUpdate();
         bool stepCloseBrowserWindow();
         bool stepPreGrantChallenge();
         bool stepClearGrantWait();
         bool stepGrantChallenge();
+        bool stepLockboxReady();
         bool stepLookupUpdate();
         bool stepDownloadContacts();
 
@@ -474,7 +475,7 @@ namespace openpeer
         #pragma mark ServiceIdentitySession => (data)
         #pragma mark
 
-        PUID mID;
+        AutoPUID mID;
         mutable RecursiveLock mLock;
         ServiceIdentitySessionWeakPtr mThisWeak;
         ServiceIdentitySessionPtr mGraciousShutdownReference;
@@ -482,12 +483,12 @@ namespace openpeer
         SessionStates mCurrentState;
         SessionStates mLastReportedState;
 
-        WORD mLastError;
+        AutoWORD mLastError;
         String mLastErrorReason;
         
         IServiceIdentitySessionDelegatePtr mDelegate;
         ServiceLockboxSessionWeakPtr mAssociatedLockbox;
-        bool mKillAssociation;
+        AutoBool mKillAssociation;
 
         IdentityInfo mIdentityInfo;
 
@@ -509,15 +510,15 @@ namespace openpeer
 
         LockboxInfo mLockboxInfo;
 
-        bool mBrowserWindowReady;
-        bool mBrowserWindowVisible;
-        bool mBrowserWindowClosed;
+        AutoBool mBrowserWindowReady;
+        AutoBool mBrowserWindowVisible;
+        AutoBool mBrowserWindowClosed;
 
-        bool mNeedsBrowserWindowVisible;
+        AutoBool mNeedsBrowserWindowVisible;
 
-        bool mIdentityAccessStartNotificationSent;
-        bool mLockboxUpdated;
-        bool mIdentityLookupUpdated;
+        AutoBool mIdentityAccessStartNotificationSent;
+        AutoBool mLockboxUpdated;
+        AutoBool mIdentityLookupUpdated;
         IdentityInfo mPreviousLookupInfo;
 
         String mOuterFrameURLUponReload;
@@ -535,7 +536,7 @@ namespace openpeer
         Time mFreshDownload;
         IdentityInfoList mIdentities;
 
-        ULONG mFailuresInARow;
+        AutoULONG mFailuresInARow;
         Duration mNextRetryAfterFailureTime;
       };
 

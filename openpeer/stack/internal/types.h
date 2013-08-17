@@ -57,6 +57,7 @@ namespace openpeer
       using zsLib::MessageQueueAssociator;
       using zsLib::AutoBool;
       using zsLib::AutoWORD;
+      using zsLib::AutoULONG;
       using zsLib::AutoPUID;
       using zsLib::XML::Element;
       using zsLib::XML::Document;

@@ -300,25 +300,14 @@ namespace openpeer
                                                      const char *outerFrameURLUponReload
                                                      ) :
         zsLib::MessageQueueAssociator(queue),
-        mID(zsLib::createPUID()),
         mDelegate(delegate ? IServiceIdentitySessionDelegateProxy::createWeak(IStackForInternal::queueDelegate(), delegate) : IServiceIdentitySessionDelegatePtr()),
         mAssociatedLockbox(existingLockbox),
-        mKillAssociation(false),
         mProviderBootstrappedNetwork(providerNetwork),
         mIdentityBootstrappedNetwork(identityNetwork),
         mGrantSession(grantSession),
         mCurrentState(SessionState_Pending),
         mLastReportedState(SessionState_Pending),
-        mLastError(0),
         mOuterFrameURLUponReload(outerFrameURLUponReload),
-        mBrowserWindowReady(false),
-        mBrowserWindowVisible(false),
-        mBrowserWindowClosed(false),
-        mNeedsBrowserWindowVisible(false),
-        mIdentityAccessStartNotificationSent(false),
-        mLockboxUpdated(false),
-        mIdentityLookupUpdated(false),
-        mFailuresInARow(0),
         mNextRetryAfterFailureTime(Seconds(OPENPEER_STACK_SERVIC_IDENTITY_ROLODEX_ERROR_RETRY_TIME_IN_SECONDS))
       {
         ZS_LOG_DEBUG(log("created"))
@@ -517,6 +506,8 @@ namespace openpeer
         ZS_THROW_INVALID_ARGUMENT_IF(!outerFrameURLUponReload)
         ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
 
+        ZS_LOG_DEBUG(log("attach delegate called") + ", frame URL=" + outerFrameURLUponReload)
+
         AutoRecursiveLock lock(getLock());
 
         mDelegate = IServiceIdentitySessionDelegateProxy::createWeak(IStackForInternal::queueDelegate(), delegate);
@@ -548,6 +539,8 @@ namespace openpeer
         ZS_THROW_INVALID_ARGUMENT_IF(!delegate)
         ZS_THROW_INVALID_ARGUMENT_IF(!identityAccessToken)
         ZS_THROW_INVALID_ARGUMENT_IF(!identityAccessSecret)
+
+        ZS_LOG_DEBUG(log("attach delegate and preautothorize login called") + ", access token=" + identityAccessToken + ", access secret=" + identityAccessSecret)
 
         AutoRecursiveLock lock(getLock());
 
@@ -609,7 +602,7 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         ZS_LOG_DEBUG(log("browser window visible"))
-        mBrowserWindowVisible = true;
+        get(mBrowserWindowVisible) = true;
         step();
       }
 
@@ -618,7 +611,7 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         ZS_LOG_DEBUG(log("browser window close called"))
-        mBrowserWindowClosed = true;
+        get(mBrowserWindowClosed) = true;
         step();
       }
 
@@ -684,12 +677,12 @@ namespace openpeer
 
           if (windowRequest->ready()) {
             ZS_LOG_DEBUG(log("notified browser window ready"))
-            mBrowserWindowReady = true;
+            get(mBrowserWindowReady) = true;
           }
 
           if (windowRequest->visible()) {
             ZS_LOG_DEBUG(log("notified browser window needs to be made visible"))
-            mNeedsBrowserWindowVisible = true;
+            get(mNeedsBrowserWindowVisible) = true;
           }
 
           IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
@@ -933,7 +926,7 @@ namespace openpeer
         mGraciousShutdownReference = mThisWeak.lock();
 
         mAssociatedLockbox.reset();
-        mKillAssociation = true;
+        get(mKillAssociation) = true;
 
         if (mIdentityAccessLockboxUpdateMonitor) {
           mIdentityAccessLockboxUpdateMonitor->cancel();
@@ -950,8 +943,8 @@ namespace openpeer
           mIdentityLookupMonitor.reset();
         }
 
-        mLockboxUpdated = false;
-        mIdentityLookupUpdated = false;
+        get(mLockboxUpdated) = false;
+        get(mIdentityLookupUpdated) = false;
 
         IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
@@ -1099,7 +1092,7 @@ namespace openpeer
         mIdentityAccessLockboxUpdateMonitor->cancel();
         mIdentityAccessLockboxUpdateMonitor.reset();
 
-        mLockboxUpdated = true;
+        get(mLockboxUpdated) = true;
 
         ZS_LOG_DEBUG(log("identity access lockbox update complete"))
 
@@ -1151,7 +1144,7 @@ namespace openpeer
         mIdentityLookupUpdateMonitor->cancel();
         mIdentityLookupUpdateMonitor.reset();
 
-        mIdentityLookupUpdated = true;
+        get(mIdentityLookupUpdated) = true;
 
         step();
         return true;
@@ -1475,7 +1468,7 @@ namespace openpeer
 
         // reset the failure case
         mNextRetryAfterFailureTime = Seconds(OPENPEER_STACK_SERVIC_IDENTITY_ROLODEX_ERROR_RETRY_TIME_IN_SECONDS);
-        mFailuresInARow = 0;
+        get(mFailuresInARow) = 0;
 
         const IdentityInfoList &identities = result->identities();
 
@@ -1563,44 +1556,45 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("identity session id", string(mID), firstTime) +
-               Helper::getDebugValue("delegate", mDelegate ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("state", toString(mCurrentState), firstTime) +
-               Helper::getDebugValue("reported", toString(mLastReportedState), firstTime) +
-               Helper::getDebugValue("error code", 0 != mLastError ? string(mLastError) : String(), firstTime) +
-               Helper::getDebugValue("error reason", mLastErrorReason, firstTime) +
-               Helper::getDebugValue("kill association", mKillAssociation ? String("true") : String(), firstTime) +
-               (mIdentityInfo.hasData() ? mIdentityInfo.getDebugValueString() : String()) +
-               IBootstrappedNetwork::toDebugString(mProviderBootstrappedNetwork) +
-               IBootstrappedNetwork::toDebugString(mIdentityBootstrappedNetwork) +
-               Helper::getDebugValue("active boostrapper", (mActiveBootstrappedNetwork ? (mIdentityBootstrappedNetwork == mActiveBootstrappedNetwork ? String("identity") : String("provider")) : String()), firstTime) +
-               Helper::getDebugValue("grant session id", mGrantSession ? string(mGrantSession->forServices().getID()) : String(), firstTime) +
-               Helper::getDebugValue("grant query id", mGrantQuery ? string(mGrantQuery->getID()) : String(), firstTime) +
-               Helper::getDebugValue("grant wait id", mGrantWait ? string(mGrantWait->getID()) : String(), firstTime) +
-               Helper::getDebugValue("identity access lockbox update monitor", mIdentityAccessLockboxUpdateMonitor ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("identity lookup update monitor", mIdentityLookupUpdateMonitor ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("identity access rolodex credentials get monitor", mIdentityAccessRolodexCredentialsGetMonitor ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("rolodex access monitor", mRolodexAccessMonitor ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("rolodex grant monitor", mRolodexNamespaceGrantChallengeValidateMonitor ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("rolodex contacts get monitor", mRolodexContactsGetMonitor ? String("true") : String(), firstTime) +
-               (mLockboxInfo.hasData() ? mLockboxInfo.getDebugValueString() : String()) +
-               Helper::getDebugValue("browser window ready", mBrowserWindowReady ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("browser window visible", mBrowserWindowVisible ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("browser closed", mBrowserWindowClosed ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("need browser window visible", mNeedsBrowserWindowVisible ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("identity access start notification sent", mIdentityAccessStartNotificationSent ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("lockbox updated", mLockboxUpdated ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("identity lookup updated", mIdentityLookupUpdated ? String("true") : String(), firstTime) +
-               (mPreviousLookupInfo.hasData() ? mPreviousLookupInfo.getDebugValueString() : String()) +
-               Helper::getDebugValue("outer frame url", mOuterFrameURLUponReload, firstTime) +
-               Helper::getDebugValue("pending messages", mPendingMessagesToDeliver.size() > 0 ? string(mPendingMessagesToDeliver.size()) : String(), firstTime) +
-               (mRolodexInfo.hasData() ? mRolodexInfo.getDebugValueString() : String()) +
-               Helper::getDebugValue("download timer", mTimer ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("force refresh", Time() != mForceRefresh ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("fresh download", Time() != mFreshDownload ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("pending identities", mIdentities.size() > 0 ? string(mIdentities.size()) : String(), firstTime) +
-               Helper::getDebugValue("failures in a row", mFailuresInARow > 0 ? string(mFailuresInARow) : String(), firstTime) +
-               Helper::getDebugValue("next retry (seconds)", mNextRetryAfterFailureTime.total_seconds() ? string(mNextRetryAfterFailureTime.total_seconds()) : String(), firstTime);
+        return
+        Helper::getDebugValue("identity session id", string(mID), firstTime) +
+        Helper::getDebugValue("delegate", mDelegate ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("state", toString(mCurrentState), firstTime) +
+        Helper::getDebugValue("reported", toString(mLastReportedState), firstTime) +
+        Helper::getDebugValue("error code", 0 != mLastError ? string(mLastError) : String(), firstTime) +
+        Helper::getDebugValue("error reason", mLastErrorReason, firstTime) +
+        Helper::getDebugValue("kill association", mKillAssociation ? String("true") : String(), firstTime) +
+        (mIdentityInfo.hasData() ? mIdentityInfo.getDebugValueString() : String()) +
+        IBootstrappedNetwork::toDebugString(mProviderBootstrappedNetwork) +
+        IBootstrappedNetwork::toDebugString(mIdentityBootstrappedNetwork) +
+        Helper::getDebugValue("active boostrapper", (mActiveBootstrappedNetwork ? (mIdentityBootstrappedNetwork == mActiveBootstrappedNetwork ? String("identity") : String("provider")) : String()), firstTime) +
+        Helper::getDebugValue("grant session id", mGrantSession ? string(mGrantSession->forServices().getID()) : String(), firstTime) +
+        Helper::getDebugValue("grant query id", mGrantQuery ? string(mGrantQuery->getID()) : String(), firstTime) +
+        Helper::getDebugValue("grant wait id", mGrantWait ? string(mGrantWait->getID()) : String(), firstTime) +
+        Helper::getDebugValue("identity access lockbox update monitor", mIdentityAccessLockboxUpdateMonitor ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("identity lookup update monitor", mIdentityLookupUpdateMonitor ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("identity access rolodex credentials get monitor", mIdentityAccessRolodexCredentialsGetMonitor ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("rolodex access monitor", mRolodexAccessMonitor ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("rolodex grant monitor", mRolodexNamespaceGrantChallengeValidateMonitor ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("rolodex contacts get monitor", mRolodexContactsGetMonitor ? String("true") : String(), firstTime) +
+        (mLockboxInfo.hasData() ? mLockboxInfo.getDebugValueString() : String()) +
+        Helper::getDebugValue("browser window ready", mBrowserWindowReady ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("browser window visible", mBrowserWindowVisible ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("browser closed", mBrowserWindowClosed ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("need browser window visible", mNeedsBrowserWindowVisible ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("identity access start notification sent", mIdentityAccessStartNotificationSent ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("lockbox updated", mLockboxUpdated ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("identity lookup updated", mIdentityLookupUpdated ? String("true") : String(), firstTime) +
+        (mPreviousLookupInfo.hasData() ? mPreviousLookupInfo.getDebugValueString() : String()) +
+        Helper::getDebugValue("outer frame url", mOuterFrameURLUponReload, firstTime) +
+        Helper::getDebugValue("pending messages", mPendingMessagesToDeliver.size() > 0 ? string(mPendingMessagesToDeliver.size()) : String(), firstTime) +
+        (mRolodexInfo.hasData() ? mRolodexInfo.getDebugValueString() : String()) +
+        Helper::getDebugValue("download timer", mTimer ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("force refresh", Time() != mForceRefresh ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("fresh download", Time() != mFreshDownload ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("pending identities", mIdentities.size() > 0 ? string(mIdentities.size()) : String(), firstTime) +
+        Helper::getDebugValue("failures in a row", mFailuresInARow > 0 ? string(mFailuresInARow) : String(), firstTime) +
+        Helper::getDebugValue("next retry (seconds)", mNextRetryAfterFailureTime.total_seconds() ? string(mNextRetryAfterFailureTime.total_seconds()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -1630,12 +1624,13 @@ namespace openpeer
         if (!stepRolodexAccess()) return;
         if (!stepLockboxAssociation()) return;
         if (!stepIdentityLookup()) return;
-        if (!stepLockboxReady()) return;
+        if (!stepLockboxAccessToken()) return;
         if (!stepLockboxUpdate()) return;
         if (!stepCloseBrowserWindow()) return;
         if (!stepPreGrantChallenge()) return;
         if (!stepClearGrantWait()) return;
         if (!stepGrantChallenge()) return;
+        if (!stepLockboxReady()) return;
         if (!stepLookupUpdate()) return;
         if (!stepDownloadContacts()) return;
 
@@ -1649,14 +1644,14 @@ namespace openpeer
         // signal the object is ready
         setState(SessionState_Ready);
 
-        ZS_LOG_DEBUG(log("step complete") + getDebugValueString())
+        ZS_LOG_TRACE(log("step complete") + getDebugValueString())
       }
 
       //-----------------------------------------------------------------------
       bool ServiceIdentitySession::stepBootstrapper()
       {
         if (mActiveBootstrappedNetwork) {
-          ZS_LOG_DEBUG(log("already have an active bootstrapper"))
+          ZS_LOG_TRACE(log("already have an active bootstrapper"))
           return true;
         }
 
@@ -1671,7 +1666,7 @@ namespace openpeer
 
         if (mIdentityBootstrappedNetwork) {
           if (!mIdentityBootstrappedNetwork->forServices().isPreparationComplete()) {
-            ZS_LOG_DEBUG(log("waiting for preparation of identity bootstrapper to complete"))
+            ZS_LOG_TRACE(log("waiting for preparation of identity bootstrapper to complete"))
             return false;
           }
 
@@ -1701,7 +1696,7 @@ namespace openpeer
         }
 
         if (!mProviderBootstrappedNetwork->forServices().isPreparationComplete()) {
-          ZS_LOG_DEBUG(log("waiting for preparation of provider bootstrapper to complete"))
+          ZS_LOG_TRACE(log("waiting for preparation of provider bootstrapper to complete"))
           return false;
         }
 
@@ -1725,23 +1720,23 @@ namespace openpeer
       bool ServiceIdentitySession::stepGrantCheck()
       {
         if (mBrowserWindowClosed) {
-          ZS_LOG_DEBUG(log("already informed browser window closed thus no need to make sure grant wait lock is obtained"))
+          ZS_LOG_TRACE(log("already informed browser window closed thus no need to make sure grant wait lock is obtained"))
           return true;
         }
 
         if (mGrantWait) {
-          ZS_LOG_DEBUG(log("grant wait lock is already obtained"))
+          ZS_LOG_TRACE(log("grant wait lock is already obtained"))
           return true;
         }
 
         mGrantWait = mGrantSession->forServices().obtainWaitToProceed(mThisWeak.lock());
 
         if (!mGrantWait) {
-          ZS_LOG_DEBUG(log("waiting to obtain grant wait lock"))
+          ZS_LOG_TRACE(log("waiting to obtain grant wait lock"))
           return false;
         }
 
-        ZS_LOG_DEBUG(log("obtained grant wait"))
+        ZS_LOG_TRACE(log("obtained grant wait"))
         return true;
       }
 
@@ -1749,7 +1744,7 @@ namespace openpeer
       bool ServiceIdentitySession::stepLoadBrowserWindow()
       {
         if (mBrowserWindowReady) {
-          ZS_LOG_DEBUG(log("browser window is ready"))
+          ZS_LOG_TRACE(log("browser window is ready"))
           return true;
         }
 
@@ -1761,7 +1756,7 @@ namespace openpeer
         }
 
         if (mIdentityInfo.mAccessToken.hasData()) {
-          ZS_LOG_DEBUG(log("already have access token, no need to load browser"))
+          ZS_LOG_TRACE(log("already have access token, no need to load browser"))
           return true;
         }
 
@@ -1775,7 +1770,7 @@ namespace openpeer
 
         setState(SessionState_WaitingForBrowserWindowToBeLoaded);
 
-        ZS_LOG_DEBUG(log("waiting for browser window to report it is loaded/ready"))
+        ZS_LOG_TRACE(log("waiting for browser window to report it is loaded/ready"))
         return false;
       }
 
@@ -1783,7 +1778,7 @@ namespace openpeer
       bool ServiceIdentitySession::stepIdentityAccessStartNotification()
       {
         if (mIdentityAccessStartNotificationSent) {
-          ZS_LOG_DEBUG(log("identity access start notification already sent"))
+          ZS_LOG_TRACE(log("identity access start notification already sent"))
           return true;
         }
 
@@ -1795,9 +1790,11 @@ namespace openpeer
         }
 
         if (mIdentityInfo.mAccessToken.hasData()) {
-          ZS_LOG_DEBUG(log("already have access token, no need to load browser"))
+          ZS_LOG_TRACE(log("already have access token, no need to load browser"))
           return true;
         }
+
+        ZS_LOG_DEBUG(log("identity access start notification being sent"))
 
         setState(SessionState_Pending);
 
@@ -1815,7 +1812,7 @@ namespace openpeer
 
         sendInnerWindowMessage(request);
 
-        mIdentityAccessStartNotificationSent = true;
+        get(mIdentityAccessStartNotificationSent) = true;
         return true;
       }
       
@@ -1823,12 +1820,12 @@ namespace openpeer
       bool ServiceIdentitySession::stepMakeBrowserWindowVisible()
       {
         if (mBrowserWindowVisible) {
-          ZS_LOG_DEBUG(log("browser window is visible"))
+          ZS_LOG_TRACE(log("browser window is visible"))
           return true;
         }
 
         if (!mNeedsBrowserWindowVisible) {
-          ZS_LOG_DEBUG(log("browser window was not requested to become visible"))
+          ZS_LOG_TRACE(log("browser window was not requested to become visible"))
           return false;
         }
 
@@ -1839,7 +1836,7 @@ namespace openpeer
           return false;
         }
 
-        ZS_LOG_DEBUG(log("waiting for browser window to become visible"))
+        ZS_LOG_TRACE(log("waiting for browser window to become visible"))
         setState(SessionState_WaitingForBrowserWindowToBeMadeVisible);
         return false;
       }
@@ -1848,7 +1845,7 @@ namespace openpeer
       bool ServiceIdentitySession::stepIdentityAccessCompleteNotification()
       {
         if (mIdentityInfo.mAccessToken.hasData()) {
-          ZS_LOG_DEBUG(log("idenity access complete notification received"))
+          ZS_LOG_TRACE(log("idenity access complete notification received"))
           return true;
         }
 
@@ -1861,7 +1858,7 @@ namespace openpeer
 
         setState(SessionState_Pending);
 
-        ZS_LOG_DEBUG(log("waiting for identity access complete notification"))
+        ZS_LOG_TRACE(log("waiting for identity access complete notification"))
         return false;
       }
 
@@ -1869,12 +1866,12 @@ namespace openpeer
       bool ServiceIdentitySession::stepRolodexCredentialsGet()
       {
         if (mRolodexInfo.mServerToken.hasData()) {
-          ZS_LOG_DEBUG(log("already have rolodex server token credentials"))
+          ZS_LOG_TRACE(log("already have rolodex server token credentials"))
           return true;
         }
 
         if (mIdentityAccessRolodexCredentialsGetMonitor) {
-          ZS_LOG_DEBUG(log("rolodex credentials get pending"))
+          ZS_LOG_TRACE(log("rolodex credentials get pending"))
           return false;
         }
 
@@ -1899,17 +1896,17 @@ namespace openpeer
       bool ServiceIdentitySession::stepRolodexAccess()
       {
         if (mRolodexInfo.mAccessToken.hasData()) {
-          ZS_LOG_DEBUG(log("rolodex access token obtained"))
+          ZS_LOG_TRACE(log("rolodex access token obtained"))
           return true;
         }
 
         if (!mRolodexInfo.mServerToken.hasData()) {
-          ZS_LOG_DEBUG(log("rolodex not supported"))
+          ZS_LOG_TRACE(log("rolodex not supported"))
           return true;
         }
 
         if (mRolodexAccessMonitor) {
-          ZS_LOG_DEBUG(log("rolodex access still pending (continuing to next step so other steps can run in parallel)"))
+          ZS_LOG_TRACE(log("rolodex access still pending (continuing to next step so other steps can run in parallel)"))
           return true;
         }
 
@@ -1933,12 +1930,12 @@ namespace openpeer
       bool ServiceIdentitySession::stepLockboxAssociation()
       {
         if (mAssociatedLockbox.lock()) {
-          ZS_LOG_DEBUG(log("lockbox associated"))
+          ZS_LOG_TRACE(log("lockbox associated"))
           return true;
         }
 
         if (mKillAssociation) {
-          ZS_LOG_DEBUG(log("do not need an association to the lockbox if association is being killed"))
+          ZS_LOG_TRACE(log("do not need an association to the lockbox if association is being killed"))
           return true;
         }
 
@@ -1950,19 +1947,21 @@ namespace openpeer
       bool ServiceIdentitySession::stepIdentityLookup()
       {
         if (mKillAssociation) {
-          ZS_LOG_DEBUG(log("do not need to perform identity lookup when lockbox association is being killed"))
+          ZS_LOG_TRACE(log("do not need to perform identity lookup when lockbox association is being killed"))
           return true;
         }
 
         if (mPreviousLookupInfo.mURI.hasData()) {
-          ZS_LOG_DEBUG(log("identity lookup has already completed"))
+          ZS_LOG_TRACE(log("identity lookup has already completed"))
           return true;
         }
 
         if (mIdentityLookupMonitor) {
-          ZS_LOG_DEBUG(log("identity lookup already in progress (but not going to wait for it to complete to continue"))
+          ZS_LOG_TRACE(log("identity lookup already in progress (but not going to wait for it to complete to continue"))
           return true;
         }
+
+        ZS_LOG_DEBUG(log("performing identity lookup"))
 
         IdentityLookupRequestPtr request = IdentityLookupRequest::create();
         request->domain(mActiveBootstrappedNetwork->forServices().getDomain());
@@ -1995,10 +1994,10 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      bool ServiceIdentitySession::stepLockboxReady()
+      bool ServiceIdentitySession::stepLockboxAccessToken()
       {
         if (mKillAssociation) {
-          ZS_LOG_DEBUG(log("do not need lockbox to be ready if association is being killed"))
+          ZS_LOG_TRACE(log("do not need lockbox to be ready if association is being killed"))
           return true;
         }
         
@@ -2017,15 +2016,15 @@ namespace openpeer
 
             LockboxInfo lockboxInfo = lockbox->forServiceIdentity().getLockboxInfo();
             if (lockboxInfo.mAccessToken.hasData()) {
-              ZS_LOG_DEBUG(log("lockbox is still pending but safe to proceed because lockbox has been granted access"))
+              ZS_LOG_TRACE(log("lockbox is still pending but safe to proceed because lockbox has been granted access"))
               return true;
             }
 
-            ZS_LOG_DEBUG(log("waiting for lockbox to ready"))
+            ZS_LOG_TRACE(log("waiting for lockbox to ready"))
             return false;
           }
           case IServiceLockboxSession::SessionState_Ready: {
-            ZS_LOG_DEBUG(log("lockbox is ready"))
+            ZS_LOG_TRACE(log("lockbox is ready"))
             return true;
           }
           case IServiceLockboxSession::SessionState_Shutdown: {
@@ -2037,7 +2036,7 @@ namespace openpeer
           }
         }
 
-        ZS_LOG_DEBUG(log("unknown lockbox state") + getDebugValueString())
+        ZS_LOG_ERROR(Detail, log("unknown lockbox state") + getDebugValueString())
 
         ZS_THROW_BAD_STATE("unknown lockbox state")
         return false;
@@ -2047,19 +2046,19 @@ namespace openpeer
       bool ServiceIdentitySession::stepLockboxUpdate()
       {
         if (mLockboxUpdated) {
-          ZS_LOG_DEBUG(log("lockbox update already complete"))
+          ZS_LOG_TRACE(log("lockbox update already complete"))
           return true;
         }
 
         if (mIdentityAccessLockboxUpdateMonitor) {
-          ZS_LOG_DEBUG(log("lockbox update already in progress"))
+          ZS_LOG_TRACE(log("lockbox update already in progress"))
           return false;
         }
 
         if (!mBrowserWindowReady) {
 #define WARNING_HOW_TO_UPDATE_LOCKBOX_INFO 1
 #define WARNING_HOW_TO_UPDATE_LOCKBOX_INFO 2
-          ZS_LOG_DEBUG(log("never loaded browser window so no need to perform lockbox update"))
+          ZS_LOG_TRACE(log("never loaded browser window so no need to perform lockbox update"))
           return true;
         }
 
@@ -2095,8 +2094,8 @@ namespace openpeer
 
         if ((lockboxInfo.mDomain == mLockboxInfo.mDomain) &&
             (equalKeys)) {
-          ZS_LOG_DEBUG(log("lockbox info already updated correctly"))
-          mLockboxUpdated = true;
+          ZS_LOG_TRACE(log("lockbox info already updated correctly"))
+          get(mLockboxUpdated) = true;
           return true;
         }
 
@@ -2119,12 +2118,12 @@ namespace openpeer
       bool ServiceIdentitySession::stepCloseBrowserWindow()
       {
         if (!mBrowserWindowReady) {
-          ZS_LOG_DEBUG(log("browser window was never made visible"))
+          ZS_LOG_TRACE(log("browser window was never made visible"))
           return true;
         }
 
         if (mBrowserWindowClosed) {
-          ZS_LOG_DEBUG(log("browser window is closed"))
+          ZS_LOG_TRACE(log("browser window is closed"))
           return true;
         }
 
@@ -2139,17 +2138,17 @@ namespace openpeer
       bool ServiceIdentitySession::stepPreGrantChallenge()
       {
         if (mRolodexInfo.mServerToken.isEmpty()) {
-          ZS_LOG_DEBUG(log("rolodex service is not supported"))
+          ZS_LOG_TRACE(log("rolodex service is not supported"))
           return true;
         }
 
         // before continuing, make sure rolodex access is completed
         if (mRolodexInfo.mAccessToken.isEmpty()) {
-          ZS_LOG_DEBUG(log("rolodex access is still pending"))
+          ZS_LOG_TRACE(log("rolodex access is still pending"))
           return false;
         }
 
-        ZS_LOG_DEBUG(log("rolodex access has already completed"))
+        ZS_LOG_TRACE(log("rolodex access has already completed"))
         return true;
       }
 
@@ -2157,7 +2156,7 @@ namespace openpeer
       bool ServiceIdentitySession::stepClearGrantWait()
       {
         if (!mGrantWait) {
-          ZS_LOG_DEBUG(log("wait already cleared"))
+          ZS_LOG_TRACE(log("wait already cleared"))
           return true;
         }
 
@@ -2172,22 +2171,22 @@ namespace openpeer
       bool ServiceIdentitySession::stepGrantChallenge()
       {
         if (mRolodexInfo.mServerToken.isEmpty()) {
-          ZS_LOG_DEBUG(log("rolodex service is not supported"))
+          ZS_LOG_TRACE(log("rolodex service is not supported"))
           return true;
         }
 
         if (mRolodexNamespaceGrantChallengeValidateMonitor) {
-          ZS_LOG_DEBUG(log("waiting for rolodex namespace grant challenge validate monitor to complete"))
+          ZS_LOG_TRACE(log("waiting for rolodex namespace grant challenge validate monitor to complete"))
           return false;
         }
 
         if (!mGrantQuery) {
-          ZS_LOG_DEBUG(log("no grant challenge query thus continuing..."))
+          ZS_LOG_TRACE(log("no grant challenge query thus continuing..."))
           return true;
         }
 
         if (!mGrantQuery->isComplete()) {
-          ZS_LOG_DEBUG(log("waiting for the grant query to complete"))
+          ZS_LOG_TRACE(log("waiting for the grant query to complete"))
           return false;
         }
 
@@ -2232,15 +2231,58 @@ namespace openpeer
       }
       
       //-----------------------------------------------------------------------
+      bool ServiceIdentitySession::stepLockboxReady()
+      {
+        if (mKillAssociation) {
+          ZS_LOG_TRACE(log("do not need lockbox to be ready if association is being killed"))
+          return true;
+        }
+
+        ServiceLockboxSessionPtr lockbox = mAssociatedLockbox.lock();
+        if (!lockbox) {
+          return stepLockboxAssociation();
+        }
+
+        WORD errorCode = 0;
+        String reason;
+        IServiceLockboxSession::SessionStates state = lockbox->forServiceIdentity().getState(&errorCode, &reason);
+
+        switch (state) {
+          case IServiceLockboxSession::SessionState_Pending:
+          case IServiceLockboxSession::SessionState_PendingPeerFilesGeneration: {
+
+            ZS_LOG_TRACE(log("must wait for lockbox to be ready (pending with access token is not enough)"))
+            return false;
+          }
+          case IServiceLockboxSession::SessionState_Ready: {
+            ZS_LOG_TRACE(log("lockbox is fully ready"))
+            return true;
+          }
+          case IServiceLockboxSession::SessionState_Shutdown: {
+            ZS_LOG_ERROR(Detail, log("lockbox shutdown") + ", error=" + string(errorCode) + ", reason=" + reason)
+
+            setError(errorCode, reason);
+            cancel();
+            return false;
+          }
+        }
+
+        ZS_LOG_ERROR(Detail, log("unknown lockbox state") + getDebugValueString())
+
+        ZS_THROW_BAD_STATE("unknown lockbox state")
+        return false;
+      }
+      
+      //-----------------------------------------------------------------------
       bool ServiceIdentitySession::stepLookupUpdate()
       {
         if (mIdentityLookupUpdated) {
-          ZS_LOG_DEBUG(log("lookup already updated"))
+          ZS_LOG_TRACE(log("lookup already updated"))
           return true;
         }
 
         if (mIdentityLookupUpdateMonitor) {
-          ZS_LOG_DEBUG(log("lookup update already in progress (but does not prevent other events from completing)"))
+          ZS_LOG_TRACE(log("lookup update already in progress (but does not prevent other events from completing)"))
           return false;
         }
 
@@ -2263,7 +2305,7 @@ namespace openpeer
         }
 
         if (mPreviousLookupInfo.mURI.isEmpty()) {
-          ZS_LOG_DEBUG(log("waiting for identity lookup to complete"))
+          ZS_LOG_TRACE(log("waiting for identity lookup to complete"))
           return false;
         }
 
@@ -2284,11 +2326,11 @@ namespace openpeer
             (identityInfo.mWeight == mPreviousLookupInfo.mWeight) &&
             (mPreviousLookupInfo.mIdentityProofBundle)) {
           ZS_LOG_DEBUG(log("identity information already up-to-date"))
-          mIdentityLookupUpdated = true;
+          get(mIdentityLookupUpdated) = true;
           return true;
         }
 
-        ZS_LOG_DEBUG(log("updating identity lookup information (but not preventing other requests from continuing)"))
+        ZS_LOG_DEBUG(log("updating identity lookup information (but not preventing other requests from continuing)") + ", lockbox: " + mLockboxInfo.getDebugValueString(false) + ", identity info: " + mIdentityInfo.getDebugValueString(false))
 
         IdentityLookupUpdateRequestPtr request = IdentityLookupUpdateRequest::create();
         request->domain(mActiveBootstrappedNetwork->forServices().getDomain());
@@ -2306,12 +2348,12 @@ namespace openpeer
       bool ServiceIdentitySession::stepDownloadContacts()
       {
         if (OPENPEER_STACK_SERVICE_IDENTITY_ROLODEX_DOWNLOAD_FROZEN_VALUE == mRolodexInfo.mVersion) {
-          ZS_LOG_DEBUG(log("rolodex download has not been initiated yet"))
+          ZS_LOG_TRACE(log("rolodex download has not been initiated yet"))
           return true;
         }
 
         if (mRolodexContactsGetMonitor) {
-          ZS_LOG_DEBUG(log("rolodex contact download already active"))
+          ZS_LOG_TRACE(log("rolodex contact download already active"))
           return true;
         }
 
@@ -2336,7 +2378,7 @@ namespace openpeer
           }
           mTimer = Timer::create(mThisWeak.lock(), waitTime, false);
 
-          ZS_LOG_DEBUG(log("delaying downloading contacts") + ", wait time (seconds)=" + string(waitTime.total_seconds()))
+          ZS_LOG_TRACE(log("delaying downloading contacts") + ", wait time (seconds)=" + string(waitTime.total_seconds()))
           return true;
         }
 
@@ -2394,7 +2436,7 @@ namespace openpeer
           return;
         }
 
-        mLastError = errorCode;
+        get(mLastError) = errorCode;
         mLastErrorReason = reason;
 
         ZS_LOG_WARNING(Detail, log("error set") + ", code=" + string(mLastError) + ", reason=" + mLastErrorReason + getDebugValueString())

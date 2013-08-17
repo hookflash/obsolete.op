@@ -441,13 +441,13 @@ namespace openpeer
         bool stepGrantChallenge();
         bool stepContentGet();
         bool stepPreparePeerFiles();
-        bool stepUploadPeerFiles();
         bool stepServicesGet();
         bool stepLoginIdentityBecomeAssociated();
         bool stepConvertFromServerToRealIdentities();
         bool stepPruneDuplicatePendingIdentities();
         bool stepPruneShutdownIdentities();
         bool stepPendingAssociationAndRemoval();
+        bool stepContentUpdate();
 
         void postStep();
 
@@ -485,7 +485,7 @@ namespace openpeer
         #pragma mark ServiceLockboxSession => (data)
         #pragma mark
 
-        PUID mID;
+        AutoPUID mID;
         mutable RecursiveLock mLock;
         ServiceLockboxSessionWeakPtr mThisWeak;
 
@@ -494,7 +494,7 @@ namespace openpeer
 
         SessionStates mCurrentState;
 
-        WORD mLastError;
+        AutoWORD mLastError;
         String mLastErrorReason;
 
         BootstrappedNetworkPtr mBootstrappedNetwork;
@@ -515,12 +515,11 @@ namespace openpeer
 
         IPeerFilesPtr mPeerFiles;
 
-        bool mObtainedLock;
+        AutoBool mObtainedLock;
 
-        bool mPeerFilesNeedUpload;
-        bool mLoginIdentitySetToBecomeAssociated;
+        AutoBool mLoginIdentitySetToBecomeAssociated;
 
-        bool mForceNewAccount;
+        AutoBool mForceNewAccount;
 
         IServiceSaltFetchSignedSaltQueryPtr mSaltQuery;
         ServiceTypeMap mServicesByType;
@@ -533,7 +532,11 @@ namespace openpeer
         ServiceIdentitySessionMap mPendingUpdateIdentities;
         ServiceIdentitySessionMap mPendingRemoveIdentities;
 
+        SecureByteBlockPtr mReloginChangeHash;
+
         NamespaceURLNameValueMap mContent;
+
+        NamespaceURLNameValueMap mUpdatedContent;
       };
 
       //-----------------------------------------------------------------------

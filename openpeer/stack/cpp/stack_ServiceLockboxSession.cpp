@@ -143,16 +143,10 @@ namespace openpeer
                                                    ServiceNamespaceGrantSessionPtr grantSession
                                                    ) :
         zsLib::MessageQueueAssociator(queue),
-        mID(zsLib::createPUID()),
         mDelegate(delegate ? IServiceLockboxSessionDelegateProxy::createWeak(IStackForInternal::queueDelegate(), delegate) : IServiceLockboxSessionDelegatePtr()),
         mBootstrappedNetwork(network),
         mGrantSession(grantSession),
-        mCurrentState(SessionState_Pending),
-        mLastError(0),
-        mObtainedLock(false),
-        mPeerFilesNeedUpload(false),
-        mLoginIdentitySetToBecomeAssociated(false),
-        mForceNewAccount(false)
+        mCurrentState(SessionState_Pending)
       {
         ZS_LOG_DEBUG(log("created"))
       }
@@ -213,7 +207,7 @@ namespace openpeer
         ServiceLockboxSessionPtr pThis(new ServiceLockboxSession(IStackForInternal::queueStack(), BootstrappedNetwork::convert(serviceLockbox), delegate, ServiceNamespaceGrantSession::convert(grantSession)));
         pThis->mThisWeak = pThis;
         pThis->mLoginIdentity = ServiceIdentitySession::convert(identitySession);
-        pThis->mForceNewAccount = forceNewAccount;
+        get(pThis->mForceNewAccount) = forceNewAccount;
         if (forceNewAccount) {
           ZS_LOG_WARNING(Detail, pThis->log("forcing creation of a new lockbox account (user must have indicated their account is compromised or corrupted)"))
         }
@@ -330,6 +324,8 @@ namespace openpeer
           return;
         }
 
+        ZS_LOG_DEBUG(log("associate identities called") + ", associate size=" + string(identitiesToAssociate.size()) + ", remove size=" + string(identitiesToRemove.size()))
+
         for (ServiceIdentitySessionList::const_iterator iter = identitiesToAssociate.begin(); iter != identitiesToAssociate.end(); ++iter)
         {
           ServiceIdentitySessionPtr session = ServiceIdentitySession::convert(*iter);
@@ -341,6 +337,9 @@ namespace openpeer
           ServiceIdentitySessionPtr session = ServiceIdentitySession::convert(*iter);
           mPendingRemoveIdentities[session->forLockbox().getID()] = session;
         }
+
+        ZS_LOG_DEBUG(log("waking up to process identities") + ", pending size=" + string(mPendingUpdateIdentities.size()) + ", pending remove size=" + string(mPendingRemoveIdentities.size()))
+
         // handle the association now (but do it asynchronously)
         IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
       }
@@ -881,8 +880,6 @@ namespace openpeer
 
         ZS_LOG_DEBUG(log("content set completed"))
 
-        mPeerFilesNeedUpload = false;
-
         step();
         return true;
       }
@@ -991,37 +988,38 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("lockbox id", string(mID), firstTime) +
-               IBootstrappedNetwork::toDebugString(mBootstrappedNetwork) +
-               Helper::getDebugValue("delegate", mDelegate ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("state", toString(mCurrentState), firstTime) +
-               Helper::getDebugValue("error code", 0 != mLastError ? string(mLastError) : String(), firstTime) +
-               Helper::getDebugValue("error reason", mLastErrorReason, firstTime) +
-               IBootstrappedNetwork::toDebugString(mBootstrappedNetwork) +
-               Helper::getDebugValue("grant session", mGrantSession ? string(mGrantSession->forServices().getID()) : String(), firstTime) +
-               Helper::getDebugValue("grant query", mGrantQuery ? string(mGrantQuery->getID()) : String(), firstTime) +
-               Helper::getDebugValue("grant wait", mGrantWait ? string(mGrantWait->getID()) : String(), firstTime) +
-               Helper::getDebugValue("lockbox access monitor", mLockboxAccessMonitor ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("lockbox grant validate monitor", mLockboxNamespaceGrantChallengeValidateMonitor ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("lockbox identities update monitor", mLockboxIdentitiesUpdateMonitor ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("lockbox content get monitor", mLockboxContentGetMonitor ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("lockbox content set monitor", mLockboxContentSetMonitor ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("peer services get monitor", mPeerServicesGetMonitor ? String("true") : String(), firstTime) +
-               mLockboxInfo.getDebugValueString() +
-               Helper::getDebugValue("login identity", mLoginIdentity ? String("true") : String(), firstTime) +
-               IPeerFiles::toDebugString(mPeerFiles) +
-               Helper::getDebugValue("obtained lock", mObtainedLock ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("peer files need upload", mPeerFilesNeedUpload ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("login identity set to become associated", mLoginIdentitySetToBecomeAssociated ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("force new account", mForceNewAccount ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("salt query id", mSaltQuery ? string(mSaltQuery->getID()) : String(), firstTime) +
-               Helper::getDebugValue("services by type", mServicesByType.size() > 0 ? string(mServicesByType.size()) : String(), firstTime) +
-               Helper::getDebugValue("server identities", mServerIdentities.size() > 0 ? string(mServicesByType.size()) : String(), firstTime) +
-               Helper::getDebugValue("associated identities", mAssociatedIdentities.size() > 0 ? string(mAssociatedIdentities.size()) : String(), firstTime) +
-               Helper::getDebugValue("last notification hash", mLastNotificationHash ? IHelper::convertToHex(*mLastNotificationHash) : String(), firstTime) +
-               Helper::getDebugValue("pending updated identities", mPendingUpdateIdentities.size() > 0 ? string(mPendingUpdateIdentities.size()) : String(), firstTime) +
-               Helper::getDebugValue("pending remove identities", mPendingRemoveIdentities.size() > 0 ? string(mPendingRemoveIdentities.size()) : String(), firstTime);
-               Helper::getDebugValue("content", mContent.size() > 0 ? string(mContent.size()) : String(), firstTime);
+        return
+        Helper::getDebugValue("lockbox id", string(mID), firstTime) +
+        IBootstrappedNetwork::toDebugString(mBootstrappedNetwork) +
+        Helper::getDebugValue("delegate", mDelegate ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("state", toString(mCurrentState), firstTime) +
+        Helper::getDebugValue("error code", 0 != mLastError ? string(mLastError) : String(), firstTime) +
+        Helper::getDebugValue("error reason", mLastErrorReason, firstTime) +
+        IBootstrappedNetwork::toDebugString(mBootstrappedNetwork) +
+        Helper::getDebugValue("grant session", mGrantSession ? string(mGrantSession->forServices().getID()) : String(), firstTime) +
+        Helper::getDebugValue("grant query", mGrantQuery ? string(mGrantQuery->getID()) : String(), firstTime) +
+        Helper::getDebugValue("grant wait", mGrantWait ? string(mGrantWait->getID()) : String(), firstTime) +
+        Helper::getDebugValue("lockbox access monitor", mLockboxAccessMonitor ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("lockbox grant validate monitor", mLockboxNamespaceGrantChallengeValidateMonitor ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("lockbox identities update monitor", mLockboxIdentitiesUpdateMonitor ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("lockbox content get monitor", mLockboxContentGetMonitor ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("lockbox content set monitor", mLockboxContentSetMonitor ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("peer services get monitor", mPeerServicesGetMonitor ? String("true") : String(), firstTime) +
+        mLockboxInfo.getDebugValueString() +
+        Helper::getDebugValue("login identity", mLoginIdentity ? String("true") : String(), firstTime) +
+        IPeerFiles::toDebugString(mPeerFiles) +
+        Helper::getDebugValue("obtained lock", mObtainedLock ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("login identity set to become associated", mLoginIdentitySetToBecomeAssociated ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("force new account", mForceNewAccount ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("salt query id", mSaltQuery ? string(mSaltQuery->getID()) : String(), firstTime) +
+        Helper::getDebugValue("services by type", mServicesByType.size() > 0 ? string(mServicesByType.size()) : String(), firstTime) +
+        Helper::getDebugValue("server identities", mServerIdentities.size() > 0 ? string(mServicesByType.size()) : String(), firstTime) +
+        Helper::getDebugValue("associated identities", mAssociatedIdentities.size() > 0 ? string(mAssociatedIdentities.size()) : String(), firstTime) +
+        Helper::getDebugValue("last notification hash", mLastNotificationHash ? IHelper::convertToHex(*mLastNotificationHash) : String(), firstTime) +
+        Helper::getDebugValue("pending updated identities", mPendingUpdateIdentities.size() > 0 ? string(mPendingUpdateIdentities.size()) : String(), firstTime) +
+        Helper::getDebugValue("pending remove identities", mPendingRemoveIdentities.size() > 0 ? string(mPendingRemoveIdentities.size()) : String(), firstTime);
+        Helper::getDebugValue("content", mContent.size() > 0 ? string(mContent.size()) : String(), firstTime) +
+        Helper::getDebugValue("updated content", mUpdatedContent.size() > 0 ? string(mUpdatedContent.size()) : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -1033,6 +1031,8 @@ namespace openpeer
           return;
         }
 
+        ZS_LOG_DEBUG(log("step") + getDebugValueString())
+
         if (!stepBootstrapper()) goto post_step;
         if (!stepGrantLock()) goto post_step;
         if (!stepIdentityLogin()) goto post_step;
@@ -1041,7 +1041,6 @@ namespace openpeer
         if (!stepGrantChallenge()) goto post_step;
         if (!stepContentGet()) goto post_step;
         if (!stepPreparePeerFiles()) goto post_step;
-        if (!stepUploadPeerFiles()) goto post_step;
         if (!stepServicesGet()) goto post_step;
 
         setState(SessionState_Ready);
@@ -1051,9 +1050,12 @@ namespace openpeer
         if (!stepPruneDuplicatePendingIdentities()) goto post_step;
         if (!stepPruneShutdownIdentities()) goto post_step;
         if (!stepPendingAssociationAndRemoval()) goto post_step;
+        if (!stepContentUpdate()) goto post_step;
 
       post_step:
         postStep();
+
+        ZS_LOG_TRACE(log("step done") + getDebugValueString())
       }
 
       //-----------------------------------------------------------------------
@@ -1110,7 +1112,7 @@ namespace openpeer
 
         ZS_LOG_DEBUG(log("obtained grant lock"))
 
-        mObtainedLock = true;
+        get(mObtainedLock) = true;
         return true;
       }
       
@@ -1196,7 +1198,7 @@ namespace openpeer
 
           if (mForceNewAccount) {
             ZS_LOG_DEBUG(log("forcing a new lockbox account to be created for the identity"))
-            mForceNewAccount = false;
+            get(mForceNewAccount) = false;
             mLockboxInfo.mKey.reset();
           }
 
@@ -1372,7 +1374,7 @@ namespace openpeer
           // attempt to load the private peer file data
           DocumentPtr doc = Document::createFromParsedJSON(privatePeerFileStr);
           if (doc) {
-            mPeerFiles = IPeerFiles::loadFromElement(privatePeerFileStr, doc->getFirstChildElement());
+            mPeerFiles = IPeerFiles::loadFromElement(privatePeerSecretStr, doc->getFirstChildElement());
             if (!mPeerFiles) {
               ZS_LOG_WARNING(Detail, log("peer files failed to load (will generate new peer files)"))
             }
@@ -1461,47 +1463,7 @@ namespace openpeer
 
         setContent(OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE, OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_SECRET_VALUE_NAME, IHelper::convertToString(*peerFileSecret));
         setContent(OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE, OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_VALUE_NAME, privatePeerFileStr);
-
-        mPeerFilesNeedUpload = true;
         return true;
-      }
-
-      //-----------------------------------------------------------------------
-      bool ServiceLockboxSession::stepUploadPeerFiles()
-      {
-        typedef LockboxContentSetRequest::NamespaceURLNameValueMap NamespaceURLValueMap;
-        typedef LockboxContentSetRequest::NameValueMap NamespaceValueMap;
-
-        if (!mPeerFilesNeedUpload) {
-          ZS_LOG_DEBUG(log("peer files do not need uploading"))
-          return true;
-        }
-
-        if (mLockboxContentSetMonitor) {
-          ZS_LOG_DEBUG(log("waiting for content set monitor to complete"))
-          return false;
-        }
-
-        setState(SessionState_Pending);
-
-        LockboxContentSetRequestPtr request = LockboxContentSetRequest::create();
-        request->domain(mBootstrappedNetwork->forServices().getDomain());
-
-        request->lockboxInfo(mLockboxInfo);
-
-        NamespaceValueMap values;
-        values[OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_SECRET_VALUE_NAME] = getRawContent(OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE, OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_SECRET_VALUE_NAME);
-        values[OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_VALUE_NAME] = getRawContent(OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE, OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_VALUE_NAME);
-
-        NamespaceURLValueMap namespaces;
-        namespaces[OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE] = values;
-
-        request->namespaceURLNameValues(namespaces);
-
-        mLockboxContentSetMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<LockboxContentSetResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS));
-        mBootstrappedNetwork->forServices().sendServiceMessage("identity-lockbox", "lockbox-content-set", request);
-
-        return false;
       }
 
       //-----------------------------------------------------------------------
@@ -1546,7 +1508,7 @@ namespace openpeer
 
         ZS_LOG_DEBUG(log("login identity will become associated identity") + IServiceIdentitySession::toDebugString(mLoginIdentity))
 
-        mLoginIdentitySetToBecomeAssociated = true;
+        get(mLoginIdentitySetToBecomeAssociated) = true;
 
         for (ServiceIdentitySessionMap::iterator associatedIter = mAssociatedIdentities.begin(); associatedIter != mAssociatedIdentities.end(); ++associatedIter)
         {
@@ -1566,8 +1528,8 @@ namespace openpeer
           }
         }
 
-        ZS_LOG_DEBUG(log("adding login identity to the pending list so that it will become associated (if it is not already known by the server)"))
         mPendingUpdateIdentities[mLoginIdentity->forLockbox().getID()] = mLoginIdentity;
+        ZS_LOG_DEBUG(log("adding login identity to the pending list so that it will become associated (if it is not already known by the server)") + ", pending size=" + string(mPendingUpdateIdentities.size()))
 
         return true;
       }
@@ -1615,11 +1577,12 @@ namespace openpeer
 
             if ((info.mURI == pendingInfo.mURI) &&
                 (info.mProvider == pendingInfo.mProvider)) {
-              // found an existing match...
-              ZS_LOG_DEBUG(log("found a match to a pending identity (moving pending identity to associated identity)") + ", uri=" + info.mURI + ", provider=" + info.mProvider)
 
               // move the pending identity to the actual identity rather than creating a new identity
               mAssociatedIdentities[identitySession->forLockbox().getID()] = identitySession;
+
+              // found an existing match...
+              ZS_LOG_DEBUG(log("found a match to a pending identity (moving pending identity to associated identity)") + ", uri=" + info.mURI + ", provider=" + info.mProvider + ", associated size=" + string(mAssociatedIdentities.size()))
 
               foundMatch = true;
               break;
@@ -1718,9 +1681,6 @@ namespace openpeer
       //-----------------------------------------------------------------------
       bool ServiceLockboxSession::stepPendingAssociationAndRemoval()
       {
-        typedef LockboxContentSetRequest::NameValueMap NameValueMap;
-        typedef LockboxContentSetRequest::NamespaceURLNameValueMap NamespaceURLNameValueMap;
-
         if ((mLockboxIdentitiesUpdateMonitor) ||
             (mLockboxContentSetMonitor)) {
           ZS_LOG_DEBUG(log("waiting for identities association or content set to complete before attempting to associate identities"))
@@ -1732,9 +1692,6 @@ namespace openpeer
           ZS_LOG_DEBUG(log("no identities are pending addition or removal"))
           return true;
         }
-
-        NameValueMap reloginValues;
-        NameValueMap signatureValues;
 
         ServiceIdentitySessionMap removedIdentities;
         ServiceIdentitySessionMap completedIdentities;
@@ -1782,7 +1739,6 @@ namespace openpeer
             // clear relogin key (if present)
             {
               String hash = IHelper::convertToHex(*IHelper::hash(String("identity-relogin:") + pendingRemovalIdentityInfo.mURI + ":" + pendingRemovalIdentityInfo.mProvider));
-              reloginValues[hash] = "-";
               clearContent(OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE, hash);
             }
 
@@ -1819,29 +1775,7 @@ namespace openpeer
             String hash = IHelper::convertToHex(*IHelper::hash(String("identity-relogin:") + info.mURI + ":" + info.mProvider));
 
             setContent(OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE, hash, info.mReloginKey);
-            String rawValue = getRawContent(OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE, hash);
-            reloginValues[hash] = rawValue;
           }
-        }
-
-        NamespaceURLNameValueMap namespaces;
-
-        if (reloginValues.size() > 0) {
-          ZS_LOG_DEBUG(log("contains relogin values to update") + "values=" + string(reloginValues.size()))
-          namespaces[OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE] = reloginValues;
-        }
-
-        if (namespaces.size() > 0) {
-          ZS_LOG_DEBUG(log("sending content set request"))
-
-          LockboxContentSetRequestPtr request = LockboxContentSetRequest::create();
-          request->domain(mBootstrappedNetwork->forServices().getDomain());
-          request->lockboxInfo(mLockboxInfo);
-
-          request->namespaceURLNameValues(namespaces);
-
-          mLockboxContentSetMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<LockboxContentSetResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS));
-          mBootstrappedNetwork->forServices().sendServiceMessage("identity-lockbox", "lockbox-content-set", request);
         }
 
         if ((removedIdentities.size() > 0) ||
@@ -1896,6 +1830,35 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      bool ServiceLockboxSession::stepContentUpdate()
+      {
+        if (mUpdatedContent.size() < 1) {
+          ZS_LOG_TRACE(log("no content to update"))
+          return true;
+        }
+
+        if (mLockboxContentSetMonitor) {
+          ZS_LOG_TRACE(log("waiting for lockbox content set monitor to complete"))
+          return true;
+        }
+
+        ZS_LOG_DEBUG(log("sending content set request"))
+
+        LockboxContentSetRequestPtr request = LockboxContentSetRequest::create();
+        request->domain(mBootstrappedNetwork->forServices().getDomain());
+        request->lockboxInfo(mLockboxInfo);
+
+        request->namespaceURLNameValues(mUpdatedContent);
+
+        mLockboxContentSetMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<LockboxContentSetResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_LOCKBOX_TIMEOUT_IN_SECONDS));
+        mBootstrappedNetwork->forServices().sendServiceMessage("identity-lockbox", "lockbox-content-set", request);
+
+        mUpdatedContent.clear();  // forget this content ever changed so newly changed content will update
+
+        return true;
+      }
+
+      //-----------------------------------------------------------------------
       void ServiceLockboxSession::postStep()
       {
         calculateAndNotifyIdentityChanges();
@@ -1943,7 +1906,7 @@ namespace openpeer
           return;
         }
 
-        mLastError = errorCode;
+        get(mLastError) = errorCode;
         mLastErrorReason = reason;
 
         ZS_LOG_WARNING(Detail, log("error set") + ", code=" + string(mLastError) + ", reason=" + mLastErrorReason + getDebugValueString())
@@ -2002,7 +1965,7 @@ namespace openpeer
 
         NamespaceURLNameValueMap::const_iterator found = mContent.find(namespaceURL);
         if (found == mContent.end()) {
-          ZS_LOG_WARNING(Detail, log("content does not contain namespace") + ", namespace=" + namespaceURL + ", value name=" + valueName)
+          ZS_LOG_DEBUG(log("content does not contain namespace") + ", namespace=" + namespaceURL + ", value name=" + valueName)
           return String();
         }
 
@@ -2010,7 +1973,7 @@ namespace openpeer
 
         NameValueMap::const_iterator foundValue = values.find(valueName);
         if (foundValue == values.end()) {
-          ZS_LOG_WARNING(Detail, log("content does not contain namespace value") + ", namespace=" + namespaceURL + ", value name=" + valueName)
+          ZS_LOG_DEBUG(log("content does not contain namespace value") + ", namespace=" + namespaceURL + ", value name=" + valueName)
           return String();
         }
 
@@ -2076,9 +2039,15 @@ namespace openpeer
         ZS_THROW_INVALID_ARGUMENT_IF(!namespaceURL)
         ZS_THROW_INVALID_ARGUMENT_IF(!valueName)
 
+        String oldValue = getContent(namespaceURL, valueName);
+        if (oldValue == value) {
+          ZS_LOG_TRACE(log("content has not changed thus no need to update") + ", namespace=" + namespaceURL + ", value name=" + valueName + ", content=" + value)
+          return;
+        }
+
         NamespaceURLNameValueMap::iterator found = mContent.find(namespaceURL);
         if (found == mContent.end()) {
-          ZS_LOG_WARNING(Detail, log("content does not contain namespace") + ", namespace=" + namespaceURL + ", value name=" + valueName)
+          ZS_LOG_DEBUG(log("content does not contain namespace (thus creating)") + ", namespace=" + namespaceURL + ", value name=" + valueName)
 
           NameValueMap empty;
           mContent[namespaceURL] = empty;
@@ -2087,10 +2056,22 @@ namespace openpeer
           ZS_THROW_BAD_STATE_IF(found == mContent.end())
         }
 
+        NamespaceURLNameValueMap::iterator foundUpdated = mUpdatedContent.find(namespaceURL);
+        if (foundUpdated == mUpdatedContent.end()) {
+          ZS_LOG_DEBUG(log("updated content does not contain namespace (thus creating)") + ", namespace=" + namespaceURL + ", value name=" + valueName)
+
+          NameValueMap empty;
+          mUpdatedContent[namespaceURL] = empty;
+          foundUpdated = mUpdatedContent.find(namespaceURL);
+
+          ZS_THROW_BAD_STATE_IF(foundUpdated == mUpdatedContent.end())
+        }
+
         NameValueMap &values = (*found).second;
+        NameValueMap &valuesUpdated = (*foundUpdated).second;
 
         if (!mLockboxInfo.mKey) {
-          ZS_LOG_DEBUG(log("failed to create a combined key") + ", namespace=" + namespaceURL + ", value name=" + valueName + getDebugValueString())
+          ZS_LOG_WARNING(Detail, log("failed to create a lockbox key") + ", namespace=" + namespaceURL + ", value name=" + valueName + getDebugValueString())
           return;
         }
 
@@ -2112,6 +2093,7 @@ namespace openpeer
 
         ZS_LOG_TRACE(log("content was set") + ", namespace=" + namespaceURL + ", value name=" + valueName + ", value=" + value)
         values[valueName] = encodedValue;
+        valuesUpdated[valueName] = encodedValue;
       }
       
       //-----------------------------------------------------------------------
@@ -2139,8 +2121,23 @@ namespace openpeer
           return;
         }
 
+        NamespaceURLNameValueMap::iterator foundUpdated = mUpdatedContent.find(namespaceURL);
+        if (foundUpdated == mUpdatedContent.end()) {
+          ZS_LOG_DEBUG(log("updated content does not contain namespace (thus creating)") + ", namespace=" + namespaceURL + ", value name=" + valueName)
+
+          NameValueMap empty;
+          mUpdatedContent[namespaceURL] = empty;
+          foundUpdated = mUpdatedContent.find(namespaceURL);
+
+          ZS_THROW_BAD_STATE_IF(foundUpdated == mUpdatedContent.end())
+        }
+
+        NameValueMap &valuesUpdated = (*foundUpdated).second;
+
         ZS_LOG_TRACE(log("content value cleared") + ", namespace=" + namespaceURL + ", value name=" + valueName)
         values.erase(foundValue);
+
+        valuesUpdated[valueName] = "-"; // this is the entry value for "delete" during an update
       }
 
       //-----------------------------------------------------------------------
@@ -2171,10 +2168,10 @@ namespace openpeer
     {
       switch (state)
       {
-        case SessionState_Pending:                                return "Pending";
-        case SessionState_PendingPeerFilesGeneration:             return "Pending Peer File Generation";
-        case SessionState_Ready:                                  return "Ready";
-        case SessionState_Shutdown:                               return "Shutdown";
+        case SessionState_Pending:                      return "Pending";
+        case SessionState_PendingPeerFilesGeneration:   return "Pending Peer File Generation";
+        case SessionState_Ready:                        return "Ready";
+        case SessionState_Shutdown:                     return "Shutdown";
       }
       return "UNDEFINED";
     }
