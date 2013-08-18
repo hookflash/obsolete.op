@@ -172,7 +172,7 @@ namespace openpeer
           }
 
           if (identityInfo.hasData()) {
-            ElementPtr identityEl = MessageHelper::createElement(identityInfo);
+            ElementPtr identityEl = MessageHelper::createElement(identityInfo, true);
             root->adoptAsLastChild(identityEl);
           }
 
