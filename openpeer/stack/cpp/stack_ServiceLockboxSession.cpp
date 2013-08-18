@@ -1136,7 +1136,8 @@ namespace openpeer
 
           ZS_LOG_WARNING(Detail, log("shutting down lockbox because identity login is shutdown"))
           setError(errorCode, reason);
-          return true;
+          cancel();
+          return false;
         }
 
         ZS_LOG_DEBUG(log("associated login identity to lockbox"))
