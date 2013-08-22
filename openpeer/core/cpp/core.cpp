@@ -36,6 +36,7 @@
 namespace openpeer { namespace core { ZS_IMPLEMENT_SUBSYSTEM(openpeer_core) } }
 namespace openpeer { namespace core { ZS_IMPLEMENT_SUBSYSTEM(openpeer_media) } }
 namespace openpeer { namespace core { ZS_IMPLEMENT_SUBSYSTEM(openpeer_webrtc) } }
+ZS_IMPLEMENT_SUBSYSTEM(openpeer_sdk)
 namespace openpeer { namespace core { namespace application { ZS_IMPLEMENT_SUBSYSTEM(openpeer_application) } } }
 
 namespace openpeer
