@@ -125,6 +125,8 @@ namespace openpeer
         friend interaction IMediaSessionForCall;
         friend interaction IMediaSessionForCallTransport;
         
+        typedef std::map<ULONG, IMediaStreamPtr> MediaStreamMap;
+
       protected:
         MediaSession(
                      IMessageQueuePtr queue,
@@ -183,6 +185,12 @@ namespace openpeer
         MediaSessionWeakPtr mThisWeak;
         
         int mError;
+
+        String mCNAME;
+        bool mImmutable;
+        
+        MediaStreamMap mAudioStreams;
+        MediaStreamMap mVideoStreams;
 
         String mVoiceRecordFile;
 

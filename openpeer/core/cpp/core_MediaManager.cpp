@@ -47,6 +47,48 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IMediaManagerForStack
+      #pragma mark
+      
+      //-----------------------------------------------------------------------
+      void IMediaManagerForStack::setup()
+      {
+        MediaManager::setup();
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IMediaManagerForCall
+      #pragma mark
+      
+      //-----------------------------------------------------------------------
+      MediaManagerPtr IMediaManagerForCall::singleton()
+      {
+        return MediaManager::singleton();
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IMediaManagerForCallTransport
+      #pragma mark
+      
+      //-----------------------------------------------------------------------
+      MediaManagerPtr IMediaManagerForCallTransport::singleton()
+      {
+        return MediaManager::singleton();
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark MediaManager
       #pragma mark
       
@@ -239,82 +281,32 @@ namespace openpeer
       }
       
       //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark IMediaManagerForStack
-      #pragma mark
-      
-      //-----------------------------------------------------------------------
-      void IMediaManagerForStack::setup()
+      MediaSessionList MediaManager::getMediaSessions()
       {
-        MediaManager::setup();
-      }
-      
-      
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark IMediaManagerForCall
-      #pragma mark
-      
-      //-----------------------------------------------------------------------
-      MediaManagerPtr IMediaManagerForCall::singleton()
-      {
-        return MediaManager::singleton();
       }
       
       //-----------------------------------------------------------------------
-      MediaSessionList IMediaManagerForCall::getReceiveMediaSessions()
+      void MediaManager::addMediaSession(IMediaSessionPtr session, bool mergeAudioStreams)
+      {
+        mMediaSessions[session->getCNAME()] = session;
+      }
+      
+      //-----------------------------------------------------------------------
+      void MediaManager::removeMediaSession(IMediaSessionPtr session)
+      {
+        mMediaSessions.erase(session->getCNAME());
+      }
+      
+      //-----------------------------------------------------------------------
+      IMediaStreamForCallTransport::MediaConstraintList MediaManager::getVideoConstraints(ILocalSendVideoStreamForCall::CameraTypes cameraType)
       {
         
       }
       
       //-----------------------------------------------------------------------
-      MediaSessionList IMediaManagerForCall::getSendMediaSessions()
+      IMediaStreamForCallTransport::MediaConstraintList MediaManager::getAudioConstraints()
       {
         
-      }
-      
-      //-----------------------------------------------------------------------
-      void IMediaManagerForCall::addMediaSession(IMediaSessionPtr session, bool mergeAudioStreams)
-      {
-        
-      }
-      
-      //-----------------------------------------------------------------------
-      void IMediaManagerForCall::removeMediaSession(IMediaSessionPtr session)
-      {
-        
-      }
-      
-      //-----------------------------------------------------------------------
-      IMediaStreamForCallTransport::MediaConstraintList IMediaManagerForCall::getVideoConstraints(ILocalSendVideoStreamForCall::CameraTypes cameraType)
-      {
-        
-      }
-      
-      //-----------------------------------------------------------------------
-      IMediaStreamForCallTransport::MediaConstraintList IMediaManagerForCall::getAudioConstraints()
-      {
-        
-      }
-      
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark IMediaManagerForCallTransport
-      #pragma mark
-      
-      //-----------------------------------------------------------------------
-      MediaManagerPtr IMediaManagerForCallTransport::singleton()
-      {
-        return MediaManager::singleton();
       }
 
       //-----------------------------------------------------------------------

@@ -214,8 +214,8 @@ namespace openpeer
         #pragma mark SendMediaTransport => ISendMediaTransportForCallTransport
         #pragma mark
         
-        virtual int receivedRTPPacket(const void *data, unsigned int length);
-        virtual int receivedRTCPPacket(const void *data, unsigned int length);
+        virtual int registerExternalTransport(Transport &transport);
+        virtual int deregisterExternalTransport();
         
         //---------------------------------------------------------------------
         #pragma mark
@@ -475,6 +475,7 @@ namespace openpeer
         int mError;
 
         int mChannel;
+        IMediaTransportPtr mTransport;
       };
       
       //-----------------------------------------------------------------------
@@ -666,10 +667,6 @@ namespace openpeer
         #pragma mark
         
       protected:
-        bool mEcEnabled;
-        bool mAgcEnabled;
-        bool mNsEnabled;
-        
         
       };
       
@@ -790,10 +787,6 @@ namespace openpeer
         #pragma mark
         
       protected:
-        int mCaptureId;
-        char mDeviceUniqueId[512];
-        CameraTypes mCameraType;
-        bool mFaceDetection;
 
       };
       

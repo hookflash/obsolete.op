@@ -56,6 +56,64 @@ namespace openpeer
       {
       }
 
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark MediaSession => IMediaSession
+      #pragma mark
+      
+      //-------------------------------------------------------------------------
+      MediaStreamListPtr MediaSession::getAudioStreams()
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      MediaStreamListPtr MediaSession::getVideoStreams()
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      String MediaSession::getCNAME()
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      IMediaSessionPtr MediaSession::clone()
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      void MediaSession::addStream(IMediaStreamPtr stream)
+      {
+        if (typeid(*stream) == typeid(AudioStream))
+          mAudioStreams[stream->getSSRC()] = stream;
+        else if (typeid(*stream) == typeid(VideoStream))
+          mVideoStreams[stream->getSSRC()] = stream;
+      }
+      
+      //-------------------------------------------------------------------------
+      void MediaSession::removeStream(IMediaStreamPtr stream)
+      {
+        if (typeid(*stream) == typeid(AudioStream))
+          mAudioStreams.erase(stream->getSSRC());
+        else if (typeid(*stream) == typeid(VideoStream))
+          mVideoStreams.erase(stream->getSSRC());
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark MediaSession => IMediaSessionForCall
+      #pragma mark
+
       //-------------------------------------------------------------------------
       void MediaSession::setVoiceRecordFile(String fileName)
       {

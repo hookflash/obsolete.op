@@ -76,8 +76,7 @@ namespace openpeer
         
         static MediaManagerPtr singleton();
         
-        virtual MediaSessionList getReceiveMediaSessions() = 0;
-        virtual MediaSessionList getSendMediaSessions() = 0;
+        virtual MediaSessionList getMediaSessions() = 0;
         virtual void addMediaSession(IMediaSessionPtr session, bool mergeAudioStreams = true) = 0;
         virtual void removeMediaSession(IMediaSessionPtr session) = 0;
         
@@ -108,13 +107,13 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IMediaManagerAsync
+      #pragma mark IMediaManagerDelegate
       #pragma mark
 
-      interaction IMediaManagerAsync
+      interaction IMediaManagerDelegate
       {
-//        virtual void onMediaManagerSessionAdded(IMediaSessionPtr session) = 0;
-//        virtual void onMediaManagerSessionRemoved(IMediaSessionPtr session) = 0;
+        virtual void onMediaManagerSessionAdded(IMediaSessionPtr session) = 0;
+        virtual void onMediaManagerSessionRemoved(IMediaSessionPtr session) = 0;
       };
 
       //-----------------------------------------------------------------------
@@ -127,7 +126,6 @@ namespace openpeer
       
       class MediaManager : public MessageQueueAssociator,
                            public IMediaManager,
-                           public IMediaManagerAsync,
                            public IMediaManagerForStack,
                            public IMediaManagerForCall,
                            public IMediaManagerForCallTransport
@@ -139,6 +137,8 @@ namespace openpeer
         friend interaction IMediaManagerForCall;
         friend interaction IMediaManagerForCallTransport;
         
+        typedef std::map<String, IMediaSessionPtr> MediaSessionMap;
+
       protected:
         
         MediaManager(
@@ -187,8 +187,7 @@ namespace openpeer
         #pragma mark
         
       protected:
-        virtual MediaSessionList getReceiveMediaSessions();
-        virtual MediaSessionList getSendMediaSessions();
+        virtual MediaSessionList getMediaSessions();
         virtual void addMediaSession(IMediaSessionPtr session, bool mergeAudioStreams = true);
         virtual void removeMediaSession(IMediaSessionPtr session);
         
@@ -222,7 +221,14 @@ namespace openpeer
 
         int mError;
 
+        MediaSessionMap mMediaSessions;
       };
     }
   }
 }
+
+ZS_DECLARE_PROXY_BEGIN(openpeer::core::internal::IMediaManagerDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::core::internal::IMediaSessionPtr, IMediaSessionPtr)
+ZS_DECLARE_PROXY_METHOD_1(onMediaManagerSessionAdded, IMediaSessionPtr)
+ZS_DECLARE_PROXY_METHOD_1(onMediaManagerSessionRemoved, IMediaSessionPtr)
+ZS_DECLARE_PROXY_END()

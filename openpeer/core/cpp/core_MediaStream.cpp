@@ -48,13 +48,96 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark MediaStream
+      #pragma mark MediaTransport
       #pragma mark
       
       //-------------------------------------------------------------------------
-      MediaStream::MediaStream(IMessageQueuePtr queue, IMediaStreamDelegatePtr delegate) :
-        MessageQueueAssociator(queue),
-        mChannel(OPENPEER_MEDIA_ENGINE_INVALID_CHANNEL)
+      MediaTransport::MediaTransport()
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      MediaTransport::~MediaTransport()
+      {
+        
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ReceiveMediaTransport
+      #pragma mark
+      
+      //-------------------------------------------------------------------------
+      ReceiveMediaTransport::ReceiveMediaTransport()
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      ReceiveMediaTransport::~ReceiveMediaTransport()
+      {
+        
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ReceiveMediaTransport => IReceiveMediaTransportForCallTransport
+      #pragma mark
+      
+      //-------------------------------------------------------------------------
+      int ReceiveMediaTransport::receivedRTPPacket(const void *data, unsigned int length)
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      int ReceiveMediaTransport::receivedRTCPPacket(const void *data, unsigned int length)
+      {
+        
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark SendMediaTransport
+      #pragma mark
+      
+      //-------------------------------------------------------------------------
+      SendMediaTransport::SendMediaTransport()
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      SendMediaTransport::~SendMediaTransport()
+      {
+        
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark SendMediaTransport => ISendMediaTransportForCallTransport
+      #pragma mark
+      
+      //-------------------------------------------------------------------------
+      int SendMediaTransport::registerExternalTransport(Transport &transport)
+      {
+        
+      }
+      
+      int SendMediaTransport::deregisterExternalTransport()
       {
         
       }
@@ -77,6 +160,165 @@ namespace openpeer
         }
         return "UNDEFINED";
       }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark MediaStream
+      #pragma mark
+      
+      //-------------------------------------------------------------------------
+      MediaStream::MediaStream(IMessageQueuePtr queue, IMediaStreamDelegatePtr delegate) :
+        MessageQueueAssociator(queue),
+        mChannel(OPENPEER_MEDIA_ENGINE_INVALID_CHANNEL)
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      MediaStream::~MediaStream()
+      {
+        
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark MediaStream => IMediaStream
+      #pragma mark
+    
+      //-------------------------------------------------------------------------
+      ULONG MediaStream::getSSRC()
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      IMediaStreamPtr MediaStream::clone()
+      {
+        
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark MediaStream => (internal)
+      #pragma mark
+      
+      //-------------------------------------------------------------------------
+      String MediaStream::log(const char *message) const
+      {
+        
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark AudioStream
+      #pragma mark
+
+      //-------------------------------------------------------------------------
+      AudioStream::AudioStream(IMessageQueuePtr queue, IMediaStreamDelegatePtr delegate) :
+        MediaStream(queue, delegate)
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      AudioStream::~AudioStream()
+      {
+        
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark VideoStream
+      #pragma mark
+      
+      //-------------------------------------------------------------------------
+      VideoStream::VideoStream(IMessageQueuePtr queue, IMediaStreamDelegatePtr delegate) :
+        MediaStream(queue, delegate)
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      VideoStream::~VideoStream()
+      {
+        
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark VideoStream => ILocalSendVideoStreamForCall, IRemoteReceiveVideoStreamForCall, IRemoteSendVideoStreamForCall
+      #pragma mark
+      
+      //-------------------------------------------------------------------------
+      void VideoStream::setRenderView(void *renderView)
+      {
+        
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark LocalSendAudioStream
+      #pragma mark
+      
+      //-------------------------------------------------------------------------
+      LocalSendAudioStream::LocalSendAudioStream(IMessageQueuePtr queue, IMediaStreamDelegatePtr delegate) :
+        AudioStream(queue, delegate)
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      LocalSendAudioStream::~LocalSendAudioStream()
+      {
+        
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark LocalSendAudioStream => ILocalSendAudioStreamForCall
+      #pragma mark
+      
+      //-------------------------------------------------------------------------
+      void LocalSendAudioStream::start()
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      void LocalSendAudioStream::stop()
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      void LocalSendAudioStream::setMediaConstraints(IMediaStream::MediaConstraintList constraintList)
+      {
+        
+      }
       
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -86,11 +328,205 @@ namespace openpeer
       #pragma mark RemoteReceiveAudioStream
       #pragma mark
       
+      //-------------------------------------------------------------------------
       RemoteReceiveAudioStream::RemoteReceiveAudioStream(IMessageQueuePtr queue, IMediaStreamDelegatePtr delegate) :
-        AudioStream(queue, delegate),
-        mEcEnabled(false),
-        mAgcEnabled(false),
-        mNsEnabled(false)
+        AudioStream(queue, delegate)
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      RemoteReceiveAudioStream::~RemoteReceiveAudioStream()
+      {
+        
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RemoteReceiveAudioStream => IRemoteReceiveAudioStreamForCall
+      #pragma mark
+      
+      //-------------------------------------------------------------------------
+      void RemoteReceiveAudioStream::setEcEnabled(bool enabled)
+      {
+        
+      }
+
+      //-------------------------------------------------------------------------
+      void RemoteReceiveAudioStream::setAgcEnabled(bool enabled)
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      void RemoteReceiveAudioStream::setNsEnabled(bool enabled)
+      {
+        
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RemoteSendAudioStream
+      #pragma mark
+      
+      //-------------------------------------------------------------------------
+      RemoteSendAudioStream::RemoteSendAudioStream(IMessageQueuePtr queue, IMediaStreamDelegatePtr delegate) :
+        AudioStream(queue, delegate)
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      RemoteSendAudioStream::~RemoteSendAudioStream()
+      {
+        
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark LocalSendVideoStream
+      #pragma mark
+      
+      //-------------------------------------------------------------------------
+      LocalSendVideoStream::LocalSendVideoStream(IMessageQueuePtr queue, IMediaStreamDelegatePtr delegate) :
+        VideoStream(queue, delegate)
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      LocalSendVideoStream::~LocalSendVideoStream()
+      {
+        
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark LocalSendVideoStream => ILocalSendVideoStreamForCall
+      #pragma mark
+
+      //-------------------------------------------------------------------------
+      void LocalSendVideoStream::setContinuousVideoCapture(bool continuousVideoCapture)
+      {
+        
+      }
+
+      //-------------------------------------------------------------------------
+      bool LocalSendVideoStream::getContinuousVideoCapture()
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      void LocalSendVideoStream::setFaceDetection(bool faceDetection)
+      {
+        
+      }
+
+      //-------------------------------------------------------------------------
+      bool LocalSendVideoStream::getFaceDetection()
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      ILocalSendVideoStreamForCall::CameraTypes LocalSendVideoStream::getCameraType() const
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      void LocalSendVideoStream::setCameraType(CameraTypes type)
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      void LocalSendVideoStream::setRenderView(void *renderView)
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      void LocalSendVideoStream::start()
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      void LocalSendVideoStream::stop()
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      void LocalSendVideoStream::startRecord(String fileName, bool saveToLibrary)
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      void LocalSendVideoStream::stopRecord()
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      void LocalSendVideoStream::setMediaConstraints(IMediaStream::MediaConstraintList constraintList)
+      {
+        
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RemoteReceiveVideoStream
+      #pragma mark
+      
+      //-------------------------------------------------------------------------
+      RemoteReceiveVideoStream::RemoteReceiveVideoStream(IMessageQueuePtr queue, IMediaStreamDelegatePtr delegate) :
+        VideoStream(queue, delegate)
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      RemoteReceiveVideoStream::~RemoteReceiveVideoStream()
+      {
+        
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RemoteSendVideoStream
+      #pragma mark
+      
+      //-------------------------------------------------------------------------
+      RemoteSendVideoStream::RemoteSendVideoStream(IMessageQueuePtr queue, IMediaStreamDelegatePtr delegate) :
+        VideoStream(queue, delegate)
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      RemoteSendVideoStream::~RemoteSendVideoStream()
       {
         
       }
