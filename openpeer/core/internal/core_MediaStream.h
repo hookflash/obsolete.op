@@ -131,6 +131,17 @@ namespace openpeer
         #pragma mark
         
         virtual int getTransportStatistics(IMediaTransport::RtpRtcpStatistics &stat);
+        
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark MediaTransport => (internal)
+        #pragma mark
+        
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark MediaTransport => (data)
+        #pragma mark
+
       };
       
       //-----------------------------------------------------------------------
@@ -163,6 +174,16 @@ namespace openpeer
         
         virtual int receivedRTPPacket(const void *data, unsigned int length);
         virtual int receivedRTCPPacket(const void *data, unsigned int length);
+        
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark ReceiveMediaTransport => (internal)
+        #pragma mark
+        
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark ReceiveMediaTransport => (data)
+        #pragma mark
       };
       
       //-----------------------------------------------------------------------
@@ -195,6 +216,19 @@ namespace openpeer
         
         virtual int receivedRTPPacket(const void *data, unsigned int length);
         virtual int receivedRTCPPacket(const void *data, unsigned int length);
+        
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark SendMediaTransport => (internal)
+        #pragma mark
+        
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark SendMediaTransport => (data)
+        #pragma mark
+        
+      protected:
+
       };
       
       //-----------------------------------------------------------------------
@@ -373,10 +407,10 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IMediaStreamAsync
+      #pragma mark IMediaStreamDelegate
       #pragma mark
       
-      interaction IMediaStreamAsync
+      interaction IMediaStreamDelegate
       {
         virtual void onMediaStreamFaceDetected() = 0;
         virtual void onMediaStreamVideoCaptureRecordStopped() = 0;
@@ -394,11 +428,11 @@ namespace openpeer
       {
       public:
         friend interaction IMediaStream;
-        
+
       protected:
         MediaStream(
                    IMessageQueuePtr queue,
-                   IMediaStreamAsyncPtr delegate
+                   IMediaStreamDelegatePtr delegate
                    );
         
       public:
@@ -419,6 +453,28 @@ namespace openpeer
         #pragma mark
         
         virtual IMediaTransportPtr getTransport();
+        
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark MediaStream => (internal)
+        #pragma mark
+        
+      private:
+        String log(const char *message) const;
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark MediaStream => (data)
+        #pragma mark
+        
+      protected:
+        PUID mID;
+        mutable RecursiveLock mLock;
+        MediaStreamWeakPtr mThisWeak;
+        
+        int mError;
+
+        int mChannel;
       };
       
       //-----------------------------------------------------------------------
@@ -437,11 +493,24 @@ namespace openpeer
       protected:
         AudioStream(
                     IMessageQueuePtr queue,
-                    IMediaStreamAsyncPtr delegate
+                    IMediaStreamDelegatePtr delegate
                     );
         
       public:
         virtual ~AudioStream();
+        
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark AudioStream => (internal)
+        #pragma mark
+                
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark AudioStream => (data)
+        #pragma mark
+        
+      protected:
+        
       };
       
       //-----------------------------------------------------------------------
@@ -459,11 +528,11 @@ namespace openpeer
         friend interaction ILocalSendVideoStreamForCall;
         friend interaction IRemoteReceiveVideoStreamForCall;
         friend interaction IRemoteSendVideoStreamForCall;
-        
+
       protected:
         VideoStream(
                     IMessageQueuePtr queue,
-                    IMediaStreamAsyncPtr delegate
+                    IMediaStreamDelegatePtr delegate
                     );
         
       public:
@@ -476,6 +545,19 @@ namespace openpeer
         #pragma mark
         
         virtual void setRenderView(void *renderView);
+        
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark VideoStream => (internal)
+        #pragma mark
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark VideoStream => (data)
+        #pragma mark
+        
+      protected:
+        
       };
 
       //-----------------------------------------------------------------------
@@ -498,7 +580,7 @@ namespace openpeer
       protected:
         LocalSendAudioStream(
                              IMessageQueuePtr queue,
-                             IMediaStreamAsyncPtr delegate
+                             IMediaStreamDelegatePtr delegate
                              );
         
       public:
@@ -517,6 +599,17 @@ namespace openpeer
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark LocalSendAudioStream => ILocalStreamForCallTransport
+        #pragma mark
+        
+        
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark LocalSendAudioStream => (internal)
+        #pragma mark
+        
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark LocalSendAudioStream => (data)
         #pragma mark
         
       };
@@ -541,7 +634,7 @@ namespace openpeer
       protected:
         RemoteReceiveAudioStream(
                                  IMessageQueuePtr queue,
-                                 IMediaStreamAsyncPtr delegate
+                                 IMediaStreamDelegatePtr delegate
                                  );
         
       public:
@@ -561,6 +654,22 @@ namespace openpeer
         #pragma mark
         #pragma mark RemoteReceiveAudioStream => IRemoteStreamForCallTransport
         #pragma mark
+        
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RemoteReceiveAudioStream => (internal)
+        #pragma mark
+        
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RemoteReceiveAudioStream => (data)
+        #pragma mark
+        
+      protected:
+        bool mEcEnabled;
+        bool mAgcEnabled;
+        bool mNsEnabled;
+        
         
       };
       
@@ -584,7 +693,7 @@ namespace openpeer
       protected:
         RemoteSendAudioStream(
                               IMessageQueuePtr queue,
-                              IMediaStreamAsyncPtr delegate
+                              IMediaStreamDelegatePtr delegate
                               );
         
       public:
@@ -601,8 +710,19 @@ namespace openpeer
         #pragma mark RemoteSendAudioStream => IRemoteStreamForCallTransport
         #pragma mark
         
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RemoteSendAudioStream => (internal)
+        #pragma mark
+        
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RemoteSendAudioStream => (data)
+        #pragma mark
+        
+        
       };
-            
+      
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -619,11 +739,11 @@ namespace openpeer
         friend interaction IMediaStream;
         friend interaction ILocalSendVideoStreamForCall;
         friend interaction IMediaStreamForCallTransport;
-        
+
       protected:
         LocalSendVideoStream(
                              IMessageQueuePtr queue,
-                             IMediaStreamAsyncPtr delegate
+                             IMediaStreamDelegatePtr delegate
                              );
         
       public:
@@ -659,6 +779,22 @@ namespace openpeer
         #pragma mark LocalSendVideoStream => ILocalStreamForCallTransport
         #pragma mark
         
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark LocalSendVideoStream => (internal)
+        #pragma mark
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark LocalSendVideoStream => (data)
+        #pragma mark
+        
+      protected:
+        int mCaptureId;
+        char mDeviceUniqueId[512];
+        CameraTypes mCameraType;
+        bool mFaceDetection;
+
       };
       
       //-----------------------------------------------------------------------
@@ -681,7 +817,7 @@ namespace openpeer
       protected:
         RemoteReceiveVideoStream(
                                  IMessageQueuePtr queue,
-                                 IMediaStreamAsyncPtr delegate
+                                 IMediaStreamDelegatePtr delegate
                                  );
         
       public:
@@ -697,6 +833,17 @@ namespace openpeer
         #pragma mark
         #pragma mark RemoteReceiveVideoStream => IRemoteStreamForCallTransport
         #pragma mark
+        
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RemoteReceiveVideoStream => (internal)
+        #pragma mark
+        
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RemoteReceiveVideoStream => (data)
+        #pragma mark
+        
         
       };
       
@@ -720,7 +867,7 @@ namespace openpeer
       protected:
         RemoteSendVideoStream(
                               IMessageQueuePtr queue,
-                              IMediaStreamAsyncPtr delegate
+                              IMediaStreamDelegatePtr delegate
                               );
         
       public:
@@ -737,12 +884,23 @@ namespace openpeer
         #pragma mark RemoteSendVideoStream => IRemoteStreamForCallTransport
         #pragma mark
         
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RemoteSendVideoStream => (internal)
+        #pragma mark
+        
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RemoteSendVideoStream => (data)
+        #pragma mark
+        
+        
       };
     }
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(openpeer::core::internal::IMediaStreamAsync)
+ZS_DECLARE_PROXY_BEGIN(openpeer::core::internal::IMediaStreamDelegate)
 ZS_DECLARE_PROXY_METHOD_0(onMediaStreamFaceDetected)
 ZS_DECLARE_PROXY_METHOD_0(onMediaStreamVideoCaptureRecordStopped)
 ZS_DECLARE_PROXY_END()

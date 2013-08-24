@@ -32,7 +32,11 @@
 #pragma once
 
 #include <openpeer/core/internal/types.h>
+#include <openpeer/core/IMediaManager.h>
+#include <openpeer/core/internal/core_MediaSession.h>
 #include <openpeer/core/internal/core_MediaStream.h>
+
+#include <zsLib/MessageQueueAssociator.h>
 
 namespace openpeer
 {
@@ -46,51 +50,57 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IMediaSession
+      #pragma mark IMediaManagerForStack
       #pragma mark
       
-      interaction IMediaSession
+      interaction IMediaManagerForStack
       {
-        virtual MediaStreamListPtr getAudioStreams() = 0;
-        virtual MediaStreamListPtr getVideoStreams() = 0;
+        IMediaManagerForStack &forStack() {return *this;}
+        const IMediaManagerForStack &forStack() const {return *this;}
         
-        virtual String getCNAME() = 0;
+        static void setup();
+      };
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IMediaManagerForCall
+      #pragma mark
+      
+      interaction IMediaManagerForCall
+      {
+        IMediaManagerForCall &forCall() {return *this;}
+        const IMediaManagerForCall &forCall() const {return *this;}
         
-        virtual void addStream(IMediaStreamPtr stream) = 0;
-        virtual void removeStream(IMediaStreamPtr stream) = 0;
-      };
-   
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      //-----------------------------------------------------------------------
-      #pragma mark
-      #pragma mark IMediaSessionForCall
-      #pragma mark
-      
-      interaction IMediaSessionForCall
-      {
-        IMediaSessionForCall &forCall() {return *this;}
-        const IMediaSessionForCall &forCall() const {return *this;}
-
-        virtual bool getImmutable() = 0;
+        static MediaManagerPtr singleton();
         
-        virtual void setVoiceRecordFile(String fileName) = 0;
-        virtual String getVoiceRecordFile() const = 0;
+        virtual MediaSessionList getReceiveMediaSessions() = 0;
+        virtual MediaSessionList getSendMediaSessions() = 0;
+        virtual void addMediaSession(IMediaSessionPtr session, bool mergeAudioStreams = true) = 0;
+        virtual void removeMediaSession(IMediaSessionPtr session) = 0;
+        
+        virtual IMediaStreamForCallTransport::MediaConstraintList getVideoConstraints(ILocalSendVideoStreamForCall::CameraTypes cameraType) = 0;
+        virtual IMediaStreamForCallTransport::MediaConstraintList getAudioConstraints() = 0;
       };
-
+      
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IMediaSessionForCallTransport
+      #pragma mark IMediaManagerForCallTransport
       #pragma mark
       
-      interaction IMediaSessionForCallTransport
+      interaction IMediaManagerForCallTransport
       {
-        IMediaSessionForCallTransport &forCallTransport() {return *this;}
-        const IMediaSessionForCallTransport &forCallTransport() const {return *this;}
+        typedef webrtc::Transport Transport;
+        
+        IMediaManagerForCallTransport &forCallTransport() {return *this;}
+        const IMediaManagerForCallTransport &forCallTransport() const {return *this;}
+        
+        static MediaManagerPtr singleton();
       };
       
       //-----------------------------------------------------------------------
@@ -98,101 +108,121 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IMediaSessionDelegate
+      #pragma mark IMediaManagerAsync
       #pragma mark
 
-      interaction IMediaSessionDelegate
+      interaction IMediaManagerAsync
       {
-        virtual void onMediaSessionStreamAdded(IMediaStreamPtr stream) = 0;
-        virtual void onMediaSessionStreamRemoved(IMediaStreamPtr stream) = 0;
+//        virtual void onMediaManagerSessionAdded(IMediaSessionPtr session) = 0;
+//        virtual void onMediaManagerSessionRemoved(IMediaSessionPtr session) = 0;
       };
 
-      
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark MediaSession
+      #pragma mark MediaManager
       #pragma mark
       
-      class MediaSession : public MessageQueueAssociator,
-                           public IMediaSessionForCall,
-                           public IMediaSessionForCallTransport
+      class MediaManager : public MessageQueueAssociator,
+                           public IMediaManager,
+                           public IMediaManagerAsync,
+                           public IMediaManagerForStack,
+                           public IMediaManagerForCall,
+                           public IMediaManagerForCallTransport
       {
       public:
-        friend interaction IMediaSession;
-        friend interaction IMediaSessionForCall;
-        friend interaction IMediaSessionForCallTransport;
+        friend interaction IMediaManager;
+        friend interaction IMediaManagerAsync;
+        friend interaction IMediaManagerForStack;
+        friend interaction IMediaManagerForCall;
+        friend interaction IMediaManagerForCallTransport;
         
       protected:
-        MediaSession(
+        
+        MediaManager(
                      IMessageQueuePtr queue,
-                     IMediaSessionDelegatePtr delegate
+                     IMediaManagerDelegatePtr delegate
                      );
         
+        void init();
+        
+        static MediaManagerPtr create(IMediaManagerDelegatePtr delegate);
+        
       public:
-        virtual ~MediaSession();
+        ~MediaManager();
+        
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark MediaManager => IMediaManager
+        #pragma mark
         
       protected:
+        static MediaManagerPtr singleton(IMediaManagerDelegatePtr delegate = IMediaManagerDelegatePtr());
+        
+        virtual void setDefaultVideoOrientation(VideoOrientations orientation);
+        virtual VideoOrientations getDefaultVideoOrientation();
+        virtual void setRecordVideoOrientation(VideoOrientations orientation);
+        virtual VideoOrientations getRecordVideoOrientation();
+        virtual void setVideoOrientation();
+        
+        virtual void setMuteEnabled(bool enabled);
+        virtual bool getMuteEnabled();
+        virtual void setLoudspeakerEnabled(bool enabled);
+        virtual bool getLoudspeakerEnabled();
+        virtual OutputAudioRoutes getOutputAudioRoute();
+        
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark MediaSession => IMediaSession
+        #pragma mark MediaManager => IMediaManagerForStack
         #pragma mark
         
-        virtual MediaStreamListPtr getAudioStreams();
-        virtual MediaStreamListPtr getVideoStreams();
+      protected:
+        static void setup();
         
-        virtual String getCNAME();
-        virtual IMediaSessionPtr clone();
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark MediaManager => IMediaManagerForCall
+        #pragma mark
         
-        virtual void addStream(IMediaStreamPtr stream);
-        virtual void removeStream(IMediaStreamPtr stream);
+      protected:
+        virtual MediaSessionList getReceiveMediaSessions();
+        virtual MediaSessionList getSendMediaSessions();
+        virtual void addMediaSession(IMediaSessionPtr session, bool mergeAudioStreams = true);
+        virtual void removeMediaSession(IMediaSessionPtr session);
+        
+        virtual IMediaStream::MediaConstraintList getVideoConstraints(ILocalSendVideoStreamForCall::CameraTypes cameraType);
+        virtual IMediaStream::MediaConstraintList getAudioConstraints();
+        
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark MediaManager => IMediaManagerForCallTransport
+        #pragma mark
+        
 
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark MediaSession => IMediaSessionForCall
+        #pragma mark MediaManager => (internal)
         #pragma mark
-        
-        virtual bool getImmutable();
-        
-        virtual void setVoiceRecordFile(String fileName);
-        virtual String getVoiceRecordFile() const;
 
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark MediaSession => IMediaSessionForCallTransport
-        #pragma mark
-        
-        //---------------------------------------------------------------------
-        #pragma mark
-        #pragma mark MediaSession => (internal)
-        #pragma mark
-        
       private:
         String log(const char *message) const;
-
+        
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark MediaSession => (data)
+        #pragma mark MediaEngine => (data)
         #pragma mark
         
       protected:
         PUID mID;
         mutable RecursiveLock mLock;
-        MediaSessionWeakPtr mThisWeak;
-        
-        int mError;
+        MediaManagerWeakPtr mThisWeak;
+        IMediaManagerDelegatePtr mDelegate;
 
-        String mVoiceRecordFile;
+        int mError;
 
       };
     }
   }
 }
-
-ZS_DECLARE_PROXY_BEGIN(openpeer::core::internal::IMediaSessionDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(openpeer::core::internal::IMediaStreamPtr, IMediaStreamPtr)
-ZS_DECLARE_PROXY_METHOD_1(onMediaSessionStreamAdded, IMediaStreamPtr)
-ZS_DECLARE_PROXY_METHOD_1(onMediaSessionStreamRemoved, IMediaStreamPtr)
-ZS_DECLARE_PROXY_END()

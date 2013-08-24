@@ -53,7 +53,7 @@
 #define OPENPEER_MEDIA_ENGINE_INVALID_CHANNEL (-1)
 #define OPENPEER_MEDIA_ENGINE_MTU (576)
 
-namespace openpeer { namespace core { ZS_DECLARE_SUBSYSTEM(openpeer_webrtc) } }
+namespace openpeer { namespace core { ZS_DECLARE_SUBSYSTEM(openpeer_webrtc_obsolete) } }
 
 namespace openpeer
 {
@@ -592,7 +592,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       MediaEngineObsoletePtr MediaEngineObsolete::singleton(IMediaEngineDelegateObsoletePtr delegate)
       {
-        static MediaEngineObsoletePtr engine = IMediaEngineFactory::singleton().createMediaEngine(delegate);
+        static MediaEngineObsoletePtr engine = IMediaEngineFactoryObsolete::singleton().createMediaEngine(delegate);
         return engine;
       }
       

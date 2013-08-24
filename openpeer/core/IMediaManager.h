@@ -37,7 +37,7 @@ namespace openpeer
 {
   namespace core
   {
-    interaction IMediaEngine
+    interaction IMediaManager
     {
       enum VideoOrientations
       {
@@ -58,7 +58,7 @@ namespace openpeer
       
       static const char *toString(OutputAudioRoutes route);
       
-      static IMediaEnginePtr singleton();
+      static IMediaManagerPtr singleton();
       
       virtual void setDefaultVideoOrientation(VideoOrientations orientation) = 0;
       virtual VideoOrientations getDefaultVideoOrientation() = 0;
@@ -73,16 +73,16 @@ namespace openpeer
       virtual OutputAudioRoutes getOutputAudioRoute() = 0;
     };
     
-    interaction IMediaEngineDelegate
+    interaction IMediaManagerDelegate
     {
-      typedef IMediaEngine::OutputAudioRoutes OutputAudioRoutes;
+      typedef IMediaManager::OutputAudioRoutes OutputAudioRoutes;
       
-      virtual void onMediaEngineAudioRouteChanged(OutputAudioRoutes audioRoute) = 0;
+      virtual void onMediaManagerAudioRouteChanged(OutputAudioRoutes audioRoute) = 0;
     };
   }
 }
 
-ZS_DECLARE_PROXY_BEGIN(openpeer::core::IMediaEngineDelegate)
-ZS_DECLARE_PROXY_TYPEDEF(openpeer::core::IMediaEngine::OutputAudioRoutes, OutputAudioRoutes)
-ZS_DECLARE_PROXY_METHOD_1(onMediaEngineAudioRouteChanged, OutputAudioRoutes)
+ZS_DECLARE_PROXY_BEGIN(openpeer::core::IMediaManagerDelegate)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::core::IMediaManager::OutputAudioRoutes, OutputAudioRoutes)
+ZS_DECLARE_PROXY_METHOD_1(onMediaManagerAudioRouteChanged, OutputAudioRoutes)
 ZS_DECLARE_PROXY_END()

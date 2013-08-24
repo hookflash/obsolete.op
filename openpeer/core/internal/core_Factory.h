@@ -58,7 +58,8 @@ namespace openpeer
                       public IConversationThreadSlaveFactory,
                       public IIdentityFactory,
                       public IIdentityLookupFactory,
-                      public IMediaEngineFactory
+                      public IMediaEngineFactory,
+                      public IMediaEngineFactoryObsolete
       {
       public:
         static void override(FactoryPtr override);

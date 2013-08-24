@@ -127,7 +127,7 @@ namespace openpeer
                           public webrtc::ViECaptureObserver
       {
       public:
-        friend interaction IMediaEngineFactory;
+        friend interaction IMediaEngineFactoryObsolete;
         friend interaction IMediaEngineObsolete;
         friend interaction IMediaEngineForStackObsolete;
         friend interaction IMediaEngineForCallTransportObsolete;
@@ -435,7 +435,7 @@ namespace openpeer
 
         mutable RecursiveLock mMediaEngineReadyLock;
       };
-
+      
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -443,11 +443,11 @@ namespace openpeer
       #pragma mark
       #pragma mark IMediaEngineFactory
       #pragma mark
-
-      interaction IMediaEngineFactory
+      
+      interaction IMediaEngineFactoryObsolete
       {
-        static IMediaEngineFactory &singleton();
-
+        static IMediaEngineFactoryObsolete &singleton();
+        
         virtual MediaEngineObsoletePtr createMediaEngine(IMediaEngineDelegateObsoletePtr delegate);
       };
     }
