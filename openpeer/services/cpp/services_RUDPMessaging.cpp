@@ -72,7 +72,6 @@ namespace openpeer
         MessageQueueAssociator(queue),
         mCurrentState(RUDPMessagingState_Connecting),
         mDelegate(IRUDPMessagingDelegateProxy::createWeak(queue, delegate)),
-        mNulTerminateBuffers(true),
         mMaxMessageSizeInBytes(maxMessageSizeInBytes),
         mOuterReceiveStream(receiveStream->getWriter()),
         mOuterSendStream(sendStream->getReader()),
@@ -248,13 +247,6 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      void RUDPMessaging::setAutoNulTerminateReceiveBuffers(bool nulTerminate)
-      {
-        AutoRecursiveLock lock(mLock);
-        mNulTerminateBuffers = nulTerminate;
-      }
-
-      //-----------------------------------------------------------------------
       IPAddress RUDPMessaging::getConnectedRemoteIP()
       {
         IRUDPChannelPtr channel = getChannel();
@@ -391,8 +383,6 @@ namespace openpeer
 
         Helper::getDebugValue("delegate", mDelegate ? String("true") : String(), firstTime) +
 
-        Helper::getDebugValue("nul terminate", mNulTerminateBuffers ? String("true") : String(), firstTime) +
-
         Helper::getDebugValue("outer receive stream", mOuterReceiveStream ? String("true") : String(), firstTime) +
         Helper::getDebugValue("outer send stream", mOuterSendStream ? String("true") : String(), firstTime) +
 
@@ -488,7 +478,7 @@ namespace openpeer
           mWireReceiveStream->skip(sizeof(DWORD));
 
           SecureByteBlockPtr message(new SecureByteBlock);
-          message->CleanNew(bufferSize + (mNulTerminateBuffers ? sizeof(char) : 0));
+          message->CleanNew(bufferSize);
           if (bufferSize > 0) {
             mWireReceiveStream->read(message->BytePtr(), bufferSize);
           }

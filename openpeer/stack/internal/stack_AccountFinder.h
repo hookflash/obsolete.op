@@ -39,9 +39,11 @@
 #include <openpeer/stack/message/peer-finder/SessionKeepAliveResult.h>
 #include <openpeer/stack/message/peer-finder/SessionDeleteResult.h>
 
-#include <openpeer/services/IRUDPICESocket.h>
-#include <openpeer/services/IRUDPICESocketSession.h>
-#include <openpeer/services/IRUDPMessaging.h>
+#include <openpeer/stack/internal/stack_IFinderConnection.h>
+
+//#include <openpeer/services/IRUDPICESocket.h>
+//#include <openpeer/services/IRUDPICESocketSession.h>
+//#include <openpeer/services/IRUDPMessaging.h>
 #include <openpeer/services/ITransportStream.h>
 #include <openpeer/services/IWakeDelegate.h>
 
@@ -99,6 +101,11 @@ namespace openpeer
                                         IPAddress *outIPAddress = NULL
                                         ) const = 0;
 
+        virtual void getFinderRelayInformation(
+                                               String &outFinderRelayAccessToken,
+                                               String &outFinderRelayAccessSecret
+                                               ) const = 0;
+
         virtual void notifyFinderDNSComplete() = 0;
       };
 
@@ -114,9 +121,10 @@ namespace openpeer
                             public MessageQueueAssociator,
                             public IAccountFinderForAccount,
                             public IWakeDelegate,
-                            public IRUDPICESocketDelegate,
-                            public IRUDPICESocketSessionDelegate,
-                            public IRUDPMessagingDelegate,
+                            public IFinderConnectionDelegate,
+//                            public IRUDPICESocketDelegate,
+//                            public IRUDPICESocketSessionDelegate,
+//                            public IRUDPMessagingDelegate,
                             public services::ITransportStreamWriterDelegate,
                             public services::ITransportStreamReaderDelegate,
                             public IMessageMonitorResultDelegate<SessionCreateResult>,
@@ -173,6 +181,11 @@ namespace openpeer
                                         IPAddress *outIPAddress = NULL
                                         ) const;
 
+        virtual void getFinderRelayInformation(
+                                               String &outFinderRelayAccessToken,
+                                               String &outFinderRelayAccessSecret
+                                               ) const;
+
         virtual void notifyFinderDNSComplete();
 
         //---------------------------------------------------------------------
@@ -182,6 +195,20 @@ namespace openpeer
 
         virtual void onWake();
 
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark AccountFinder => IFinderConnectionDelegate
+        #pragma mark
+
+        virtual void onFinderConnectionStateChanged(
+                                                    IFinderConnectionPtr connection,
+                                                    IFinderConnection::SessionStates state
+                                                    );
+
+        virtual void onFinderConnectionIncomingRelayChannel(IFinderConnectionPtr connection);
+
+#if 0
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark AccountFinder => IRUDPICESocketDelegate
@@ -215,6 +242,8 @@ namespace openpeer
                                                  IRUDPMessagingPtr session,
                                                  RUDPMessagingStates state
                                                  );
+
+#endif //0
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -308,9 +337,10 @@ namespace openpeer
         void cancel();
 
         void step();
-        bool stepSocketSubscription(IRUDPICESocketPtr socket);
-        bool stepSocketSession(IRUDPICESocketPtr socket);
-        bool stepMessaging();
+        bool stepConnection();
+//        bool stepSocketSubscription(IRUDPICESocketPtr socket);
+//        bool stepSocketSession(IRUDPICESocketPtr socket);
+//        bool stepMessaging();
         bool stepCreateSession();
 
         void setState(AccountStates state);
@@ -332,9 +362,11 @@ namespace openpeer
 
         AccountFinderPtr mGracefulShutdownReference;
 
-        IRUDPICESocketSubscriptionPtr mSocketSubscription;
-        IRUDPICESocketSessionPtr mSocketSession;
-        IRUDPMessagingPtr mMessaging;
+        IFinderConnectionPtr mFinderConnection;
+
+//        IRUDPICESocketSubscriptionPtr mSocketSubscription;
+//        IRUDPICESocketSessionPtr mSocketSession;
+//        IRUDPMessagingPtr mMessaging;
         ITransportStreamReaderPtr mReceiveStream;
         ITransportStreamWriterPtr mSendStream;
 
@@ -346,6 +378,9 @@ namespace openpeer
         IPAddress mFinderIP;
         String mServerAgent;
         Time mSessionCreatedTime;
+
+        String mRelayAccessToken;
+        String mRelayAccessSecret;
 
         TimerPtr mKeepAliveTimer;
       };
@@ -360,16 +395,26 @@ namespace openpeer
 
       interaction IAccountFinderDelegate
       {
+        typedef ULONG ChannelNumber;
         typedef IAccount::AccountStates AccountStates;
 
         virtual void onAccountFinderStateChanged(
                                                  AccountFinderPtr finder,
                                                  AccountStates state
                                                  ) = 0;
+
         virtual void onAccountFinderMessageIncoming(
                                                     AccountFinderPtr finder,
                                                     MessagePtr message
                                                     ) = 0;
+
+        virtual void onAccountFinderIncomingRelayChannel(
+                                                         AccountFinderPtr finder,
+                                                         IFinderRelayChannelPtr relayChannel,
+                                                         ITransportStreamPtr receiveStream,
+                                                         ITransportStreamPtr sendStream,
+                                                         ChannelNumber channelNumber
+                                                         ) = 0;
       };
 
       //-----------------------------------------------------------------------
@@ -398,6 +443,9 @@ ZS_DECLARE_PROXY_BEGIN(openpeer::stack::internal::IAccountFinderDelegate)
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::internal::AccountFinderPtr, AccountFinderPtr)
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::internal::IAccountFinderDelegate::AccountStates, AccountStates)
 ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::message::MessagePtr, MessagePtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::stack::internal::IFinderRelayChannelPtr, IFinderRelayChannelPtr)
+ZS_DECLARE_PROXY_TYPEDEF(openpeer::services::ITransportStreamPtr, ITransportStreamPtr)
 ZS_DECLARE_PROXY_METHOD_2(onAccountFinderStateChanged, AccountFinderPtr, AccountStates)
 ZS_DECLARE_PROXY_METHOD_2(onAccountFinderMessageIncoming, AccountFinderPtr, MessagePtr)
+ZS_DECLARE_PROXY_METHOD_5(onAccountFinderIncomingRelayChannel, AccountFinderPtr, IFinderRelayChannelPtr, ITransportStreamPtr, ITransportStreamPtr, ChannelNumber)
 ZS_DECLARE_PROXY_END()

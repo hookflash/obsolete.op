@@ -176,9 +176,9 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      SecureByteBlockPtr PeerFilePrivate::getPassword(bool appendNUL) const
+      SecureByteBlockPtr PeerFilePrivate::getPassword() const
       {
-        return IHelper::convertToBuffer((const char *) ((const BYTE *)*mPassword), appendNUL);
+        return IHelper::convertToBuffer((const char *) ((const BYTE *)*mPassword));
       }
 
       //-----------------------------------------------------------------------

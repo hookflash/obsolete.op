@@ -329,7 +329,7 @@ namespace openpeer
 
                 ZS_LOG_TRACE(String("encrypting peer secret") + ", secret=" + mPeerSecret)
 
-                String peerSecret = IHelper::convertToBase64(*remotePeerFilePublic->encrypt(* IHelper::convertToBuffer(mPeerSecret, false)));
+                String peerSecret = IHelper::convertToBase64(*remotePeerFilePublic->encrypt(* IHelper::convertToBuffer(mPeerSecret)));
                 findProofEl->adoptAsLastChild(IMessageHelper::createElementWithText("peerSecretEncrypted", peerSecret));
               }
             }
@@ -339,7 +339,7 @@ namespace openpeer
             findProofEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("iceUsernameFrag", mICEUsernameFrag));
           }
           if (hasAttribute(AttributeType_ICEPassword)) {
-            String icePassword = stack::IHelper::splitEncrypt(*IHelper::hash(mPeerSecret, IHelper::HashAlgorthm_SHA256), *IHelper::convertToBuffer(mICEPassword, false));
+            String icePassword = stack::IHelper::splitEncrypt(*IHelper::hash(mPeerSecret, IHelper::HashAlgorthm_SHA256), *IHelper::convertToBuffer(mICEPassword));
             findProofEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("icePassword", icePassword));
           }
 

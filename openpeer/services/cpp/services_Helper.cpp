@@ -390,30 +390,16 @@ namespace openpeer
       String Helper::convertToString(const SecureByteBlock &buffer)
       {
         if (buffer.size() < 1) return String();
-
-        // check if buffer ia already NUL terminated
-        if ('\0' == (char)((buffer.BytePtr())[(sizeof(char)*buffer.size())-sizeof(char)])) {
-          return (const char *)(buffer.BytePtr());  // return buffer cast as const char *
-        }
-
-        SecureByteBlock outputFinal;
-        outputFinal.CleanNew(buffer.SizeInBytes()+sizeof(char));
-
-        memcpy(outputFinal, buffer, buffer.SizeInBytes());
-
-        return (const char *)((const BYTE *)(outputFinal));
+        return (const char *)(buffer.BytePtr());  // return buffer cast as const char *
       }
 
       //-----------------------------------------------------------------------
-      SecureByteBlockPtr Helper::convertToBuffer(
-                                                 const char *input,
-                                                 bool appendNUL
-                                                 )
+      SecureByteBlockPtr Helper::convertToBuffer(const char *input)
       {
         if (NULL == input) return SecureByteBlockPtr();
 
         SecureByteBlockPtr output(new SecureByteBlock);
-        output->CleanNew(((sizeof(char)*strlen(input)) + (appendNUL ? sizeof(char) : 0)));
+        output->CleanNew(((sizeof(char)*strlen(input))));
 
         memcpy(*output, input, sizeof(char)*(strlen(input)));
         return output;
@@ -422,39 +408,21 @@ namespace openpeer
       //-----------------------------------------------------------------------
       SecureByteBlockPtr Helper::convertToBuffer(
                                                  const BYTE *buffer,
-                                                 ULONG bufferLengthInBytes,
-                                                 bool appendNULIfMissing
+                                                 ULONG bufferLengthInBytes
                                                  )
       {
         SecureByteBlockPtr output(new SecureByteBlock);
 
-        ULONG finalLength = bufferLengthInBytes;
-        if (appendNULIfMissing) {
-          if (0 != finalLength) {
-            if (0 != buffer[bufferLengthInBytes-1]) {
-              finalLength += sizeof(char);
-            }
-          } else {
-            finalLength += sizeof(char);
-          }
-        }
-
-        if (0 == finalLength) {
+        if (0 == bufferLengthInBytes) {
           return output;
         }
 
-        output->CleanNew(finalLength);
+        output->CleanNew(bufferLengthInBytes);
 
         if (0 != bufferLengthInBytes) {
-          memcpy(*output, buffer, finalLength);
+          memcpy(*output, buffer, bufferLengthInBytes);
         }
         return output;
-      }
-
-      //-----------------------------------------------------------------------
-      SecureByteBlockPtr Helper::makeBufferStringSafe(const SecureByteBlock &input)
-      {
-        return convertToBuffer(input.BytePtr(), input.SizeInBytes(), true);
       }
 
       //-----------------------------------------------------------------------
@@ -693,13 +661,13 @@ namespace openpeer
       //-----------------------------------------------------------------------
       SecureByteBlockPtr Helper::hmacKeyFromPassphrase(const char *passphrase)
       {
-        return convertToBuffer(passphrase, false);
+        return convertToBuffer(passphrase);
       }
 
       //-----------------------------------------------------------------------
       SecureByteBlockPtr Helper::hmacKeyFromPassphrase(const std::string &passphrase)
       {
-        return convertToBuffer(passphrase.c_str(), false);
+        return convertToBuffer(passphrase.c_str());
       }
 
       //-----------------------------------------------------------------------
@@ -1251,37 +1219,24 @@ namespace openpeer
     }
 
     //-------------------------------------------------------------------------
-    SecureByteBlockPtr IHelper::convertToBuffer(
-                                                const char *input,
-                                                bool appendNUL
-                                                )
+    SecureByteBlockPtr IHelper::convertToBuffer(const char *input)
     {
-      return internal::Helper::convertToBuffer(input, appendNUL);
+      return internal::Helper::convertToBuffer(input);
     }
 
     //-------------------------------------------------------------------------
-    SecureByteBlockPtr IHelper::convertToBuffer(
-                                                const std::string &input,
-                                                bool appendNUL
-                                                )
+    SecureByteBlockPtr IHelper::convertToBuffer(const std::string &input)
     {
-      return internal::Helper::convertToBuffer(input.c_str(), appendNUL);
+      return internal::Helper::convertToBuffer(input.c_str());
     }
 
     //-------------------------------------------------------------------------
     SecureByteBlockPtr IHelper::convertToBuffer(
                                                 const BYTE *buffer,
-                                                ULONG bufferLengthInBytes,
-                                                bool appendNULIfMissing
+                                                ULONG bufferLengthInBytes
                                                 )
     {
-      return internal::Helper::convertToBuffer(buffer, bufferLengthInBytes, appendNULIfMissing);
-    }
-
-    //-------------------------------------------------------------------------
-    SecureByteBlockPtr IHelper::makeBufferStringSafe(const SecureByteBlock &input)
-    {
-      return internal::Helper::makeBufferStringSafe(input);
+      return internal::Helper::convertToBuffer(buffer, bufferLengthInBytes);
     }
 
     //-------------------------------------------------------------------------

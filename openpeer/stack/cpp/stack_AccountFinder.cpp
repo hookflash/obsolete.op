@@ -36,6 +36,7 @@
 #include <openpeer/stack/internal/stack_Helper.h>
 #include <openpeer/stack/internal/stack_MessageMonitor.h>
 #include <openpeer/stack/internal/stack_Stack.h>
+#include <openpeer/stack/internal/stack_IFinderRelayChannel.h>
 
 #include <openpeer/stack/message/peer-finder/SessionDeleteRequest.h>
 #include <openpeer/stack/message/peer-finder/SessionCreateRequest.h>
@@ -289,6 +290,17 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      void AccountFinder::getFinderRelayInformation(
+                                                    String &outFinderRelayAccessToken,
+                                                    String &outFinderRelayAccessSecret
+                                                    ) const
+      {
+        AutoRecursiveLock lock(getLock());
+        outFinderRelayAccessToken = mRelayAccessToken;
+        outFinderRelayAccessSecret = mRelayAccessSecret;
+      }
+
+      //-----------------------------------------------------------------------
       void AccountFinder::notifyFinderDNSComplete()
       {
         ZS_LOG_DEBUG(log("notified finder DNS complete"))
@@ -309,6 +321,68 @@ namespace openpeer
         AutoRecursiveLock lock(getLock());
         step();
       }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark AccountFinder => IFinderConnectionDelegate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      void AccountFinder::onFinderConnectionStateChanged(
+                                                         IFinderConnectionPtr connection,
+                                                         IFinderConnection::SessionStates state
+                                                         )
+      {
+        ZS_LOG_DEBUG(log("finder connection state changed"))
+
+        AutoRecursiveLock lock(getLock());
+        step();
+      }
+
+
+      //-----------------------------------------------------------------------
+      void AccountFinder::onFinderConnectionIncomingRelayChannel(IFinderConnectionPtr connection)
+      {
+        ZS_LOG_DEBUG(log("finder connection incoming relay channel"))
+
+        AutoRecursiveLock lock(getLock());
+
+        if (isShutdown()) {
+          ZS_LOG_WARNING(Detail, log("finder already shutdown"))
+          return;
+        }
+
+        if (mFinderConnection != connection) {
+          ZS_LOG_WARNING(Detail, log("notified about obsolete finder connection") + ", connection=" + string(connection->getID()))
+          return;
+        }
+
+        AccountPtr outer = mOuter.lock();
+        if (!outer) {
+          ZS_LOG_WARNING(Detail, log("outer account is gone"))
+          return;
+        }
+
+        ITransportStreamPtr receiveStream;
+        ITransportStreamPtr sendStream;
+
+        IFinderConnection::ChannelNumber channel = 0;
+
+        IFinderRelayChannelPtr relayChannel = connection->accept(IFinderRelayChannelDelegatePtr(), outer, receiveStream, sendStream, &channel);
+
+        if (relayChannel) {
+          ZS_LOG_DEBUG(log("relay channel accepted") + IFinderRelayChannel::toDebugString(relayChannel))
+          mDelegate->onAccountFinderIncomingRelayChannel(mThisWeak.lock(), relayChannel, receiveStream, sendStream, channel);
+        }
+
+        step();
+      }
+
+
+#if 0
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -409,6 +483,7 @@ namespace openpeer
 
         step();
       }
+#endif //0
 
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -475,7 +550,7 @@ namespace openpeer
 
           if (!message) {
             ZS_LOG_WARNING(Detail, log("failed to create a message from the document"))
-            return;
+            continue;
           }
 
           ZS_LOG_DETAIL(log("v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v"))
@@ -521,6 +596,9 @@ namespace openpeer
 
         setTimeout(result->expires());
         mServerAgent = result->serverAgent();
+
+        mRelayAccessToken = result->relayAccessToken();
+        mRelayAccessSecret = result->relayAccessSecret();
 
         (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
         return true;
@@ -725,20 +803,22 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
         bool firstTime = !includeCommaPrefix;
-        return Helper::getDebugValue("finder id", string(mID), firstTime) +
-               Helper::getDebugValue("state", IAccount::toString(mCurrentState), firstTime) +
-               Helper::getDebugValue("rudp ice socket subscription id", mSocketSubscription ? string(mSocketSubscription->getID()) : String(), firstTime) +
-               Helper::getDebugValue("rudp ice socket session id", mSocketSession ? string(mSocketSession->getID()) : String(), firstTime) +
-               Helper::getDebugValue("rudp messaging id", mMessaging ? string(mMessaging->getID()) : String(), firstTime) +
-               Helper::getDebugValue("receive stream id", mReceiveStream ? string(mReceiveStream->getID()) : String(), firstTime) +
-               Helper::getDebugValue("send stream id", mSendStream ? string(mSendStream->getID()) : String(), firstTime) +
-               mFinder.getDebugValueString() +
-               Helper::getDebugValue("finder IP", !mFinderIP.isAddressEmpty() ? mFinderIP.string() : String(), firstTime) +
-               Helper::getDebugValue("server agent", mServerAgent, firstTime) +
-               Helper::getDebugValue("created time", Time() != mSessionCreatedTime ? IHelper::timeToString(mSessionCreatedTime) : String(), firstTime) +
-               Helper::getDebugValue("session create monitor", mSessionCreateMonitor ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("session keep alive monitor", mSessionKeepAliveMonitor ? String("true") : String(), firstTime) +
-               Helper::getDebugValue("session delete monitor", mSessionDeleteMonitor ? String("true") : String(), firstTime);
+        return
+        Helper::getDebugValue("finder id", string(mID), firstTime) +
+        Helper::getDebugValue("state", IAccount::toString(mCurrentState), firstTime) +
+        Helper::getDebugValue("finder connection id", mFinderConnection ? string(mFinderConnection->getID()) : String(), firstTime) +
+//               Helper::getDebugValue("rudp ice socket subscription id", mSocketSubscription ? string(mSocketSubscription->getID()) : String(), firstTime) +
+//               Helper::getDebugValue("rudp ice socket session id", mSocketSession ? string(mSocketSession->getID()) : String(), firstTime) +
+//               Helper::getDebugValue("rudp messaging id", mMessaging ? string(mMessaging->getID()) : String(), firstTime) +
+        Helper::getDebugValue("receive stream id", mReceiveStream ? string(mReceiveStream->getID()) : String(), firstTime) +
+        Helper::getDebugValue("send stream id", mSendStream ? string(mSendStream->getID()) : String(), firstTime) +
+        mFinder.getDebugValueString() +
+        Helper::getDebugValue("finder IP", !mFinderIP.isAddressEmpty() ? mFinderIP.string() : String(), firstTime) +
+        Helper::getDebugValue("server agent", mServerAgent, firstTime) +
+        Helper::getDebugValue("created time", Time() != mSessionCreatedTime ? IHelper::timeToString(mSessionCreatedTime) : String(), firstTime) +
+        Helper::getDebugValue("session create monitor", mSessionCreateMonitor ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("session keep alive monitor", mSessionKeepAliveMonitor ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("session delete monitor", mSessionDeleteMonitor ? String("true") : String(), firstTime);
       }
 
       //-----------------------------------------------------------------------
@@ -781,7 +861,7 @@ namespace openpeer
 
           bool wasReady = isReady();
 
-          if (mMessaging) {
+          if (mFinderConnection) {
             if (wasReady) {
               if ((!mSessionDeleteMonitor) &&
                   (outer)) {
@@ -801,47 +881,16 @@ namespace openpeer
               return;
             }
           }
-
-          if (mMessaging) {
-            ZS_LOG_DEBUG(log("shutting down messaging"))
-            mMessaging->shutdown();
-
-            if (IRUDPMessaging::RUDPMessagingState_Shutdown != mMessaging->getState()) {
-              ZS_LOG_DEBUG(log("waiting for messaging to complete"))
-              return;
-            }
-          }
-
-          if (mSocketSession) {
-            ZS_LOG_DEBUG(log("shutting down socket session"))
-
-            mSocketSession->shutdown();
-            if (IRUDPICESocketSession::RUDPICESocketSessionState_Shutdown != mSocketSession->getState()) {
-              ZS_LOG_DEBUG(log("waiting for RUDP ICE socket session to complete"))
-              return;
-            }
-          }
-
         }
 
         setState(IAccount::AccountState_Shutdown);
 
         mGracefulShutdownReference.reset();
-
         mOuter.reset();
 
-        if (mMessaging) {
-          ZS_LOG_DEBUG(log("hard shutdown for messaging"))
-
-          mMessaging->shutdown();
-          mMessaging.reset();
-        }
-
-        if (mSocketSession) {
-          ZS_LOG_DEBUG(log("hard shutdown for socket session"))
-
-          mSocketSession->shutdown();
-          mSocketSession.reset();
+        if (mFinderConnection) {
+          mFinderConnection->cancel();
+          mFinderConnection.reset();
         }
 
         if (mSessionDeleteMonitor) {
@@ -878,16 +927,7 @@ namespace openpeer
           return;
         }
 
-        IRUDPICESocketPtr socket = getSocket();
-        if (!socket) {
-          ZS_LOG_WARNING(Detail, log("failed to obtain socket"))
-          cancel();
-          return;
-        }
-
-        if (!stepSocketSubscription(socket)) return;
-        if (!stepSocketSession(socket)) return;
-        if (!stepMessaging()) return;
+        if (!stepConnection()) return;
         if (!stepCreateSession()) return;
 
         setState(IAccount::AccountState_Ready);
@@ -895,6 +935,58 @@ namespace openpeer
         ZS_LOG_TRACE(log("step complete") + getDebugValueString())
       }
 
+      //-----------------------------------------------------------------------
+      bool AccountFinder::stepConnection()
+      {
+        if (mFinderConnection) {
+          WORD error = 0;
+          String reason;
+
+          IFinderConnection::SessionStates state = mFinderConnection->getState(&error, &reason);
+          switch (state) {
+            case IFinderConnection::SessionState_Pending: {
+              ZS_LOG_TRACE(log("waiting for finder connection to connect"))
+              return false;
+            }
+            case IFinderConnection::SessionState_Connected: {
+              ZS_LOG_TRACE(log("finder connection is ready"))
+              return true;
+            }
+            case IFinderConnection::SessionState_Shutdown: {
+              ZS_LOG_WARNING(Detail, log("finder connection faield") + ", error=" + string(error) + ", reason=" + reason)
+              cancel();
+              return false;
+            }
+          }
+          ZS_THROW_BAD_STATE("missing state")
+        }
+
+        AccountPtr outer = mOuter.lock();
+        ZS_THROW_BAD_STATE_IF(!outer)
+
+        if (!outer->forAccountFinder().extractNextFinder(mFinder, mFinderIP)) {
+          ZS_LOG_TRACE(log("waiting for account to obtain a finder"))
+          return false;
+        }
+
+        ITransportStreamPtr receiveStream = ITransportStream::create(ITransportStreamWriterDelegatePtr(), mThisWeak.lock());
+        ITransportStreamPtr sendStream = ITransportStream::create(mThisWeak.lock(), ITransportStreamReaderDelegatePtr());
+
+        mFinderConnection = IFinderConnection::connect(mThisWeak.lock(), mFinderIP, receiveStream, sendStream);
+        if (!mFinderConnection) {
+          ZS_LOG_ERROR(Detail, log("cannot create a socket session"))
+          cancel();
+          return false;
+        }
+
+        mReceiveStream = receiveStream->getReader();
+        mSendStream = sendStream->getWriter();
+
+        mReceiveStream->notifyReaderReadyToRead();
+        return false;
+      }
+
+#if 0
       //-----------------------------------------------------------------------
       bool AccountFinder::stepSocketSubscription(IRUDPICESocketPtr socket)
       {
@@ -944,6 +1036,8 @@ namespace openpeer
           ZS_LOG_TRACE(log("waiting for account to obtain a finder"))
           return false;
         }
+
+//        mFinderConnection = IFinderConnection::connect(mThisWeak);
 
         // found an IP, put into a candidate structure
 
@@ -1010,6 +1104,7 @@ namespace openpeer
         ZS_LOG_DEBUG(log("RUDP messaging object created"))
         return false;
       }
+#endif //0
 
       //-----------------------------------------------------------------------
       bool AccountFinder::stepCreateSession()

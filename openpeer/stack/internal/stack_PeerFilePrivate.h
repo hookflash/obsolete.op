@@ -118,7 +118,7 @@ namespace openpeer
 
         virtual ElementPtr saveToElement() const;
 
-        virtual SecureByteBlockPtr getPassword(bool appendNUL = true) const;
+        virtual SecureByteBlockPtr getPassword() const;
 
         virtual IRSAPrivateKeyPtr getPrivateKey() const;
 

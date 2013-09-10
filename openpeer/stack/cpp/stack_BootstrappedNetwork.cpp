@@ -1080,7 +1080,7 @@ namespace openpeer
       {
         ULONG size = query->getReadDataAvailableInBytes();
         SecureByteBlock buffer;
-        buffer.CleanNew(size+sizeof(char));
+        buffer.CleanNew(size);
         query->readData(buffer, size);
         ZS_LOG_TRACE(log("------------ http data read start --------------"))
         ZS_LOG_TRACE(log("HTTP DATA") + ", size=" + string(size) + ", data=\n" + ((const char *)((const BYTE *)buffer)) + "\n")

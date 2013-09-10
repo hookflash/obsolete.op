@@ -38,8 +38,12 @@
 #include <openpeer/stack/internal/stack_AccountFinder.h>
 #include <openpeer/stack/internal/stack_AccountPeerLocation.h>
 #include <openpeer/stack/internal/stack_ServiceLockboxSession.h>
+#include <openpeer/stack/internal/stack_IFinderRelayChannel.h>
+
 #include <openpeer/stack/IMessageMonitor.h>
+
 #include <openpeer/services/IRUDPICESocket.h>
+#include <openpeer/services/ITransportStream.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 
@@ -121,6 +125,13 @@ namespace openpeer
 
         virtual String getLocalContextID(const String &peerURI) const = 0;
         virtual String getLocalPassword(const String &peerURI) const = 0;
+
+        virtual bool sendViaRelay(
+                                  const String &peerURI,
+                                  AccountPeerLocationPtr peerLocation,
+                                  const BYTE *buffer,
+                                  ULONG bufferSizeInBytes
+                                  ) const = 0;
       };
 
       //-----------------------------------------------------------------------
@@ -297,6 +308,9 @@ namespace openpeer
                       public IDNSDelegate,
                       public IRUDPICESocketDelegate,
                       public IMessageMonitorDelegate,
+                      public IFinderRelayChannelDelegate,
+                      public ITransportStreamWriterDelegate,
+                      public ITransportStreamReaderDelegate,
                       public ITimerDelegate
       {
       public:
@@ -304,6 +318,13 @@ namespace openpeer
         friend interaction IAccount;
 
         typedef IAccount::AccountStates AccountStates;
+
+        typedef ULONG ChannelNumber;
+
+        struct RelayInfo;
+        friend struct RelayInfo;
+        typedef boost::shared_ptr<RelayInfo> RelayInfoPtr;
+        typedef boost::weak_ptr<RelayInfo> RelayInfoWeakPtr;
 
         struct PeerInfo;
         friend struct PeerInfo;
@@ -314,6 +335,8 @@ namespace openpeer
         typedef String LocationID;
         typedef PUID PeerSubscriptionID;
         typedef std::pair<PeerURI, LocationID> PeerLocationIDPair;
+
+        typedef std::map<ChannelNumber, RelayInfoPtr> RelayInfoMap;
 
         typedef std::map<PeerURI, PeerWeakPtr> PeerMap;
         typedef std::map<PeerURI, PeerInfoPtr> PeerInfoMap;
@@ -412,6 +435,13 @@ namespace openpeer
 
         virtual String getLocalContextID(const String &peerURI) const;
         virtual String getLocalPassword(const String &peerURI) const;
+
+        virtual bool sendViaRelay(
+                                  const String &peerURI,
+                                  AccountPeerLocationPtr peerLocation,
+                                  const BYTE *buffer,
+                                  ULONG bufferSizeInBytes
+                                  ) const;
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -512,6 +542,14 @@ namespace openpeer
                                                     MessagePtr message
                                                     );
 
+        virtual void onAccountFinderIncomingRelayChannel(
+                                                         AccountFinderPtr finder,
+                                                         IFinderRelayChannelPtr relayChannel,
+                                                         ITransportStreamPtr receiveStream,
+                                                         ITransportStreamPtr sendStream,
+                                                         ChannelNumber channelNumber
+                                                         );
+
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark Account => IAccountPeerLocationDelegate
@@ -567,10 +605,37 @@ namespace openpeer
 
         //---------------------------------------------------------------------
         #pragma mark
+        #pragma mark Account => IFinderRelayChannelDelegate
+        #pragma mark
+
+        virtual void onFinderRelayChannelStateChanged(
+                                                      IFinderRelayChannelPtr channel,
+                                                      IFinderRelayChannel::SessionStates state
+                                                      );
+
+        virtual void onFinderRelayChannelNeedsContext(IFinderRelayChannelPtr channel);
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark Account => ITransportStreamWriterDelegate
+        #pragma mark
+
+        virtual void onTransportStreamWriterReady(ITransportStreamWriterPtr writer);
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark Account => ITransportStreamReaderDelegate
+        #pragma mark
+
+        virtual void onTransportStreamReaderReady(ITransportStreamReaderPtr reader);
+
+        //---------------------------------------------------------------------
+        #pragma mark
         #pragma mark Account => ITimerDelegate
         #pragma mark
 
         virtual void onTimer(TimerPtr timer);
+
 
       private:
         //---------------------------------------------------------------------
@@ -652,6 +717,40 @@ namespace openpeer
         //---------------------------------------------------------------------
         //---------------------------------------------------------------------
         #pragma mark
+        #pragma mark Account::RelayInfo
+        #pragma mark
+
+        struct RelayInfo
+        {
+          AutoPUID mID;
+          ChannelNumber mChannel;
+          String mLocalContext;
+          String mRemoteContext;
+
+          IFinderRelayChannelPtr mRelayChannel;
+          ITransportStreamReaderPtr mReceiveStream;
+          ITransportStreamWriterPtr mSendStream;
+
+          IFinderRelayChannelSubscriptionPtr mRelayChannelSubscription;
+          ITransportStreamReaderSubscriptionPtr mReceiveStreamSubscription;
+          ITransportStreamWriterSubscriptionPtr mSendStreamSubscription;
+
+          AccountPeerLocationPtr mAccountPeerLocation;
+
+          static RelayInfoPtr create();
+
+          RelayInfo() : mChannel(0) {}
+          ~RelayInfo();
+
+          String getDebugValueString(bool includeCommaPrefix = true) const;
+          void cancel();
+        };
+
+        //---------------------------------------------------------------------
+        //---------------------------------------------------------------------
+        //---------------------------------------------------------------------
+        //---------------------------------------------------------------------
+        #pragma mark
         #pragma mark Account::PeerInfo
         #pragma mark
 
@@ -689,6 +788,8 @@ namespace openpeer
           Duration mLastScheduleFindDuration;                      // how long was the duration between finds (used because it will double each time a search is completed)
 
           bool mPreventCrazyRefindNextTime;
+
+          RelayInfoMap mRelayInfos;                                 // all the pending relays sessions
         };
 
       protected:

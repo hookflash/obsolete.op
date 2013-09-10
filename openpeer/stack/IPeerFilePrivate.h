@@ -70,7 +70,7 @@ namespace openpeer
       virtual IRSAPrivateKeyPtr getPrivateKey() const = 0;
       virtual ElementPtr getPrivateData() const = 0;
 
-      virtual SecureByteBlockPtr getPassword(bool appendNUL = true) const = 0;
+      virtual SecureByteBlockPtr getPassword() const = 0;
 
       virtual String getSecretProof() const = 0;
       virtual SecureByteBlockPtr getSalt() const = 0;

@@ -36,6 +36,63 @@
 #include <zsLib/ProxySubscriptions.h>
 #include <cryptopp/secblock.h>
 
+namespace CryptoPP
+{
+  template <class T, bool T_Align16 = false>
+  class AllocatorWithNul : public AllocatorBase<T>
+  {
+  public:
+    CRYPTOPP_INHERIT_ALLOCATOR_TYPES
+
+    pointer allocate(size_type n, const void * = NULL)
+    {
+      AllocatorBase<T>::CheckSize(n);
+      if (n == 0)
+        return NULL;
+
+      pointer result = NULL;
+
+#if CRYPTOPP_BOOL_ALIGN16_ENABLED
+      if (T_Align16 && n*sizeof(T) >= 16) {
+        result = (pointer)AlignedAllocate(n*sizeof(T) + sizeof(T));
+        memset(result, 0, n*sizeof(T) + sizeof(T));
+        return result
+      }
+#endif
+
+      result = (pointer)UnalignedAllocate(n*sizeof(T) + sizeof(T));
+      memset(result, 0, n*sizeof(T) + sizeof(T));
+      return result;
+    }
+
+    void deallocate(void *p, size_type n)
+    {
+      SecureWipeArray((pointer)p, n);
+
+#if CRYPTOPP_BOOL_ALIGN16_ENABLED
+      if (T_Align16 && n*sizeof(T) >= 16)
+        return AlignedDeallocate(p);
+#endif
+
+      UnalignedDeallocate(p);
+    }
+
+    pointer reallocate(T *p, size_type oldSize, size_type newSize, bool preserve)
+    {
+      return StandardReallocate(*this, p, oldSize, newSize, preserve);
+    }
+
+    // VS.NET STL enforces the policy of "All STL-compliant allocators have to provide a
+    // template class member called rebind".
+    template <class U> struct rebind { typedef AllocatorWithNul<U, T_Align16> other; };
+#if _MSC_VER >= 1500
+    AllocatorWithNul() {}
+    template <class U, bool A> AllocatorWithNul(const AllocatorWithNul<U, A> &) {}
+#endif
+  };
+
+}
+
 namespace openpeer
 {
   namespace services
@@ -65,7 +122,7 @@ namespace openpeer
     using zsLib::XML::Document;
     using zsLib::XML::DocumentPtr;
 
-    typedef CryptoPP::SecByteBlock SecureByteBlock;
+    typedef CryptoPP::SecBlock<byte, CryptoPP::AllocatorWithNul<byte> > SecureByteBlock;
     typedef boost::shared_ptr<SecureByteBlock> SecureByteBlockPtr;
     typedef boost::weak_ptr<SecureByteBlock> SecureByteBlockWeakPtr;
 

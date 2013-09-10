@@ -628,7 +628,7 @@ namespace openpeer
       {
         ZS_LOG_DEBUG(log("created"))
         if (0 != postDataLengthInBytes) {
-          mPostData.CleanNew(postDataLengthInBytes+sizeof(char)); // add an extra NUL to end of buffer
+          mPostData.CleanNew(postDataLengthInBytes); // add an extra NUL to end of buffer
           memcpy(mPostData.BytePtr(), postData, postDataLengthInBytes);
         }
       }
@@ -746,7 +746,7 @@ namespace openpeer
         if (0 == available) return 0;
 
         SecureByteBlock data;
-        data.CleanNew(available+sizeof(char));
+        data.CleanNew(available);
         mHeader.Get(data.BytePtr(), available);
 
         outHeader = (const char *)data.BytePtr();
@@ -780,7 +780,7 @@ namespace openpeer
         if (0 == available) return 0;
 
         SecureByteBlock data;
-        data.CleanNew(available+sizeof(char));
+        data.CleanNew(available);
         mBody.Get(data.BytePtr(), available);
 
         outResultData = (const char *)data.BytePtr();

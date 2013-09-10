@@ -127,8 +127,6 @@ namespace openpeer
 
         virtual void setMaxMessageSizeInBytes(ULONG maxMessageSizeInBytes);
 
-        virtual void setAutoNulTerminateReceiveBuffers(bool nulTerminate = true);
-
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark TCPMessaging => ITransportStreamReaderDelegate
@@ -186,8 +184,6 @@ namespace openpeer
 
         ITCPMessagingDelegateSubscriptions mSubscriptions;
         ITCPMessagingSubscriptionPtr mDefaultSubscription;
-
-        bool mNulTerminateBuffers;
 
         SessionStates mCurrentState;
 

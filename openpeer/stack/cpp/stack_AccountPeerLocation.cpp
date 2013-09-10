@@ -39,6 +39,7 @@
 #include <openpeer/stack/internal/stack_Stack.h>
 
 #include <openpeer/stack/IPeerFiles.h>
+#include <openpeer/stack/IPeerFilePrivate.h>
 #include <openpeer/stack/IPeerFilePublic.h>
 
 #include <openpeer/stack/message/peer-to-peer/PeerIdentifyRequest.h>
@@ -76,6 +77,7 @@ namespace openpeer
     namespace internal
     {
       using services::IHelper;
+      using services::IMessageLayerSecurityChannel;
 
       using message::peer_to_peer::PeerIdentifyRequest;
       using message::peer_to_peer::PeerIdentifyRequestPtr;
@@ -320,16 +322,15 @@ namespace openpeer
         if (!isReady()) {
           PeerIdentifyRequestPtr identifyRequest = PeerIdentifyRequest::convert(message);
           PeerIdentifyResultPtr identifyResult = PeerIdentifyResult::convert(message);
+
+          PeerLocationFindNotifyPtr peerLocationFindNotify = PeerLocationFindNotify::convert(message);
+
           if ((!identifyRequest) &&
-              (!identifyResult)) {
+              (!identifyResult) &&
+              (!peerLocationFindNotify)) {
             ZS_LOG_WARNING(Detail, log("attempted to send a message as the location is not ready"))
             return false;
           }
-        }
-
-        if (!mSendStream) {
-          ZS_LOG_WARNING(Detail, log("requested to send a message but messaging is not ready"))
-          return false;
         }
 
         DocumentPtr document = message->encode();
@@ -351,8 +352,36 @@ namespace openpeer
         ZS_LOG_DETAIL(log("^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^"))
 
         mLastActivity = zsLib::now();
-        mSendStream->write((const BYTE *)(output.get()), length);
-        return true;
+
+        if (mMLSChannel) {
+          if (IMessageLayerSecurityChannel::SessionState_Connected == mMLSChannel->getState()) {
+            ZS_LOG_TRACE(log("message sent via MLS"))
+
+            mMLSSendStream->write((const BYTE *)(output.get()), length);
+            return true;
+          }
+        }
+
+        if (mOutgoingRelayChannel) {
+          if (IFinderRelayChannel::SessionState_Connected == mOutgoingRelayChannel->getState()) {
+            ZS_LOG_TRACE(log("message send via outgoing relay"))
+            mRelaySendStream->write((const BYTE *)(output.get()), length);
+            return true;
+          }
+        }
+
+        AccountPtr outer = mOuter.lock();
+        if ((outer) &&
+            (mPeer)) {
+          bool result = outer->forAccountPeerLocation().sendViaRelay(mPeer->forAccount().getPeerURI(), mThisWeak.lock(), (const BYTE *)(output.get()), length);
+          if (result) {
+            ZS_LOG_TRACE(log("message send via incoming relay"))
+            return true;
+          }
+        }
+
+        ZS_LOG_WARNING(Detail, log("requested to send a message but messaging is not ready"))
+        return false;
       }
 
       //-----------------------------------------------------------------------
@@ -402,6 +431,108 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      void AccountPeerLocation::handleMessage(
+                                              MessagePtr message,
+                                              bool viaRelay
+                                              )
+      {
+        bool hasPeerFile = mPeer->forAccount().getPeerFilePublic();
+
+        // this is something new/incoming from the remote server...
+        AccountPtr outer = mOuter.lock();
+        if (!outer) {
+          ZS_LOG_WARNING(Detail, log("peer message is ignored since account is now gone"))
+          return;
+        }
+
+        // can't process requests until the incoming is received, drop the message
+        if (((!hasPeerFile) ||
+             (mIncoming)) &&
+            (Time() == mIdentifyTime)) {
+
+          // scope: handle identify request
+          {
+            PeerIdentifyRequestPtr request = PeerIdentifyRequest::convert(message);
+            if (!request) {
+              ZS_LOG_WARNING(Detail, log("unable to forward message to account since message arrived before peer was identified"))
+              goto identify_failure;
+            }
+
+            ZS_LOG_DEBUG(log("handling peer identify message"))
+
+            IPeerFilesPtr peerFiles = outer->forAccountPeerLocation().getPeerFiles();
+            if (!peerFiles) {
+              ZS_LOG_ERROR(Detail, log("failed to obtain local peer files"))
+              goto identify_failure;
+            }
+
+            IPeerFilePublicPtr peerFilePublic = peerFiles->getPeerFilePublic();
+            if (!peerFiles) {
+              ZS_LOG_ERROR(Detail, log("failed to obtain local public peer file"))
+              goto identify_failure;
+            }
+
+            if (request->findSecret() != peerFilePublic->getFindSecret()) {
+              ZS_LOG_ERROR(Detail, log("find secret did not match") + ", request find secret=" + request->findSecret() + IPeerFilePublic::toDebugString(peerFilePublic))
+              goto identify_failure;
+            }
+
+            LocationPtr location = Location::convert(mLocationInfo.mLocation);
+
+            if (location->forAccount().getPeerURI() != mPeer->forAccount().getPeerURI()) {
+              ZS_LOG_ERROR(Detail, log("peer file does not match expecting peer URI") + ILocation::toDebugString(location) + IPeer::toDebugString(mPeer))
+              goto identify_failure;
+            }
+
+            mIdentifyTime = zsLib::now();
+
+            PeerIdentifyResultPtr result = PeerIdentifyResult::create(request);
+
+            LocationPtr selfLocation = ILocationForAccount::getForLocal(outer);
+
+            LocationInfoPtr info = selfLocation->forAccount().getLocationInfo();
+            info->mCandidates.clear();
+
+            result->locationInfo(*info);
+            send(result);
+
+            IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
+            return;
+          }
+
+        identify_failure:
+          {
+            MessageResultPtr result = MessageResult::create(message, IHTTP::HTTPStatusCode_Forbidden);
+            if (result) {
+              send(result);
+            }
+          }
+          return;
+        }
+
+        // handle incoming keep alives
+        {
+          PeerKeepAliveRequestPtr request = PeerKeepAliveRequest::convert(message);
+          if (request) {
+            ZS_LOG_DEBUG(log("handling incoming peer keep alive request"))
+
+            PeerKeepAliveResultPtr result = PeerKeepAliveResult::create(request);
+            send(result);
+            return;
+          }
+        }
+
+        ZS_LOG_DEBUG(log("unknown message, will forward message to account"))
+
+        // send the message to the outer (asynchronously)
+        try {
+          mDelegate->onAccountPeerLocationMessageIncoming(mThisWeak.lock(), message);
+        } catch (IAccountPeerLocationDelegateProxy::Exceptions::DelegateGone &) {
+          ZS_LOG_WARNING(Detail, log("delegate gone"))
+        }
+      }
+      
+      //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -412,9 +543,35 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void AccountPeerLocation::onWake()
       {
-        AutoRecursiveLock lock(getLock());
         ZS_LOG_DEBUG(log("on wake"))
+
+        AutoRecursiveLock lock(getLock());
         step();
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark AccountPeerLocation => IFinderRelayChannelDelegate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      void AccountPeerLocation::onFinderRelayChannelStateChanged(
+                                                                 IFinderRelayChannelPtr channel,
+                                                                 IFinderRelayChannel::SessionStates state
+                                                                 )
+      {
+        ZS_LOG_DEBUG(log("on finder relay channel state changed"))
+        AutoRecursiveLock lock(getLock());
+        step();
+      }
+
+      //-----------------------------------------------------------------------
+      void AccountPeerLocation::onFinderRelayChannelNeedsContext(IFinderRelayChannelPtr channel)
+      {
+        ZS_THROW_INVALID_ASSUMPTION(log("outgoing relay channels should not need context"))
       }
 
       //-----------------------------------------------------------------------
@@ -529,20 +686,20 @@ namespace openpeer
               mIdentifyMonitor.reset();
             }
 
-            mReceiveStream->cancel();
-            mReceiveStream.reset();
+            mMessagingReceiveStream->cancel();
+            mMessagingReceiveStream.reset();
 
-            mSendStream->cancel();
-            mSendStream.reset();
+            mMessagingSendStream->cancel();
+            mMessagingSendStream.reset();
 
             mMessaging->shutdown();
             mMessaging.reset();
 
             mMessaging = messaging;
-            mReceiveStream = receiveStream->getReader();
-            mSendStream = sendStream->getWriter();
+            mMessagingReceiveStream = receiveStream->getReader();
+            mMessagingSendStream = sendStream->getWriter();
 
-            mReceiveStream->notifyReaderReadyToRead();
+            mMessagingReceiveStream->notifyReaderReadyToRead();
 
             mIncoming = true;
 
@@ -576,10 +733,10 @@ namespace openpeer
         mMessaging = IRUDPMessaging::acceptChannel(IStackForInternal::queueServices(), mSocketSession, mThisWeak.lock(), receiveStream, sendStream);
         mIncoming = true;
 
-        mReceiveStream = receiveStream->getReader();
-        mSendStream = sendStream->getWriter();
+        mMessagingReceiveStream = receiveStream->getReader();
+        mMessagingSendStream = sendStream->getWriter();
 
-        mReceiveStream->notifyReaderReadyToRead();
+        mMessagingReceiveStream->notifyReaderReadyToRead();
 
         if (OPENPEER_STACK_PEER_TO_PEER_RUDP_CONNECTION_INFO != mMessaging->getRemoteConnectionInfo()) {
           ZS_LOG_WARNING(Detail, log("received unknown incoming connection type thus shutting down incoming connection") + ", type=" + mMessaging->getRemoteConnectionInfo())
@@ -636,6 +793,25 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark AccountPeerLocation => IMessageLayerSecurityChannelDelegate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      void AccountPeerLocation::onMessageLayerSecurityChannelStateChanged(
+                                                                          IMessageLayerSecurityChannelPtr channel,
+                                                                          IMessageLayerSecurityChannel::SessionStates state
+                                                                          )
+      {
+        ZS_LOG_DEBUG(log("on message layer security channel state changed"))
+        AutoRecursiveLock lock(getLock());
+        step();
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark AccountPeerLocation => ITransportStreamWriterDelegate
       #pragma mark
 
@@ -653,30 +829,30 @@ namespace openpeer
       #pragma mark AccountPeerLocation => ITransportStreamWriterDelegate
       #pragma mark
 
+      //-----------------------------------------------------------------------
       void AccountPeerLocation::onTransportStreamReaderReady(ITransportStreamReaderPtr reader)
       {
         AutoRecursiveLock lock(getLock());
 
         if (isShutdown()) return;
 
-        if (reader != mReceiveStream) {
+        if ((reader != mMLSReceiveStream) &&
+            (reader != mRelayReceiveStream)) {
           ZS_LOG_WARNING(Debug, log("messaging ready ready arrived for obsolete stream"))
           return;
         }
 
         while (true) {
-          SecureByteBlockPtr buffer = mReceiveStream->read();
+          SecureByteBlockPtr buffer = reader->read();
           if (!buffer) {
             ZS_LOG_TRACE(log("no data to read"))
             return;
           }
 
-          bool hasPeerFile = mPeer->forAccount().getPeerFilePublic();
-
           ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
           ZS_LOG_DETAIL(log("< < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < <"))
           ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
-          ZS_LOG_DETAIL(log("PEER RECEIVED MESSAGE=") + "\n" + ((CSTR)(buffer->BytePtr())) + "\n")
+          ZS_LOG_DETAIL(log("PEER RECEIVED MESSAGE") + (reader == mRelayReceiveStream ? " (VIA RELAY)" : "") + "=" + "\n" + ((CSTR)(buffer->BytePtr())) + "\n")
           ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
           ZS_LOG_DETAIL(log("< < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < <"))
           ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
@@ -700,98 +876,7 @@ namespace openpeer
             return;
           }
 
-          // this is something new/incoming from the remote server...
-          AccountPtr outer = mOuter.lock();
-          if (!outer) {
-            ZS_LOG_WARNING(Detail, log("peer message is ignored since account is now gone"))
-            return;
-          }
-
-          // can't process requests until the incoming is received, drop the message
-          if (((!hasPeerFile) ||
-               (mIncoming)) &&
-              (Time() == mIdentifyTime)) {
-
-            // scope: handle identify request
-            {
-              PeerIdentifyRequestPtr request = PeerIdentifyRequest::convert(message);
-              if (!request) {
-                ZS_LOG_WARNING(Detail, log("unable to forward message to account since message arrived before peer was identified"))
-                goto identify_failure;
-              }
-
-              ZS_LOG_DEBUG(log("handling peer identify message"))
-
-              IPeerFilesPtr peerFiles = outer->forAccountPeerLocation().getPeerFiles();
-              if (!peerFiles) {
-                ZS_LOG_ERROR(Detail, log("failed to obtain local peer files"))
-                goto identify_failure;
-              }
-
-              IPeerFilePublicPtr peerFilePublic = peerFiles->getPeerFilePublic();
-              if (!peerFiles) {
-                ZS_LOG_ERROR(Detail, log("failed to obtain local public peer file"))
-                goto identify_failure;
-              }
-
-              if (request->findSecret() != peerFilePublic->getFindSecret()) {
-                ZS_LOG_ERROR(Detail, log("find secret did not match") + ", request find secret=" + request->findSecret() + IPeerFilePublic::toDebugString(peerFilePublic))
-                goto identify_failure;
-              }
-
-              LocationPtr location = Location::convert(mLocationInfo.mLocation);
-
-              if (location->forAccount().getPeerURI() != mPeer->forAccount().getPeerURI()) {
-                ZS_LOG_ERROR(Detail, log("peer file does not match expecting peer URI") + ILocation::toDebugString(location) + IPeer::toDebugString(mPeer))
-                goto identify_failure;
-              }
-
-              mIdentifyTime = zsLib::now();
-
-              PeerIdentifyResultPtr result = PeerIdentifyResult::create(request);
-
-              LocationPtr selfLocation = ILocationForAccount::getForLocal(outer);
-
-              LocationInfoPtr info = selfLocation->forAccount().getLocationInfo();
-              info->mCandidates.clear();
-
-              result->locationInfo(*info);
-              send(result);
-
-              step();
-              return;
-            }
-
-          identify_failure:
-            {
-              MessageResultPtr result = MessageResult::create(message, IHTTP::HTTPStatusCode_Forbidden);
-              if (result) {
-                send(result);
-              }
-            }
-            return;
-          }
-
-          // handle incoming keep alives
-          {
-            PeerKeepAliveRequestPtr request = PeerKeepAliveRequest::convert(message);
-            if (request) {
-              ZS_LOG_DEBUG(log("handling incoming peer keep alive request"))
-
-              PeerKeepAliveResultPtr result = PeerKeepAliveResult::create(request);
-              send(result);
-              return;
-            }
-          }
-
-          ZS_LOG_DEBUG(log("unknown message, will forward message to account"))
-          
-          // send the message to the outer (asynchronously)
-          try {
-            mDelegate->onAccountPeerLocationMessageIncoming(mThisWeak.lock(), message);
-          } catch (IAccountPeerLocationDelegateProxy::Exceptions::DelegateGone &) {
-            ZS_LOG_WARNING(Detail, log("delegate gone"))
-          }
+          handleMessage(message, reader == mRelayReceiveStream);
         }
       }
 
@@ -948,8 +1033,11 @@ namespace openpeer
         Helper::getDebugValue("rudp ice socket subscription id", mSocketSubscription ? string(mSocketSubscription->getID()) : String(), firstTime) +
         Helper::getDebugValue("rudp ice socket session id", mSocketSession ? string(mSocketSession->getID()) : String(), firstTime) +
         Helper::getDebugValue("rudp messagine id", mMessaging ? string(mMessaging->getID()) : String(), firstTime) +
-        Helper::getDebugValue("receive stream id", mReceiveStream ? string(mReceiveStream->getID()) : String(), firstTime) +
-        Helper::getDebugValue("send stream id", mSendStream ? string(mSendStream->getID()) : String(), firstTime) +
+        Helper::getDebugValue("messaging receive stream id", mMessagingReceiveStream ? string(mMessagingReceiveStream->getID()) : String(), firstTime) +
+        Helper::getDebugValue("messaging send stream id", mMessagingSendStream ? string(mMessagingSendStream->getID()) : String(), firstTime) +
+        Helper::getDebugValue("mls id", mMLSChannel ? string(mMLSChannel->getID()) : String(), firstTime) +
+        Helper::getDebugValue("mls receive stream id", mMLSReceiveStream ? string(mMLSReceiveStream->getID()) : String(), firstTime) +
+        Helper::getDebugValue("mls send stream id", mMLSSendStream ? string(mMLSSendStream->getID()) : String(), firstTime) +
         Helper::getDebugValue("incoming", mIncoming ? String("true") : String(), firstTime) +
         Helper::getDebugValue("identify time", Time() != mIdentifyTime ? IHelper::timeToString(mIdentifyTime) : String(), firstTime) +
         Helper::getDebugValue("identity monitor", mIdentifyMonitor ? String("true") : String(), firstTime) +
@@ -1007,7 +1095,6 @@ namespace openpeer
               return;
             }
           }
-
         }
 
         setState(IAccount::AccountState_Shutdown);
@@ -1017,10 +1104,32 @@ namespace openpeer
 
         mPendingRequests.clear();
 
+        if (mOutgoingRelayChannel) {
+          mOutgoingRelayChannel->cancel();
+          mOutgoingRelayChannel.reset();
+        }
+
+        if (mRelayReceiveStream) {
+          mRelayReceiveStream->cancel();
+          mRelayReceiveStream.reset();
+        }
+        if (mRelaySendStream) {
+          mRelaySendStream->cancel();
+          mRelaySendStream.reset();
+        }
+
         if (mMessaging) {
           ZS_LOG_DEBUG(log("hard shutdown of RUDP messaging"))
           mMessaging->shutdown();
           mMessaging.reset();
+        }
+        if (mMessagingReceiveStream) {
+          mMessagingReceiveStream->cancel();
+          mMessagingReceiveStream.reset();
+        }
+        if (mMessagingSendStream) {
+          mMessagingSendStream->cancel();
+          mMessagingSendStream.reset();
         }
 
         if (mSocketSession) {
@@ -1059,10 +1168,12 @@ namespace openpeer
         }
 
         if (!stepSocketSubscription(socket)) return;
+        if (!stepOutgoingRelayConnection()) return;
         if (!stepPendingRequests(socket)) return;
         if (!stepSocketSession()) return;
         if (!stepIncomingIdentify()) return;
         if (!stepMessaging()) return;
+        if (!stepMLS()) return;
         if (!stepIdentify()) return;
 
         setState(IAccount::AccountState_Ready);
@@ -1099,6 +1210,95 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      bool AccountPeerLocation::stepOutgoingRelayConnection()
+      {
+        if (mPendingRequests.size() < 1) {
+          ZS_LOG_TRACE(log("no pending requests thus no need for an outgoing relay connection"))
+          return true;
+        }
+
+        if (mOutgoingRelayChannel) {
+          WORD error = 0;
+          String reason;
+          switch (mOutgoingRelayChannel->getState(&error, &reason))
+          {
+            case IFinderRelayChannel::SessionState_Pending:   {
+              ZS_LOG_TRACE(log("waiting for relay channel to connect"))
+              return false;
+            }
+            case IFinderRelayChannel::SessionState_Connected: {
+              ZS_LOG_TRACE(log("relay channel connected"))
+              return true;
+            }
+            case IFinderRelayChannel::SessionState_Shutdown: {
+              ZS_LOG_ERROR(Detail, log("relay channel shutdown"))
+              cancel();
+              return false;
+            }
+          }
+        }
+
+        PeerLocationFindRequestPtr pendingRequest = mPendingRequests.back();
+
+        CandidateList remoteCandidates;
+        remoteCandidates = pendingRequest->locationInfo().mCandidates;
+
+        CandidateList relayCandidates;
+
+        for (CandidateList::iterator iter = remoteCandidates.begin(); iter != remoteCandidates.end(); ) {
+          CandidateList::iterator current = iter;
+          ++iter;
+
+          Candidate &candidate = (*current);
+          if (OPENPEER_STACK_CANDIDATE_CLASS_ICE_CANDIDATES == candidate.mClass) continue;
+
+          if (OPENPEER_STACK_CANDIDATE_CLASS_FINDER_RELAY == candidate.mClass) {
+            relayCandidates.push_back(candidate);
+          }
+
+          remoteCandidates.erase(current);
+        }
+
+        if (relayCandidates.size() < 1) {
+          ZS_LOG_ERROR(Detail, log("no relay candidates found"))
+          cancel();
+          return false;
+        }
+
+        Candidate relayCandidate = relayCandidates.front();
+
+        AccountPtr outer = mOuter.lock();
+        ZS_THROW_BAD_STATE_IF(!outer)
+
+        ITransportStreamPtr receiveStream = ITransportStream::create(ITransportStreamWriterDelegatePtr(), mThisWeak.lock());
+        ITransportStreamPtr sendStream = ITransportStream::create(mThisWeak.lock(), ITransportStreamReaderDelegatePtr());
+
+        String localContext = outer->forAccountPeerLocation().getLocalContextID(mPeer->forAccount().getPeerURI());
+        String remoteContext = pendingRequest->context();
+
+        String relayAccessToken = relayCandidate.mAccessToken;
+        String relayAccessSecretProof = relayCandidate.mAccessSecretProof;
+        String domain = outer->forAccountPeerLocation().getDomain();
+
+        String passphrase = pendingRequest->peerSecret();
+        mMLSDecodingPassphrase = passphrase;
+
+        mOutgoingRelayChannel = IFinderRelayChannel::connect(mThisWeak.lock(), outer, receiveStream, sendStream, relayCandidate.mIPAddress, localContext, remoteContext, domain, relayAccessToken, relayAccessSecretProof, passphrase);
+
+        if (!mOutgoingRelayChannel) {
+          ZS_LOG_ERROR(Detail, log("failed to create outgoing relay channel"))
+          cancel();
+          return false;
+        }
+
+        mRelayReceiveStream = receiveStream->getReader();
+        mRelaySendStream = receiveStream->getWriter();
+
+        ZS_LOG_DEBUG(log("created outgoing relay channel") + IFinderRelayChannel::toDebugString(mOutgoingRelayChannel))
+        return false;
+      }
+      
+      //-----------------------------------------------------------------------
       bool AccountPeerLocation::stepPendingRequests(IRUDPICESocketPtr socket)
       {
         if (mPendingRequests.size() < 1) {
@@ -1125,6 +1325,22 @@ namespace openpeer
 
           CandidateList remoteCandidates;
           remoteCandidates = pendingRequest->locationInfo().mCandidates;
+
+          CandidateList relayCandidates;
+
+          for (CandidateList::iterator iter = remoteCandidates.begin(); iter != remoteCandidates.end(); ) {
+            CandidateList::iterator current = iter;
+            ++iter;
+
+            Candidate &candidate = (*current);
+            if (OPENPEER_STACK_CANDIDATE_CLASS_ICE_CANDIDATES == candidate.mClass) continue;
+
+            if (OPENPEER_STACK_CANDIDATE_CLASS_FINDER_RELAY == candidate.mClass) {
+              relayCandidates.push_back(candidate);
+            }
+
+            remoteCandidates.erase(current);
+          }
 
           // local candidates are now preparerd, the request can be answered
           PeerLocationFindNotifyPtr reply = PeerLocationFindNotify::create(pendingRequest);
@@ -1201,8 +1417,8 @@ namespace openpeer
         }
 
         ZS_LOG_TRACE(log("requesting messaging channel open"))
-        ITransportStreamPtr receiveStream = ITransportStream::create(ITransportStreamWriterDelegatePtr(), mThisWeak.lock());
-        ITransportStreamPtr sendStream = ITransportStream::create(mThisWeak.lock(), ITransportStreamReaderDelegatePtr());
+        ITransportStreamPtr receiveStream = ITransportStream::create();
+        ITransportStreamPtr sendStream = ITransportStream::create();
 
         mMessaging = IRUDPMessaging::openChannel(IStackForInternal::queueServices(), mSocketSession, mThisWeak.lock(), OPENPEER_STACK_PEER_TO_PEER_RUDP_CONNECTION_INFO, receiveStream, sendStream);
 
@@ -1212,13 +1428,109 @@ namespace openpeer
           return false;
         }
 
-        mReceiveStream = receiveStream->getReader();
-        mSendStream = sendStream->getWriter();
+        mMessagingReceiveStream = receiveStream->getReader();
+        mMessagingSendStream = sendStream->getWriter();
 
-        mReceiveStream->notifyReaderReadyToRead();
+        mMessagingReceiveStream->notifyReaderReadyToRead();
 
-        ZS_LOG_TRACE(log("waiting for messaging to complete"))
+        ZS_LOG_DEBUG(log("waiting for messaging to complete"))
         return false;
+      }
+
+      //-----------------------------------------------------------------------
+      bool AccountPeerLocation::stepMLS()
+      {
+        AccountPtr outer = mOuter.lock();
+        ZS_THROW_BAD_STATE_IF(!outer)
+
+        if (mMLSChannel) {
+          WORD error = 0;
+          String reason;
+          switch (mMLSChannel->getState(&error, &reason)) {
+            case IMessageLayerSecurityChannel::SessionState_Pending: {
+              break;
+            }
+            case IMessageLayerSecurityChannel::SessionState_WaitingForNeededInformation: {
+              IPeerFilesPtr peerFiles = outer->forAccountPeerLocation().getPeerFiles();
+              IPeerFilePrivatePtr peerFilePrivate;
+              IPeerFilePublicPtr peerFilePublic;
+              if (peerFiles) {
+                peerFilePrivate = peerFiles->getPeerFilePrivate();
+                peerFilePublic = peerFiles->getPeerFilePublic();
+              }
+              IPeerFilePublicPtr remotePeerFilePublic;
+              if (mPeer) {
+                remotePeerFilePublic = mPeer->forAccount().getPeerFilePublic();
+              }
+
+              if ((mMLSChannel->needsReceiveKeyingDecodingPrivateKey()) &&
+                  (peerFilePrivate) &&
+                  (peerFilePublic)) {
+                mMLSChannel->setReceiveKeyingDecoding(peerFilePrivate->getPrivateKey(), peerFilePublic->getPublicKey());
+              }
+
+              if ((mMLSChannel->needsReceiveKeyingDecodingPassphrase()) &&
+                  (mMLSDecodingPassphrase.hasData())) {
+                mMLSChannel->setReceiveKeyingDecoding(mMLSDecodingPassphrase);
+              }
+
+              if ((mMLSChannel->needsReceiveKeyingMaterialSigningPublicKey()) &&
+                  (remotePeerFilePublic)) {
+                mMLSChannel->setReceiveKeyingMaterialSigningPublicKey(remotePeerFilePublic->getPublicKey());
+              }
+
+              if (mMLSChannel->needsSendKeyingEncodingMaterial()) {
+                if (remotePeerFilePublic) {
+                  mMLSChannel->setSendKeyingEncoding(remotePeerFilePublic->getPublicKey());
+                } else if (mPeer) {
+                  mMLSChannel->setSendKeyingEncoding(outer->forAccountPeerLocation().getLocalPassword(mPeer->forAccount().getPeerURI()));
+                }
+              }
+
+              if ((mMLSChannel->needsSendKeyingMaterialToeBeSigned()) &&
+                  (peerFilePrivate)) {
+                DocumentPtr doc;
+                ElementPtr signEl;
+                mMLSChannel->getSendKeyingMaterialNeedingToBeSigned(doc, signEl);
+
+                if (signEl) {
+                  peerFilePrivate->signElement(signEl);
+                }
+              }
+              break;
+            }
+            case IMessageLayerSecurityChannel::SessionState_Connected: {
+              ZS_LOG_TRACE(log("MLS is connected"))
+              return true;
+            }
+            case IMessageLayerSecurityChannel::SessionState_Shutdown: {
+              ZS_LOG_ERROR(Detail, log("MLS failed") + ", error=" + string(error) + ", reason=" + reason)
+              cancel();
+              return false;
+            }
+          }
+          return false;
+        }
+
+        String localContext = outer->forAccountPeerLocation().getLocalContextID(mPeer->forAccount().getPeerURI());
+
+        ITransportStreamPtr receiveStream = ITransportStream::create(ITransportStreamWriterDelegatePtr(), mThisWeak.lock());
+        ITransportStreamPtr sendStream = ITransportStream::create(mThisWeak.lock(), ITransportStreamReaderDelegatePtr());
+
+        mMLSChannel->create(mThisWeak.lock(), mMessagingReceiveStream->getStream(), receiveStream, sendStream, mMessagingSendStream->getStream(), localContext);
+
+        if (!mMLSChannel) {
+          ZS_LOG_ERROR(Detail, log("could not create MLS"))
+          cancel();
+          return false;
+        }
+
+        mMLSReceiveStream = receiveStream->getReader();
+        mMLSSendStream = sendStream->getWriter();
+
+        ZS_LOG_DEBUG(log("waiting for MLSto complete"))
+
+        return true;
       }
 
       //-----------------------------------------------------------------------

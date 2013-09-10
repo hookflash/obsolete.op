@@ -74,7 +74,7 @@ namespace openpeer
     using services::IRSAPublicKey;
     using services::IRSAPublicKeyPtr;
 
-    typedef CryptoPP::SecByteBlock SecureByteBlock;
+    typedef services::SecureByteBlock SecureByteBlock;
     typedef boost::shared_ptr<SecureByteBlock> SecureByteBlockPtr;
     typedef boost::weak_ptr<SecureByteBlock> SecureByteBlockWeakPtr;
 

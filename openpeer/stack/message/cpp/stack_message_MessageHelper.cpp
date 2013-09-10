@@ -422,7 +422,7 @@ namespace openpeer
 
           if ((candidate.mAccessSecretProof.hasData()) &&
               (encryptionPassphrase)) {
-            String accessSecretProofEncrypted = stack::IHelper::splitEncrypt(*IHelper::hash(encryptionPassphrase, IHelper::HashAlgorthm_SHA256), *IHelper::convertToBuffer(candidate.mAccessSecretProof, false));
+            String accessSecretProofEncrypted = stack::IHelper::splitEncrypt(*IHelper::hash(encryptionPassphrase, IHelper::HashAlgorthm_SHA256), *IHelper::convertToBuffer(candidate.mAccessSecretProof));
             candidateEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("accessSecretProofEncrypted", accessSecretProofEncrypted));
           }
 

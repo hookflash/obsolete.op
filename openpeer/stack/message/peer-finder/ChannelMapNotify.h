@@ -80,6 +80,9 @@ namespace openpeer
           const String &localContext() const                            {return mLocalContext;}
           void localContext(const String &value)                        {mLocalContext = value;}
 
+          const String &remoteContext() const                           {return mRemoteContext;}
+          void remoteContext(const String &value)                       {mRemoteContext = value;}
+
           const String &relayAccessToken() const                        {return mRelayAccessToken;}
           void relayAccessToken(const String &value)                    {mRelayAccessToken = value;}
 

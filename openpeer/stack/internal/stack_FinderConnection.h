@@ -89,7 +89,7 @@ namespace openpeer
         typedef boost::shared_ptr<Channel> ChannelPtr;
         typedef boost::weak_ptr<Channel> ChannelWeakPtr;
 
-        typedef ULONG ChannelNumber;
+        typedef IFinderConnection::ChannelNumber ChannelNumber;
         typedef std::map<ChannelNumber, ChannelPtr> ChannelMap;
 
         typedef boost::value_initialized<ChannelNumber> AutoChannelNumber;
@@ -158,7 +158,8 @@ namespace openpeer
                                               IFinderRelayChannelDelegatePtr delegate,        // can pass in IFinderRelayChannelDelegatePtr() if not interested in the events
                                               AccountPtr account,
                                               ITransportStreamPtr receiveStream,
-                                              ITransportStreamPtr sendStream
+                                              ITransportStreamPtr sendStream,
+                                              ChannelNumber *outChannelNumber = NULL
                                               );
 
         //---------------------------------------------------------------------

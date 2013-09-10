@@ -49,6 +49,8 @@ namespace openpeer
 
       interaction IFinderConnection
       {
+        typedef ULONG ChannelNumber;
+
         enum SessionStates
         {
           SessionState_Pending,
@@ -99,7 +101,8 @@ namespace openpeer
                                               IFinderRelayChannelDelegatePtr delegate,        // can pass in IFinderRelayChannelDelegatePtr() if not interested in the events
                                               AccountPtr account,
                                               ITransportStreamPtr receiveStream,
-                                              ITransportStreamPtr sendStream
+                                              ITransportStreamPtr sendStream,
+                                              ChannelNumber *outChannelNumber = NULL
                                               ) = 0;
       };
 

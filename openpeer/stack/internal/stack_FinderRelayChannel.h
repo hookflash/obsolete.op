@@ -86,6 +86,7 @@ namespace openpeer
       {
       public:
         friend interaction IFinderRelayChannelFactory;
+        friend interaction IFinderRelayChannel;
 
         typedef IFinderRelayChannel::SessionStates SessionStates;
 

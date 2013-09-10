@@ -99,7 +99,7 @@ namespace openpeer
 
       //-----------------------------------------------------------------------
       // PURPOSE: Returns true if a private key is needed to decode the
-      //          incooming receive keying material.
+      //          incoming receive keying material.
       // NOTE:    Check this method when
       //          "SessionState_WaitingForNeededInformation" is
       //          notified.

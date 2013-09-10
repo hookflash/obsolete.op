@@ -980,7 +980,7 @@ namespace openpeer
           SecureByteBlock::size_type remaining = keying->SizeInBytes() - sizeof(DWORD);
 
           // create a NUL terminated JSON string buffer
-          SecureByteBlockPtr jsonBuffer =  IHelper::convertToBuffer(source, remaining, true);
+          SecureByteBlockPtr jsonBuffer =  IHelper::convertToBuffer(source, remaining);
 
           // clear out the receive signed document since it's validated
           doc = Document::createFromAutoDetect((const char *)(jsonBuffer->BytePtr()));
@@ -1311,7 +1311,7 @@ namespace openpeer
           ElementPtr inputsEl = Element::create("inputs");
           inputsEl->adoptAsLastChild(createElementWithText("secret", encodeUsingPassphraseEncoding(encodingPassphrase, nonce, *key.mSendKey)));
           inputsEl->adoptAsLastChild(createElementWithText("iv", encodeUsingPassphraseEncoding(encodingPassphrase, nonce, *key.mNextIV)));
-          inputsEl->adoptAsLastChild(createElementWithText("hmacIntegrityKey", encodeUsingPassphraseEncoding(encodingPassphrase, nonce, *IHelper::convertToBuffer(key.mIntegrityPassphrase, false))));
+          inputsEl->adoptAsLastChild(createElementWithText("hmacIntegrityKey", encodeUsingPassphraseEncoding(encodingPassphrase, nonce, *IHelper::convertToBuffer(key.mIntegrityPassphrase))));
 
           keyEl->adoptAsLastChild(inputsEl);
 

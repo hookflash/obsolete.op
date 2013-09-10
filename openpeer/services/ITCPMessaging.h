@@ -132,11 +132,6 @@ namespace openpeer
       //-----------------------------------------------------------------------
       // PURPOSE: Set the maximum size of a message expecting to receive
       virtual void setMaxMessageSizeInBytes(ULONG maxMessageSizeInBytes) = 0;
-
-      //-----------------------------------------------------------------------
-      // PURPOSE: Make sure all received buffers are guarenteed to be NUL
-      //          terminated (or not)
-      virtual void setAutoNulTerminateReceiveBuffers(bool nulTerminate = true) = 0;
     };
 
     //-------------------------------------------------------------------------

@@ -433,12 +433,17 @@ namespace openpeer
                                                       IFinderRelayChannelDelegatePtr delegate,
                                                       AccountPtr account,
                                                       ITransportStreamPtr receiveStream,
-                                                      ITransportStreamPtr sendStream
+                                                      ITransportStreamPtr sendStream,
+                                                      ChannelNumber *outChannelNumber
                                                       )
       {
         ZS_THROW_INVALID_ARGUMENT_IF(!account)
         ZS_THROW_INVALID_ARGUMENT_IF(!receiveStream)
         ZS_THROW_INVALID_ARGUMENT_IF(!sendStream)
+
+        if (outChannelNumber) {
+          *outChannelNumber = 0;
+        }
 
         ZS_LOG_DEBUG(log("accept called"))
 
@@ -475,6 +480,10 @@ namespace openpeer
         if (mSendStreamNotifiedReady) {
           ZS_LOG_DEBUG(log("notify channel that it's now write ready"))
           channel->notifyReceivedWireWriteReady();
+        }
+
+        if (outChannelNumber) {
+          *outChannelNumber = channelNumber;
         }
 
         return relay;

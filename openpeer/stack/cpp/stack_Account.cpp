@@ -42,12 +42,18 @@
 #include <openpeer/stack/internal/stack_PublicationRepository.h>
 #include <openpeer/stack/internal/stack_ServiceLockboxSession.h>
 #include <openpeer/stack/internal/stack_Stack.h>
+#include <openpeer/stack/internal/stack_IFinderRelayChannel.h>
+
 #include <openpeer/stack/message/MessageResult.h>
+
 #include <openpeer/stack/message/peer-finder/PeerLocationFindRequest.h>
 #include <openpeer/stack/message/peer-finder/PeerLocationFindResult.h>
 #include <openpeer/stack/message/peer-finder/PeerLocationFindNotify.h>
+#include <openpeer/stack/message/peer-finder/ChannelMapNotify.h>
+
 #include <openpeer/stack/message/bootstrapped-finder/FindersGetRequest.h>
 #include <openpeer/stack/message/bootstrapped-finder/FindersGetResult.h>
+
 #include <openpeer/stack/IPeerFilePublic.h>
 #include <openpeer/stack/IPeerFiles.h>
 #include <openpeer/stack/IPublicationRepository.h>
@@ -58,6 +64,7 @@
 #include <zsLib/Log.h>
 #include <zsLib/helpers.h>
 #include <zsLib/Stringize.h>
+#include <zsLib/XML.h>
 
 #include <algorithm>
 
@@ -76,6 +83,7 @@
 #define OPENPEER_STACK_ACCOUNT_FINDER_MAX_RETRY_AFTER_TIME_IN_SECONDS (60)
 
 #define OPENPEER_STACK_ACCOUNT_RUDP_TRANSPORT_PROTOCOL_TYPE "rudp/udp"
+#define OPENPEER_STACK_ACCOUNT_MULTIPLEXED_JSON_TCP_TRANSPORT_PROTOCOL_TYPE "multiplexed-json/tcp"
 
 namespace openpeer { namespace stack { ZS_DECLARE_SUBSYSTEM(openpeer_stack) } }
 
@@ -95,6 +103,8 @@ namespace openpeer
       using message::peer_finder::PeerLocationFindResultPtr;
       using message::peer_finder::PeerLocationFindNotify;
       using message::peer_finder::PeerLocationFindNotifyPtr;
+      using message::peer_finder::ChannelMapNotify;
+      using message::peer_finder::ChannelMapNotifyPtr;
 
       using message::bootstrapped_finder::FindersGetRequest;
       using message::bootstrapped_finder::FindersGetRequestPtr;
@@ -122,13 +132,13 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      static String getRUDPTransport(const Finder &finder)
+      static String getMultiplexedJsonTCPTransport(const Finder &finder)
       {
         for (Finder::ProtocolList::const_iterator iter = finder.mProtocols.begin(); iter != finder.mProtocols.end(); ++iter)
         {
           const Finder::Protocol &protocol = (*iter);
 
-          if (OPENPEER_STACK_ACCOUNT_RUDP_TRANSPORT_PROTOCOL_TYPE == protocol.mTransport) {
+          if (OPENPEER_STACK_ACCOUNT_MULTIPLEXED_JSON_TCP_TRANSPORT_PROTOCOL_TYPE == protocol.mTransport) {
             return protocol.mHost;
           }
         }
@@ -365,6 +375,45 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      bool Account::sendViaRelay(
+                                 const String &peerURI,
+                                 AccountPeerLocationPtr peerLocation,
+                                 const BYTE *buffer,
+                                 ULONG bufferSizeInBytes
+                                 ) const
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(!peerLocation)
+
+        ZS_LOG_DEBUG(log("attempting to send via relay") + ", peer URI=" + peerURI + ", peer location ID=" + string(peerLocation->forAccount().getID()) + ", buffer length=" + string(bufferSizeInBytes))
+
+        PeerInfoMap::const_iterator foundPeer = mPeerInfos.find(peerURI);
+        if (foundPeer == mPeerInfos.end()) {
+          ZS_LOG_WARNING(Detail, log("peer URI is not known thus cannot send message"))
+          return false;
+        }
+
+        const PeerInfoPtr &peerInfo = (*foundPeer).second;
+
+        for (RelayInfoMap::const_iterator relayIter = peerInfo->mRelayInfos.begin(); relayIter != peerInfo->mRelayInfos.end(); ++relayIter)
+        {
+          const RelayInfoPtr &relayInfo = (*relayIter).second;
+          if (relayInfo->mAccountPeerLocation->forAccount().getID() != peerLocation->forAccount().getID()) continue;
+
+          ZS_LOG_DEBUG(log("sending via relay") + relayInfo->getDebugValueString())
+
+          if (!relayInfo->mSendStream) {
+            ZS_LOG_WARNING(Detail, log("found relay info but send stream is not valid"))
+            return false;
+          }
+
+          relayInfo->mSendStream->write(buffer, bufferSizeInBytes);
+        }
+
+        ZS_LOG_WARNING(Debug, log("did not find any relay for this peer location"))
+        return false;
+      }
+
+      //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -500,7 +549,7 @@ namespace openpeer
           Finder finder = mFinder->forAccount().getCurrentFinder(&(info->mUserAgent), &(info->mIPAddress));
 
           info->mDeviceID = finder.mID;
-          info->mHost = getRUDPTransport(finder);
+          info->mHost = getMultiplexedJsonTCPTransport(finder);
           return info;
         }
 
@@ -1085,8 +1134,108 @@ namespace openpeer
           return;
         }
 
+        ChannelMapNotifyPtr channelMapNotify = ChannelMapNotify::convert(message);
+        if (channelMapNotify) {
+          ZS_LOG_DEBUG(log("channel map notification received") + ", channel number=" + string(channelMapNotify->channelNumber()))
+
+          // HERE
+          String relayAccessToken;
+          String relayAccessSecret;
+          mFinder->forAccount().getFinderRelayInformation(relayAccessToken, relayAccessSecret);
+
+          String nonce = channelMapNotify->nonce();
+          String localContext = channelMapNotify->localContext();
+          String remoteContext = channelMapNotify->remoteContext();
+          ChannelMapNotify::ChannelNumber channel = channelMapNotify->channelNumber();
+          Time expires = channelMapNotify->relayAccessSecretProofExpires();
+          String hash = channelMapNotify->relayAccessSecretProof();
+
+          //  hex(hash("proof:" + <client-nonce> + ":" + <remote-context> + ":" + <channel-number> + ":" + <expires> + ":" + hex(hmac(<relay-access-secret>, "finder-relay-access-validate:" + <relay-access-token> + ":" + <local-context> + ":channel-map-notify"))))
+
+          // hex(hmac(<relay-access-secret>, "finder-relay-access-validate:" + <relay-access-token> + ":" + <local-context> + ":channel-map-notify")
+          String innerHash = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(relayAccessSecret), "finder-relay-access-validate:" + relayAccessToken + ":" + localContext + ":channel-map-notify"));
+
+          //  hex(hash("proof:" + <client-nonce> + ":" + <remote-context> + ":" + <channel-number> + ":" + <expires> + ":" + <innerHash>))
+          String calculatedProof = IHelper::convertToHex(*IHelper::hash("proof:" + nonce + ":" + remoteContext + ":" + string(channel) + ":" + IHelper::timeToString(expires)));
+
+          if (calculatedProof != channelMapNotify->relayAccessSecretProof()) {
+            ZS_LOG_WARNING(Detail, log("channel map notify proof failed") + ", calculated proof=" + calculatedProof + ", received=" + channelMapNotify->relayAccessSecretProof())
+            return;
+          }
+
+          // proof passed, this is a proper relay map notification
+          for (PeerInfoMap::iterator iter = mPeerInfos.begin(); iter != mPeerInfos.end(); ++iter)
+          {
+            const String &peerURI = (*iter).first;
+            PeerInfoPtr &peerInfo = (*iter).second;
+
+            String peerContext = getLocalContextID(peerURI);
+
+            if (peerContext == localContext) {
+              RelayInfoPtr relayInfo = RelayInfo::create();
+              relayInfo->mChannel = channel;
+              relayInfo->mLocalContext = localContext;
+              relayInfo->mRemoteContext = remoteContext;
+
+              peerInfo->mRelayInfos[channel] = relayInfo;
+
+              ZS_LOG_DEBUG(log("peer relay context added") + relayInfo->getDebugValueString() + peerInfo->getDebugValueString())
+              break;
+            }
+          }
+
+          return;
+        }
+
         MessageIncomingPtr messageIncoming = IMessageIncomingForAccount::create(mThisWeak.lock(), mFinderLocation, message);
         notifySubscriptions(messageIncoming);
+      }
+
+      //-----------------------------------------------------------------------
+      void Account::onAccountFinderIncomingRelayChannel(
+                                                        AccountFinderPtr finder,
+                                                        IFinderRelayChannelPtr relayChannel,
+                                                        ITransportStreamPtr receiveStream,
+                                                        ITransportStreamPtr sendStream,
+                                                        ChannelNumber channelNumber
+                                                        )
+      {
+        ZS_THROW_INVALID_ARGUMENT_IF(!relayChannel)
+        ZS_THROW_INVALID_ARGUMENT_IF(!receiveStream)
+        ZS_THROW_INVALID_ARGUMENT_IF(!sendStream)
+
+        AutoRecursiveLock lock(getLock());
+
+        if ((isShutdown()) ||
+            (isShuttingDown())) {
+          ZS_LOG_DEBUG(log("ignoring incoming finder request because shutting down or shutdown"))
+          return;
+        }
+
+        if (finder != mFinder) {
+          ZS_LOG_DEBUG(log("finder does not match current finder (ignoring request)"))
+          return;
+        }
+
+        for (PeerInfoMap::iterator iter = mPeerInfos.begin(); iter != mPeerInfos.end(); ++iter)
+        {
+          PeerInfoPtr &peerInfo = (*iter).second;
+
+          RelayInfoMap::iterator found = peerInfo->mRelayInfos.find(channelNumber);
+          if (found == peerInfo->mRelayInfos.end()) continue;
+
+          RelayInfoPtr &relayInfo = (*found).second;
+
+          relayInfo->mRelayChannel = relayChannel;
+          relayInfo->mReceiveStream = receiveStream->getReader();
+          relayInfo->mSendStream = sendStream->getWriter();
+
+          relayInfo->mRelayChannelSubscription = relayChannel->subscribe(mThisWeak.lock());
+          relayInfo->mReceiveStreamSubscription = relayInfo->mReceiveStream->subscribe(mThisWeak.lock());
+          relayInfo->mSendStreamSubscription = relayInfo->mSendStream->subscribe(mThisWeak.lock());
+
+          ZS_LOG_DEBUG(log("incoming finder relay channel setup") + relayInfo->getDebugValueString() + peerInfo->getDebugValueString())
+        }
       }
 
       //-----------------------------------------------------------------------
@@ -1467,12 +1616,27 @@ namespace openpeer
 
               PeerLocationFindRequestPtr request = PeerLocationFindRequest::convert(monitor->getMonitoredMessage());
 
-              String remoteContextID = findReply->context();
+              String remoteContext = findReply->context();
               String remotePassword = findReply->peerSecret();
               String remoteICEUsernameFrag = findReply->iceUsernameFrag();
               String remoteICEPassword = findReply->icePassword();
 
-              peerLocation->forAccount().connectLocation(remoteContextID, remotePassword, remoteICEUsernameFrag, remoteICEPassword, candidates, IICESocket::ICEControl_Controlling);
+              // scope: match any relay channels to the remote context
+              {
+                for (RelayInfoMap::iterator relayIter = peerInfo->mRelayInfos.begin(); relayIter != peerInfo->mRelayInfos.end(); ++relayIter)
+                {
+                  RelayInfoPtr &relayInfo = (*relayIter).second;
+
+                  if (relayInfo->mRemoteContext != remoteContext) continue;
+
+                  ZS_LOG_DEBUG(log("found relay associated to remote context") + relayInfo->getDebugValueString())
+
+                  relayInfo->mAccountPeerLocation = peerLocation;
+                  break;
+                }
+              }
+
+              peerLocation->forAccount().connectLocation(remoteContext, remotePassword, remoteICEUsernameFrag, remoteICEPassword, candidates, IICESocket::ICEControl_Controlling);
 
               bool locationRemainThatHaveNotReplied = false;
               // scope: check to see if their are remaining locations yet to return their replies
@@ -1527,6 +1691,167 @@ namespace openpeer
         ZS_LOG_DEBUG(log("on wake"))
         AutoRecursiveLock lock(getLock());
         step();
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark Account => IFinderRelayChannelDelegate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      void Account::onFinderRelayChannelStateChanged(
+                                                     IFinderRelayChannelPtr channel,
+                                                     IFinderRelayChannel::SessionStates state
+                                                     )
+      {
+        ZS_LOG_DEBUG(log("on finder relay channel state changed"))
+
+        AutoRecursiveLock lock(getLock());
+
+        if (isShutdown()) {
+          ZS_LOG_DEBUG(log("received response after already shutdown"))
+          return;
+        }
+
+        switch (state) {
+          case IFinderRelayChannel::SessionState_Pending:
+          case IFinderRelayChannel::SessionState_Connected: {
+            ZS_LOG_DEBUG(log("ignoring pending / connected state on relay channel") + ", state=" + IFinderRelayChannel::toString(state) + IFinderRelayChannel::toDebugString(channel))
+            break;
+          }
+          case IFinderRelayChannel::SessionState_Shutdown: {
+            ZS_LOG_DEBUG(log("finder relay channel shutdown") + ", state=" + IFinderRelayChannel::toString(state) + IFinderRelayChannel::toDebugString(channel))
+            break;
+          }
+        }
+
+        // HERE
+        for (PeerInfoMap::iterator peerIter = mPeerInfos.begin(); peerIter != mPeerInfos.end(); ++peerIter) {
+          PeerInfoPtr &peerInfo = (*peerIter).second;
+
+          for (RelayInfoMap::iterator relayIter = peerInfo->mRelayInfos.begin(); relayIter != peerInfo->mRelayInfos.end(); ++relayIter)
+          {
+            RelayInfoPtr &relayInfo = (*relayIter).second;
+            if (relayInfo->mRelayChannel->getID() == channel->getID()) {
+              ZS_LOG_DEBUG(log("found shutdown relay channel") + relayInfo->getDebugValueString())
+
+              // HERE - TODO - notify location of relay channel being shutdown
+
+              relayInfo->cancel();
+              peerInfo->mRelayInfos.erase(relayIter);
+              return;
+            }
+          }
+        }
+
+        ZS_LOG_WARNING(Detail, log("relay channel not associated with peer") + IFinderRelayChannel::toDebugString(channel))
+      }
+
+      //-----------------------------------------------------------------------
+      void Account::onFinderRelayChannelNeedsContext(IFinderRelayChannelPtr channel)
+      {
+        ZS_LOG_DEBUG(log("on finder relay channel needs context"))
+        AutoRecursiveLock lock(getLock());
+
+        for (PeerInfoMap::iterator peerIter = mPeerInfos.begin(); peerIter != mPeerInfos.end(); ++peerIter) {
+          const String &peerURI = (*peerIter).first;
+          PeerInfoPtr &peerInfo = (*peerIter).second;
+
+          for (RelayInfoMap::iterator relayIter = peerInfo->mRelayInfos.begin(); relayIter != peerInfo->mRelayInfos.end(); ++relayIter)
+          {
+            RelayInfoPtr &relayInfo = (*relayIter).second;
+            if (relayInfo->mRelayChannel->getID() == channel->getID()) {
+              ZS_LOG_DEBUG(log("found relay channel needing context") + relayInfo->getDebugValueString() + IFinderRelayChannel::toDebugString(channel))
+
+              channel->setIncomingContext(relayInfo->mLocalContext, getLocalPassword(peerURI), peerInfo->mPeer);
+              return;
+            }
+          }
+        }
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark Account => ITransportStreamWriterDelegate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      void Account::onTransportStreamWriterReady(ITransportStreamWriterPtr writer)
+      {
+        ZS_LOG_DEBUG(log("on stream writer ready"))
+        AutoRecursiveLock lock(getLock());
+
+        // HERE
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark Account => ITransportStreamReaderDelegate
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      void Account::onTransportStreamReaderReady(ITransportStreamReaderPtr reader)
+      {
+        ZS_LOG_DEBUG(log("on stream reader ready"))
+        AutoRecursiveLock lock(getLock());
+
+        for (PeerInfoMap::iterator peerIter = mPeerInfos.begin(); peerIter != mPeerInfos.end(); ++peerIter) {
+          PeerInfoPtr &peerInfo = (*peerIter).second;
+
+          for (RelayInfoMap::iterator relayIter = peerInfo->mRelayInfos.begin(); relayIter != peerInfo->mRelayInfos.end(); ++relayIter)
+          {
+            RelayInfoPtr &relayInfo = (*relayIter).second;
+            if (relayInfo->mReceiveStream->getID() == reader->getID()) {
+              ZS_LOG_DEBUG(log("reading relay stream") + relayInfo->getDebugValueString() + ITransportStream::toDebugString(reader->getStream()))
+
+              while (true) {
+                SecureByteBlockPtr buffer = reader->read();
+                if (!buffer) {
+                  ZS_LOG_TRACE(log("no more data to read"))
+                }
+
+                // HERE NOW
+
+                ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
+                ZS_LOG_DETAIL(log("<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<"))
+                ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
+                ZS_LOG_DETAIL(log("RELAY RECEIVED MESSAGE=") + "\n" + ((CSTR)buffer->BytePtr()) + "\n")
+                ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
+                ZS_LOG_DETAIL(log("<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<"))
+                ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
+
+                DocumentPtr document = Document::createFromAutoDetect(((CSTR)buffer->BytePtr()));
+                MessagePtr message = Message::create(
+                                                     document,
+                                                     relayInfo->mAccountPeerLocation ?
+                                                      relayInfo->mAccountPeerLocation->forAccount().getLocation() :
+                                                      ILocationForAccount::getForFinder(mThisWeak.lock())
+                                                     );
+
+                if (IMessageMonitor::handleMessageReceived(message)) {
+                  ZS_LOG_DEBUG(log("handled message via message handler"))
+                  return;
+                }
+
+                if (relayInfo->mAccountPeerLocation) {
+                  relayInfo->mAccountPeerLocation->forAccount().handleMessage(message, true);
+                  continue;
+                }
+
+                // HERE NOW
+              }
+            }
+          }
+        }
       }
 
       //-----------------------------------------------------------------------
@@ -1996,7 +2321,7 @@ namespace openpeer
 
         if (!mAvailableFinderSRVResult) {
           Finder &finder = mAvailableFinders.front();
-          String srv = getRUDPTransport(finder);
+          String srv = getMultiplexedJsonTCPTransport(finder);
           if (srv.isEmpty()) {
             ZS_LOG_ERROR(Detail, log("finder missing SRV name"))
             mAvailableFinders.pop_front();
@@ -2004,7 +2329,7 @@ namespace openpeer
             return false;
           }
 
-          mFinderDNSLookup = IDNS::lookupSRV(mThisWeak.lock(), srv, "_finder", "_udp");
+          mFinderDNSLookup = IDNS::lookupSRV(mThisWeak.lock(), srv, "_finder", "_tcp");
           ZS_LOG_TRACE(log("performing DNS lookup on finder"))
           return false;
         }
@@ -2375,6 +2700,24 @@ namespace openpeer
         if (mLastRetryFinderAfterDuration > Seconds(OPENPEER_STACK_ACCOUNT_FINDER_MAX_RETRY_AFTER_TIME_IN_SECONDS)) {
           mLastRetryFinderAfterDuration = Seconds(OPENPEER_STACK_ACCOUNT_FINDER_MAX_RETRY_AFTER_TIME_IN_SECONDS);
         }
+
+        // HERE - all peer locations should be told the finder relay has been closed
+
+        for (PeerInfoMap::iterator iter = mPeerInfos.begin(); iter != mPeerInfos.end(); ++iter)
+        {
+          PeerInfoPtr &peerInfo = (*iter).second;
+
+          for (RelayInfoMap::iterator relayIter = peerInfo->mRelayInfos.begin(); relayIter != peerInfo->mRelayInfos.end(); ++relayIter)
+          {
+            RelayInfoPtr &relayInfo = (*relayIter).second;
+
+            ZS_LOG_DEBUG(log("shutting down peer's relay") + relayInfo->getDebugValueString())
+
+            relayInfo->cancel();
+          }
+
+          peerInfo->mRelayInfos.clear();
+        }
       }
 
       //-----------------------------------------------------------------------
@@ -2451,7 +2794,75 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark Account::Peer
+      #pragma mark Account::PeerInfo
+      #pragma mark
+
+      //-----------------------------------------------------------------------
+      Account::RelayInfoPtr Account::RelayInfo::create()
+      {
+        RelayInfoPtr pThis(new RelayInfo);
+        pThis->mChannel = 0;
+        return pThis;
+      }
+
+      //-----------------------------------------------------------------------
+      Account::RelayInfo::~RelayInfo()
+      {
+        cancel();
+      }
+
+      //-----------------------------------------------------------------------
+      String Account::RelayInfo::getDebugValueString(bool includeCommaPrefix) const
+      {
+        bool firstTime = !includeCommaPrefix;
+        return
+        Helper::getDebugValue("relay info id", string(mID), firstTime) +
+        Helper::getDebugValue("channel", 0 != mChannel ? string(mChannel) : String(), firstTime) +
+        Helper::getDebugValue("local context", mLocalContext, firstTime) +
+        Helper::getDebugValue("remote context", mRemoteContext, firstTime) +
+        Helper::getDebugValue("relay channel id", mRelayChannel ? string(mRelayChannel->getID()) : String(), firstTime) +
+        Helper::getDebugValue("send stream id", mSendStream ? string(mSendStream->getID()) : String(), firstTime) +
+        Helper::getDebugValue("receive stream id", mReceiveStream ? string(mReceiveStream->getID()) : String(), firstTime) +
+        Helper::getDebugValue("peer location", mAccountPeerLocation ? string(mAccountPeerLocation->forAccount().getID()) : String(), firstTime);
+      }
+
+      //-----------------------------------------------------------------------
+      void Account::RelayInfo::cancel()
+      {
+        if (mRelayChannelSubscription) {
+          mRelayChannelSubscription->cancel();
+          mRelayChannelSubscription.reset();
+        }
+        if (mReceiveStreamSubscription) {
+          mReceiveStreamSubscription->cancel();
+          mReceiveStreamSubscription.reset();
+        }
+        if (mSendStreamSubscription) {
+          mSendStreamSubscription->cancel();
+          mSendStreamSubscription.reset();
+        }
+        if (mRelayChannel) {
+          mRelayChannel->cancel();
+          mRelayChannel.reset();
+        }
+        if (mReceiveStream) {
+          mReceiveStream->cancel();
+          mReceiveStream.reset();
+        }
+        if (mSendStream) {
+          mSendStream->cancel();
+          mSendStream.reset();
+        }
+
+        mAccountPeerLocation.reset();
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark Account::PeerInfo
       #pragma mark
 
       //-----------------------------------------------------------------------

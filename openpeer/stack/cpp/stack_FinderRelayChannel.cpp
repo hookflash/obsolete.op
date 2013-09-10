@@ -113,7 +113,9 @@ namespace openpeer
         mOuterSendStream(sendStream)
       {
         ZS_LOG_DEBUG(log("created"))
-        mDefaultSubscription = mSubscriptions.subscribe(delegate, IStackForInternal::queueDelegate());
+        if (delegate) {
+          mDefaultSubscription = mSubscriptions.subscribe(delegate, IStackForInternal::queueDelegate());
+        }
       }
 
       //-----------------------------------------------------------------------
@@ -229,8 +231,10 @@ namespace openpeer
           mConnectionRelayChannel->cancel();
         }
 
-        mDefaultSubscription->cancel();
-        mSubscriptions.clear();
+        if (mDefaultSubscription) {
+          mDefaultSubscription->cancel();
+          mSubscriptions.clear();
+        }
 
         ZS_LOG_DEBUG(log("cancel complete"))
       }
@@ -498,7 +502,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark FinderRelayChannel  => (internal)
+      #pragma mark FinderRelayChannel => (internal)
       #pragma mark
 
       //-----------------------------------------------------------------------
@@ -661,6 +665,12 @@ namespace openpeer
           case SessionState_Shutdown:                     return "Shutdown";
         }
         return "UNDEFINED";
+      }
+
+      //-----------------------------------------------------------------------
+      String IFinderRelayChannel::toDebugString(IFinderRelayChannelPtr channel, bool includeCommaPrefix)
+      {
+        return internal::FinderRelayChannel::toDebugString(channel, includeCommaPrefix);
       }
 
       //-----------------------------------------------------------------------

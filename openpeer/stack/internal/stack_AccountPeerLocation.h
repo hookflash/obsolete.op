@@ -32,6 +32,7 @@
 #pragma once
 
 #include <openpeer/stack/internal/types.h>
+#include <openpeer/stack/internal/stack_IFinderRelayChannel.h>
 
 #include <openpeer/stack/IAccount.h>
 #include <openpeer/stack/ILocation.h>
@@ -45,6 +46,7 @@
 #include <openpeer/stack/message/peer-to-peer/PeerKeepAliveResult.h>
 
 #include <openpeer/services/IWakeDelegate.h>
+#include <openpeer/services/IMessageLayerSecurityChannel.h>
 
 #include <zsLib/MessageQueueAssociator.h>
 
@@ -59,8 +61,10 @@ namespace openpeer
     {
       using services::IICESocket;
 
-      typedef services::IRUDPICESocketSubscriptionPtr IRUDPICESocketSubscriptionPtr;
-      typedef services::IRUDPMessagingPtr IRUDPMessagingPtr;
+      using services::IRUDPICESocketSubscriptionPtr;
+      using services::IRUDPMessagingPtr;
+      using services::IMessageLayerSecurityChannel;
+      using services::IMessageLayerSecurityChannelPtr;
 
       using message::peer_finder::PeerLocationFindRequestPtr;
 
@@ -124,6 +128,11 @@ namespace openpeer
                                                ) const = 0;
 
         virtual void sendKeepAlive() = 0;
+
+        virtual void handleMessage(
+                                   MessagePtr message,
+                                   bool viaRelay
+                                   ) = 0;
       };
 
       //-----------------------------------------------------------------------
@@ -138,11 +147,13 @@ namespace openpeer
                                   public MessageQueueAssociator,
                                   public IAccountPeerLocationForAccount,
                                   public IWakeDelegate,
+                                  public IFinderRelayChannelDelegate,
                                   public services::IRUDPICESocketDelegate,
                                   public services::IRUDPICESocketSessionDelegate,
                                   public services::IRUDPMessagingDelegate,
                                   public services::ITransportStreamWriterDelegate,
                                   public services::ITransportStreamReaderDelegate,
+                                  public services::IMessageLayerSecurityChannelDelegate,
                                   public IMessageMonitorResultDelegate<PeerIdentifyResult>,
                                   public IMessageMonitorResultDelegate<PeerKeepAliveResult>
       {
@@ -216,12 +227,29 @@ namespace openpeer
 
         virtual void sendKeepAlive();
 
+        virtual void handleMessage(
+                                   MessagePtr message,
+                                   bool viaRelay
+                                   );
+
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark AccountPeerLocation => IWakeDelegate
         #pragma mark
 
         virtual void onWake();
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark AccountPeerLocation => IFinderRelayChannelDelegate
+        #pragma mark
+
+        virtual void onFinderRelayChannelStateChanged(
+                                                      IFinderRelayChannelPtr channel,
+                                                      IFinderRelayChannel::SessionStates state
+                                                      );
+
+        virtual void onFinderRelayChannelNeedsContext(IFinderRelayChannelPtr channel);
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -255,6 +283,16 @@ namespace openpeer
                                                  IRUDPMessagingPtr session,
                                                  RUDPMessagingStates state
                                                  );
+
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark AccountPeerLocation => IMessageLayerSecurityChannelDelegate
+        #pragma mark
+
+        virtual void onMessageLayerSecurityChannelStateChanged(
+                                                               IMessageLayerSecurityChannelPtr channel,
+                                                               IMessageLayerSecurityChannel::SessionStates state
+                                                               );
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -323,10 +361,12 @@ namespace openpeer
 
         void step();
         bool stepSocketSubscription(IRUDPICESocketPtr socket);
+        bool stepOutgoingRelayConnection();
         bool stepPendingRequests(IRUDPICESocketPtr socket);
         bool stepSocketSession();
         bool stepIncomingIdentify();
         bool stepMessaging();
+        bool stepMLS();
         bool stepIdentify();
 
         void setState(AccountStates state);
@@ -363,8 +403,17 @@ namespace openpeer
         IRUDPICESocketSubscriptionPtr mSocketSubscription;
         IRUDPICESocketSessionPtr mSocketSession;   // this will only become valid when a connection is establishing
         IRUDPMessagingPtr mMessaging;
-        ITransportStreamReaderPtr mReceiveStream;
-        ITransportStreamWriterPtr mSendStream;
+        ITransportStreamReaderPtr mMessagingReceiveStream;
+        ITransportStreamWriterPtr mMessagingSendStream;
+
+        IMessageLayerSecurityChannelPtr mMLSChannel;
+        ITransportStreamReaderPtr mMLSReceiveStream;
+        ITransportStreamWriterPtr mMLSSendStream;
+        String mMLSDecodingPassphrase;
+
+        IFinderRelayChannelPtr mOutgoingRelayChannel;
+        ITransportStreamReaderPtr mRelayReceiveStream;
+        ITransportStreamWriterPtr mRelaySendStream;
 
         bool mIncoming;
         Time mIdentifyTime;

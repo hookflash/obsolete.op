@@ -149,11 +149,6 @@ namespace openpeer
       virtual void setMaxMessageSizeInBytes(ULONG maxMessageSizeInBytes) = 0;
 
       //-----------------------------------------------------------------------
-      // PURPOSE: Make sure all received buffers are guarenteed to be NUL
-      //          terminated (or not)
-      virtual void setAutoNulTerminateReceiveBuffers(bool nulTerminate = true) = 0;
-
-      //-----------------------------------------------------------------------
       // PURPOSE: Get the IP address of the connected remote party.
       // NOTE:    IP address will be empty until the session is connected.
       virtual IPAddress getConnectedRemoteIP() = 0;

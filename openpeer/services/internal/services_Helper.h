@@ -75,16 +75,11 @@ namespace openpeer
         static SecureByteBlockPtr clone(const SecureByteBlock &buffer);
 
         static String convertToString(const SecureByteBlock &buffer);
-        static SecureByteBlockPtr convertToBuffer(
-                                                  const char *input,
-                                                  bool appendNUL = true
-                                                  );
+        static SecureByteBlockPtr convertToBuffer(const char *input);
         static SecureByteBlockPtr convertToBuffer(
                                                   const BYTE *buffer,
-                                                  ULONG bufferLengthInBytes,
-                                                  bool appendNULIfMissing = false
+                                                  ULONG bufferLengthInBytes
                                                   );
-        static SecureByteBlockPtr makeBufferStringSafe(const SecureByteBlock &input);
 
         static String convertToBase64(
                                       const BYTE *buffer,

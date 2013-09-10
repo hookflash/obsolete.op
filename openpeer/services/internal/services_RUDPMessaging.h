@@ -131,8 +131,6 @@ namespace openpeer
 
         virtual void setMaxMessageSizeInBytes(ULONG maxMessageSizeInBytes);
 
-        virtual void setAutoNulTerminateReceiveBuffers(bool nulTerminate = true);
-
         virtual IPAddress getConnectedRemoteIP();
 
         virtual String getRemoteConnectionInfo();
@@ -199,7 +197,6 @@ namespace openpeer
         String mLastErrorReason;
 
         IRUDPMessagingDelegatePtr mDelegate;
-        bool mNulTerminateBuffers;
 
         ITransportStreamWriterPtr mOuterReceiveStream;
         ITransportStreamReaderPtr mOuterSendStream;
