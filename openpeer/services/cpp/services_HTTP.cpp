@@ -628,7 +628,7 @@ namespace openpeer
       {
         ZS_LOG_DEBUG(log("created"))
         if (0 != postDataLengthInBytes) {
-          mPostData.CleanNew(postDataLengthInBytes); // add an extra NUL to end of buffer
+          mPostData.CleanNew(postDataLengthInBytes);
           memcpy(mPostData.BytePtr(), postData, postDataLengthInBytes);
         }
       }
@@ -855,7 +855,7 @@ namespace openpeer
 
           if (mPostData.size() > 0) {
             curl_easy_setopt(mCurl, CURLOPT_POSTFIELDS, mPostData.BytePtr());
-            curl_easy_setopt(mCurl, CURLOPT_POSTFIELDSIZE, mPostData.size()-sizeof(char)); // added extra NUL to buffer so must subtract to get proper length
+            curl_easy_setopt(mCurl, CURLOPT_POSTFIELDSIZE, mPostData.size());
           }
         }
 
@@ -877,7 +877,7 @@ namespace openpeer
           if ((mIsPost) &&
               (mPostData.size() > 0)) {
             ZS_LOG_BASIC(log("INFO") + ", content type=" + mMimeType)
-            ZS_LOG_BASIC(log("INFO") + ", posted length=" + string(mPostData.size()-sizeof(char))) // added extra NUL to buffer so must subtract to get proper length
+            ZS_LOG_BASIC(log("INFO") + ", posted length=" + string(mPostData.size()))
           }
           if (Duration() != mTimeout) {
             ZS_LOG_BASIC(log("INFO") + ", timeout (ms)=" + string(mTimeout.total_milliseconds()))
