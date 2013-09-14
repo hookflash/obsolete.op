@@ -1227,6 +1227,7 @@ namespace openpeer
         ZS_LOG_DEBUG(log("step") + getDebugValueString())
 
         if (!stepLoginIdentityAssociated()) return;
+        if (!stepLockboxShutdownCheck()) return;
         if (!stepGrantSession()) return;
         if (!stepLockboxSession()) return;
         if (!stepStackAccount()) return;
@@ -1253,6 +1254,24 @@ namespace openpeer
 
         setState(AccountState_WaitingForAssociationToIdentity);
         return false;
+      }
+
+      //-----------------------------------------------------------------------
+      bool Account::stepLockboxShutdownCheck()
+      {
+        WORD errorCode = 0;
+        String reason;
+
+        IServiceLockboxSession::SessionStates state = mLockboxSession->getState(&errorCode, &reason);
+        if (IServiceLockboxSession::SessionState_Shutdown == state) {
+          ZS_LOG_ERROR(Detail, log("lockbox session shutdown"))
+          setError(errorCode, reason);
+          cancel();
+          return false;
+        }
+
+        ZS_LOG_TRACE(log("lockbox is not shutdown thus allowing to continue"))
+        return true;
       }
 
       //-----------------------------------------------------------------------
