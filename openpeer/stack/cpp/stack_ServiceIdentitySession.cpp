@@ -65,14 +65,16 @@
 #define OPENPEER_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS (60*2)
 #define OPENPEER_STACK_SERVICE_IDENTITY_MAX_PERCENTAGE_TIME_REMAINING_BEFORE_RESIGN_IDENTITY_REQUIRED (20) // at 20% of the remaining on the certificate before expiry, resign
 
-#define OPENPEER_STACK_SERVIC_IDENTITY_SIGN_CREATE_SHOULD_NOT_BE_BEFORE_NOW_IN_HOURS (72)
-#define OPENPEER_STACK_SERVIC_IDENTITY_MAX_CONSUMED_TIME_PERCENTAGE_BEFORE_IDENTITY_PROOF_REFRESH (80)
+#define OPENPEER_STACK_SERVICE_IDENTITY_SIGN_CREATE_SHOULD_NOT_BE_BEFORE_NOW_IN_HOURS (72)
+#define OPENPEER_STACK_SERVICE_IDENTITY_MAX_CONSUMED_TIME_PERCENTAGE_BEFORE_IDENTITY_PROOF_REFRESH (80)
 
 #define OPENPEER_STACK_SERVICE_IDENTITY_ROLODEX_CONTACTS_NAMESPACE "https://meta.openpeer.org/permission/rolodex-contacts"
 
 #define OPENPEER_STACK_SERVICE_IDENTITY_ROLODEX_DOWNLOAD_FROZEN_VALUE "FREEZE"
-#define OPENPEER_STACK_SERVIC_IDENTITY_ROLODEX_ERROR_RETRY_TIME_IN_SECONDS ((60)*2)
-#define OPENPEER_STACK_SERVIC_IDENTITY_MAX_ROLODEX_ERROR_RETRY_TIME_IN_SECONDS (((60)*60) * 24)
+#define OPENPEER_STACK_SERVICE_IDENTITY_ROLODEX_ERROR_RETRY_TIME_IN_SECONDS ((60)*2)
+#define OPENPEER_STACK_SERVICE_IDENTITY_MAX_ROLODEX_ERROR_RETRY_TIME_IN_SECONDS (((60)*60) * 24)
+
+#define OPENPEER_STACK_SERVICE_IDENTITY_ROLODEX_NOT_SUPPORTED_FOR_IDENTITY (404)
 
 namespace openpeer { namespace stack { ZS_DECLARE_SUBSYSTEM(openpeer_stack) } }
 
@@ -242,7 +244,7 @@ namespace openpeer
           }
 
           Time tick = zsLib::now();
-          if (created < tick + Hours(OPENPEER_STACK_SERVIC_IDENTITY_SIGN_CREATE_SHOULD_NOT_BE_BEFORE_NOW_IN_HOURS)) {
+          if (created < tick + Hours(OPENPEER_STACK_SERVICE_IDENTITY_SIGN_CREATE_SHOULD_NOT_BE_BEFORE_NOW_IN_HOURS)) {
             ZS_LOG_WARNING(Detail, String("IServiceIdentity [] creation date is invalid") + ", created=" + IHelper::timeToString(created) + ", now=" + IHelper::timeToString(tick))
             return false;
           }
@@ -308,7 +310,7 @@ namespace openpeer
         mCurrentState(SessionState_Pending),
         mLastReportedState(SessionState_Pending),
         mOuterFrameURLUponReload(outerFrameURLUponReload),
-        mNextRetryAfterFailureTime(Seconds(OPENPEER_STACK_SERVIC_IDENTITY_ROLODEX_ERROR_RETRY_TIME_IN_SECONDS))
+        mNextRetryAfterFailureTime(Seconds(OPENPEER_STACK_SERVICE_IDENTITY_ROLODEX_ERROR_RETRY_TIME_IN_SECONDS))
       {
         ZS_LOG_DEBUG(log("created"))
         mRolodexInfo.mVersion = OPENPEER_STACK_SERVICE_IDENTITY_ROLODEX_DOWNLOAD_FROZEN_VALUE;
@@ -1219,6 +1221,18 @@ namespace openpeer
           return false;
         }
 
+        //HERE
+#define WARNING_TEMPORARY_IGNORE_ALL_ERRORS 1
+#define WARNING_TEMPORARY_IGNORE_ALL_ERRORS 2
+
+        //        if (OPENPEER_STACK_SERVICE_IDENTITY_ROLODEX_NOT_SUPPORTED_FOR_IDENTITY == result->errorCode()) {
+        {
+          get(mRolodexNotSupportedForIdentity) = true;
+
+          IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
+          return true;
+        }
+        
         setError(result->errorCode(), result->errorReason());
 
         ZS_LOG_DEBUG(log("identity rolodex credentials failure"))
@@ -1284,7 +1298,7 @@ namespace openpeer
             }
 
             Duration::sec_type percentageUsed = ((consumed.total_seconds() * 100) / total.total_seconds());
-            if (percentageUsed > OPENPEER_STACK_SERVIC_IDENTITY_MAX_CONSUMED_TIME_PERCENTAGE_BEFORE_IDENTITY_PROOF_REFRESH) {
+            if (percentageUsed > OPENPEER_STACK_SERVICE_IDENTITY_MAX_CONSUMED_TIME_PERCENTAGE_BEFORE_IDENTITY_PROOF_REFRESH) {
               ZS_LOG_WARNING(Detail, log("identity bundle proof too close to expiry, will recreate identity proof") + ", percentage used=" + string(percentageUsed) + ", consumed=" + string(consumed.total_seconds()) + ", total=" + string(total.total_seconds()))
               validProof = false;
             }
@@ -1467,7 +1481,7 @@ namespace openpeer
         mRolodexContactsGetMonitor.reset();
 
         // reset the failure case
-        mNextRetryAfterFailureTime = Seconds(OPENPEER_STACK_SERVIC_IDENTITY_ROLODEX_ERROR_RETRY_TIME_IN_SECONDS);
+        mNextRetryAfterFailureTime = Seconds(OPENPEER_STACK_SERVICE_IDENTITY_ROLODEX_ERROR_RETRY_TIME_IN_SECONDS);
         get(mFailuresInARow) = 0;
 
         const IdentityInfoList &identities = result->identities();
@@ -1523,8 +1537,8 @@ namespace openpeer
         mNextRetryAfterFailureTime = mNextRetryAfterFailureTime + mNextRetryAfterFailureTime;
 
         // cap the retry method at a maximum retrial value
-        if (mNextRetryAfterFailureTime > Seconds(OPENPEER_STACK_SERVIC_IDENTITY_MAX_ROLODEX_ERROR_RETRY_TIME_IN_SECONDS)) {
-          mNextRetryAfterFailureTime = Seconds(OPENPEER_STACK_SERVIC_IDENTITY_MAX_ROLODEX_ERROR_RETRY_TIME_IN_SECONDS);
+        if (mNextRetryAfterFailureTime > Seconds(OPENPEER_STACK_SERVICE_IDENTITY_MAX_ROLODEX_ERROR_RETRY_TIME_IN_SECONDS)) {
+          mNextRetryAfterFailureTime = Seconds(OPENPEER_STACK_SERVICE_IDENTITY_MAX_ROLODEX_ERROR_RETRY_TIME_IN_SECONDS);
         }
 
         step();
@@ -1588,6 +1602,7 @@ namespace openpeer
         (mPreviousLookupInfo.hasData() ? mPreviousLookupInfo.getDebugValueString() : String()) +
         Helper::getDebugValue("outer frame url", mOuterFrameURLUponReload, firstTime) +
         Helper::getDebugValue("pending messages", mPendingMessagesToDeliver.size() > 0 ? string(mPendingMessagesToDeliver.size()) : String(), firstTime) +
+        Helper::getDebugValue("rolodex not supported", mRolodexNotSupportedForIdentity ? String("true") : String(), firstTime) +
         (mRolodexInfo.hasData() ? mRolodexInfo.getDebugValueString() : String()) +
         Helper::getDebugValue("download timer", mTimer ? String("true") : String(), firstTime) +
         Helper::getDebugValue("force refresh", Time() != mForceRefresh ? String("true") : String(), firstTime) +
@@ -1865,6 +1880,11 @@ namespace openpeer
       //-----------------------------------------------------------------------
       bool ServiceIdentitySession::stepRolodexCredentialsGet()
       {
+        if (mRolodexNotSupportedForIdentity) {
+          ZS_LOG_TRACE(log("rolodex not supported for this identity"))
+          return true;
+        }
+
         if (mRolodexInfo.mServerToken.hasData()) {
           ZS_LOG_TRACE(log("already have rolodex server token credentials"))
           return true;
@@ -1877,6 +1897,7 @@ namespace openpeer
 
         if (!mActiveBootstrappedNetwork->forServices().supportsRolodex()) {
           ZS_LOG_WARNING(Detail, log("rolodex service not supported on this domain") + ", domain=" + mActiveBootstrappedNetwork->forServices().getDomain())
+          get(mRolodexNotSupportedForIdentity) = true;
           return true;
         }
 
@@ -1895,13 +1916,13 @@ namespace openpeer
       //-----------------------------------------------------------------------
       bool ServiceIdentitySession::stepRolodexAccess()
       {
-        if (mRolodexInfo.mAccessToken.hasData()) {
-          ZS_LOG_TRACE(log("rolodex access token obtained"))
+        if (mRolodexNotSupportedForIdentity) {
+          ZS_LOG_TRACE(log("rolodex not supported for this identity"))
           return true;
         }
 
-        if (!mRolodexInfo.mServerToken.hasData()) {
-          ZS_LOG_TRACE(log("rolodex not supported"))
+        if (mRolodexInfo.mAccessToken.hasData()) {
+          ZS_LOG_TRACE(log("rolodex access token obtained"))
           return true;
         }
 
@@ -2137,7 +2158,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       bool ServiceIdentitySession::stepPreGrantChallenge()
       {
-        if (mRolodexInfo.mServerToken.isEmpty()) {
+        if (mRolodexNotSupportedForIdentity) {
           ZS_LOG_TRACE(log("rolodex service is not supported"))
           return true;
         }
@@ -2170,7 +2191,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       bool ServiceIdentitySession::stepGrantChallenge()
       {
-        if (mRolodexInfo.mServerToken.isEmpty()) {
+        if (mRolodexNotSupportedForIdentity) {
           ZS_LOG_TRACE(log("rolodex service is not supported"))
           return true;
         }
@@ -2347,6 +2368,11 @@ namespace openpeer
       //-----------------------------------------------------------------------
       bool ServiceIdentitySession::stepDownloadContacts()
       {
+        if (mRolodexNotSupportedForIdentity) {
+          ZS_LOG_TRACE(log("rolodex not supported for this identity"))
+          return true;
+        }
+
         if (OPENPEER_STACK_SERVICE_IDENTITY_ROLODEX_DOWNLOAD_FROZEN_VALUE == mRolodexInfo.mVersion) {
           ZS_LOG_TRACE(log("rolodex download has not been initiated yet"))
           return true;

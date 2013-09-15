@@ -526,6 +526,7 @@ namespace openpeer
         DocumentList mPendingMessagesToDeliver;
 
         // rolodex related
+        AutoBool mRolodexNotSupportedForIdentity;
         RolodexInfo mRolodexInfo;
 
         TimerPtr mTimer;

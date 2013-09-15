@@ -545,7 +545,7 @@ namespace openpeer
           ZS_LOG_DETAIL(log("< < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < <"))
           ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
 
-          DocumentPtr document = Document::createFromAutoDetect((CSTR)(buffer.get()));
+          DocumentPtr document = Document::createFromAutoDetect((CSTR)(buffer->BytePtr()));
           message::MessagePtr message = Message::create(document, ILocationForAccount::getForFinder(outer));
 
           if (!message) {

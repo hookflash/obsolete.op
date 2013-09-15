@@ -205,10 +205,10 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
 
-        mWireReceiveStream = ITransportStream::create()->getReader();
-        mWireSendStream = ITransportStream::create()->getWriter();
+        mWireReceiveStream = ITransportStream::create(ITransportStreamWriterDelegatePtr(), mThisWeak.lock())->getReader();
+        mWireSendStream = ITransportStream::create(mThisWeak.lock(), ITransportStreamReaderDelegatePtr())->getWriter();
 
-        mTCPMessaging->connect(mThisWeak.lock(), mWireReceiveStream->getStream(), mWireSendStream->getStream(), true, mRemoteIP);
+        mTCPMessaging = ITCPMessaging::connect(mThisWeak.lock(), mWireReceiveStream->getStream(), mWireSendStream->getStream(), true, mRemoteIP);
 
         mInactivityTimer = Timer::create(mThisWeak.lock(), Seconds(1));
 
@@ -728,6 +728,18 @@ namespace openpeer
       #pragma mark
 
       //-----------------------------------------------------------------------
+      void FinderConnection::notifyOuterWriterReady()
+      {
+        AutoRecursiveLock lock(getLock());
+
+        ZS_LOG_DEBUG(log("notify outer writer ready"))
+
+        if (mWireReceiveStream) {
+          mWireReceiveStream->notifyReaderReadyToRead();
+        }
+      }
+
+      //-----------------------------------------------------------------------
       void FinderConnection::sendBuffer(
                                         ChannelNumber channelNumber,
                                         SecureByteBlockPtr buffer
@@ -882,8 +894,7 @@ namespace openpeer
         if (!stepConnectWire()) return;
         if (!stepMasterChannel()) return;
         if (!stepChannelMapRequest()) return;
-
-        // TODO - read / write to streams
+        if (!stepReceiveData()) return;
 
         setState(SessionState_Connected);
       }
@@ -1231,6 +1242,9 @@ namespace openpeer
       void FinderConnection::Channel::init()
       {
         AutoRecursiveLock lock(getLock());
+
+        mOuterReceiveStreamSubscription = mOuterReceiveStream->subscribe(mThisWeak.lock());
+        mOuterSendStreamSubscription = mOuterSendStream->subscribe(mThisWeak.lock());
       }
 
       //-----------------------------------------------------------------------
@@ -1345,7 +1359,16 @@ namespace openpeer
         AutoRecursiveLock lock(getLock());
         ZS_LOG_DEBUG(log("notified write ready"))
         if (writer == mOuterReceiveStream) {
-          get(mOuterStreamNotifiedReady) = true;
+          if (!mOuterStreamNotifiedReady) {
+            get(mOuterStreamNotifiedReady) = true;
+
+            if (0 == mChannelNumber) {
+              FinderConnectionPtr outer = mOuter.lock();
+              if (outer) {
+                outer->notifyOuterWriterReady();
+              }
+            }
+          }
         }
         step();
       }
@@ -1388,7 +1411,11 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void FinderConnection::Channel::notifyReceivedWireWriteReady()
       {
+        ZS_LOG_TRACE(log("notified received wire write ready"))
         get(mWireStreamNotifiedReady) = true;
+        if (mOuterSendStream) {
+          mOuterSendStream->notifyReaderReadyToRead();
+        }
         step();
       }
 
@@ -1449,6 +1476,8 @@ namespace openpeer
         Helper::getDebugValue("channel number", string(mChannelNumber), firstTime) +
         ", outer recv stream: " + ITransportStream::toDebugString(mOuterReceiveStream->getStream(), false) +
         ", outer send stream: " + ITransportStream::toDebugString(mOuterSendStream->getStream(), false) +
+        Helper::getDebugValue("outer receive stream subscription", mOuterReceiveStreamSubscription ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("outer send stream subscription", mOuterSendStreamSubscription ? String("true") : String(), firstTime) +
         Helper::getDebugValue("wire stream notified ready", mWireStreamNotifiedReady ? String("true") : String(), firstTime) +
         Helper::getDebugValue("outer stream notified ready", mOuterStreamNotifiedReady ? String("true") : String(), firstTime) +
         Helper::getDebugValue("local context", mConnectionInfo.mLocalContextID, firstTime) +
@@ -1517,13 +1546,13 @@ namespace openpeer
       bool FinderConnection::Channel::stepSendData()
       {
         if (!mWireStreamNotifiedReady) {
-          ZS_LOG_DEBUG(log("have not received wire ready to send yet"))
+          ZS_LOG_TRACE(log("have not received wire ready to send yet"))
           return false;
         }
 
         if (mOuterSendStream->getTotalReadBuffersAvailable() < 1) {
-          ZS_LOG_DEBUG(log("no data to send"))
-          return false;
+          ZS_LOG_TRACE(log("no data to send"))
+          return true;
         }
 
         FinderConnectionPtr connection = mOuter.lock();

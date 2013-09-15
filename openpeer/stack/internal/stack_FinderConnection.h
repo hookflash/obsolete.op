@@ -234,6 +234,8 @@ namespace openpeer
 
         // RecursiveLock &getLock() const;
 
+        void notifyOuterWriterReady();
+
         void sendBuffer(
                         ChannelNumber channelNumber,
                         SecureByteBlockPtr buffer
@@ -435,7 +437,9 @@ namespace openpeer
           ChannelNumber mChannelNumber;
 
           ITransportStreamWriterPtr mOuterReceiveStream;
+          ITransportStreamWriterSubscriptionPtr mOuterReceiveStreamSubscription;
           ITransportStreamReaderPtr mOuterSendStream;
+          ITransportStreamReaderSubscriptionPtr mOuterSendStreamSubscription;
 
           AutoBool mWireStreamNotifiedReady;
           AutoBool mOuterStreamNotifiedReady;

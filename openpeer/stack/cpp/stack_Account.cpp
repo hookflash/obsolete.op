@@ -2325,6 +2325,9 @@ namespace openpeer
           if (srv.isEmpty()) {
             ZS_LOG_ERROR(Detail, log("finder missing SRV name"))
             mAvailableFinders.pop_front();
+            if (mAvailableFinders.size() < 1) {
+              handleFinderRelatedFailure();
+            }
             IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
             return false;
           }
@@ -2692,6 +2695,8 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void Account::handleFinderRelatedFailure()
       {
+        ZS_LOG_TRACE(log("handling finder related failure"))
+
         Time tick = zsLib::now();
 
         mFinderRetryAfter = tick + mLastRetryFinderAfterDuration;

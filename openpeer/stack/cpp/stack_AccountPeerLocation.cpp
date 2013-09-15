@@ -859,7 +859,7 @@ namespace openpeer
 
           mLastActivity = zsLib::now();
 
-          DocumentPtr document = Document::createFromAutoDetect((CSTR)(buffer.get()));
+          DocumentPtr document = Document::createFromAutoDetect((CSTR)(buffer->BytePtr()));
           MessagePtr message = Message::create(document, mLocation);
 
           if (!message) {
