@@ -472,6 +472,7 @@ namespace openpeer
 
         IdentityPtr pThis(new Identity(IStackForInternal::queueCore()));
         pThis->mThisWeak = pThis;
+        pThis->mSession = session;
         pThis->init();
         return pThis;
       }
