@@ -126,7 +126,7 @@ namespace openpeer
 
       static Ptr convert(Ptr convertFrom) {return convertFrom;}
 
-      IMessageMonitorResultDelegate() : mMessageReceived(false) {}
+      IMessageMonitorResultDelegate() {}
 
       virtual bool handleMessageMonitorResultReceived(
                                                       IMessageMonitorPtr monitor,
@@ -161,7 +161,6 @@ namespace openpeer
                                                        message::MessagePtr message
                                                        )
       {
-        mMessageReceived = true;
         MessageResultTypePtr response = boost::dynamic_pointer_cast<MessageResultType>(message);
         if (response) {
           return handleMessageMonitorResultReceived(monitor, response);
@@ -177,7 +176,7 @@ namespace openpeer
 
       virtual void onMessageMonitorTimedOut(IMessageMonitorPtr monitor)
       {
-        if (!mMessageReceived) {
+        if (!monitor->wasHandled()) {
           message::MessageResultPtr timeoutResult = message::MessageResult::create(monitor->getMonitoredMessage(), IHTTP::HTTPStatusCode_RequestTimeout, IHTTP::toString(IHTTP::HTTPStatusCode_RequestTimeout));
           handleMessageMonitorErrorResultReceived(monitor, MessageResultTypePtr(), timeoutResult);
         }
@@ -189,8 +188,6 @@ namespace openpeer
       #pragma mark
       #pragma mark IMessageMonitorResultDelegate => (data)
       #pragma mark
-
-      bool mMessageReceived;
     };
   }
 }
