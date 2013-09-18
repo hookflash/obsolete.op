@@ -1221,12 +1221,9 @@ namespace openpeer
           return false;
         }
 
-        //HERE
-#define WARNING_TEMPORARY_IGNORE_ALL_ERRORS 1
-#define WARNING_TEMPORARY_IGNORE_ALL_ERRORS 2
 
-        //        if (OPENPEER_STACK_SERVICE_IDENTITY_ROLODEX_NOT_SUPPORTED_FOR_IDENTITY == result->errorCode()) {
-        {
+        if (OPENPEER_STACK_SERVICE_IDENTITY_ROLODEX_NOT_SUPPORTED_FOR_IDENTITY == result->errorCode()) {
+          ZS_LOG_WARNING(Detail, log("identity does not support rolodex even if identity provider supports"))
           get(mRolodexNotSupportedForIdentity) = true;
 
           IWakeDelegateProxy::create(mThisWeak.lock())->onWake();
