@@ -76,11 +76,13 @@ namespace openpeer
       #pragma mark IReceiveMediaTransportForCallTransport
       #pragma mark
       
-      interaction IReceiveMediaTransportForCallTransport : public IMediaTransport
+      interaction IReceiveMediaTransportForCallTransport
       {
         IReceiveMediaTransportForCallTransport &forCallTransport() {return *this;}
         const IReceiveMediaTransportForCallTransport &forCallTransport() const {return *this;}
         
+        static ReceiveMediaTransportPtr create();
+
         virtual int receivedRTPPacket(const void *data, unsigned int length) = 0;
         virtual int receivedRTCPPacket(const void *data, unsigned int length) = 0;
       };
@@ -93,13 +95,15 @@ namespace openpeer
       #pragma mark ISendMediaTransportForCallTransport
       #pragma mark
       
-      interaction ISendMediaTransportForCallTransport : public IMediaTransport
+      interaction ISendMediaTransportForCallTransport
       {
         typedef webrtc::Transport Transport;
         
         ISendMediaTransportForCallTransport &forCallTransport() {return *this;}
         const ISendMediaTransportForCallTransport &forCallTransport() const {return *this;}
         
+        static SendMediaTransportPtr create();
+
         virtual int registerExternalTransport(Transport &transport) = 0;
         virtual int deregisterExternalTransport() = 0;
       };
@@ -114,7 +118,6 @@ namespace openpeer
       
       class MediaTransport
       {
-        
       public:
         friend interaction IMediaTransport;
         
@@ -141,7 +144,10 @@ namespace openpeer
         #pragma mark
         #pragma mark MediaTransport => (data)
         #pragma mark
-
+        
+      protected:
+        mutable RecursiveLock mLock;
+        MediaTransportWeakPtr mThisWeak;
       };
       
       //-----------------------------------------------------------------------
@@ -153,11 +159,11 @@ namespace openpeer
       #pragma mark
       
       class ReceiveMediaTransport : public MediaTransport,
+                                    public IMediaTransport,
                                     public IReceiveMediaTransportForCallTransport
       {
         
       public:
-        friend interaction IMediaTransport;
         friend interaction IReceiveMediaTransportForCallTransport;
         
       protected:
@@ -167,6 +173,13 @@ namespace openpeer
         virtual ~ReceiveMediaTransport();
         
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark ReceiveMediaTransport => IMediaTransport
+        #pragma mark
+        
+        virtual int getTransportStatistics(IMediaTransport::RtpRtcpStatistics &stat);
+        
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark ReceiveMediaTransport => IReceiveMediaTransportForCallTransport
@@ -195,11 +208,11 @@ namespace openpeer
       #pragma mark
       
       class SendMediaTransport : public MediaTransport,
+                                 public IMediaTransport,
                                  public ISendMediaTransportForCallTransport
       {
         
       public:
-        friend interaction IMediaTransport;
         friend interaction ISendMediaTransportForCallTransport;
         
       protected:
@@ -209,6 +222,13 @@ namespace openpeer
         virtual ~SendMediaTransport();
         
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark SendMediaTransport => IMediaTransport
+        #pragma mark
+        
+        virtual int getTransportStatistics(IMediaTransport::RtpRtcpStatistics &stat);
+        
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark SendMediaTransport => ISendMediaTransportForCallTransport
@@ -262,16 +282,38 @@ namespace openpeer
       #pragma mark ILocalSendAudioStreamForCall
       #pragma mark
 
-      interaction ILocalSendAudioStreamForCall : public IMediaStream
+      interaction ILocalSendAudioStreamForCall
       {
       public:
         ILocalSendAudioStreamForCall &forCall() {return *this;}
         const ILocalSendAudioStreamForCall &forCall() const {return *this;}
         
+        virtual void setMediaConstraints(IMediaStream::MediaConstraintList constraintList) = 0;
+      };
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ILocalSendAudioStreamForCallTransport
+      #pragma mark
+      
+      interaction ILocalSendAudioStreamForCallTransport
+      {
+      public:
+        ILocalSendAudioStreamForCallTransport &forCallTransport() {return *this;}
+        const ILocalSendAudioStreamForCallTransport &forCallTransport() const {return *this;}
+        
+        static LocalSendAudioStreamPtr create(
+                                              IMessageQueuePtr queue,
+                                              IMediaStreamDelegatePtr delegate
+                                              );
+        
         virtual void start() = 0;
         virtual void stop() = 0;
         
-        virtual void setMediaConstraints(MediaConstraintList constraintList) = 0;
+        virtual SendMediaTransportPtr getTransport() = 0;
       };
       
       //-----------------------------------------------------------------------
@@ -282,12 +324,12 @@ namespace openpeer
       #pragma mark IRemoteReceiveAudioStreamForCall
       #pragma mark
 
-      interaction IRemoteReceiveAudioStreamForCall : public IMediaStream
+      interaction IRemoteReceiveAudioStreamForCall
       {
       public:
         IRemoteReceiveAudioStreamForCall &forCall() {return *this;}
         const IRemoteReceiveAudioStreamForCall &forCall() const {return *this;}
-        
+
         virtual void setEcEnabled(bool enabled) = 0;
         virtual void setAgcEnabled(bool enabled) = 0;
         virtual void setNsEnabled(bool enabled) = 0;
@@ -298,10 +340,32 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IRemoteReceiveAudioStreamForCallTransport
+      #pragma mark
+      
+      interaction IRemoteReceiveAudioStreamForCallTransport
+      {
+      public:
+        IRemoteReceiveAudioStreamForCallTransport &forCallTransport() {return *this;}
+        const IRemoteReceiveAudioStreamForCallTransport &forCallTransport() const {return *this;}
+        
+        static RemoteReceiveAudioStreamPtr create(
+                                                  IMessageQueuePtr queue,
+                                                  IMediaStreamDelegatePtr delegate
+                                                  );
+        
+        virtual ReceiveMediaTransportPtr getTransport() = 0;
+      };
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark IRemoteSendAudioStreamForCall
       #pragma mark
 
-      interaction IRemoteSendAudioStreamForCall : public IMediaStream
+      interaction IRemoteSendAudioStreamForCall
       {
       public:
         IRemoteSendAudioStreamForCall &forCall() {return *this;}
@@ -313,10 +377,32 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IRemoteSendAudioStreamForCallTransport
+      #pragma mark
+      
+      interaction IRemoteSendAudioStreamForCallTransport
+      {
+      public:
+        IRemoteSendAudioStreamForCallTransport &forCallTransport() {return *this;}
+        const IRemoteSendAudioStreamForCallTransport &forCallTransport() const {return *this;}
+        
+        static RemoteSendAudioStreamPtr create(
+                                               IMessageQueuePtr queue,
+                                               IMediaStreamDelegatePtr delegate
+                                               );
+        
+        virtual SendMediaTransportPtr getTransport() = 0;
+      };
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark ILocalSendVideoStreamForCall
       #pragma mark
 
-      interaction ILocalSendVideoStreamForCall : public IMediaStream
+      interaction ILocalSendVideoStreamForCall
       {
       public:
         enum CameraTypes
@@ -330,7 +416,7 @@ namespace openpeer
 
         ILocalSendVideoStreamForCall &forCall() {return *this;}
         const ILocalSendVideoStreamForCall &forCall() const {return *this;}
-        
+
         virtual void setContinuousVideoCapture(bool continuousVideoCapture) = 0;
         virtual bool getContinuousVideoCapture() = 0;
         
@@ -342,13 +428,35 @@ namespace openpeer
         
         virtual void setRenderView(void *renderView) = 0;
         
-        virtual void start() = 0;
-        virtual void stop() = 0;
-        
         virtual void startRecord(String fileName, bool saveToLibrary = false) = 0;
         virtual void stopRecord() = 0;
         
-        virtual void setMediaConstraints(MediaConstraintList constraintList) = 0;
+        virtual void setMediaConstraints(IMediaStream::MediaConstraintList constraintList) = 0;
+      };
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ILocalSendVideoStreamForCallTransport
+      #pragma mark
+      
+      interaction ILocalSendVideoStreamForCallTransport
+      {
+      public:
+        ILocalSendVideoStreamForCallTransport &forCallTransport() {return *this;}
+        const ILocalSendVideoStreamForCallTransport &forCallTransport() const {return *this;}
+        
+        static LocalSendVideoStreamPtr create(
+                                              IMessageQueuePtr queue,
+                                              IMediaStreamDelegatePtr delegate
+                                              );
+        
+        virtual void start() = 0;
+        virtual void stop() = 0;
+        
+        virtual SendMediaTransportPtr getTransport() = 0;
       };
       
       //-----------------------------------------------------------------------
@@ -359,13 +467,35 @@ namespace openpeer
       #pragma mark IRemoteReceiveVideoStreamForCall
       #pragma mark
 
-      interaction IRemoteReceiveVideoStreamForCall : public IMediaStream
+      interaction IRemoteReceiveVideoStreamForCall
       {
       public:
         IRemoteReceiveVideoStreamForCall &forCall() {return *this;}
         const IRemoteReceiveVideoStreamForCall &forCall() const {return *this;}
-        
+
         virtual void setRenderView(void *renderView) = 0;
+      };
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRemoteReceiveVideoStreamForCallTransport
+      #pragma mark
+      
+      interaction IRemoteReceiveVideoStreamForCallTransport
+      {
+      public:
+        IRemoteReceiveVideoStreamForCallTransport &forCallTransport() {return *this;}
+        const IRemoteReceiveVideoStreamForCallTransport &forCallTransport() const {return *this;}
+        
+        static RemoteReceiveVideoStreamPtr create(
+                                                  IMessageQueuePtr queue,
+                                                  IMediaStreamDelegatePtr delegate
+                                                  );
+        
+        virtual ReceiveMediaTransportPtr getTransport() = 0;
       };
       
       //-----------------------------------------------------------------------
@@ -376,30 +506,35 @@ namespace openpeer
       #pragma mark IRemoteSendVideoStreamForCall
       #pragma mark
 
-      interaction IRemoteSendVideoStreamForCall : public IMediaStream
+      interaction IRemoteSendVideoStreamForCall
       {
       public:
         IRemoteSendVideoStreamForCall &forCall() {return *this;}
         const IRemoteSendVideoStreamForCall &forCall() const {return *this;}
-        
+
         virtual void setRenderView(void *renderView) = 0;
       };
-
+      
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark IMediaStreamForCallTransport
+      #pragma mark IRemoteSendVideoStreamForCallTransport
       #pragma mark
       
-      interaction IMediaStreamForCallTransport : public IMediaStream
+      interaction IRemoteSendVideoStreamForCallTransport
       {
       public:
-        IMediaStreamForCallTransport &forCallTransport() {return *this;}
-        const IMediaStreamForCallTransport &forCallTransport() const {return *this;}
+        IRemoteSendVideoStreamForCallTransport &forCallTransport() {return *this;}
+        const IRemoteSendVideoStreamForCallTransport &forCallTransport() const {return *this;}
         
-        virtual IMediaTransportPtr getTransport() = 0;
+        static RemoteSendVideoStreamPtr create(
+                                               IMessageQueuePtr queue,
+                                               IMediaStreamDelegatePtr delegate
+                                               );
+        
+        virtual SendMediaTransportPtr getTransport() = 0;
       };
       
       //-----------------------------------------------------------------------
@@ -431,9 +566,9 @@ namespace openpeer
 
       protected:
         MediaStream(
-                   IMessageQueuePtr queue,
-                   IMediaStreamDelegatePtr delegate
-                   );
+                    IMessageQueuePtr queue,
+                    IMediaStreamDelegatePtr delegate
+                    );
         
       public:
         virtual ~MediaStream();
@@ -451,8 +586,6 @@ namespace openpeer
         #pragma mark
         #pragma mark MediaStream => IMediaStreamForCallTransport
         #pragma mark
-        
-        virtual IMediaTransportPtr getTransport();
         
         //---------------------------------------------------------------------
         #pragma mark
@@ -570,13 +703,13 @@ namespace openpeer
       #pragma mark
       
       class LocalSendAudioStream : public AudioStream,
+                                   public IMediaStream,
                                    public ILocalSendAudioStreamForCall,
-                                   public IMediaStreamForCallTransport
+                                   public ILocalSendAudioStreamForCallTransport
       {
       public:
-        friend interaction IMediaStream;
         friend interaction ILocalSendAudioStreamForCall;
-        friend interaction ILocalStreamForCallTransport;
+        friend interaction ILocalSendAudioStreamForCallTransport;
         
       protected:
         LocalSendAudioStream(
@@ -590,18 +723,27 @@ namespace openpeer
       protected:
         //---------------------------------------------------------------------
         #pragma mark
+        #pragma mark LocalSendAudioStream => IMediaStream
+        #pragma mark
+        
+        virtual ULONG getSSRC();
+        virtual IMediaStreamPtr clone();
+        
+        //---------------------------------------------------------------------
+        #pragma mark
         #pragma mark LocalSendAudioStream => ILocalSendAudioStreamForCall
         #pragma mark
         
-        virtual void start();
-        virtual void stop();
         virtual void setMediaConstraints(IMediaStream::MediaConstraintList constraintList);
         
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark LocalSendAudioStream => ILocalStreamForCallTransport
+        #pragma mark LocalSendAudioStream => ILocalSendAudioStreamForCallTransport
         #pragma mark
         
+        virtual void start();
+        virtual void stop();
+        virtual SendMediaTransportPtr getTransport();
         
         //---------------------------------------------------------------------
         #pragma mark
@@ -624,13 +766,13 @@ namespace openpeer
       #pragma mark
       
       class RemoteReceiveAudioStream : public AudioStream,
+                                       public IMediaStream,
                                        public IRemoteReceiveAudioStreamForCall,
-                                       public IMediaStreamForCallTransport
+                                       public IRemoteReceiveAudioStreamForCallTransport
       {
       public:
-        friend interaction IMediaStream;
         friend interaction IRemoteReceiveAudioStreamForCall;
-        friend interaction IRemoteStreamForCallTransport;
+        friend interaction IRemoteReceiveAudioStreamForCallTransport;
         
       protected:
         RemoteReceiveAudioStream(
@@ -644,18 +786,28 @@ namespace openpeer
       protected:
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark RemoteReceiveAudioStream => IRemoteReceiveAudioStreamForCall
+        #pragma mark RemoteReceiveAudioStream => IMediaStream
         #pragma mark
         
-        virtual void setEcEnabled(bool enabled) = 0;
-        virtual void setAgcEnabled(bool enabled) = 0;
-        virtual void setNsEnabled(bool enabled) = 0;
+        virtual ULONG getSSRC();
+        virtual IMediaStreamPtr clone();
         
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark RemoteReceiveAudioStream => IRemoteStreamForCallTransport
+        #pragma mark RemoteReceiveAudioStream => IRemoteReceiveAudioStreamForCall
         #pragma mark
         
+        virtual void setEcEnabled(bool enabled);
+        virtual void setAgcEnabled(bool enabled);
+        virtual void setNsEnabled(bool enabled);
+        
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RemoteReceiveAudioStream => IRemoteReceiveAudioStreamForCallTransport
+        #pragma mark
+        
+        virtual ReceiveMediaTransportPtr getTransport();
+
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark RemoteReceiveAudioStream => (internal)
@@ -679,13 +831,13 @@ namespace openpeer
       #pragma mark
       
       class RemoteSendAudioStream : public AudioStream,
+                                    public IMediaStream,
                                     public IRemoteSendAudioStreamForCall,
-                                    public IMediaStreamForCallTransport
+                                    public IRemoteSendAudioStreamForCallTransport
       {
       public:
-        friend interaction IMediaStream;
         friend interaction IRemoteSendAudioStreamForCall;
-        friend interaction IMediaStreamForCallTransport;
+        friend interaction IRemoteSendAudioStreamForCallTransport;
         
       protected:
         RemoteSendAudioStream(
@@ -699,13 +851,23 @@ namespace openpeer
       protected:
         //---------------------------------------------------------------------
         #pragma mark
+        #pragma mark RemoteSendAudioStream => IMediaStream
+        #pragma mark
+        
+        virtual ULONG getSSRC();
+        virtual IMediaStreamPtr clone();
+        
+        //---------------------------------------------------------------------
+        #pragma mark
         #pragma mark RemoteSendAudioStream => IRemoteSendAudioStreamForCall
         #pragma mark
         
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark RemoteSendAudioStream => IRemoteStreamForCallTransport
+        #pragma mark RemoteSendAudioStream => IRemoteSendAudioStreamForCallTransport
         #pragma mark
+        
+        virtual SendMediaTransportPtr getTransport();
         
         //---------------------------------------------------------------------
         #pragma mark
@@ -729,13 +891,13 @@ namespace openpeer
       #pragma mark
       
       class LocalSendVideoStream : public VideoStream,
+                                   public IMediaStream,
                                    public ILocalSendVideoStreamForCall,
-                                   public IMediaStreamForCallTransport
+                                   public ILocalSendVideoStreamForCallTransport
       {
       public:
-        friend interaction IMediaStream;
         friend interaction ILocalSendVideoStreamForCall;
-        friend interaction IMediaStreamForCallTransport;
+        friend interaction ILocalSendVideoStreamForCallTransport;
 
       protected:
         LocalSendVideoStream(
@@ -747,6 +909,14 @@ namespace openpeer
         virtual ~LocalSendVideoStream();
         
       protected:
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark LocalSendVideoStream => IMediaStream
+        #pragma mark
+        
+        virtual ULONG getSSRC();
+        virtual IMediaStreamPtr clone();
+        
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark LocalSendVideoStream => ILocalSendVideoStreamForCall
@@ -763,9 +933,6 @@ namespace openpeer
         
         virtual void setRenderView(void *renderView);
         
-        virtual void start();
-        virtual void stop();
-        
         virtual void startRecord(String fileName, bool saveToLibrary = false);
         virtual void stopRecord();
         
@@ -773,8 +940,13 @@ namespace openpeer
         
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark LocalSendVideoStream => ILocalStreamForCallTransport
+        #pragma mark LocalSendVideoStream => ILocalSendVideoStreamForCallTransport
         #pragma mark
+        
+        virtual void start();
+        virtual void stop();
+        
+        virtual SendMediaTransportPtr getTransport();
         
         //---------------------------------------------------------------------
         #pragma mark
@@ -799,13 +971,13 @@ namespace openpeer
       #pragma mark
       
       class RemoteReceiveVideoStream : public VideoStream,
+                                       public IMediaStream,
                                        public IRemoteReceiveVideoStreamForCall,
-                                       public IMediaStreamForCallTransport
+                                       public IRemoteReceiveVideoStreamForCallTransport
       {
       public:
-        friend interaction IMediaStream;
         friend interaction IRemoteReceiveVideoStreamForCall;
-        friend interaction IRemoteStreamForCallTransport;
+        friend interaction IRemoteReceiveVideoStreamForCallTransport;
         
       protected:
         RemoteReceiveVideoStream(
@@ -819,14 +991,26 @@ namespace openpeer
       protected:
         //---------------------------------------------------------------------
         #pragma mark
+        #pragma mark RemoteReceiveVideoStream => IMediaStream
+        #pragma mark
+        
+        virtual ULONG getSSRC();
+        virtual IMediaStreamPtr clone();
+
+        //---------------------------------------------------------------------
+        #pragma mark
         #pragma mark RemoteReceiveVideoStream => IRemoteReceiveVideoStreamForCall
         #pragma mark
         
+        virtual void setRenderView(void *renderView);
+        
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark RemoteReceiveVideoStream => IRemoteStreamForCallTransport
+        #pragma mark RemoteReceiveVideoStream => IRemoteReceiveVideoStreamForCallTransport
         #pragma mark
         
+        virtual ReceiveMediaTransportPtr getTransport();
+
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark RemoteReceiveVideoStream => (internal)
@@ -849,13 +1033,13 @@ namespace openpeer
       #pragma mark
       
       class RemoteSendVideoStream : public VideoStream,
+                                    public IMediaStream,
                                     public IRemoteSendVideoStreamForCall,
-                                    public IMediaStreamForCallTransport
+                                    public IRemoteSendVideoStreamForCallTransport
       {
       public:
-        friend interaction IMediaStream;
         friend interaction IRemoteSendVideoStreamForCall;
-        friend interaction IMediaStreamForCallTransport;
+        friend interaction IRemoteSendVideoStreamForCallTransport;
         
       protected:
         RemoteSendVideoStream(
@@ -869,14 +1053,26 @@ namespace openpeer
       protected:
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark RemoteSendVideoStream => IRemoteSendVideoStreamForCall
+        #pragma mark RemoteSendVideoStream => IMediaStream
         #pragma mark
+        
+        virtual ULONG getSSRC();
+        virtual IMediaStreamPtr clone();
         
         //---------------------------------------------------------------------
         #pragma mark
-        #pragma mark RemoteSendVideoStream => IRemoteStreamForCallTransport
+        #pragma mark RemoteSendVideoStream => IRemoteSendVideoStreamForCall
         #pragma mark
         
+        virtual void setRenderView(void *renderView);
+        
+        //---------------------------------------------------------------------
+        #pragma mark
+        #pragma mark RemoteSendVideoStream => IRemoteSendVideoStreamForCallTransport
+        #pragma mark
+        
+        virtual SendMediaTransportPtr getTransport();
+
         //---------------------------------------------------------------------
         #pragma mark
         #pragma mark RemoteSendVideoStream => (internal)

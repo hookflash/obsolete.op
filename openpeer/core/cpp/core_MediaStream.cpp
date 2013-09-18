@@ -48,6 +48,38 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IReceiveMediaTransportForCallTransport
+      #pragma mark
+      
+      //-------------------------------------------------------------------------
+      ReceiveMediaTransportPtr IReceiveMediaTransportForCallTransport::create()
+      {
+        ReceiveMediaTransportPtr pThis(new ReceiveMediaTransport());
+        pThis->mThisWeak = pThis;
+        return pThis;
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ISendMediaTransportForCallTransport
+      #pragma mark
+      
+      //-------------------------------------------------------------------------
+      SendMediaTransportPtr ISendMediaTransportForCallTransport::create()
+      {
+        SendMediaTransportPtr pThis(new SendMediaTransport());
+        pThis->mThisWeak = pThis;
+        return pThis;
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark MediaTransport
       #pragma mark
       
@@ -88,9 +120,23 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
-      #pragma mark ReceiveMediaTransport => IReceiveMediaTransportForCallTransport
+      #pragma mark ReceiveMediaTransport => IMediaTransport
       #pragma mark
       
+      //-------------------------------------------------------------------------
+      int ReceiveMediaTransport::getTransportStatistics(IMediaTransport::RtpRtcpStatistics &stat)
+      {
+        
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ReceiveMediaTransport => IReceiveMediaTransportForCallTransport
+      #pragma mark
+
       //-------------------------------------------------------------------------
       int ReceiveMediaTransport::receivedRTPPacket(const void *data, unsigned int length)
       {
@@ -128,6 +174,20 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark SendMediaTransport => IMediaTransport
+      #pragma mark
+      
+      //-------------------------------------------------------------------------
+      int SendMediaTransport::getTransportStatistics(IMediaTransport::RtpRtcpStatistics &stat)
+      {
+        
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark SendMediaTransport => ISendMediaTransportForCallTransport
       #pragma mark
       
@@ -142,10 +202,58 @@ namespace openpeer
         
       }
       
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ILocalSendAudioStreamForCallTransport
+      #pragma mark
+      
       //-------------------------------------------------------------------------
+      LocalSendAudioStreamPtr ILocalSendAudioStreamForCallTransport::create(IMessageQueuePtr queue, IMediaStreamDelegatePtr delegate)
+      {
+        LocalSendAudioStreamPtr pThis(new LocalSendAudioStream(queue, delegate));
+        pThis->mThisWeak = pThis;
+        return pThis;
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRemoteReceiveAudioStreamForCallTransport
+      #pragma mark
+      
       //-------------------------------------------------------------------------
+      RemoteReceiveAudioStreamPtr IRemoteReceiveAudioStreamForCallTransport::create(IMessageQueuePtr queue, IMediaStreamDelegatePtr delegate)
+      {
+        RemoteReceiveAudioStreamPtr pThis(new RemoteReceiveAudioStream(queue, delegate));
+        pThis->mThisWeak = pThis;
+        return pThis;
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRemoteSendAudioStreamForCallTransport
+      #pragma mark
+      
       //-------------------------------------------------------------------------
-      //-------------------------------------------------------------------------
+      RemoteSendAudioStreamPtr IRemoteSendAudioStreamForCallTransport::create(IMessageQueuePtr queue, IMediaStreamDelegatePtr delegate)
+      {
+        RemoteSendAudioStreamPtr pThis(new RemoteSendAudioStream(queue, delegate));
+        pThis->mThisWeak = pThis;
+        return pThis;
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       #pragma mark
       #pragma mark ILocalSendVideoStreamForCall
       #pragma mark
@@ -159,6 +267,54 @@ namespace openpeer
           case CameraType_Back:   return "Back";
         }
         return "UNDEFINED";
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark ILocalSendVideoStreamForCallTransport
+      #pragma mark
+
+      //-------------------------------------------------------------------------
+      LocalSendVideoStreamPtr ILocalSendVideoStreamForCallTransport::create(IMessageQueuePtr queue, IMediaStreamDelegatePtr delegate)
+      {
+        LocalSendVideoStreamPtr pThis(new LocalSendVideoStream(queue, delegate));
+        pThis->mThisWeak = pThis;
+        return pThis;
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRemoteReceiveVideoStreamForCallTransport
+      #pragma mark
+      
+      //-------------------------------------------------------------------------
+      RemoteReceiveVideoStreamPtr IRemoteReceiveVideoStreamForCallTransport::create(IMessageQueuePtr queue, IMediaStreamDelegatePtr delegate)
+      {
+        RemoteReceiveVideoStreamPtr pThis(new RemoteReceiveVideoStream(queue, delegate));
+        pThis->mThisWeak = pThis;
+        return pThis;
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark IRemoteSendVideoStreamForCallTransport
+      #pragma mark
+      
+      //-------------------------------------------------------------------------
+      RemoteSendVideoStreamPtr IRemoteSendVideoStreamForCallTransport::create(IMessageQueuePtr queue, IMediaStreamDelegatePtr delegate)
+      {
+        RemoteSendVideoStreamPtr pThis(new RemoteSendVideoStream(queue, delegate));
+        pThis->mThisWeak = pThis;
+        return pThis;
       }
 
       //-----------------------------------------------------------------------
@@ -285,7 +441,7 @@ namespace openpeer
       LocalSendAudioStream::LocalSendAudioStream(IMessageQueuePtr queue, IMediaStreamDelegatePtr delegate) :
         AudioStream(queue, delegate)
       {
-        
+        mTransport = ISendMediaTransportForCallTransport::create();
       }
       
       //-------------------------------------------------------------------------
@@ -299,7 +455,41 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark LocalSendAudioStream => IMediaStream
+      #pragma mark
+      
+      //-------------------------------------------------------------------------
+      ULONG LocalSendAudioStream::getSSRC()
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      IMediaStreamPtr LocalSendAudioStream::clone()
+      {
+        
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark LocalSendAudioStream => ILocalSendAudioStreamForCall
+      #pragma mark
+      
+      //-------------------------------------------------------------------------
+      void LocalSendAudioStream::setMediaConstraints(IMediaStream::MediaConstraintList constraintList)
+      {
+        
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark LocalSendAudioStream => ILocalSendAudioStreamForCallTransport
       #pragma mark
       
       //-------------------------------------------------------------------------
@@ -315,11 +505,11 @@ namespace openpeer
       }
       
       //-------------------------------------------------------------------------
-      void LocalSendAudioStream::setMediaConstraints(IMediaStream::MediaConstraintList constraintList)
+      SendMediaTransportPtr LocalSendAudioStream::getTransport()
       {
         
       }
-      
+
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -340,7 +530,7 @@ namespace openpeer
       {
         
       }
-      
+
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -367,6 +557,20 @@ namespace openpeer
         
       }
       
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RemoteReceiveAudioStream => IRemoteReceiveAudioStreamForCallTransport
+      #pragma mark
+      
+      //-------------------------------------------------------------------------
+      ReceiveMediaTransportPtr RemoteReceiveAudioStream::getTransport()
+      {
+        
+      }
+
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -408,7 +612,7 @@ namespace openpeer
       {
         
       }
-      
+
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -460,18 +664,6 @@ namespace openpeer
       }
       
       //-------------------------------------------------------------------------
-      void LocalSendVideoStream::start()
-      {
-        
-      }
-      
-      //-------------------------------------------------------------------------
-      void LocalSendVideoStream::stop()
-      {
-        
-      }
-      
-      //-------------------------------------------------------------------------
       void LocalSendVideoStream::startRecord(String fileName, bool saveToLibrary)
       {
         
@@ -494,6 +686,32 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark LocalSendVideoStream => ILocalSendVideoStreamForCallTransport
+      #pragma mark
+      
+      //-------------------------------------------------------------------------
+      void LocalSendVideoStream::start()
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      void LocalSendVideoStream::stop()
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      SendMediaTransportPtr LocalSendVideoStream::getTransport()
+      {
+        
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark RemoteReceiveVideoStream
       #pragma mark
       
@@ -510,6 +728,26 @@ namespace openpeer
         
       }
       
+      //-------------------------------------------------------------------------
+      void RemoteReceiveVideoStream::setRenderView(void *renderView)
+      {
+        
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RemoteReceiveVideoStream => IRemoteReceiveVideoStreamTransport
+      #pragma mark
+
+      //-------------------------------------------------------------------------
+      ReceiveMediaTransportPtr RemoteReceiveVideoStream::getTransport()
+      {
+        
+      }
+
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -530,7 +768,26 @@ namespace openpeer
       {
         
       }
-    }
+      
+      //-------------------------------------------------------------------------
+      void RemoteSendVideoStream::setRenderView(void *renderView)
+      {
+        
+      }
+      
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
+      #pragma mark RemoteSendVideoStream => IRemoteSendVideoStreamTransport
+      #pragma mark
 
+      //-------------------------------------------------------------------------
+      SendMediaTransportPtr RemoteSendVideoStream::getTransport()
+      {
+        
+      }
+    }
   }
 }

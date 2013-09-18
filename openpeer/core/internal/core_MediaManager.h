@@ -76,12 +76,8 @@ namespace openpeer
         
         static MediaManagerPtr singleton();
         
-        virtual MediaSessionList getMediaSessions() = 0;
-        virtual void addMediaSession(IMediaSessionPtr session, bool mergeAudioStreams = true) = 0;
-        virtual void removeMediaSession(IMediaSessionPtr session) = 0;
-        
-        virtual IMediaStreamForCallTransport::MediaConstraintList getVideoConstraints(ILocalSendVideoStreamForCall::CameraTypes cameraType) = 0;
-        virtual IMediaStreamForCallTransport::MediaConstraintList getAudioConstraints() = 0;
+        virtual IMediaStream::MediaConstraintList getVideoConstraints(ILocalSendVideoStreamForCall::CameraTypes cameraType) = 0;
+        virtual IMediaStream::MediaConstraintList getAudioConstraints() = 0;
       };
       
       //-----------------------------------------------------------------------
@@ -100,6 +96,10 @@ namespace openpeer
         const IMediaManagerForCallTransport &forCallTransport() const {return *this;}
         
         static MediaManagerPtr singleton();
+        
+        virtual MediaSessionListPtr getMediaSessions() = 0;
+        virtual void addMediaSession(IMediaSessionPtr session, bool mergeAudioStreams = true) = 0;
+        virtual void removeMediaSession(IMediaSessionPtr session) = 0;
       };
       
       //-----------------------------------------------------------------------
@@ -187,9 +187,6 @@ namespace openpeer
         #pragma mark
         
       protected:
-        virtual MediaSessionList getMediaSessions();
-        virtual void addMediaSession(IMediaSessionPtr session, bool mergeAudioStreams = true);
-        virtual void removeMediaSession(IMediaSessionPtr session);
         
         virtual IMediaStream::MediaConstraintList getVideoConstraints(ILocalSendVideoStreamForCall::CameraTypes cameraType);
         virtual IMediaStream::MediaConstraintList getAudioConstraints();
@@ -199,6 +196,10 @@ namespace openpeer
         #pragma mark MediaManager => IMediaManagerForCallTransport
         #pragma mark
         
+      protected:
+        virtual MediaSessionListPtr getMediaSessions();
+        virtual void addMediaSession(IMediaSessionPtr session, bool mergeAudioStreams = true);
+        virtual void removeMediaSession(IMediaSessionPtr session);
 
         //---------------------------------------------------------------------
         #pragma mark

@@ -281,7 +281,7 @@ namespace openpeer
       }
       
       //-----------------------------------------------------------------------
-      MediaSessionList MediaManager::getMediaSessions()
+      MediaSessionListPtr MediaManager::getMediaSessions()
       {
       }
       
@@ -298,13 +298,13 @@ namespace openpeer
       }
       
       //-----------------------------------------------------------------------
-      IMediaStreamForCallTransport::MediaConstraintList MediaManager::getVideoConstraints(ILocalSendVideoStreamForCall::CameraTypes cameraType)
+      IMediaStream::MediaConstraintList MediaManager::getVideoConstraints(ILocalSendVideoStreamForCall::CameraTypes cameraType)
       {
         
       }
       
       //-----------------------------------------------------------------------
-      IMediaStreamForCallTransport::MediaConstraintList MediaManager::getAudioConstraints()
+      IMediaStream::MediaConstraintList MediaManager::getAudioConstraints()
       {
         
       }

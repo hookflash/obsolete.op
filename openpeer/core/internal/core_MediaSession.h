@@ -51,10 +51,10 @@ namespace openpeer
       
       interaction IMediaSession
       {
+        virtual String getCNAME() = 0;
+        
         virtual MediaStreamListPtr getAudioStreams() = 0;
         virtual MediaStreamListPtr getVideoStreams() = 0;
-        
-        virtual String getCNAME() = 0;
         
         virtual void addStream(IMediaStreamPtr stream) = 0;
         virtual void removeStream(IMediaStreamPtr stream) = 0;
@@ -72,6 +72,8 @@ namespace openpeer
       {
         IMediaSessionForCall &forCall() {return *this;}
         const IMediaSessionForCall &forCall() const {return *this;}
+        
+        virtual String getCNAME() = 0;
 
         virtual bool getImmutable() = 0;
         
@@ -91,6 +93,17 @@ namespace openpeer
       {
         IMediaSessionForCallTransport &forCallTransport() {return *this;}
         const IMediaSessionForCallTransport &forCallTransport() const {return *this;}
+        
+        static MediaSessionPtr create(
+                                      IMessageQueuePtr queue,
+                                      IMediaSessionDelegatePtr delegate
+                                      );
+        
+        virtual MediaStreamListPtr getAudioStreams() = 0;
+        virtual MediaStreamListPtr getVideoStreams() = 0;
+        
+        virtual void addStream(IMediaStreamPtr stream) = 0;
+        virtual void removeStream(IMediaStreamPtr stream) = 0;
       };
       
       //-----------------------------------------------------------------------
@@ -117,6 +130,7 @@ namespace openpeer
       #pragma mark
       
       class MediaSession : public MessageQueueAssociator,
+                           public IMediaSession,
                            public IMediaSessionForCall,
                            public IMediaSessionForCallTransport
       {
@@ -142,11 +156,11 @@ namespace openpeer
         #pragma mark MediaSession => IMediaSession
         #pragma mark
         
-        virtual MediaStreamListPtr getAudioStreams();
-        virtual MediaStreamListPtr getVideoStreams();
-        
         virtual String getCNAME();
         virtual IMediaSessionPtr clone();
+        
+        virtual MediaStreamListPtr getAudioStreams();
+        virtual MediaStreamListPtr getVideoStreams();
         
         virtual void addStream(IMediaStreamPtr stream);
         virtual void removeStream(IMediaStreamPtr stream);

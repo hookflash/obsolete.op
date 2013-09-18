@@ -34,6 +34,7 @@
 #include <openpeer/core/internal/core_Stack.h>
 #include <openpeer/core/internal/core_Call.h>
 #include <openpeer/core/internal/core_MediaEngineObsolete.h>
+#include <openpeer/core/internal/core_MediaManager.h>
 #include <openpeer/core/internal/core_Helper.h>
 
 #include <zsLib/Stringize.h>
@@ -402,19 +403,40 @@ namespace openpeer
           }
         }
 
-        MediaEngineObsoletePtr engine = IMediaEngineForCallTransportObsolete::singleton();
-
+        MediaManagerPtr mediaManager = IMediaManagerForCall::singleton();
+        
+        MediaSessionList::iterator sessionIter = mediaManager->forCallTransport().getMediaSessions()->begin();
+        IMediaSessionPtr mediaSession = *sessionIter;
+        
         if (SocketType_Audio == type) {
-          if (isRTP) {
-            engine->forCallTransport().receivedVoiceRTPPacket(buffer, bufferLengthInBytes);
-          } else {
-            engine->forCallTransport().receivedVoiceRTCPPacket(buffer, bufferLengthInBytes);
+          MediaStreamListPtr audioStreams = mediaSession->getAudioStreams();
+          for (MediaStreamList::iterator streamIter = audioStreams->begin();
+               streamIter != audioStreams->end();
+               streamIter++) {
+            if (typeid(*streamIter) == typeid(RemoteReceiveAudioStream)) {
+              RemoteReceiveAudioStreamPtr audioStream = boost::dynamic_pointer_cast<RemoteReceiveAudioStream>(*streamIter);
+              ReceiveMediaTransportPtr receiveTransport = audioStream->forCallTransport().getTransport();
+              if (isRTP) {
+                receiveTransport->forCallTransport().receivedRTPPacket(buffer, bufferLengthInBytes);
+              } else {
+                receiveTransport->forCallTransport().receivedRTCPPacket(buffer, bufferLengthInBytes);
+              }
+            }
           }
         } else {
-          if (isRTP) {
-            engine->forCallTransport().receivedVideoRTPPacket(buffer, bufferLengthInBytes);
-          } else {
-            engine->forCallTransport().receivedVideoRTCPPacket(buffer, bufferLengthInBytes);
+          MediaStreamListPtr videoStreams = mediaSession->getVideoStreams();
+          for (MediaStreamList::iterator streamIter = videoStreams->begin();
+               streamIter != videoStreams->end();
+               streamIter++) {
+            if (typeid(*streamIter) == typeid(RemoteReceiveVideoStream)) {
+              RemoteReceiveVideoStreamPtr audioStream = boost::dynamic_pointer_cast<RemoteReceiveVideoStream>(*streamIter);
+              ReceiveMediaTransportPtr receiveTransport = audioStream->forCallTransport().getTransport();
+              if (isRTP) {
+                receiveTransport->forCallTransport().receivedRTPPacket(buffer, bufferLengthInBytes);
+              } else {
+                receiveTransport->forCallTransport().receivedRTCPPacket(buffer, bufferLengthInBytes);
+              }
+            }
           }
         }
       }
@@ -596,25 +618,53 @@ namespace openpeer
           ZS_LOG_DETAIL(log("starting media engine") + ", audio=" + (mHasAudio ? "true" : "false") + ", video=" + (mHasVideo ? "true" : "false"))
         }
 
-        MediaEngineObsoletePtr engine = IMediaEngineForCallTransportObsolete::singleton();
-
+        MediaManagerPtr mediaManager = IMediaManagerForCall::singleton();
+        
+        MediaSessionPtr mediaSession = IMediaSessionForCallTransport::create(getAssociatedMessageQueue(), IMediaSessionDelegatePtr());
+        
+        LocalSendAudioStreamPtr localSendAudioStream;
+        RemoteReceiveAudioStreamPtr remoteReceiveAudioStream;
+        
         if (hasAudio) {
+          localSendAudioStream = ILocalSendAudioStreamForCallTransport::create(getAssociatedMessageQueue(), IMediaStreamDelegatePtr());
+          remoteReceiveAudioStream = IRemoteReceiveAudioStreamForCallTransport::create(getAssociatedMessageQueue(), IMediaStreamDelegatePtr());
+          
           ZS_LOG_DETAIL(log("registering audio media engine transports"))
-
-          engine->forCallTransport().registerVoiceExternalTransport(*(audioSocket.get()));
+          
+          SendMediaTransportPtr sendTransport = localSendAudioStream->forCallTransport().getTransport();
+          
+          sendTransport->forCallTransport().registerExternalTransport(*(audioSocket.get()));
+          
+          mediaSession->forCallTransport().addStream(localSendAudioStream);
+          mediaSession->forCallTransport().addStream(remoteReceiveAudioStream);
         }
+        
+        LocalSendVideoStreamPtr localSendVideoStream;
+        RemoteReceiveVideoStreamPtr remoteReceiveVideoStream;
+
         if (hasVideo) {
+          localSendVideoStream = ILocalSendVideoStreamForCallTransport::create(getAssociatedMessageQueue(), IMediaStreamDelegatePtr());;
+          remoteReceiveVideoStream = IRemoteReceiveVideoStreamForCallTransport::create(getAssociatedMessageQueue(), IMediaStreamDelegatePtr());
+          
           ZS_LOG_DETAIL(log("registering video media engine transports"))
-          engine->forCallTransport().registerVideoExternalTransport(*(videoSocket.get()));
+          
+          SendMediaTransportPtr transport = localSendVideoStream->forCallTransport().getTransport();
+          
+          transport->forCallTransport().registerExternalTransport(*(videoSocket.get()));
+          
+          mediaSession->forCallTransport().addStream(localSendVideoStream);
+          mediaSession->forCallTransport().addStream(remoteReceiveVideoStream);
         }
-
+        
+        mediaManager->forCallTransport().addMediaSession(mediaSession);
+        
         {
           AutoRecursiveLock lock(mLock);
           if (hasAudio) {
-            engine->forCallTransport().startVoice();
+            localSendAudioStream->forCallTransport().start();
           }
           if (hasVideo) {
-            engine->forCallTransport().startVideoChannel();
+            localSendVideoStream->forCallTransport().start();
           }
         }
       }
@@ -641,26 +691,59 @@ namespace openpeer
           mHasAudio = false;
           mHasVideo = false;
         }
-
-        MediaEngineObsoletePtr engine = boost::dynamic_pointer_cast<MediaEngineObsolete>(IMediaEngineObsolete::singleton());
+        
+        MediaManagerPtr mediaManager = IMediaManagerForCall::singleton();
+        
+        MediaSessionList::iterator sessionIter = mediaManager->forCallTransport().getMediaSessions()->begin();
+        IMediaSessionPtr mediaSession = *sessionIter;
+        
+        LocalSendAudioStreamPtr localSendAudioStream;
+        RemoteReceiveAudioStreamPtr remoteReceiveAudioStream;
+        
+        MediaStreamListPtr audioStreams = mediaSession->getAudioStreams();
+        for (MediaStreamList::iterator streamIter = audioStreams->begin();
+             streamIter != audioStreams->end();
+             streamIter++) {
+          if (typeid(*streamIter) == typeid(LocalSendAudioStream)) {
+            localSendAudioStream = boost::dynamic_pointer_cast<LocalSendAudioStream>(*streamIter);
+          } else if (typeid(*streamIter) == typeid(RemoteReceiveAudioStream)) {
+            remoteReceiveAudioStream = boost::dynamic_pointer_cast<RemoteReceiveAudioStream>(*streamIter);
+          }
+        }
+        
+        LocalSendVideoStreamPtr localSendVideoStream;
+        RemoteReceiveVideoStreamPtr remoteReceiveVideoStream;
+        
+        MediaStreamListPtr videoStreams = mediaSession->getAudioStreams();
+        for (MediaStreamList::iterator streamIter = audioStreams->begin();
+             streamIter != audioStreams->end();
+             streamIter++) {
+          if (typeid(*streamIter) == typeid(LocalSendVideoStream)) {
+            localSendVideoStream = boost::dynamic_pointer_cast<LocalSendVideoStream>(*streamIter);
+          } else if (typeid(*streamIter) == typeid(RemoteReceiveVideoStream)) {
+            remoteReceiveVideoStream = boost::dynamic_pointer_cast<RemoteReceiveVideoStream>(*streamIter);
+          }
+        }
 
         if (hasVideo) {
           ZS_LOG_DETAIL(log("stopping media engine video"))
-          engine->forCallTransport().stopVideoChannel();
+          localSendVideoStream->forCallTransport().stop();
         }
         if (hasAudio) {
           ZS_LOG_DETAIL(log("stopping media engine audio"))
-          engine->forCallTransport().stopVoice();
+          localSendAudioStream->forCallTransport().stop();
         }
-
+        
         if (hasVideo) {
           ZS_LOG_DETAIL(log("deregistering video media engine transport"))
-          engine->forCallTransport().deregisterVideoExternalTransport();
+          SendMediaTransportPtr transport = localSendVideoStream->forCallTransport().getTransport();
+          transport->forCallTransport().deregisterExternalTransport();
         }
-
+        
         if (hasAudio) {
           ZS_LOG_DETAIL(log("deregistering audio media engine transport"))
-          engine->forCallTransport().deregisterVoiceExternalTransport();
+          SendMediaTransportPtr transport = localSendAudioStream->forCallTransport().getTransport();
+          transport->forCallTransport().deregisterExternalTransport();
         }
       }
 

@@ -46,6 +46,22 @@ namespace openpeer
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       #pragma mark
+      #pragma mark IMediaSessionForCallTransport
+      #pragma mark
+      
+      //-------------------------------------------------------------------------
+      MediaSessionPtr IMediaSessionForCallTransport::create(IMessageQueuePtr queue, IMediaSessionDelegatePtr delegate)
+      {
+        MediaSessionPtr pThis(new MediaSession(queue, delegate));
+        pThis->mThisWeak = pThis;
+        return pThis;
+      }
+
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      #pragma mark
       #pragma mark MediaSession
       #pragma mark
       
@@ -65,18 +81,6 @@ namespace openpeer
       #pragma mark
       
       //-------------------------------------------------------------------------
-      MediaStreamListPtr MediaSession::getAudioStreams()
-      {
-        
-      }
-      
-      //-------------------------------------------------------------------------
-      MediaStreamListPtr MediaSession::getVideoStreams()
-      {
-        
-      }
-      
-      //-------------------------------------------------------------------------
       String MediaSession::getCNAME()
       {
         
@@ -84,6 +88,18 @@ namespace openpeer
       
       //-------------------------------------------------------------------------
       IMediaSessionPtr MediaSession::clone()
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      MediaStreamListPtr MediaSession::getAudioStreams()
+      {
+        
+      }
+      
+      //-------------------------------------------------------------------------
+      MediaStreamListPtr MediaSession::getVideoStreams()
       {
         
       }
@@ -133,7 +149,7 @@ namespace openpeer
         
         return mVoiceRecordFile;
       }
-      
+
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
