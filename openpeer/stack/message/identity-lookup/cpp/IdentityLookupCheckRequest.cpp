@@ -100,7 +100,7 @@ namespace openpeer
               providerEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("identities", info.mIdentities));
             }
             if (providerEl) {
-              providerEl->adoptAsLastChild(providerEl);
+              providersEl->adoptAsLastChild(providerEl);
             }
           }
 
