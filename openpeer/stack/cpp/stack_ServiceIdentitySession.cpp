@@ -70,7 +70,7 @@
 
 #define OPENPEER_STACK_SERVICE_IDENTITY_ROLODEX_CONTACTS_NAMESPACE "https://meta.openpeer.org/permission/rolodex-contacts"
 
-#define OPENPEER_STACK_SERVICE_IDENTITY_ROLODEX_DOWNLOAD_FROZEN_VALUE "FREEZE"
+#define OPENPEER_STACK_SERVICE_IDENTITY_ROLODEX_DOWNLOAD_FROZEN_VALUE "FREEZE-"
 #define OPENPEER_STACK_SERVICE_IDENTITY_ROLODEX_ERROR_RETRY_TIME_IN_SECONDS ((60)*2)
 #define OPENPEER_STACK_SERVICE_IDENTITY_MAX_ROLODEX_ERROR_RETRY_TIME_IN_SECONDS (((60)*60) * 24)
 
@@ -310,10 +310,11 @@ namespace openpeer
         mCurrentState(SessionState_Pending),
         mLastReportedState(SessionState_Pending),
         mOuterFrameURLUponReload(outerFrameURLUponReload),
+        mFrozenVersion(OPENPEER_STACK_SERVICE_IDENTITY_ROLODEX_DOWNLOAD_FROZEN_VALUE + IHelper::randomString(32)),
         mNextRetryAfterFailureTime(Seconds(OPENPEER_STACK_SERVICE_IDENTITY_ROLODEX_ERROR_RETRY_TIME_IN_SECONDS))
       {
         ZS_LOG_DEBUG(log("created"))
-        mRolodexInfo.mVersion = OPENPEER_STACK_SERVICE_IDENTITY_ROLODEX_DOWNLOAD_FROZEN_VALUE;
+        mRolodexInfo.mVersion = mFrozenVersion;
       }
 
       //-----------------------------------------------------------------------
@@ -2365,13 +2366,22 @@ namespace openpeer
       //-----------------------------------------------------------------------
       bool ServiceIdentitySession::stepDownloadContacts()
       {
-        if (mRolodexNotSupportedForIdentity) {
-          ZS_LOG_TRACE(log("rolodex not supported for this identity"))
+        if (mFrozenVersion == mRolodexInfo.mVersion) {
+          ZS_LOG_TRACE(log("rolodex download has not been initiated yet"))
           return true;
         }
 
-        if (OPENPEER_STACK_SERVICE_IDENTITY_ROLODEX_DOWNLOAD_FROZEN_VALUE == mRolodexInfo.mVersion) {
-          ZS_LOG_TRACE(log("rolodex download has not been initiated yet"))
+        if (mRolodexNotSupportedForIdentity) {
+          ZS_LOG_TRACE(log("rolodex not supported for this identity"))
+
+          mRolodexInfo.mVersion = mFrozenVersion;
+
+          try {
+            mDelegate->onServiceIdentitySessionRolodexContactsDownloaded(mThisWeak.lock());
+          } catch(IServiceIdentitySessionDelegateProxy::Exceptions::DelegateGone &) {
+            ZS_LOG_WARNING(Detail, log("delegate gone"))
+          }
+
           return true;
         }
 

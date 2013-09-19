@@ -531,6 +531,8 @@ namespace openpeer
 
         TimerPtr mTimer;
 
+        String mFrozenVersion;
+
         String mLastVersionDownloaded;
         Time mForceRefresh;
 
