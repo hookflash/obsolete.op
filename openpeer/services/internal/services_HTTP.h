@@ -265,6 +265,7 @@ namespace openpeer
           CURL *mCurl;
           long mResponseCode;
           CURLcode mResultCode;
+          struct curl_slist *mHeaders;
 
           ByteQueue mHeader;
           ByteQueue mBody;

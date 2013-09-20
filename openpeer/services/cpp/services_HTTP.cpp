@@ -618,12 +618,13 @@ namespace openpeer
         mOuter(outer),
         mDelegate(IHTTPQueryDelegateProxy::create(Helper::getServiceQueue(), delegate)),
         mIsPost(isPost),
-        mUserAgent(userAgent ? userAgent : ""),
+        mUserAgent(userAgent),
         mURL(url),
-        mMimeType(postDataMimeType ? postDataMimeType : ""),
+        mMimeType(postDataMimeType),
         mTimeout(timeout),
         mCurl(NULL),
         mResponseCode(0),
+        mHeaders(NULL),
         mResultCode(CURLE_OK)
       {
         ZS_LOG_DEBUG(log("created"))
@@ -684,6 +685,11 @@ namespace openpeer
         if (mCurl) {
           curl_easy_cleanup(mCurl);
           mCurl = NULL;
+        }
+
+        if (mHeaders) {
+          curl_slist_free_all(mHeaders);
+          mHeaders = NULL;
         }
       }
 
@@ -830,10 +836,10 @@ namespace openpeer
         if (!mUserAgent.isEmpty()) {
           curl_easy_setopt(mCurl, CURLOPT_USERAGENT, mUserAgent.c_str());
         }
+
         if (!mMimeType.isEmpty()) {
           String temp = "Content-Type: " + mMimeType;
-          struct curl_slist *slist = curl_slist_append(NULL, temp.c_str());
-          curl_easy_setopt(mCurl, CURLOPT_HTTPHEADER, slist);
+          mHeaders = curl_slist_append(mHeaders, temp.c_str());
         }
         {
           /*
@@ -844,9 +850,11 @@ namespace openpeer
 
            //please see http://curl.haxx.se/libcurl/c/post-callback.html for example usage
 
-          struct curl_slist *slist = NULL;
-          slist = curl_slist_append(slist, "Expect:");
-          curl_easy_setopt(mCurl, CURLOPT_HTTPHEADER, slist);
+          mHeaders = curl_slist_append(mHeaders, "Expect:");
+        }
+
+        if (mHeaders) {
+          curl_easy_setopt(mCurl, CURLOPT_HTTPHEADER, mHeaders);
         }
 
         curl_easy_setopt(mCurl, CURLOPT_HEADER, 0);
