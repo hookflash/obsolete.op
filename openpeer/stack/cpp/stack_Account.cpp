@@ -1150,10 +1150,10 @@ namespace openpeer
           Time expires = channelMapNotify->relayAccessSecretProofExpires();
           String hash = channelMapNotify->relayAccessSecretProof();
 
-          //  hex(hash("proof:" + <client-nonce> + ":" + <remote-context> + ":" + <channel-number> + ":" + <expires> + ":" + hex(hmac(<relay-access-secret>, "finder-relay-access-validate:" + <relay-access-token> + ":" + <local-context> + ":channel-map-notify"))))
+          //  hex(hash("proof:" + <client-nonce> + ":" + <remote-context> + ":" + <channel-number> + ":" + <expires> + ":" + hex(hmac(<relay-access-secret>, "finder-relay-access-validate:" + <relay-access-token> + ":" + <local-context> + ":channel-map"))))
 
-          // hex(hmac(<relay-access-secret>, "finder-relay-access-validate:" + <relay-access-token> + ":" + <local-context> + ":channel-map-notify")
-          String innerHash = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(relayAccessSecret), "finder-relay-access-validate:" + relayAccessToken + ":" + localContext + ":channel-map-notify"));
+          // hex(hmac(<relay-access-secret>, "finder-relay-access-validate:" + <relay-access-token> + ":" + <local-context> + ":channel-map")
+          String innerHash = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(relayAccessSecret), "finder-relay-access-validate:" + relayAccessToken + ":" + localContext + ":channel-map"));
 
           //  hex(hash("proof:" + <client-nonce> + ":" + <remote-context> + ":" + <channel-number> + ":" + <expires> + ":" + <innerHash>))
           String calculatedProof = IHelper::convertToHex(*IHelper::hash("proof:" + nonce + ":" + remoteContext + ":" + string(channel) + ":" + IHelper::timeToString(expires)));
@@ -2435,6 +2435,33 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      CandidatePtr Account::getRelayCandidate(const String &peerURI) const
+      {
+        if (!mFinder) return CandidatePtr();
+
+        String relayAccessToken;
+        String relayAccessSecret;
+
+        mFinder->forAccount().getFinderRelayInformation(relayAccessToken, relayAccessSecret);
+        String localContext = getLocalContextID(peerURI);
+
+        if ((relayAccessToken.isEmpty()) ||
+            (relayAccessSecret.isEmpty())) return CandidatePtr();
+
+        CandidatePtr candidate(new Candidate);
+
+        candidate->mClass = OPENPEER_STACK_CANDIDATE_CLASS_FINDER_RELAY;
+        candidate->mTransport = OPENPEER_STACK_TRANSPORT_MULTIPLEXED_JSON_MLS_TCP;
+        candidate->mAccessToken = relayAccessToken;
+
+        // hex(hmac(<relay-access-secret>, "finder-relay-access-validate:" + <relay-access-token> + ":" + <local-context> + ":channel-map")
+        String proofHash = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(relayAccessSecret), "finder-relay-access-validate:" + relayAccessToken + ":" + localContext + ":channel-map"));
+
+        candidate->mAccessSecretProof = proofHash;
+        return candidate;
+      }
+
+      //-----------------------------------------------------------------------
       void Account::setFindState(
                                  PeerInfo &peerInfo,
                                  IPeer::PeerFindStates state
@@ -2636,6 +2663,12 @@ namespace openpeer
         }
 
         LocationInfoPtr locationInfo = getLocationInfo(mSelfLocation);
+
+        CandidatePtr relayCandidate = getRelayCandidate(peerURI);
+        if (relayCandidate) {
+          locationInfo->mCandidates.push_front(*relayCandidate);
+        }
+
         request->findPeer(peerInfo->mPeer);
         request->context(getLocalContextID(peerURI));
         request->peerSecret(getLocalPassword(peerURI));

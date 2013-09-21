@@ -130,6 +130,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void Identity::init()
       {
+        ZS_LOG_DEBUG(log("init called") + ", identity session id=" + string(mSession->getID()))
       }
 
       //-----------------------------------------------------------------------
@@ -385,12 +386,14 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void Identity::startRolodexDownload(const char *inLastDownloadedVersion)
       {
+        ZS_LOG_DEBUG(log("start rolodex download called") + ", identity session id=" + string(mSession->getID()))
         mSession->startRolodexDownload(inLastDownloadedVersion);
       }
 
       //-----------------------------------------------------------------------
       void Identity::refreshRolodexContacts()
       {
+        ZS_LOG_DEBUG(log("refresh rolodex contacts called") + ", identity session id=" + string(mSession->getID()))
         mSession->refreshRolodexContacts();
       }
 
@@ -404,6 +407,8 @@ namespace openpeer
         typedef stack::message::IdentityInfo StackIdentityInfo;
         typedef stack::message::IdentityInfoList StackIdentityInfoList;
         typedef stack::message::IdentityInfoListPtr StackIdentityInfoListPtr;
+
+        ZS_LOG_DEBUG(log("download rolodex contacts") + ", identity session id=" + string(mSession->getID()))
 
         StackIdentityInfoListPtr identities;
         bool result = mSession->getDownloadedRolodexContacts(
@@ -497,6 +502,8 @@ namespace openpeer
                                                           SessionStates state
                                                           )
       {
+        ZS_LOG_DEBUG(log("session state changed") + ", identity session id=" + string(session->getID()) + ", state=" + IServiceIdentitySession::toString(state))
+
         ZS_THROW_BAD_STATE_IF(!mDelegate)
         try {
           mDelegate->onIdentityStateChanged(mThisWeak.lock(), toState(state));
@@ -507,6 +514,8 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void Identity::onServiceIdentitySessionPendingMessageForInnerBrowserWindowFrame(IServiceIdentitySessionPtr session)
       {
+        ZS_LOG_DEBUG(log("pending inner browser window frame message") + ", identity session id=" + string(session->getID()))
+
         ZS_THROW_BAD_STATE_IF(!mDelegate)
         try {
           mDelegate->onIdentityPendingMessageForInnerBrowserWindowFrame(mThisWeak.lock());
@@ -515,8 +524,10 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      void Identity::onServiceIdentitySessionRolodexContactsDownloaded(IServiceIdentitySessionPtr identity)
+      void Identity::onServiceIdentitySessionRolodexContactsDownloaded(IServiceIdentitySessionPtr session)
       {
+        ZS_LOG_DEBUG(log("rolodex contacts downloaded") + ", identity session id=" + string(session->getID()))
+
         ZS_THROW_BAD_STATE_IF(!mDelegate)
         try {
           mDelegate->onIdentityRolodexContactsDownloaded(mThisWeak.lock());

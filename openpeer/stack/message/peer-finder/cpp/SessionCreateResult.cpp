@@ -56,6 +56,7 @@ namespace openpeer
     {
       using services::IHelper;
       using namespace stack::internal;
+      typedef zsLib::XML::Exceptions::CheckFailed CheckFailed;
 
       namespace peer_finder
       {
@@ -79,7 +80,17 @@ namespace openpeer
           SessionCreateResultPtr ret(new SessionCreateResult);
           IMessageHelper::fill(*ret, rootEl, messageSource);
 
-          ElementPtr relayEl = rootEl->findFirstChildElement("relay");
+          ElementPtr relayEl;
+
+          try {
+            ElementPtr serverProofBundleEl = rootEl->findFirstChildElementChecked("serverProofBundle");
+            ElementPtr serverProofEl = serverProofBundleEl->findFirstChildElementChecked("serverProof");
+
+            relayEl = serverProofEl->findFirstChildElementChecked("relay");
+          } catch(CheckFailed &) {
+            ZS_LOG_WARNING(Detail, "SessionCreateResult[] session create relay token missing")
+            return SessionCreateResultPtr();
+          }
 
           LocationPtr messageLocation = ILocationForMessages::convert(messageSource);
           if (!messageLocation) {
@@ -111,10 +122,17 @@ namespace openpeer
             return SessionCreateResultPtr();
           }
 
+#define WARNING_NEED_TO_VERIFY_SERVER_SIGNATURE 1
+#define WARNING_NEED_TO_VERIFY_SERVER_SIGNATURE 2
+
           if (relayEl) {
             ret->mRelayAccessToken = IMessageHelper::getElementTextAndDecode(relayEl->findFirstChildElement("accessToken"));
             String accessSecretEncrypted = IMessageHelper::getElementTextAndDecode(relayEl->findFirstChildElement("accessSecretEncrypted"));
-            ret->mRelayAccessSecret = IHelper::convertToString(*peerFilePrivate->decrypt(*IHelper::convertFromBase64(accessSecretEncrypted)));
+            if (accessSecretEncrypted.hasData()) {
+              ret->mRelayAccessSecret = IHelper::convertToString(*peerFilePrivate->decrypt(*IHelper::convertFromBase64(accessSecretEncrypted)));
+            } else {
+              ret->mRelayAccessSecret = IMessageHelper::getElementTextAndDecode(relayEl->findFirstChildElement("accessSecret"));
+            }
           }
 
           ret->mServerAgent = IMessageHelper::getElementTextAndDecode(rootEl->findFirstChildElement("server"));

@@ -665,6 +665,8 @@ namespace openpeer
         void setState(AccountStates accountState);
         void setError(WORD errorCode, const char *reason = NULL);
 
+        virtual CandidatePtr getRelayCandidate(const String &peerURI) const;
+
         void setFindState(
                           PeerInfo &peerInfo,
                           IPeer::PeerFindStates state
