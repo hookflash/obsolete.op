@@ -1486,9 +1486,12 @@ namespace openpeer
 
         mRolodexInfo.mergeFrom(result->rolodexInfo());
 
+        ZS_LOG_DEBUG(log("downloaded contacts") + ", total=" + string(identities.size()))
+
         for (IdentityInfoList::const_iterator iter = identities.begin(); iter != identities.end(); ++iter)
         {
           const IdentityInfo &identityInfo = (*iter);
+          ZS_LOG_TRACE(log("downloaded contact") + identityInfo.getDebugValueString())
           mIdentities.push_back(identityInfo);
         }
 
@@ -2313,8 +2316,16 @@ namespace openpeer
           mIdentityInfo.mPriority = 0;
           mIdentityInfo.mWeight = 0;
 
+          ServiceLockboxSessionPtr lockbox = mAssociatedLockbox.lock();
+
+          if (lockbox) {
+            LockboxInfo lockboxInfo = lockbox->forServiceIdentity().getLockboxInfo();
+            mLockboxInfo.mergeFrom(lockboxInfo, true);
+          }
+
           IdentityLookupUpdateRequestPtr request = IdentityLookupUpdateRequest::create();
           request->domain(mActiveBootstrappedNetwork->forServices().getDomain());
+          request->lockboxInfo(mLockboxInfo);
           request->identityInfo(mIdentityInfo);
 
           mIdentityLookupUpdateMonitor = IMessageMonitor::monitor(IMessageMonitorResultDelegate<IdentityLookupUpdateResult>::convert(mThisWeak.lock()), request, Seconds(OPENPEER_STACK_SERVICE_IDENTITY_TIMEOUT_IN_SECONDS));
@@ -2350,6 +2361,9 @@ namespace openpeer
         }
 
         ZS_LOG_DEBUG(log("updating identity lookup information (but not preventing other requests from continuing)") + ", lockbox: " + mLockboxInfo.getDebugValueString(false) + ", identity info: " + mIdentityInfo.getDebugValueString(false))
+
+        LockboxInfo lockboxInfo = lockbox->forServiceIdentity().getLockboxInfo();
+        mLockboxInfo.mergeFrom(lockboxInfo, true);
 
         IdentityLookupUpdateRequestPtr request = IdentityLookupUpdateRequest::create();
         request->domain(mActiveBootstrappedNetwork->forServices().getDomain());
