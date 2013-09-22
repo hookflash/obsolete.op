@@ -414,6 +414,9 @@ namespace openpeer
           mIdentities[identity->forAccount().getSession()->getID()] = identity;
           result->push_back(identity);
         }
+
+        ZS_LOG_DEBUG(log("get associated identities complete") + ", total=" + string(result->size()))
+
         return result;
       }
 
