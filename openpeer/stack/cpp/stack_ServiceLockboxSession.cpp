@@ -1579,6 +1579,12 @@ namespace openpeer
             if ((info.mURI == pendingInfo.mURI) &&
                 (info.mProvider == pendingInfo.mProvider)) {
 
+              if (pendingInfo.mReloginKey.hasData()) {
+                String hash = IHelper::convertToHex(*IHelper::hash(String("identity-relogin:") + pendingInfo.mURI + ":" + pendingInfo.mProvider));
+
+                setContent(OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE, hash, pendingInfo.mReloginKey);
+              }
+
               // move the pending identity to the actual identity rather than creating a new identity
               mAssociatedIdentities[identitySession->forLockbox().getID()] = identitySession;
 

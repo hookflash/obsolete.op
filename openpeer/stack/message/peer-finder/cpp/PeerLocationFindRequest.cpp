@@ -154,7 +154,7 @@ namespace openpeer
             if (peerSecretEncrypted.hasData()) {
               ret->mPeerSecret = IHelper::convertToString(*peerFilePrivate->decrypt(*IHelper::convertFromBase64(peerSecretEncrypted)));
             }
-            if (ret->mPeerSecret.hasData()) {
+            if (ret->mPeerSecret.isEmpty()) {
               ZS_LOG_WARNING(Detail, "PeerLocationFindRequest [] peer secret failed to decrypt")
               return PeerLocationFindRequestPtr();
             }

@@ -372,7 +372,10 @@ namespace openpeer
           ElementPtr candidateEl = IMessageHelper::createElement("candidate");
 
           if (candidate.mClass.hasData()) {
-            candidateEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("transport", candidate.mClass));
+            candidateEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("class", candidate.mClass));
+          }
+          if (candidate.mTransport.hasData()) {
+            candidateEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("transport", candidate.mTransport));
           }
 
           const char *typeAsString = NULL;
@@ -385,7 +388,7 @@ namespace openpeer
           }
 
           if (typeAsString) {
-            candidateEl->adoptAsFirstChild(IMessageHelper::createElementWithText("type", typeAsString));
+            candidateEl->adoptAsLastChild(IMessageHelper::createElementWithText("type", typeAsString));
           }
 
           if (candidate.mFoundation.hasData()) {
