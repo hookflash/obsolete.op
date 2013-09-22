@@ -63,7 +63,7 @@ namespace openpeer
     Candidate::Candidate(const Candidate &candidate) :
       IICESocket::Candidate(candidate)
     {
-      mClass = candidate.mClass;
+      mNamespace = candidate.mNamespace;
       mTransport = candidate.mTransport;
 
       mAccessToken = candidate.mAccessToken;
@@ -82,7 +82,7 @@ namespace openpeer
       bool hasData = IICESocket::Candidate::hasData();
       if (hasData) return true;
 
-      return ((mClass.hasData()) ||
+      return ((mNamespace.hasData()) ||
               (mTransport.hasData()) ||
               (mAccessToken.hasData()) ||
               (mAccessSecretProof.hasData()));
@@ -96,7 +96,7 @@ namespace openpeer
 
       return
       result +
-      Helper::getDebugValue("class", mClass, firstTime) +
+      Helper::getDebugValue("class", mNamespace, firstTime) +
       Helper::getDebugValue("transport", mTransport, firstTime) +
       Helper::getDebugValue("access token", mAccessToken, firstTime) +
       Helper::getDebugValue("access secret proof", mAccessSecretProof, firstTime);

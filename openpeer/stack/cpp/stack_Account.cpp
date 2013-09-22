@@ -521,7 +521,7 @@ namespace openpeer
                 info->mIPAddress = (*iter).mIPAddress;
               }
               Candidate convert(candidate);
-              convert.mClass = OPENPEER_STACK_CANDIDATE_CLASS_ICE_CANDIDATES;
+              convert.mNamespace = OPENPEER_STACK_CANDIDATE_NAMESPACE_ICE_CANDIDATES;
               convert.mTransport = OPENPEER_STACK_TRANSPORT_JSON_MLS_RUDP;
               info->mCandidates.push_back(convert);
             }
@@ -2450,7 +2450,7 @@ namespace openpeer
 
         CandidatePtr candidate(new Candidate);
 
-        candidate->mClass = OPENPEER_STACK_CANDIDATE_CLASS_FINDER_RELAY;
+        candidate->mNamespace = OPENPEER_STACK_CANDIDATE_NAMESPACE_FINDER_RELAY;
         candidate->mTransport = OPENPEER_STACK_TRANSPORT_MULTIPLEXED_JSON_MLS_TCP;
         candidate->mAccessToken = relayAccessToken;
 

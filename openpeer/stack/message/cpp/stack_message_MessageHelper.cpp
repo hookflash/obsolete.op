@@ -371,8 +371,8 @@ namespace openpeer
         {
           ElementPtr candidateEl = IMessageHelper::createElement("candidate");
 
-          if (candidate.mClass.hasData()) {
-            candidateEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("class", candidate.mClass));
+          if (candidate.mNamespace.hasData()) {
+            candidateEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("namespace", candidate.mNamespace));
           }
           if (candidate.mTransport.hasData()) {
             candidateEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("transport", candidate.mTransport));
@@ -1563,7 +1563,7 @@ namespace openpeer
           Candidate ret;
           if (!elem) return ret;
 
-          ElementPtr classEl = elem->findFirstChildElement("class");
+          ElementPtr namespaceEl = elem->findFirstChildElement("namespace");
           ElementPtr transportEl = elem->findFirstChildElement("transport");
           ElementPtr typeEl = elem->findFirstChildElement("type");
           ElementPtr foundationEl = elem->findFirstChildElement("foundation");
@@ -1582,7 +1582,7 @@ namespace openpeer
             relatedPortEl = relatedEl->findFirstChildElement("port");
           }
 
-          ret.mClass = IMessageHelper::getElementTextAndDecode(classEl);
+          ret.mNamespace = IMessageHelper::getElementTextAndDecode(namespaceEl);
           ret.mTransport = IMessageHelper::getElementTextAndDecode(transportEl);
 
           String type = IMessageHelper::getElementTextAndDecode(typeEl);

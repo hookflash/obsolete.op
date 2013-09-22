@@ -340,7 +340,7 @@ namespace openpeer
           }
           if (hasAttribute(AttributeType_ICEPassword)) {
             String icePassword = stack::IHelper::splitEncrypt(*IHelper::hash(mPeerSecret, IHelper::HashAlgorthm_SHA256), *IHelper::convertToBuffer(mICEPassword));
-            findProofEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("icePassword", icePassword));
+            findProofEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("icePasswordEncrypted", icePassword));
           }
 
           if (hasAttribute(AttributeType_LocationInfo)) {

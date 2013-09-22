@@ -261,7 +261,7 @@ namespace openpeer
         IICESocket::CandidateList iceCandidates;
         for (CandidateList::const_iterator iter = candidates.begin(); iter != candidates.end(); ++iter) {
           const Candidate &candidate = (*iter);
-          if ((candidate.mClass == OPENPEER_STACK_CANDIDATE_CLASS_ICE_CANDIDATES) &&
+          if ((candidate.mNamespace == OPENPEER_STACK_CANDIDATE_NAMESPACE_ICE_CANDIDATES) &&
               (candidate.mTransport == OPENPEER_STACK_TRANSPORT_JSON_MLS_RUDP)) {
             iceCandidates.push_back(candidate);
           }
@@ -1250,9 +1250,9 @@ namespace openpeer
           ++iter;
 
           Candidate &candidate = (*current);
-          if (OPENPEER_STACK_CANDIDATE_CLASS_ICE_CANDIDATES == candidate.mClass) continue;
+          if (OPENPEER_STACK_CANDIDATE_NAMESPACE_ICE_CANDIDATES == candidate.mNamespace) continue;
 
-          if (OPENPEER_STACK_CANDIDATE_CLASS_FINDER_RELAY == candidate.mClass) {
+          if (OPENPEER_STACK_CANDIDATE_NAMESPACE_FINDER_RELAY == candidate.mNamespace) {
             relayCandidates.push_back(candidate);
           }
 
@@ -1333,9 +1333,9 @@ namespace openpeer
             ++iter;
 
             Candidate &candidate = (*current);
-            if (OPENPEER_STACK_CANDIDATE_CLASS_ICE_CANDIDATES == candidate.mClass) continue;
+            if (OPENPEER_STACK_CANDIDATE_NAMESPACE_ICE_CANDIDATES == candidate.mNamespace) continue;
 
-            if (OPENPEER_STACK_CANDIDATE_CLASS_FINDER_RELAY == candidate.mClass) {
+            if (OPENPEER_STACK_CANDIDATE_NAMESPACE_FINDER_RELAY == candidate.mNamespace) {
               relayCandidates.push_back(candidate);
             }
 

@@ -92,7 +92,7 @@ namespace openpeer
 
     struct Candidate : public IICESocket::Candidate
     {
-      String mClass;
+      String mNamespace;
       String mTransport;
 
       String mAccessToken;
