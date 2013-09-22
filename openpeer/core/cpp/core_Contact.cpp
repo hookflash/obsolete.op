@@ -316,7 +316,7 @@ namespace openpeer
       {
         bool firstTime = !includeCommaPrefix;
         return Helper::getDebugValue("contact id", string(mID), firstTime) +
-               IPeer::toDebugString(mPeer, false) + (isSelf() ? String(" (self)") : String());
+               IPeer::toDebugString(mPeer) + (isSelf() ? String(" (self)") : String());
       }
 
       //-----------------------------------------------------------------------

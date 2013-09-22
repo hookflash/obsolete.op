@@ -855,7 +855,7 @@ namespace openpeer
 
         IPeerPtr peer = location->getPeer();
         if (!peer) {
-          ZS_LOG_WARNING(Detail, log("notified about location which is not a peer"))
+          ZS_LOG_WARNING(Detail, log("notified about location which is not a peer") + ILocation::toDebugString(location))
           return;
         }
 

@@ -816,7 +816,7 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void ConversationThreadHost::step()
       {
-        ZS_LOG_TRACE(log("step"))
+        ZS_LOG_TRACE(log("step") + getDebugValueString())
 
         AutoRecursiveLock lock(getLock());
         if ((isShuttingDown()) || (isShutdown())) {cancel();}
