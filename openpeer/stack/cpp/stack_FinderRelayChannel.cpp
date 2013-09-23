@@ -136,6 +136,10 @@ namespace openpeer
         }
 
         mMLSChannel = IMessageLayerSecurityChannel::create(mThisWeak.lock(), mWireReceiveStream, mOuterReceiveStream, mOuterSendStream, mWireSendStream);
+        if (!mIncoming) {
+          mMLSChannel->setLocalContextID(mConnectInfo.mLocalContextID);
+          mMLSChannel->setSendKeyingEncoding(mConnectInfo.mEncryptionPassphrase);
+        }
 
         step();
       }
@@ -406,7 +410,7 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
 
-        ZS_LOG_DEBUG(log("on finder connection relay channel state changed"))
+        ZS_LOG_DEBUG(log("on finder connection relay channel state changed") + ", channel id=" + string(channel->getID()) + ", state=" + IFinderConnectionRelayChannel::toString(state))
         step();
       }
 
@@ -474,7 +478,7 @@ namespace openpeer
               }
             }
 
-            if (fullPublicKey) {
+            if (fullPublicKey.hasData()) {
               mRemotePublicKey = IRSAPublicKey::load(*IHelper::convertFromBase64(fullPublicKey));
             }
 

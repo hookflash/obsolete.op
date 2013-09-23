@@ -112,7 +112,12 @@ namespace openpeer
           if ((hasAttribute(AttributeType_RelayAccessSecretProof)) &&
               (hasAttribute(AttributeType_LocalContextID)) &&
               (hasAttribute(AttributeType_ChannelNumber))) {
-            String proof = IHelper::convertToHex(*IHelper::hash("proof:" + clientNonce + ":" + mLocalContextID + ":" + string(mChannelNumber) + ":" + IHelper::timeToString(expires) + ":" + mRelayAccessSecretProof));
+
+            String hashInput = String("proof:") + clientNonce + ":" + mLocalContextID + ":" + string(mChannelNumber) + ":" + IHelper::timeToString(expires) + ":" + mRelayAccessSecretProof;
+            String proof = IHelper::convertToHex(*IHelper::hash(hashInput));
+
+            ZS_LOG_TRACE("ChannelMapRequest [" + mID + "] relay access secret hash input=" + hashInput + ", result=" + proof)
+
             relayEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("accessSecretProof", proof));
             relayEl->adoptAsLastChild(IMessageHelper::createElementWithNumber("accessSecretProofExpires", IHelper::timeToString(expires)));
           }

@@ -133,6 +133,8 @@ namespace openpeer
                                    MessagePtr message,
                                    bool viaRelay
                                    ) = 0;
+
+        virtual void notifyIncomingRelayChannel(IFinderRelayChannelPtr channel) = 0;
       };
 
       //-----------------------------------------------------------------------
@@ -231,6 +233,8 @@ namespace openpeer
                                    MessagePtr message,
                                    bool viaRelay
                                    );
+
+        virtual void notifyIncomingRelayChannel(IFinderRelayChannelPtr channel);
 
         //---------------------------------------------------------------------
         #pragma mark
@@ -414,6 +418,9 @@ namespace openpeer
         IFinderRelayChannelPtr mOutgoingRelayChannel;
         ITransportStreamReaderPtr mRelayReceiveStream;
         ITransportStreamWriterPtr mRelaySendStream;
+
+        IFinderRelayChannelPtr mIncomingRelayChannel;
+        IFinderRelayChannelSubscriptionPtr mRelayChannelSubscription;
 
         bool mIncoming;
         Time mIdentifyTime;

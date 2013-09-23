@@ -1633,6 +1633,9 @@ namespace openpeer
                   ZS_LOG_DEBUG(log("found relay associated to remote context") + relayInfo->getDebugValueString())
 
                   relayInfo->mAccountPeerLocation = peerLocation;
+                  if (relayInfo->mRelayChannel) {
+                    peerLocation->forAccount().notifyIncomingRelayChannel(relayInfo->mRelayChannel);
+                  }
                   break;
                 }
               }
@@ -1738,8 +1741,6 @@ namespace openpeer
             RelayInfoPtr &relayInfo = (*relayIter).second;
             if (relayInfo->mRelayChannel->getID() == channel->getID()) {
               ZS_LOG_DEBUG(log("found shutdown relay channel") + relayInfo->getDebugValueString())
-
-              // HERE - TODO - notify location of relay channel being shutdown
 
               relayInfo->cancel();
               peerInfo->mRelayInfos.erase(relayIter);
@@ -2458,7 +2459,11 @@ namespace openpeer
         candidate->mIPAddress = finderIP;
 
         // hex(hmac(<relay-access-secret>, "finder-relay-access-validate:" + <relay-access-token> + ":" + <local-context> + ":channel-map")
-        String proofHash = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(relayAccessSecret), "finder-relay-access-validate:" + relayAccessToken + ":" + localContext + ":channel-map"));
+        String hashString ="finder-relay-access-validate:" + relayAccessToken + ":" + localContext + ":channel-map";
+        String proofHash = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(relayAccessSecret), hashString));
+
+        ZS_LOG_TRACE(log("get relay candidate hash calculation") + ", relay acceess secret=" + relayAccessSecret + ", hmac input=" + hashString + ", relay access secret proof=" + proofHash)
+
 
         candidate->mAccessSecretProof = proofHash;
         return candidate;

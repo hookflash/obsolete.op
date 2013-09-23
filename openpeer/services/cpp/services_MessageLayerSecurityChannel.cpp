@@ -131,7 +131,7 @@ namespace openpeer
         SecureByteBlockPtr iv = IHelper::convertFromHex(hexSalt);
         SecureByteBlockPtr input = IHelper::convertFromBase64(base64Value);
 
-        SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKeyFromPassphrase(passphrase), "keying:" + nonce);
+        SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKeyFromPassphrase(passphrase), "keying:" + nonce, IHelper::HashAlgorthm_SHA256);
 
         if ((!iv) || (!key) || (!input)) {
           ZS_LOG_WARNING(Debug, String("missing vital information required to be able to decrypt value"))
@@ -155,7 +155,7 @@ namespace openpeer
         SecureByteBlockPtr iv = IHelper::random(IHelper::getHashDigestSize(IHelper::HashAlgorthm_MD5));
         String hexSalt = IHelper::convertToHex(*iv);
 
-        SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKeyFromPassphrase(passphrase), "keying:" + nonce);
+        SecureByteBlockPtr key = IHelper::hmac(*IHelper::hmacKeyFromPassphrase(passphrase), "keying:" + nonce, IHelper::HashAlgorthm_SHA256);
 
         SecureByteBlockPtr output = IHelper::encrypt(*key, *iv, value);
 
@@ -395,7 +395,7 @@ namespace openpeer
           return false;
         }
 
-        return !((bool)(mReceiveSigningPublicKey));
+        return mRemoteContextID.hasData() && (!((bool)(mReceiveSigningPublicKey)));
       }
 
       //-----------------------------------------------------------------------
@@ -606,14 +606,14 @@ namespace openpeer
       {
         AutoRecursiveLock lock(getLock());
 
-        if ((!outDocumentContainedElementToSign) ||
-            (!outElementToSign)) {
+        if ((!mSendKeyingNeedingToSignDoc) ||
+            (!mSendKeyingNeedToSignEl)) {
           ZS_LOG_WARNING(Detail, log("no keying material available needing to be signed"))
           return;
         }
 
-        outDocumentContainedElementToSign = mReceiveKeyingSignedDoc;
-        outElementToSign = mReceiveKeyingSignedEl;
+        outDocumentContainedElementToSign = mSendKeyingNeedingToSignDoc;
+        outElementToSign = mSendKeyingNeedToSignEl;
       }
 
       //-----------------------------------------------------------------------
@@ -627,7 +627,7 @@ namespace openpeer
         }
 
         // by clearing out the receive key needing to be signed (but leaving the paired doc), it signals the "step" that the signing process was complete
-        mReceiveKeyingSignedEl.reset();
+        mSendKeyingNeedToSignEl.reset();
 
         setState(SessionState_Pending);
 

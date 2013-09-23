@@ -531,7 +531,18 @@ namespace openpeer
           ZS_LOG_WARNING(Detail, log("delegate gone"))
         }
       }
-      
+
+      //-----------------------------------------------------------------------
+      void AccountPeerLocation::notifyIncomingRelayChannel(IFinderRelayChannelPtr channel)
+      {
+        ZS_LOG_DEBUG(log("notify incoming relay channel") + IFinderRelayChannel::toDebugString(channel))
+
+        AutoRecursiveLock lock(getLock());
+        mIncomingRelayChannel = channel;
+        mRelayChannelSubscription = mIncomingRelayChannel->subscribe(mThisWeak.lock());
+        (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();
+      }
+
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
       //-----------------------------------------------------------------------
@@ -563,7 +574,7 @@ namespace openpeer
                                                                  IFinderRelayChannel::SessionStates state
                                                                  )
       {
-        ZS_LOG_DEBUG(log("on finder relay channel state changed"))
+        ZS_LOG_DEBUG(log("on finder relay channel state changed") + ", relay channel=" + string(channel->getID()) + ", state=" + IFinderRelayChannel::toString(state))
         AutoRecursiveLock lock(getLock());
         step();
       }
@@ -571,7 +582,10 @@ namespace openpeer
       //-----------------------------------------------------------------------
       void AccountPeerLocation::onFinderRelayChannelNeedsContext(IFinderRelayChannelPtr channel)
       {
-        ZS_THROW_INVALID_ASSUMPTION(log("outgoing relay channels should not need context"))
+        AutoRecursiveLock lock(getLock());
+        if (mOutgoingRelayChannel == channel) {
+          ZS_THROW_INVALID_ASSUMPTION(log("outgoing relay channels should not need context"))
+        }
       }
 
       //-----------------------------------------------------------------------
@@ -1021,25 +1035,44 @@ namespace openpeer
         bool firstTime = !includeCommaPrefix;
         return
         Helper::getDebugValue("account peer location id", string(mID), firstTime) +
+        Helper::getDebugValue("delegate", mDelegate ? String("true") : String(), firstTime) +
+        Helper::getDebugValue("graceful reference", mGracefulShutdownReference ? String("true") : String(), firstTime) +
+
         Helper::getDebugValue("state", IAccount::toString(mCurrentState), firstTime) +
         Helper::getDebugValue("refind", mShouldRefindNow ? String("true") : String(), firstTime) +
+
         Helper::getDebugValue("last activity", Time() != mLastActivity ? IHelper::timeToString(mLastActivity) : String(), firstTime) +
+
         Helper::getDebugValue("pending requests", mPendingRequests.size() > 0 ? string(mPendingRequests.size()) : String(), firstTime) +
+
         Helper::getDebugValue("remote context ID", mRemoteContextID, firstTime) +
         Helper::getDebugValue("remote peer secret", mRemotePeerSecret, firstTime) +
+
         mLocationInfo.getDebugValueString() +
         (mLocation != mLocationInfo.mLocation ? ILocation::toDebugString(mLocation) : String()) +
         IPeer::toDebugString(mPeer) +
+
         Helper::getDebugValue("rudp ice socket subscription id", mSocketSubscription ? string(mSocketSubscription->getID()) : String(), firstTime) +
         Helper::getDebugValue("rudp ice socket session id", mSocketSession ? string(mSocketSession->getID()) : String(), firstTime) +
         Helper::getDebugValue("rudp messagine id", mMessaging ? string(mMessaging->getID()) : String(), firstTime) +
         Helper::getDebugValue("messaging receive stream id", mMessagingReceiveStream ? string(mMessagingReceiveStream->getID()) : String(), firstTime) +
         Helper::getDebugValue("messaging send stream id", mMessagingSendStream ? string(mMessagingSendStream->getID()) : String(), firstTime) +
+
         Helper::getDebugValue("mls id", mMLSChannel ? string(mMLSChannel->getID()) : String(), firstTime) +
         Helper::getDebugValue("mls receive stream id", mMLSReceiveStream ? string(mMLSReceiveStream->getID()) : String(), firstTime) +
         Helper::getDebugValue("mls send stream id", mMLSSendStream ? string(mMLSSendStream->getID()) : String(), firstTime) +
+        Helper::getDebugValue("mls decoding passphrase", mMLSDecodingPassphrase, firstTime) +
+
+        Helper::getDebugValue("outgoing relay channel id", mOutgoingRelayChannel ? string(mOutgoingRelayChannel->getID()) : String(), firstTime) +
+        Helper::getDebugValue("outgoing relay receive stream id", mRelayReceiveStream ? string(mRelayReceiveStream->getID()) : String(), firstTime) +
+        Helper::getDebugValue("outgoing relay send stream id", mRelaySendStream ? string(mRelaySendStream->getID()) : String(), firstTime) +
+
+        Helper::getDebugValue("incoming relay channel id", mIncomingRelayChannel ? string(mIncomingRelayChannel->getID()) : String(), firstTime) +
+        Helper::getDebugValue("incoming relay channel subscription", mRelayChannelSubscription ? String("true") : String(), firstTime) +
+
         Helper::getDebugValue("incoming", mIncoming ? String("true") : String(), firstTime) +
         Helper::getDebugValue("identify time", Time() != mIdentifyTime ? IHelper::timeToString(mIdentifyTime) : String(), firstTime) +
+
         Helper::getDebugValue("identity monitor", mIdentifyMonitor ? String("true") : String(), firstTime) +
         Helper::getDebugValue("keep alive monitor", mKeepAliveMonitor ? String("true") : String(), firstTime);
       }
@@ -1116,6 +1149,12 @@ namespace openpeer
         if (mRelaySendStream) {
           mRelaySendStream->cancel();
           mRelaySendStream.reset();
+        }
+
+        mIncomingRelayChannel.reset();
+        if (mRelayChannelSubscription) {
+          mRelayChannelSubscription->cancel();
+          mRelayChannelSubscription.reset();
         }
 
         if (mMessaging) {
@@ -1294,10 +1333,12 @@ namespace openpeer
         mRelayReceiveStream = receiveStream->getReader();
         mRelaySendStream = receiveStream->getWriter();
 
+        mRelayReceiveStream->notifyReaderReadyToRead();
+
         ZS_LOG_DEBUG(log("created outgoing relay channel") + IFinderRelayChannel::toDebugString(mOutgoingRelayChannel))
         return false;
       }
-      
+
       //-----------------------------------------------------------------------
       bool AccountPeerLocation::stepPendingRequests(IRUDPICESocketPtr socket)
       {
@@ -1495,6 +1536,7 @@ namespace openpeer
 
                 if (signEl) {
                   peerFilePrivate->signElement(signEl);
+                  mMLSChannel->notifySendKeyingMaterialSigned();
                 }
               }
               break;
@@ -1517,7 +1559,7 @@ namespace openpeer
         ITransportStreamPtr receiveStream = ITransportStream::create(ITransportStreamWriterDelegatePtr(), mThisWeak.lock());
         ITransportStreamPtr sendStream = ITransportStream::create(mThisWeak.lock(), ITransportStreamReaderDelegatePtr());
 
-        mMLSChannel->create(mThisWeak.lock(), mMessagingReceiveStream->getStream(), receiveStream, sendStream, mMessagingSendStream->getStream(), localContext);
+        mMLSChannel = IMessageLayerSecurityChannel::create(mThisWeak.lock(), mMessagingReceiveStream->getStream(), receiveStream, sendStream, mMessagingSendStream->getStream(), localContext);
 
         if (!mMLSChannel) {
           ZS_LOG_ERROR(Detail, log("could not create MLS"))

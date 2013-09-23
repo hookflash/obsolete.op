@@ -601,6 +601,7 @@ namespace openpeer
       #pragma mark FinderConnection => ITransportStreamReaderDelegate
       #pragma mark
 
+      //-----------------------------------------------------------------------
       void FinderConnection::onTransportStreamReaderReady(ITransportStreamReaderPtr reader)
       {
         AutoRecursiveLock lock(getLock());
@@ -1405,11 +1406,9 @@ namespace openpeer
           if (!mOuterStreamNotifiedReady) {
             get(mOuterStreamNotifiedReady) = true;
 
-            if (0 == mChannelNumber) {
-              FinderConnectionPtr outer = mOuter.lock();
-              if (outer) {
-                outer->notifyOuterWriterReady();
-              }
+            FinderConnectionPtr outer = mOuter.lock();
+            if (outer) {
+              outer->notifyOuterWriterReady();
             }
           }
         }
