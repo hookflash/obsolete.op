@@ -1102,9 +1102,21 @@ namespace openpeer
         boost::shared_array<char> output = generator->write(doc, &outputLength);
 
         ChannelHeaderPtr header(new ChannelHeader);
-        header->mChannelID = channelNumber;
+        header->mChannelID = 0;
 
         mWireSendStream->write((const BYTE *) (output.get()), outputLength, header);
+
+        ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
+        ZS_LOG_DETAIL(log(") ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) )"))
+        ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
+        ZS_LOG_DETAIL(log("CHANNEL MESSAGE") + "=" + "\n" + ((CSTR)(output.get())) + "\n")
+        ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
+        ZS_LOG_DETAIL(log(") ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) )"))
+        ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
+
+        ZS_LOG_DETAIL(log("v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v"))
+        ZS_LOG_DETAIL(log("||| MESSAGE INFO |||") + Message::toDebugString(request))
+        ZS_LOG_DETAIL(log("^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^"))
 
         mPendingMapRequest.erase(found);
 
@@ -1154,7 +1166,38 @@ namespace openpeer
 
           if (!channel) {
             if (isFinderRelayConnection()) {
-              ZS_LOG_WARNING(Detail, log("received data on an non-mapped relay channel (thus ignoring)"))
+              if (0 == channelHeader->mChannelID) {
+                
+                ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
+                ZS_LOG_DETAIL(log("( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ("))
+                ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
+                ZS_LOG_DETAIL(log("CHANNEL MESSAGE") + "\n" + ((CSTR)(buffer->BytePtr())) + "\n")
+                ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
+                ZS_LOG_DETAIL(log("( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ( ("))
+                ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
+
+                DocumentPtr document = Document::createFromAutoDetect((CSTR)(buffer->BytePtr()));
+                MessagePtr message = Message::create(document, mThisWeak.lock());
+
+                if (!message) {
+                  ZS_LOG_WARNING(Detail, log("failed to create a message object from incoming message"))
+                  continue;
+                }
+
+                ZS_LOG_DETAIL(log("v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v"))
+                ZS_LOG_DETAIL(log("||| MESSAGE INFO |||") + Message::toDebugString(message))
+                ZS_LOG_DETAIL(log("^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^"))
+
+                if (IMessageMonitor::handleMessageReceived(message)) {
+                  ZS_LOG_DEBUG(log("handled message via message handler"))
+                  continue;
+                }
+
+                ZS_LOG_WARNING(Detail, log("message not understood"))
+                continue;
+              }
+
+              ZS_LOG_WARNING(Detail, log("received data on an non-mapped relay channel (thus ignoring)") + ", channel=" + string(channelHeader->mChannelID))
               continue;
             }
 

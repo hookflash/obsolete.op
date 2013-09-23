@@ -108,6 +108,7 @@ namespace openpeer
                                              ITransportStreamPtr sendStream
                                              ) :
         zsLib::MessageQueueAssociator(queue),
+        mCurrentState(IFinderRelayChannel::SessionState_Pending),
         mAccount(account),
         mOuterReceiveStream(receiveStream),
         mOuterSendStream(sendStream)
@@ -134,7 +135,7 @@ namespace openpeer
           mConnectionRelayChannel = IFinderConnectionRelayChannel::connect(mThisWeak.lock(), mConnectInfo.mFinderIP, mConnectInfo.mLocalContextID, mConnectInfo.mRemoteContextID, mConnectInfo.mRelayDomain, mConnectInfo.mRelayAccessToken, mConnectInfo.mRelayAccessSecretProof, mWireReceiveStream, mWireSendStream);
         }
 
-        mMLSChannel = mMLSChannel->create(mThisWeak.lock(), mWireReceiveStream, mOuterReceiveStream, mOuterSendStream, mWireSendStream);
+        mMLSChannel = IMessageLayerSecurityChannel::create(mThisWeak.lock(), mWireReceiveStream, mOuterReceiveStream, mOuterSendStream, mWireSendStream);
 
         step();
       }
@@ -602,7 +603,7 @@ namespace openpeer
           case IMessageLayerSecurityChannel::SessionState_WaitingForNeededInformation:
           {
             ZS_LOG_DEBUG(log("waiting for MLS to connect"))
-            break;
+            return false;
           }
           case IMessageLayerSecurityChannel::SessionState_Connected:   break;
           case IMessageLayerSecurityChannel::SessionState_Shutdown:  {

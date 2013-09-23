@@ -102,6 +102,7 @@ namespace openpeer
                                         ) const = 0;
 
         virtual void getFinderRelayInformation(
+                                               IPAddress &outFinderIP,
                                                String &outFinderRelayAccessToken,
                                                String &outFinderRelayAccessSecret
                                                ) const = 0;
@@ -182,6 +183,7 @@ namespace openpeer
                                         ) const;
 
         virtual void getFinderRelayInformation(
+                                               IPAddress &outFinderIP,
                                                String &outFinderRelayAccessToken,
                                                String &outFinderRelayAccessSecret
                                                ) const;

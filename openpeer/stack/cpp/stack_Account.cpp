@@ -1139,9 +1139,10 @@ namespace openpeer
           ZS_LOG_DEBUG(log("channel map notification received") + ", channel number=" + string(channelMapNotify->channelNumber()))
 
           // HERE
+          IPAddress finderIP;
           String relayAccessToken;
           String relayAccessSecret;
-          mFinder->forAccount().getFinderRelayInformation(relayAccessToken, relayAccessSecret);
+          mFinder->forAccount().getFinderRelayInformation(finderIP, relayAccessToken, relayAccessSecret);
 
           String nonce = channelMapNotify->nonce();
           String localContext = channelMapNotify->localContext();
@@ -2439,10 +2440,11 @@ namespace openpeer
       {
         if (!mFinder) return CandidatePtr();
 
+        IPAddress finderIP;
         String relayAccessToken;
         String relayAccessSecret;
 
-        mFinder->forAccount().getFinderRelayInformation(relayAccessToken, relayAccessSecret);
+        mFinder->forAccount().getFinderRelayInformation(finderIP, relayAccessToken, relayAccessSecret);
         String localContext = getLocalContextID(peerURI);
 
         if ((relayAccessToken.isEmpty()) ||
@@ -2453,6 +2455,7 @@ namespace openpeer
         candidate->mNamespace = OPENPEER_STACK_CANDIDATE_NAMESPACE_FINDER_RELAY;
         candidate->mTransport = OPENPEER_STACK_TRANSPORT_MULTIPLEXED_JSON_MLS_TCP;
         candidate->mAccessToken = relayAccessToken;
+        candidate->mIPAddress = finderIP;
 
         // hex(hmac(<relay-access-secret>, "finder-relay-access-validate:" + <relay-access-token> + ":" + <local-context> + ":channel-map")
         String proofHash = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(relayAccessSecret), "finder-relay-access-validate:" + relayAccessToken + ":" + localContext + ":channel-map"));

@@ -1646,7 +1646,7 @@ namespace openpeer
 
           ret.mAccessToken = IMessageHelper::getElementTextAndDecode(accessTokenEl);
 
-          String accessSecretProofEncrypted = IMessageHelper::getElementTextAndDecode(accessTokenEl);
+          String accessSecretProofEncrypted = IMessageHelper::getElementTextAndDecode(accessSecretProofEncryptedEl);
           if ((accessSecretProofEncrypted.hasData()) &&
               (encryptionPassphrase)) {
 

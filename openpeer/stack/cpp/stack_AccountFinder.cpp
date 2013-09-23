@@ -291,11 +291,13 @@ namespace openpeer
 
       //-----------------------------------------------------------------------
       void AccountFinder::getFinderRelayInformation(
+                                                    IPAddress &outFinderIP,
                                                     String &outFinderRelayAccessToken,
                                                     String &outFinderRelayAccessSecret
                                                     ) const
       {
         AutoRecursiveLock lock(getLock());
+        outFinderIP = mFinderIP;
         outFinderRelayAccessToken = mRelayAccessToken;
         outFinderRelayAccessSecret = mRelayAccessSecret;
       }

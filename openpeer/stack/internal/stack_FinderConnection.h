@@ -39,6 +39,7 @@
 #include <openpeer/stack/message/peer-finder/ChannelMapResult.h>
 
 #include <openpeer/stack/IMessageMonitor.h>
+#include <openpeer/stack/IMessageSource.h>
 
 #include <openpeer/services/ITransportStream.h>
 #include <openpeer/services/ITCPMessaging.h>
@@ -75,7 +76,8 @@ namespace openpeer
                                public ITransportStreamWriterDelegate,
                                public ITransportStreamReaderDelegate,
                                public IFinderConnectionRelayChannelDelegate,
-                               public IMessageMonitorResultDelegate<ChannelMapResult>
+                               public IMessageMonitorResultDelegate<ChannelMapResult>,
+                               public IMessageSource
       {
       public:
         typedef IFinderConnection::SessionStates SessionStates;
