@@ -399,9 +399,12 @@ namespace openpeer
         if (NULL == input) return SecureByteBlockPtr();
 
         SecureByteBlockPtr output(new SecureByteBlock);
-        output->CleanNew(((sizeof(char)*strlen(input))));
+        size_t len = strlen(input);
+        if (len < 1) return output;
 
-        memcpy(*output, input, sizeof(char)*(strlen(input)));
+        output->CleanNew(sizeof(char)*len);
+
+        memcpy(*output, input, sizeof(char)*len);
         return output;
       }
 
@@ -413,15 +416,12 @@ namespace openpeer
       {
         SecureByteBlockPtr output(new SecureByteBlock);
 
-        if (0 == bufferLengthInBytes) {
-          return output;
-        }
+        if (bufferLengthInBytes < 1) return output;
 
         output->CleanNew(bufferLengthInBytes);
 
-        if (0 != bufferLengthInBytes) {
-          memcpy(*output, buffer, bufferLengthInBytes);
-        }
+        memcpy(*output, buffer, bufferLengthInBytes);
+
         return output;
       }
 
@@ -466,6 +466,9 @@ namespace openpeer
         decoder.MessageEnd();
 
         size_t outputLengthInBytes = (size_t)outputQueue->CurrentSize();
+
+        if (outputLengthInBytes < 1) return output;
+
         output->CleanNew(outputLengthInBytes);
 
         outputQueue->Get(*output, outputLengthInBytes);
@@ -510,6 +513,8 @@ namespace openpeer
         decoder.MessageEnd();
 
         SecureByteBlock::size_type outputLengthInBytes = (SecureByteBlock::size_type)outputQueue->CurrentSize();
+        if (outputLengthInBytes < 1) return output;
+
         output->CleanNew(outputLengthInBytes);
 
         outputQueue->Get(*output, outputLengthInBytes);
