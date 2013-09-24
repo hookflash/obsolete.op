@@ -1083,7 +1083,11 @@ namespace openpeer
         buffer.CleanNew(size);
         query->readData(buffer, size);
         ZS_LOG_TRACE(log("------------ http data read start --------------"))
-        ZS_LOG_TRACE(log("HTTP DATA") + ", size=" + string(size) + ", data=\n" + ((const char *)((const BYTE *)buffer)) + "\n")
+        if (size > 0) {
+          ZS_LOG_TRACE(log("HTTP DATA") + ", size=" + string(size) + ", data=\n" + ((const char *)(buffer.BytePtr())) + "\n")
+        } else {
+          ZS_LOG_TRACE(log("HTTP DATA") + ", size=" + string(size) + ", data=null")
+        }
         ZS_LOG_TRACE(log("------------- http data read end ---------------"))
         DocumentPtr doc = Document::createFromAutoDetect((const char *)((const BYTE *)buffer));
         if (outDocument) {
