@@ -1107,17 +1107,19 @@ namespace openpeer
 
         mWireSendStream->write((const BYTE *) (output.get()), outputLength, header);
 
-        ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
-        ZS_LOG_DETAIL(log(") ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) )"))
-        ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
-        ZS_LOG_DETAIL(log("CHANNEL MESSAGE") + "=" + "\n" + ((CSTR)(output.get())) + "\n")
-        ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
-        ZS_LOG_DETAIL(log(") ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) )"))
-        ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
+        if (ZS_IS_LOGGING(Debug)) {
+          ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
+          ZS_LOG_DETAIL(log(") ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) )"))
+          ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
+          ZS_LOG_DETAIL(log("CHANNEL MESSAGE") + "=" + "\n" + ((CSTR)(output.get())) + "\n")
+          ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
+          ZS_LOG_DETAIL(log(") ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) ) )"))
+          ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
 
-        ZS_LOG_DETAIL(log("v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v"))
-        ZS_LOG_DETAIL(log("||| MESSAGE INFO |||") + Message::toDebugString(request))
-        ZS_LOG_DETAIL(log("^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^"))
+          ZS_LOG_DETAIL(log("v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v"))
+          ZS_LOG_DETAIL(log("||| MESSAGE INFO |||") + Message::toDebugString(request))
+          ZS_LOG_DETAIL(log("^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^v^"))
+        }
 
         mPendingMapRequest.erase(found);
 

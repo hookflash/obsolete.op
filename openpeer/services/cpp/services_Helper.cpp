@@ -827,7 +827,7 @@ namespace openpeer
                                           )
       {
         if (!signedEl) {
-          ZS_LOG_WARNING(Detail, "requested to get signature info on a null element")
+          ZS_LOG_WARNING(Detail, "services::Helper [] requested to get signature info on a null element")
           return ElementPtr();
         }
 
@@ -843,7 +843,7 @@ namespace openpeer
           }
 
           if (!signedEl) {
-            ZS_LOG_DETAIL("no signed element was found (is okay if signing element for first time)")
+            ZS_LOG_DETAIL("services::Helper [] no signed element was found (is okay if signing element for first time)")
             return ElementPtr();
           }
 
@@ -852,7 +852,7 @@ namespace openpeer
 
         String id = signedEl->getAttributeValue("id");
         if (id.length() < 1) {
-          ZS_LOG_WARNING(Detail, "ID is missing on signed element")
+          ZS_LOG_WARNING(Detail, "services::Helper [] ID is missing on signed element")
           return ElementPtr();
         }
 
@@ -863,7 +863,7 @@ namespace openpeer
           if (referenceEl) {
             String referenceID = referenceEl->getTextDecoded();
             if (referenceID == id) {
-              ZS_LOG_TRACE("found the signature reference, reference id=" + id)
+              ZS_LOG_TRACE("services::Helper [] found the signature reference, reference id=" + id)
               break;
             }
           }
@@ -872,7 +872,7 @@ namespace openpeer
         }
 
         if (!signatureEl) {
-          ZS_LOG_WARNING(Detail, "could not find signature element")
+          ZS_LOG_WARNING(Detail, "services::Helper [] could not find signature element")
           return ElementPtr();
         }
 

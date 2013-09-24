@@ -982,6 +982,14 @@ namespace openpeer
           // create a NUL terminated JSON string buffer
           SecureByteBlockPtr jsonBuffer =  IHelper::convertToBuffer(source, remaining);
 
+          ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
+          ZS_LOG_DETAIL(log("[ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ ["))
+          ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
+          ZS_LOG_DETAIL(log("MLS RECEIVE") + "=" + "\n" + ((CSTR)(jsonBuffer->BytePtr())) + "\n")
+          ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
+          ZS_LOG_DETAIL(log("[ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ [ ["))
+          ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
+
           // clear out the receive signed document since it's validated
           doc = Document::createFromAutoDetect((const char *)(jsonBuffer->BytePtr()));
         }
@@ -1247,7 +1255,19 @@ namespace openpeer
 
           memcpy(dest, output.get(), sizeof(char)*outputLength);
 
+          if (ZS_IS_LOGGING(Trace)) {
+            ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
+            ZS_LOG_DETAIL(log("] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ]"))
+            ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
+            ZS_LOG_DETAIL(log("MLS SENDING") + "=" + "\n" + ((CSTR)(output.get())) + "\n")
+            ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
+            ZS_LOG_DETAIL(log("] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ] ]"))
+            ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
+          }
+
           mSendStreamEncoded->write(buffer);
+
+          mSendKeyingNeedingToSignDoc.reset();
 
           return true;
         }
@@ -1316,6 +1336,8 @@ namespace openpeer
           keyEl->adoptAsLastChild(inputsEl);
 
           keysEl->adoptAsLastChild(keyEl);
+
+          mSendKeys[index] = key;
         }
 
         keyingEl->adoptAsLastChild(keysEl);
