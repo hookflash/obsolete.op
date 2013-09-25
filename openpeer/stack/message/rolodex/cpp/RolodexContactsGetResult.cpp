@@ -34,6 +34,9 @@
 
 #include <zsLib/XML.h>
 #include <zsLib/helpers.h>
+#include <zsLib/Log.h>
+
+namespace openpeer { namespace stack { namespace message { ZS_DECLARE_SUBSYSTEM(openpeer_stack_message) } } }
 
 namespace openpeer
 {
@@ -71,6 +74,19 @@ namespace openpeer
             while (identityEl) {
               IdentityInfo info = MessageHelper::createIdentity(identityEl);
               if (info.hasData()) {
+
+#define OPENPEER_STACK_MESSAGE_ROLODEX_IMPROPER_FACEBOOK_URL "identity://facebook/"
+#define OPENPEER_STACK_MESSAGE_ROLODEX_ROPER_FACEBOOK_URL "identity://facebook.com/"
+
+#define HORRIBLE_HACK_TO_PREVENT_INVALID_FORMED_FACEBOOK_URIS 1
+                if (info.mURI.hasData()) {
+                  if (0 == info.mURI.compare(0, strlen(OPENPEER_STACK_MESSAGE_ROLODEX_IMPROPER_FACEBOOK_URL), OPENPEER_STACK_MESSAGE_ROLODEX_IMPROPER_FACEBOOK_URL)) {
+                    ZS_LOG_WARNING(Detail, String("RolodexContactsGetResult [") + ret->mID + "] Fixed imporer facebook identity URI. Please contact rolodex admin to repair rolodex service. URI=" + info.mURI)
+                    info.mURI = OPENPEER_STACK_MESSAGE_ROLODEX_ROPER_FACEBOOK_URL + info.mURI.substr(strlen(OPENPEER_STACK_MESSAGE_ROLODEX_IMPROPER_FACEBOOK_URL));
+                  }
+                }
+#define HORRIBLE_HACK_TO_PREVENT_INVALID_FORMED_FACEBOOK_URIS 2
+
                 ret->mIdentities.push_back(info);
               }
               identityEl = identityEl->findNextSiblingElement("identity");

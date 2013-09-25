@@ -1089,6 +1089,8 @@ namespace openpeer
           ZS_LOG_TRACE(log("HTTP DATA") + ", size=" + string(size) + ", data=null")
         }
         ZS_LOG_TRACE(log("------------- http data read end ---------------"))
+        if (size < 1) return MessagePtr();
+
         DocumentPtr doc = Document::createFromAutoDetect((const char *)((const BYTE *)buffer));
         if (outDocument) {
           (*outDocument) = doc;

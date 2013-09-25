@@ -1154,13 +1154,17 @@ namespace openpeer
           //  hex(hash("proof:" + <client-nonce> + ":" + <remote-context> + ":" + <channel-number> + ":" + <expires> + ":" + hex(hmac(<relay-access-secret>, "finder-relay-access-validate:" + <relay-access-token> + ":" + <local-context> + ":channel-map"))))
 
           // hex(hmac(<relay-access-secret>, "finder-relay-access-validate:" + <relay-access-token> + ":" + <local-context> + ":channel-map")
-          String innerHash = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(relayAccessSecret), "finder-relay-access-validate:" + relayAccessToken + ":" + localContext + ":channel-map"));
+          String innerDataToHash = "finder-relay-access-validate:" + relayAccessToken + ":" + localContext + ":channel-map";
+
+          String innerHash = IHelper::convertToHex(*IHelper::hmac(*IHelper::hmacKeyFromPassphrase(relayAccessSecret), innerDataToHash));
 
           //  hex(hash("proof:" + <client-nonce> + ":" + <remote-context> + ":" + <channel-number> + ":" + <expires> + ":" + <innerHash>))
-          String calculatedProof = IHelper::convertToHex(*IHelper::hash("proof:" + nonce + ":" + remoteContext + ":" + string(channel) + ":" + IHelper::timeToString(expires)));
+          String finalHash = "proof:" + nonce + ":" + remoteContext + ":" + string(channel) + ":" + IHelper::timeToString(expires) + ":" + innerHash;
+
+          String calculatedProof = IHelper::convertToHex(*IHelper::hash(finalHash));
 
           if (calculatedProof != channelMapNotify->relayAccessSecretProof()) {
-            ZS_LOG_WARNING(Detail, log("channel map notify proof failed") + ", calculated proof=" + calculatedProof + ", received=" + channelMapNotify->relayAccessSecretProof())
+            ZS_LOG_WARNING(Detail, log("channel map notify proof failed") + ", calculated proof=" + calculatedProof + ", received=" + channelMapNotify->relayAccessSecretProof() + ", relay access secret=" + relayAccessSecret + ", inner hash str=" + innerHash + ", final hash str=" + finalHash)
             return;
           }
 
