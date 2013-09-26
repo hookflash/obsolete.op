@@ -1207,7 +1207,8 @@ namespace openpeer
         }
 
         if (!stepSocketSubscription(socket)) return;
-        if (!stepOutgoingRelayConnection()) return;
+        if (!stepOutgoingRelayChannel()) return;
+        if (!stepIncomingRelayChannel()) return;
         if (!stepPendingRequests(socket)) return;
         if (!stepSocketSession()) return;
         if (!stepIncomingIdentify()) return;
@@ -1249,7 +1250,7 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
-      bool AccountPeerLocation::stepOutgoingRelayConnection()
+      bool AccountPeerLocation::stepOutgoingRelayChannel()
       {
         if (mPendingRequests.size() < 1) {
           ZS_LOG_TRACE(log("no pending requests thus no need for an outgoing relay connection"))
@@ -1337,6 +1338,40 @@ namespace openpeer
 
         ZS_LOG_DEBUG(log("created outgoing relay channel") + IFinderRelayChannel::toDebugString(mOutgoingRelayChannel))
         return false;
+      }
+
+      //-----------------------------------------------------------------------
+      bool AccountPeerLocation::stepIncomingRelayChannel()
+      {
+        if (!mIncomingRelayChannel) {
+          ZS_LOG_TRACE(log("no incoming relay channel detected"))
+          return true;
+        }
+
+        WORD errorCode = 0;
+        String reason;
+
+        switch (mIncomingRelayChannel->getState(&errorCode, &reason)) {
+          case IFinderRelayChannel::SessionState_Pending:   {
+            ZS_LOG_TRACE(log("incoming relay channel detected but not ready yet"))
+            return true;
+          }
+          case IFinderRelayChannel::SessionState_Connected: {
+            break;
+          }
+          case IFinderRelayChannel::SessionState_Shutdown:  {
+            if (!mSocketSession) {
+              ZS_LOG_WARNING(Detail, log("incoming relay channel is shutdown with no RUDP channel pending thus must cancel connection") + ", error code=" + string(errorCode) + ", reason=" + reason)
+              return false;
+            }
+
+            ZS_LOG_WARNING(Trace, log("incoming relay channel shutdown but RUDP channel is available (or pending)") + ", error code=" + string(errorCode) + ", reason=" + reason)
+            return true;
+          }
+        }
+
+        ZS_LOG_TRACE(log("incoming relay channel is operational") + IFinderRelayChannel::toDebugString(mIncomingRelayChannel))
+        return true;
       }
 
       //-----------------------------------------------------------------------

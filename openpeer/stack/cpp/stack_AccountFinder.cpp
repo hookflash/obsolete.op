@@ -368,8 +368,8 @@ namespace openpeer
           return;
         }
 
-        ITransportStreamPtr receiveStream;
-        ITransportStreamPtr sendStream;
+        ITransportStreamPtr receiveStream = ITransportStream::create();
+        ITransportStreamPtr sendStream = ITransportStream::create();
 
         IFinderConnection::ChannelNumber channel = 0;
 

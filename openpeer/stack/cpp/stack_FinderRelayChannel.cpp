@@ -389,6 +389,7 @@ namespace openpeer
         pThis->mThisWeak = pThis;
         pThis->mWireReceiveStream = wireReceiveStream;
         pThis->mWireSendStream = wireSendStream;
+        get(pThis->mIncoming) = true;
         pThis->init();
 
         return pThis;

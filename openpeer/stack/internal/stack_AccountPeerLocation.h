@@ -365,7 +365,8 @@ namespace openpeer
 
         void step();
         bool stepSocketSubscription(IRUDPICESocketPtr socket);
-        bool stepOutgoingRelayConnection();
+        bool stepOutgoingRelayChannel();
+        bool stepIncomingRelayChannel();
         bool stepPendingRequests(IRUDPICESocketPtr socket);
         bool stepSocketSession();
         bool stepIncomingIdentify();

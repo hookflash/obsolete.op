@@ -1164,7 +1164,7 @@ namespace openpeer
           String calculatedProof = IHelper::convertToHex(*IHelper::hash(finalHash));
 
           if (calculatedProof != channelMapNotify->relayAccessSecretProof()) {
-            ZS_LOG_WARNING(Detail, log("channel map notify proof failed") + ", calculated proof=" + calculatedProof + ", received=" + channelMapNotify->relayAccessSecretProof() + ", relay access secret=" + relayAccessSecret + ", inner hash str=" + innerHash + ", final hash str=" + finalHash)
+            ZS_LOG_WARNING(Detail, log("channel map notify proof failed") + ", calculated proof=" + calculatedProof + ", received=" + channelMapNotify->relayAccessSecretProof() + ", relay access secret=" + relayAccessSecret + ", inner hash str=" + innerDataToHash + ", inner hash result=" + innerHash + ", final hash str=" + finalHash)
             return;
           }
 
@@ -1209,6 +1209,8 @@ namespace openpeer
         ZS_THROW_INVALID_ARGUMENT_IF(!receiveStream)
         ZS_THROW_INVALID_ARGUMENT_IF(!sendStream)
 
+        ZS_LOG_DEBUG(log("on account finder incoming relay channel") + ", finder ID=" + string(finder->forAccount().getID()) + ", relay channel ID=" + string(relayChannel->getID()))
+
         AutoRecursiveLock lock(getLock());
 
         if ((isShutdown()) ||
@@ -1240,7 +1242,11 @@ namespace openpeer
           relayInfo->mSendStreamSubscription = relayInfo->mSendStream->subscribe(mThisWeak.lock());
 
           ZS_LOG_DEBUG(log("incoming finder relay channel setup") + relayInfo->getDebugValueString() + peerInfo->getDebugValueString())
+
+          return;
         }
+
+        ZS_LOG_WARNING(Detail, log("information about incoming relay channel is not known"))
       }
 
       //-----------------------------------------------------------------------
