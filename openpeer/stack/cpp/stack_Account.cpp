@@ -407,6 +407,7 @@ namespace openpeer
           }
 
           relayInfo->mSendStream->write(buffer, bufferSizeInBytes);
+          return true;
         }
 
         ZS_LOG_WARNING(Debug, log("did not find any relay for this peer location"))
@@ -1237,6 +1238,8 @@ namespace openpeer
           relayInfo->mReceiveStream = receiveStream->getReader();
           relayInfo->mSendStream = sendStream->getWriter();
 
+          relayInfo->mReceiveStream->notifyReaderReadyToRead();
+
           relayInfo->mRelayChannelSubscription = relayChannel->subscribe(mThisWeak.lock());
           relayInfo->mReceiveStreamSubscription = relayInfo->mReceiveStream->subscribe(mThisWeak.lock());
           relayInfo->mSendStreamSubscription = relayInfo->mSendStream->subscribe(mThisWeak.lock());
@@ -1734,7 +1737,7 @@ namespace openpeer
           case IFinderRelayChannel::SessionState_Pending:
           case IFinderRelayChannel::SessionState_Connected: {
             ZS_LOG_DEBUG(log("ignoring pending / connected state on relay channel") + ", state=" + IFinderRelayChannel::toString(state) + IFinderRelayChannel::toDebugString(channel))
-            break;
+            return;
           }
           case IFinderRelayChannel::SessionState_Shutdown: {
             ZS_LOG_DEBUG(log("finder relay channel shutdown") + ", state=" + IFinderRelayChannel::toString(state) + IFinderRelayChannel::toDebugString(channel))
@@ -1742,7 +1745,6 @@ namespace openpeer
           }
         }
 
-        // HERE
         for (PeerInfoMap::iterator peerIter = mPeerInfos.begin(); peerIter != mPeerInfos.end(); ++peerIter) {
           PeerInfoPtr &peerInfo = (*peerIter).second;
 
@@ -1829,9 +1831,8 @@ namespace openpeer
                 SecureByteBlockPtr buffer = reader->read();
                 if (!buffer) {
                   ZS_LOG_TRACE(log("no more data to read"))
+                  break;
                 }
-
-                // HERE NOW
 
                 ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
                 ZS_LOG_DETAIL(log("<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<-<"))
@@ -1859,8 +1860,26 @@ namespace openpeer
                   continue;
                 }
 
-                // HERE NOW
+                MessageResultPtr result = MessageResult::create(message, IHTTP::HTTPStatusCode_NotFound);
+                if (!result) {
+                  ZS_LOG_WARNING(Detail, log("automatic reply to incoming message could not be created"))
+                  return;
+                }
+
+                DocumentPtr resultDoc = message->encode();
+
+                boost::shared_array<char> output;
+                ULONG length = 0;
+                output = document->writeAsJSON(&length);
+
+                ZS_LOG_WARNING(Detail, log("sending automatic failure to relay received message because account peer location for relay was not known (yet)"))
+
+                relayInfo->mSendStream->write((const BYTE *)(output.get()), length);
+                return;
               }
+
+              ZS_LOG_TRACE(log("incoming relay stream read completed"))
+              return;
             }
           }
         }

@@ -342,7 +342,7 @@ namespace openpeer
         }
 
         String peerURI = peer->getPeerURI();
-        if (peerURI != mPeerURI) {
+        if (peerURI != getPeerURI()) {
           ZS_LOG_WARNING(Detail, log("peer URI in signature does not match peer") + ", signature: " + IPeer::toDebugString(peer, false) + ", self: " + getDebugValueString(false))
           return false;
         }

@@ -414,7 +414,7 @@ namespace openpeer
         IMessageLayerSecurityChannelPtr mMLSChannel;
         ITransportStreamReaderPtr mMLSReceiveStream;
         ITransportStreamWriterPtr mMLSSendStream;
-        String mMLSDecodingPassphrase;
+        String mMLSEncodingPassphrase;
 
         IFinderRelayChannelPtr mOutgoingRelayChannel;
         ITransportStreamReaderPtr mRelayReceiveStream;

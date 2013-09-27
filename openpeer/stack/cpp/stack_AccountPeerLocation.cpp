@@ -914,6 +914,8 @@ namespace openpeer
           return false;
         }
 
+        ZS_LOG_DEBUG(log("received result to peer identity request"))
+
         mIdentifyMonitor->cancel();
         mIdentifyMonitor.reset();
 
@@ -949,7 +951,7 @@ namespace openpeer
           return false;
         }
 
-        ZS_LOG_ERROR(Detail, log("identify request received an error"))
+        ZS_LOG_ERROR(Detail, log("peer identify request received an error"))
 
         cancel();
         return true;
@@ -1061,7 +1063,7 @@ namespace openpeer
         Helper::getDebugValue("mls id", mMLSChannel ? string(mMLSChannel->getID()) : String(), firstTime) +
         Helper::getDebugValue("mls receive stream id", mMLSReceiveStream ? string(mMLSReceiveStream->getID()) : String(), firstTime) +
         Helper::getDebugValue("mls send stream id", mMLSSendStream ? string(mMLSSendStream->getID()) : String(), firstTime) +
-        Helper::getDebugValue("mls decoding passphrase", mMLSDecodingPassphrase, firstTime) +
+        Helper::getDebugValue("mls encoding passphrase", mMLSEncodingPassphrase, firstTime) +
 
         Helper::getDebugValue("outgoing relay channel id", mOutgoingRelayChannel ? string(mOutgoingRelayChannel->getID()) : String(), firstTime) +
         Helper::getDebugValue("outgoing relay receive stream id", mRelayReceiveStream ? string(mRelayReceiveStream->getID()) : String(), firstTime) +
@@ -1321,7 +1323,7 @@ namespace openpeer
         String domain = outer->forAccountPeerLocation().getDomain();
 
         String passphrase = pendingRequest->peerSecret();
-        mMLSDecodingPassphrase = passphrase;
+        mMLSEncodingPassphrase = passphrase;
 
         mOutgoingRelayChannel = IFinderRelayChannel::connect(mThisWeak.lock(), outer, receiveStream, sendStream, relayCandidate.mIPAddress, localContext, remoteContext, domain, relayAccessToken, relayAccessSecretProof, passphrase);
 
@@ -1332,7 +1334,7 @@ namespace openpeer
         }
 
         mRelayReceiveStream = receiveStream->getReader();
-        mRelaySendStream = receiveStream->getWriter();
+        mRelaySendStream = sendStream->getWriter();
 
         mRelayReceiveStream->notifyReaderReadyToRead();
 
@@ -1424,7 +1426,7 @@ namespace openpeer
           reply->context(outer->forAccountPeerLocation().getLocalContextID(mPeer->forAccount().getPeerURI()));
           reply->peerSecret(outer->forAccountPeerLocation().getLocalPassword(mPeer->forAccount().getPeerURI()));
           reply->iceUsernameFrag(socket->getUsernameFrag());
-          reply->iceUsernameFrag(socket->getPassword());
+          reply->icePassword(socket->getPassword());
           reply->locationInfo(*selfLocationInfo);
           reply->peerFiles(outer->forAccountPeerLocation().getPeerFiles());
 
@@ -1433,7 +1435,7 @@ namespace openpeer
             connectLocation(pendingRequest->context(), pendingRequest->peerSecret(), pendingRequest->iceUsernameFrag(), pendingRequest->icePassword(), remoteCandidates, IICESocket::ICEControl_Controlled);
           }
 
-          finderLocation->forAccount().sendMessage(reply);
+          send(reply);
         }
 
         ZS_LOG_DEBUG(log("handled pending requests"))
@@ -1524,6 +1526,8 @@ namespace openpeer
           String reason;
           switch (mMLSChannel->getState(&error, &reason)) {
             case IMessageLayerSecurityChannel::SessionState_Pending: {
+              ZS_LOG_TRACE(log("MLS channel is pending"))
+              return true;
               break;
             }
             case IMessageLayerSecurityChannel::SessionState_WaitingForNeededInformation: {
@@ -1546,8 +1550,8 @@ namespace openpeer
               }
 
               if ((mMLSChannel->needsReceiveKeyingDecodingPassphrase()) &&
-                  (mMLSDecodingPassphrase.hasData())) {
-                mMLSChannel->setReceiveKeyingDecoding(mMLSDecodingPassphrase);
+                  (mMLSEncodingPassphrase.hasData())) {
+                mMLSChannel->setReceiveKeyingDecoding(mMLSEncodingPassphrase);
               }
 
               if ((mMLSChannel->needsReceiveKeyingMaterialSigningPublicKey()) &&
@@ -1558,6 +1562,8 @@ namespace openpeer
               if (mMLSChannel->needsSendKeyingEncodingMaterial()) {
                 if (remotePeerFilePublic) {
                   mMLSChannel->setSendKeyingEncoding(remotePeerFilePublic->getPublicKey());
+                } else if (mMLSEncodingPassphrase.hasData()) {
+                  mMLSChannel->setSendKeyingEncoding(mMLSEncodingPassphrase);
                 } else if (mPeer) {
                   mMLSChannel->setSendKeyingEncoding(outer->forAccountPeerLocation().getLocalPassword(mPeer->forAccount().getPeerURI()));
                 }
@@ -1574,7 +1580,7 @@ namespace openpeer
                   mMLSChannel->notifySendKeyingMaterialSigned();
                 }
               }
-              break;
+              return true;
             }
             case IMessageLayerSecurityChannel::SessionState_Connected: {
               ZS_LOG_TRACE(log("MLS is connected"))
@@ -1586,6 +1592,8 @@ namespace openpeer
               return false;
             }
           }
+
+          ZS_THROW_BAD_STATE(log("unhandled case"))
           return false;
         }
 
@@ -1605,7 +1613,7 @@ namespace openpeer
         mMLSReceiveStream = receiveStream->getReader();
         mMLSSendStream = sendStream->getWriter();
 
-        ZS_LOG_DEBUG(log("waiting for MLSto complete"))
+        ZS_LOG_DEBUG(log("waiting for MLS to complete"))
 
         return true;
       }

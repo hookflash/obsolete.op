@@ -327,7 +327,9 @@ namespace openpeer
           ULONG bytesRead = mSocket->receive(buffer.BytePtr(), OPENPEER_SERVICES_TCPMESSAGING_DEFAULT_RECEIVE_SIZE_IN_BYTES, &wouldBlock);
 
           if (0 == bytesRead) {
-            ZS_LOG_WARNING(Detail, log("notified of data to read but no data available to read"))
+            ZS_LOG_WARNING(Detail, log("notified of data to read but no data available to read") + ", would block=" + string(wouldBlock))
+            setError(IHTTP::HTTPStatusCode_NoContent, "server issues shutdown on socket connection");
+            cancel();
             return;
           }
 

@@ -198,7 +198,6 @@ namespace openpeer
             return DocumentPtr();
           }
 
-
           ElementPtr findProofBundleEl = Element::create("findProofBundle");
           ElementPtr findProofEl = Element::create("findProof");
 
@@ -213,6 +212,14 @@ namespace openpeer
 
           if (hasAttribute(AttributeType_PeerSecret)) {
             findProofEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("peerSecret", mPeerSecret));
+          }
+
+          if (mICEUsernameFrag.hasData()) {
+            findProofEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("iceUsernameFrag", mICEUsernameFrag));
+          }
+
+          if (mICEPassword.hasData()) {
+            findProofEl->adoptAsLastChild(IMessageHelper::createElementWithTextAndJSONEncode("icePassword", mICEPassword));
           }
 
           if (hasAttribute(AttributeType_LocationInfo)) {
