@@ -111,6 +111,10 @@ namespace openpeer
       virtual PUID getID() const = 0;
 
       //-----------------------------------------------------------------------
+      // PURPOSE: enable TCP keep alives
+      virtual void enableKeepAlive(bool enable = true) = 0;
+
+      //-----------------------------------------------------------------------
       // PURPOSE: subscribe to class events
       virtual ITCPMessagingSubscriptionPtr subscribe(ITCPMessagingDelegatePtr delegate) = 0;  // passing in IMessageLayerSecurityChannelDelegatePtr() will return the default subscription
 

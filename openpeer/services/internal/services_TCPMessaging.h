@@ -116,6 +116,8 @@ namespace openpeer
 
         virtual ITCPMessagingSubscriptionPtr subscribe(ITCPMessagingDelegatePtr delegate);
 
+        virtual void enableKeepAlive(bool enable = true);
+
         virtual void shutdown(Duration lingerTime = Seconds(OPENPEER_SERVICES_CLOSE_LINGER_TIMER_IN_SECONDS));
 
         virtual SessionStates getState(

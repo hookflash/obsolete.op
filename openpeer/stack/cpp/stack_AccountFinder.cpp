@@ -645,6 +645,9 @@ namespace openpeer
           return false;
         }
 
+        mSessionKeepAliveMonitor->cancel();
+        mSessionKeepAliveMonitor.reset();
+
         setTimeout(result->expires());
 
         (IWakeDelegateProxy::create(mThisWeak.lock()))->onWake();

@@ -1613,6 +1613,8 @@ namespace openpeer
         mMLSReceiveStream = receiveStream->getReader();
         mMLSSendStream = sendStream->getWriter();
 
+        mMLSReceiveStream->notifyReaderReadyToRead();
+
         ZS_LOG_DEBUG(log("waiting for MLS to complete"))
 
         return true;

@@ -225,6 +225,29 @@ namespace openpeer
       }
 
       //-----------------------------------------------------------------------
+      void TCPMessaging::enableKeepAlive(bool enable)
+      {
+        AutoRecursiveLock lock(getLock());
+
+        if (isShutdown()) {
+          ZS_LOG_DEBUG(log("already shutdown"))
+          return;
+        }
+
+        if (!mSocket) {
+          ZS_LOG_WARNING(Detail, log("socket was not found"))
+          return;
+        }
+
+        ZS_LOG_DEBUG(log("setting keep-alive") + ", value=" + string(enable))
+        try {
+          mSocket->setOptionFlag(ISocket::SetOptionFlag::KeepAlive, enable);
+        } catch(ISocket::Exceptions::Unspecified &error) {
+          ZS_LOG_WARNING(Detail, log("unable to change keep-alive value") + ", reason=" + error.getMessage())
+        }
+      }
+
+      //-----------------------------------------------------------------------
       void TCPMessaging::shutdown(Duration lingerTime)
       {
         AutoRecursiveLock lock(getLock());

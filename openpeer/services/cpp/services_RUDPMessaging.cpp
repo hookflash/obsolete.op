@@ -415,7 +415,7 @@ namespace openpeer
           return;
         }
 
-        ZS_LOG_DEBUG(log("step"))
+        ZS_LOG_DEBUG(log("step") + getDebugValueString())
 
         if (!stepSendData()) return;
         if (!stepReceiveData()) return;

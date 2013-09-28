@@ -550,6 +550,10 @@ namespace openpeer
                                                         )
       {
         AutoRecursiveLock lock(getLock());
+        if (ITCPMessaging::SessionState_Connected == state) {
+          ZS_LOG_TRACE(log("enabling TCP keep-alive"))
+          messaging->enableKeepAlive();
+        }
         step();
       }
 
