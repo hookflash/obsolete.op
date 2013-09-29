@@ -576,8 +576,8 @@ namespace openpeer
       String ServiceIdentitySession::getIdentityProviderDomain() const
       {
         AutoRecursiveLock lock(getLock());
-        if (mIdentityBootstrappedNetwork) {
-          return mIdentityBootstrappedNetwork->forServices().getDomain();
+        if (mActiveBootstrappedNetwork) {
+          return mActiveBootstrappedNetwork->forServices().getDomain();
         }
         return mProviderBootstrappedNetwork->forServices().getDomain();
       }
