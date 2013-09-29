@@ -866,7 +866,7 @@ namespace openpeer
           ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
           ZS_LOG_DETAIL(log("< < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < <"))
           ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
-          ZS_LOG_DETAIL(log("PEER RECEIVED MESSAGE") + (reader == mRelayReceiveStream ? " (VIA RELAY)" : "") + "=" + "\n" + ((CSTR)(buffer->BytePtr())) + "\n")
+          ZS_LOG_DETAIL(log("PEER RECEIVED MESSAGE") + (reader == mRelayReceiveStream ? " (VIA RELAY)" : "(VIA MLS)") + "=" + "\n" + ((CSTR)(buffer->BytePtr())) + "\n")
           ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
           ZS_LOG_DETAIL(log("< < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < < <"))
           ZS_LOG_DETAIL(log("-------------------------------------------------------------------------------------------"))
