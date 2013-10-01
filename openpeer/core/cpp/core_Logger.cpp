@@ -44,7 +44,7 @@ namespace openpeer
 
     namespace internal
     {
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       static zsLib::Log::Level levelToLevel(ILogger::Level level)
       {
         switch (level) {
@@ -57,7 +57,7 @@ namespace openpeer
         return Log::None;
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       static ILogger::Level levelToLevel(zsLib::Log::Level level)
       {
         switch (level) {
@@ -70,7 +70,7 @@ namespace openpeer
         return ILogger::None;
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       static zsLib::Log::Severity severityToSeverity(ILogger::Severity severity)
       {
         switch (severity) {
@@ -82,7 +82,7 @@ namespace openpeer
         return Log::Informational;
       }
 
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       static ILogger::Severity severityToSeverity(zsLib::Log::Severity severity)
       {
         switch (severity) {
@@ -94,10 +94,10 @@ namespace openpeer
         return ILogger::Informational;
       }
 
-      //-------------------------------------------------------------------------
-      //-------------------------------------------------------------------------
-      //-------------------------------------------------------------------------
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       class CustomLogger;
       typedef boost::shared_ptr<CustomLogger> CustomLoggerPtr;
       typedef boost::weak_ptr<CustomLogger> CustomLoggerWeakPtr;
@@ -115,7 +115,7 @@ namespace openpeer
         CustomLogger() {}
 
       public:
-        //-----------------------------------------------------------------------
+        //---------------------------------------------------------------------
         static CustomLoggerPtr create() {
           CustomLoggerPtr pThis = CustomLoggerPtr(new CustomLogger);
           (Log::singleton())->addListener(pThis);
@@ -128,7 +128,7 @@ namespace openpeer
           return singleton;
         }
 
-        //-----------------------------------------------------------------------
+        //---------------------------------------------------------------------
         virtual void installLogger(ILoggerDelegatePtr delegate)
         {
           SubsystemMap subsystems;
@@ -148,7 +148,7 @@ namespace openpeer
           }
         }
 
-        //-----------------------------------------------------------------------
+        //---------------------------------------------------------------------
         virtual void onNewSubsystem(Subsystem &inSubsystem)
         {
           ILoggerDelegatePtr delegate;
@@ -166,7 +166,7 @@ namespace openpeer
           delegate->onNewSubsystem((SubsystemID)(&inSubsystem), inSubsystem.getName());
         }
 
-        //-----------------------------------------------------------------------
+        //---------------------------------------------------------------------
         virtual void log(
                          const Subsystem &inSubsystem,
                          zsLib::Log::Severity inSeverity,
@@ -208,19 +208,19 @@ namespace openpeer
 
     }
 
-    //---------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
     void ILogger::installStdOutLogger(bool colorizeOutput)
     {
       services::ILogger::installStdOutLogger(colorizeOutput);
     }
 
-    //---------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
     void ILogger::installFileLogger(const char *fileName, bool colorizeOutput)
     {
       services::ILogger::installFileLogger(fileName, colorizeOutput);
     }
 
-    //---------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
     void ILogger::installTelnetLogger(
                                       WORD listenPort,                             // what port to bind to on 0.0.0.0:port to listen for incoming telnet sessions
                                       ULONG maxSecondsWaitForSocketToBeAvailable,  // since the port might still be in use for a period of time between runs (TCP timeout), how long to wait for the port to come alive (recommend 60)
@@ -230,7 +230,7 @@ namespace openpeer
       services::ILogger::installTelnetLogger(listenPort, maxSecondsWaitForSocketToBeAvailable, colorizeOutput);
     }
 
-    //---------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
     void ILogger::installOutgoingTelnetLogger(
                                               const char *serverToConnect,
                                               bool colorizeOutput,
@@ -240,22 +240,46 @@ namespace openpeer
       services::ILogger::installOutgoingTelnetLogger(serverToConnect, colorizeOutput, stringToSendUponConnection);
     }
 
-    //---------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
     void ILogger::installDebuggerLogger()
     {
       services::ILogger::installDebuggerLogger();
     }
 
-    //---------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
     void ILogger::installCustomLogger(ILoggerDelegatePtr delegate)
     {
       internal::CustomLoggerPtr logger = internal::CustomLogger::singleton();
       logger->installLogger(delegate);
     }
 
+    //-------------------------------------------------------------------------
+    void ILogger::uninstallFileLogger()
+    {
+      services::ILogger::uninstallFileLogger();
+    }
+
+    //-------------------------------------------------------------------------
+    void ILogger::uninstallTelnetLogger()
+    {
+      services::ILogger::uninstallTelnetLogger();
+    }
+
+    //-------------------------------------------------------------------------
+    void ILogger::uninstallOutgoingTelnetLogger()
+    {
+      services::ILogger::uninstallOutgoingTelnetLogger();
+    }
+
+    //-------------------------------------------------------------------------
+    void ILogger::uninstallDebuggerLogger()
+    {
+      services::ILogger::uninstallDebuggerLogger();
+    }
+
     namespace application
     {
-      //-------------------------------------------------------------------------
+      //-----------------------------------------------------------------------
       static PTRNUMBER getGUISubsystem()
       {
         Subsystem *subsystem = &(ZS_GET_SUBSYSTEM());
@@ -263,13 +287,13 @@ namespace openpeer
       }
     }
 
-    //---------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
     PTRNUMBER ILogger::getApplicationSubsystemID()
     {
       return application::getGUISubsystem();
     }
 
-    //---------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
     ILogger::Level ILogger::getLogLevel(SubsystemID subsystemUniqueID)
     {
       return internal::levelToLevel(((Subsystem *)subsystemUniqueID)->getOutputLevel());
@@ -281,7 +305,7 @@ namespace openpeer
       services::ILogger::setLogLevel(internal::levelToLevel(level));
     }
 
-    //---------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
     void ILogger::setLogLevel(
                               PTRNUMBER subsystemUniqueID,
                               ILogger::Level level
@@ -290,7 +314,7 @@ namespace openpeer
       ((Subsystem *)subsystemUniqueID)->setOutputLevel(internal::levelToLevel(level));
     }
 
-    //---------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
     void ILogger::setLogLevel(
                               const char *subsystemName,
                               ILogger::Level level
@@ -299,7 +323,7 @@ namespace openpeer
       services::ILogger::setLogLevel(subsystemName, internal::levelToLevel(level));
     }
 
-    //---------------------------------------------------------------------------
+    //-------------------------------------------------------------------------
     void ILogger::log(
                       PTRNUMBER subsystemUniqueID,
                       ILogger::Severity severity,

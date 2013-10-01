@@ -118,6 +118,14 @@ namespace openpeer
       static void installCustomLogger(ILoggerDelegatePtr delegate = ILoggerDelegatePtr());
 
       //-----------------------------------------------------------------------
+      // PURPOSE: Mirror methods to install routines to uninstall various
+      //          types of loggers.
+      static void uninstallFileLogger();
+      static void uninstallTelnetLogger();
+      static void uninstallOutgoingTelnetLogger();
+      static void uninstallDebuggerLogger();
+
+      //-----------------------------------------------------------------------
       // PURPOSE: Gets the unique ID for the application's subsystem
       //          (to pass into the log routine for GUI application logging)
       static SubsystemID getApplicationSubsystemID();
