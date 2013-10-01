@@ -2061,6 +2061,14 @@ namespace openpeer
           mVideoEngineReady = true;
         }
 #endif //ANDROID
+        
+        sleep(1);
+        
+        mError = mVideoRtpRtcp->RequestKeyFrame(mVideoChannel);
+        if (0 != mError) {
+          ZS_LOG_ERROR(Detail, log("failed to request key frame (error: ") + string(mVideoBase->LastError()) + ")")
+          return;
+        }
       }
       
       //-----------------------------------------------------------------------
