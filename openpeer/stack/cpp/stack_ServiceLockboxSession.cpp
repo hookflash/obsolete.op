@@ -62,15 +62,8 @@
 
 #define OPENPEER_STACK_SERVICE_LOCKBOX_EXPIRES_TIME_PERCENTAGE_CONSUMED_CAUSES_REGENERATION (80)
 
-//#define OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE "https://meta.openpeer.org/permission/private-peer-file"
-//#define OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE "https://meta.openpeer.org/permission/identity-relogins"
-
-#define WARNING_HACK_UNTIL_PERMISSIONS_URLS_ARE_DEFINED 1
-#define WARNING_HACK_UNTIL_PERMISSIONS_URLS_ARE_DEFINED 2
-
-#define OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE "https://hcs-javascript.hookflash.me/hfservice/static/permission/permission1"
-#define OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE "https://hcs-javascript.hookflash.me/hfservice/static/permission/permission2"
-
+#define OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_NAMESPACE "https://meta.openpeer.org/permission/private-peer-file"
+#define OPENPEER_STACK_SERVICE_LOCKBOX_IDENTITY_RELOGINS_NAMESPACE "https://meta.openpeer.org/permission/identity-relogins"
 
 #define OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_SECRET_VALUE_NAME "privatePeerFileSecret"
 #define OPENPEER_STACK_SERVICE_LOCKBOX_PRIVATE_PEER_FILE_VALUE_NAME "privatePeerFile"
